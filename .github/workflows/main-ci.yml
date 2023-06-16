@@ -1,0 +1,40 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
+
+name: Test Flutter App
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+
+env:
+  FLUTTER_VERSION: "3.7.8"
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      - name: Install Flutter
+        run: git clone https://github.com/flutter/flutter.git --depth 1 -b $FLUTTER_VERSION flutter
+      - name: Add Flutter to Path
+        run: echo "$GITHUB_WORKSPACE/flutter/bin" >> $GITHUB_PATH
+      - name: Install Dependencies
+        run: flutter pub get
+      - name: Flutter Analze
+        run: flutter analyze --no-pub
+      - name: Check Flutter Formatting
+        run: flutter format lib/** --set-exit-if-changed
+      - name: Run Flutter Tests
+        run: flutter test --no-pub
