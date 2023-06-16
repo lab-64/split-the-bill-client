@@ -1,4 +1,4 @@
-# split_the_bill
+# Split The Bill
 
 Flutter app to divide bills fast and easy
 
