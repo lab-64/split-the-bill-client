@@ -30,5 +30,7 @@ jobs:
         uses: subosito/flutter-action@v1
       - name: Install Dependencies
         run: flutter pub get
+      - name: Analyze Flutter
+        run: flutter analyze --no-pub
       - name: Run Flutter Tests
         run: flutter test --no-pub
