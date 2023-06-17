@@ -2,6 +2,8 @@
 
 Flutter app to divide bills fast and easy
 
+[![Test Flutter App](https://github.com/lab-64/split-the-bill-client/actions/workflows/flutter-ci.yml/badge.svg?branch=dev)](https://github.com/lab-64/split-the-bill-client/actions/workflows/flutter-ci.yml)
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
