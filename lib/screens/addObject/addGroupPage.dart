@@ -11,7 +11,12 @@ class _AddGroupPageState extends State<AddGroupPage> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Text("Add Group Page"),
+      body: Center(
+        child: Text(
+          "Add Group Page",
+          style: TextStyle(fontSize: 60),
+        ),
+      ),
     );
   }
 }

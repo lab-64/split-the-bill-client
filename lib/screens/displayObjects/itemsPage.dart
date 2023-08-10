@@ -11,7 +11,12 @@ class _ItemsPageState extends State<ItemsPage> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Text("Items Page"),
+      body: Center(
+        child: Text(
+          "Items Page",
+          style: TextStyle(fontSize: 60),
+        ),
+      ),
     );
   }
 }

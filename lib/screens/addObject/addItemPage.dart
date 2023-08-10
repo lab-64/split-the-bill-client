@@ -11,7 +11,12 @@ class _AddItemPageState extends State<AddItemPage> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Text("Add Item Page"),
+      body: Center(
+        child: Text(
+          "Add Item Page",
+          style: TextStyle(fontSize: 60),
+        ),
+      ),
     );
   }
 }
