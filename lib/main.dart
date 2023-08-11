@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:split_the_bill/screens/addObject/AddBillViaCameraPage.dart';
-import 'package:split_the_bill/screens/addObject/addBillPage.dart';
-import 'package:split_the_bill/screens/addObject/addGroupPage.dart';
-import 'package:split_the_bill/screens/displayObjects/billsPage.dart';
-import 'package:split_the_bill/screens/displayObjects/groupsPage.dart';
+import 'package:split_the_bill/screens/addObject/add_bill_via_camera_page.dart';
+import 'package:split_the_bill/screens/addObject/add_bill_page.dart';
+import 'package:split_the_bill/screens/addObject/add_group_page.dart';
+import 'package:split_the_bill/screens/displayObjects/bills_page.dart';
+import 'package:split_the_bill/screens/displayObjects/groups_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -54,13 +54,21 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int currentIndex = 0;
-  final screens = [
-    GroupsPage(),
-    AddGroupPage(),
-    AddBillPage(),
-    AddBillPageViaCamera(),
-    BillsPage()
-  ];
+  late final List<Widget> screens;
+
+  _MyHomePageState() {
+    screens = [
+      GroupsPage(changeIndex),
+      AddGroupPage(),
+      AddBillPage(),
+      AddBillPageViaCamera(),
+      BillsPage(),
+    ];
+  }
+
+  void changeIndex(int index) {
+    setState(() => currentIndex = index);
+  }
 
   @override
   Widget build(BuildContext context) {
