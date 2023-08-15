@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:split_the_bill/models/group.dart';
+import 'package:split_the_bill/providers/dummy_data_calls.dart';
 import 'package:split_the_bill/screens/displayObjects/group_page.dart';
 
 class GroupsPage extends StatefulWidget {
@@ -12,12 +14,8 @@ class GroupsPage extends StatefulWidget {
 
 class _GroupsPageState extends State<GroupsPage> {
   //demo data
-  List<List<String>> groups = [
-    ['Groupname 1', '-99'],
-    ['Groupname 2', '45'],
-    ['Groupname 3', '1'],
-    ['Groupname 4', '-23']
-  ];
+
+  List<Group> groups = DummyDataCalls().getAllGroups();
 
   //function given by main to change navbar index from this page
   late Function changeIndex;
@@ -58,19 +56,33 @@ class _GroupsPageState extends State<GroupsPage> {
 
   List<DataRow> buildAllRows() => groups.map((row) => buildRow(row)).toList();
 
-  DataRow buildRow(List<String> cells, {bool isHeader = false}) {
+  DataRow buildRow(Group cells, {bool isHeader = false}) {
     return DataRow(
-        cells: cells
-            .map((cell) => DataCell(Padding(
-                padding: const EdgeInsets.all(12),
-                child: Center(child: Text(cell)))))
-            .toList(),
-        onSelectChanged: (bool? values) => {navigateToGroupPage(context)});
+        cells: [
+          DataCell(
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Center(
+                child: Text(cells.name),
+              ),
+            ),
+          ),
+          DataCell(
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Center(
+                child: Text(cells.userBalance.toString()),
+              ),
+            ),
+          )
+        ],
+        onSelectChanged: (bool? values) =>
+            {navigateToGroupPage(context, cells.id)});
   }
 
-  void navigateToGroupPage(BuildContext context) async {
+  void navigateToGroupPage(BuildContext context, int id) async {
     final res = await Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const GroupPage()));
+        .push(MaterialPageRoute(builder: (context) => GroupPage(id)));
     changeIndex(res);
   }
 }

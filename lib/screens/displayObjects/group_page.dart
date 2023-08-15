@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:split_the_bill/models/group.dart';
+import 'package:split_the_bill/providers/dummy_data_calls.dart';
 
 class GroupPage extends StatefulWidget {
-  const GroupPage({Key? key}) : super(key: key);
+  const GroupPage(this.groupID, {Key? key}) : super(key: key);
+
+  final int groupID;
 
   @override
-  State<GroupPage> createState() => _GroupPageState();
+  State<GroupPage> createState() => _GroupPageState(groupID);
 }
 
 class _GroupPageState extends State<GroupPage> {
+  late Group group;
+
+  _GroupPageState(int id) {
+    group = DummyDataCalls().getGroup(id);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +27,7 @@ class _GroupPageState extends State<GroupPage> {
           style: TextStyle(fontSize: 60),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
+      bottomNavigationBar: BottomNavigationBar(//TODO make into separate widget?
         type: BottomNavigationBarType.shifting,
         currentIndex: 0,
         onTap: (index) => Navigator.pop(context, index),
