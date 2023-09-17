@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:split_the_bill/providers/dummy_data_calls.dart';
 import 'package:split_the_bill/screens/addObject/add_bill_via_camera_page.dart';
 import 'package:split_the_bill/screens/addObject/add_bill_page.dart';
 import 'package:split_the_bill/screens/addObject/add_group_page.dart';
@@ -55,14 +56,18 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int currentIndex = 0;
   late final List<Widget> screens;
+  late DummyDataCalls dummyCalls;
 
-  _MyHomePageState() {
+  @override
+  void initState() {
+    super.initState();
+    dummyCalls = DummyDataCalls();
     screens = [
-      GroupsPage(changeIndex),
-      AddGroupPage(),
-      AddBillPage(),
-      AddBillPageViaCamera(),
-      BillsPage(),
+      GroupsPage(changeIndex, dummyCalls),
+      AddGroupPage(changeIndex, dummyCalls),
+      AddBillPage(dummyCalls),
+      AddBillPageViaCamera(dummyCalls),
+      BillsPage(dummyCalls),
     ];
   }
 
@@ -73,10 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: currentIndex,
-        children: screens,
-      ),
+      body: screens[currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.shifting,
         currentIndex: currentIndex,

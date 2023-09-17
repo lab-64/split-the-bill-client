@@ -4,23 +4,24 @@ import 'package:split_the_bill/providers/dummy_data_calls.dart';
 import 'package:split_the_bill/screens/displayObjects/group_page.dart';
 
 class GroupsPage extends StatefulWidget {
-  const GroupsPage(this.changeIndex, {Key? key}) : super(key: key);
+  const GroupsPage(this.changeIndex, this.dummyCalls, {Key? key}) : super(key: key);
 
   final Function changeIndex;
+  final DummyDataCalls dummyCalls;
 
   @override
-  State<GroupsPage> createState() => _GroupsPageState(changeIndex);
+  State<GroupsPage> createState() => _GroupsPageState();
 }
 
 class _GroupsPageState extends State<GroupsPage> {
-  //demo data
+  late List<Group> groups;
 
-  List<Group> groups = DummyDataCalls().getAllGroups();
-
-  //function given by main to change navbar index from this page
-  late Function changeIndex;
-
-  _GroupsPageState(this.changeIndex);
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    groups = widget.dummyCalls.getAllGroups();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +83,7 @@ class _GroupsPageState extends State<GroupsPage> {
 
   void navigateToGroupPage(BuildContext context, int id) async {
     final res = await Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => GroupPage(id)));
-    changeIndex(res);
+        .push(MaterialPageRoute(builder: (context) => GroupPage(id, widget.dummyCalls, widget.changeIndex)));
+    widget.changeIndex(res);
   }
 }

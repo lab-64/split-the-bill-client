@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../providers/dummy_data_calls.dart';
+
 class AddBillPage extends StatefulWidget {
-  const AddBillPage({Key? key}) : super(key: key);
+  const AddBillPage(this.dummyCalls, {Key? key}) : super(key: key);
+
+  final DummyDataCalls dummyCalls;
 
   @override
   State<AddBillPage> createState() => _AddBillPageState();
