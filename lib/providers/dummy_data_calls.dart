@@ -1,3 +1,4 @@
+import 'package:split_the_bill/models/assignedItem.dart';
 import 'package:split_the_bill/models/bill.dart';
 import 'package:split_the_bill/models/item.dart';
 import 'package:split_the_bill/models/user.dart';
@@ -30,6 +31,7 @@ class DummyDataCalls {
       Item(5, 'Item 5', 60),
       Item(6, 'Item 6', 70),
       Item(7, 'Item 7', 80),
+      AssignedItem(8, 'assigned Item 1', 23, users[0])
     ];
 
     bills = [

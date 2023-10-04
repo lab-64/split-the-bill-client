@@ -116,10 +116,11 @@ class _GroupPageState extends State<GroupPage> {
     );
   }
 
+  /// Method to navigate to the bills page. It cleans up the Stack upon closing the bills page.
   Future<void> navigateToAddBill(BuildContext context) async {
     final res = await Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => AddBillPage(widget.dummyCalls)));
-    //TODO remove
+    //TODO remove and replace with the actual bill (res)
     BillMapping test = BillMapping(widget.dummyCalls.users[0],
         widget.dummyCalls.bills[0], [widget.dummyCalls.users[0]]);
     setState(() {
@@ -127,17 +128,20 @@ class _GroupPageState extends State<GroupPage> {
     });
   }
 
+  ///Saves the group locally and on the server. Exits the group page, cleans up stack itself.
   void saveGroupAndExit() {
     widget.dummyCalls.overwriteGroup(group);
     Navigator.pop(context); //TODO change to be part of navbar
   }
 
+  ///Helper method to build rows of a table.
   List<DataRow> buildAllRows() {
     return membersMode
         ? group.members.map((member) => buildRow(null, member)).toList()
         : group.billMappings.map((bill) => buildRow(bill, null)).toList();
   }
 
+  ///Helper method to build a single row of the table.
   DataRow buildRow(BillMapping? billMapping, User? user) {
     if (!membersMode) {
       return DataRow(cells: [

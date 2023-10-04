@@ -20,6 +20,8 @@ class _GroupsPageState extends State<GroupsPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    //TODO replace by actual call to server
+    //initialize all groups
     groups = widget.dummyCalls.getAllGroups();
   }
 
@@ -55,8 +57,10 @@ class _GroupsPageState extends State<GroupsPage> {
     );
   }
 
+  ///Helper method to build all table rows.
   List<DataRow> buildAllRows() => groups.map((row) => buildRow(row)).toList();
 
+  ///Helper method to build a single table row.
   DataRow buildRow(Group cells, {bool isHeader = false}) {
     return DataRow(
         cells: [
@@ -81,6 +85,7 @@ class _GroupsPageState extends State<GroupsPage> {
             {navigateToGroupPage(context, cells.id)});
   }
 
+  ///Method to navigate to the GroupPage of a single group. Updates navbar.
   void navigateToGroupPage(BuildContext context, int id) async {
     final res = await Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => GroupPage(id, widget.dummyCalls, widget.changeIndex)));
