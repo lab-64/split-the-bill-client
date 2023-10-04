@@ -4,7 +4,8 @@ import 'package:split_the_bill/providers/dummy_data_calls.dart';
 import 'package:split_the_bill/screens/displayObjects/group_page.dart';
 
 class GroupsPage extends StatefulWidget {
-  const GroupsPage(this.changeIndex, this.dummyCalls, {Key? key}) : super(key: key);
+  const GroupsPage(this.changeIndex, this.dummyCalls, {Key? key})
+      : super(key: key);
 
   final Function changeIndex;
   final DummyDataCalls dummyCalls;
@@ -87,8 +88,12 @@ class _GroupsPageState extends State<GroupsPage> {
 
   ///Method to navigate to the GroupPage of a single group. Updates navbar.
   void navigateToGroupPage(BuildContext context, int id) async {
-    final res = await Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => GroupPage(id, widget.dummyCalls, widget.changeIndex)));
+    final res = await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) =>
+            GroupPage(id, widget.dummyCalls, widget.changeIndex)));
+    setState(() {
+      groups = widget.dummyCalls.getAllGroups();
+    });
     widget.changeIndex(res);
   }
 }

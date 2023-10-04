@@ -3,11 +3,13 @@ import 'package:split_the_bill/models/bill_mapping.dart';
 import 'package:split_the_bill/models/group.dart';
 import 'package:split_the_bill/providers/dummy_data_calls.dart';
 import 'package:split_the_bill/screens/addObject/add_bill_page.dart';
+import 'package:split_the_bill/screens/addObject/add_member_page.dart';
 
 import '../../models/user.dart';
 
 class GroupPage extends StatefulWidget {
-  const GroupPage(this.groupID, this.dummyCalls, this.changeIndex, {Key? key}) : super(key: key);
+  const GroupPage(this.groupID, this.dummyCalls, this.changeIndex, {Key? key})
+      : super(key: key);
 
   final int groupID;
   final DummyDataCalls dummyCalls;
@@ -34,7 +36,17 @@ class _GroupPageState extends State<GroupPage> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(group.name),
+          SizedBox(
+            width: 200,
+            child: TextField(
+              onChanged: (grpName) => {group.name = grpName},
+              decoration: InputDecoration(
+                hintStyle: const TextStyle(color: Colors.blue),
+                hintText: group.name,
+                border: const OutlineInputBorder(),
+              ),
+            ),
+          ),
           DataTable(
             showCheckboxColumn: false,
             columns: <DataColumn>[
@@ -43,7 +55,7 @@ class _GroupPageState extends State<GroupPage> {
                   child: InkWell(
                     onTap: () => setState(() => membersMode = false),
                     child: Text(
-                      'Items',
+                      'Bills',
                       style: TextStyle(
                           fontStyle: FontStyle.italic,
                           fontWeight: FontWeight.bold,
@@ -75,7 +87,13 @@ class _GroupPageState extends State<GroupPage> {
           ),
           FloatingActionButton(
             heroTag: 'bt1',
-            onPressed: () => navigateToAddBill(context),
+            onPressed: () {
+              if (membersMode) {
+                navigateToAddMember(context);
+              } else {
+                navigateToAddBill(context);
+              }
+            },
             child: const Icon(Icons.add),
           ),
           FloatingActionButton(
@@ -125,6 +143,16 @@ class _GroupPageState extends State<GroupPage> {
         widget.dummyCalls.bills[0], [widget.dummyCalls.users[0]]);
     setState(() {
       group.billMappings.add(test);
+    });
+  }
+
+  Future<void> navigateToAddMember(BuildContext context) async {
+    final res = await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => AddMemberPage(widget.dummyCalls)));
+    //TODO remove and replace with actual member add page
+    User test = User(99, "Test user", "test@test.de");
+    setState(() {
+      group.members.add(test);
     });
   }
 
