@@ -137,12 +137,9 @@ class _GroupPageState extends State<GroupPage> {
   /// Method to navigate to the bills page. It cleans up the Stack upon closing the bills page.
   Future<void> navigateToAddBill(BuildContext context) async {
     final res = await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => AddBillPage(widget.dummyCalls)));
-    //TODO remove and replace with the actual bill (res)
-    BillMapping test = BillMapping(widget.dummyCalls.users[0],
-        widget.dummyCalls.bills[0], [widget.dummyCalls.users[0]]);
+        builder: (context) => AddBillPage(widget.dummyCalls, -1)));
     setState(() {
-      group.billMappings.add(test);
+      group = widget.dummyCalls.getGroup(widget.groupID);
     });
   }
 
@@ -153,6 +150,14 @@ class _GroupPageState extends State<GroupPage> {
     User test = User(99, "Test user", "test@test.de");
     setState(() {
       group.members.add(test);
+    });
+  }
+
+  Future<void> navigateToEditBill(BuildContext context, int id) async {
+    final res = await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => AddBillPage(widget.dummyCalls, id)));
+    setState(() {
+      group = widget.dummyCalls.getGroup(widget.groupID);
     });
   }
 
@@ -172,24 +177,27 @@ class _GroupPageState extends State<GroupPage> {
   ///Helper method to build a single row of the table.
   DataRow buildRow(BillMapping? billMapping, User? user) {
     if (!membersMode) {
-      return DataRow(cells: [
-        DataCell(
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Center(
-              child: Text(billMapping!.bill.name),
+      return DataRow(
+          cells: [
+            DataCell(
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: Center(
+                  child: Text(billMapping!.bill.name),
+                ),
+              ),
             ),
-          ),
-        ),
-        DataCell(
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Center(
-              child: Text(billMapping.bill.price.toString()),
-            ),
-          ),
-        )
-      ]);
+            DataCell(
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: Center(
+                  child: Text(billMapping.bill.price.toString()),
+                ),
+              ),
+            )
+          ],
+          onSelectChanged: (bool? values) =>
+              {navigateToEditBill(context, billMapping.bill.id)});
     } else {
       return DataRow(cells: [
         DataCell(
@@ -208,7 +216,7 @@ class _GroupPageState extends State<GroupPage> {
             ),
           ),
         )
-      ]);
+      ], onSelectChanged: (bool? values) => {print("not implemented yet")});
     }
   }
 }

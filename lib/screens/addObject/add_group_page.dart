@@ -112,7 +112,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
 
   Future<void> navigateToAddBill(BuildContext context) async {
     final res = await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => AddBillPage(widget.dummyCalls)));
+        builder: (context) => AddBillPage(widget.dummyCalls, -1)));
     //TODO remove
     BillMapping test = BillMapping(widget.dummyCalls.users[0],
         widget.dummyCalls.bills[0], [widget.dummyCalls.users[0]]);

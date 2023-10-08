@@ -60,6 +60,9 @@ class DummyDataCalls {
   }
 
   Group getGroup(int index) {
+    if (index >= groups.length || index < 0) {
+      return Group(0, "new Group", [], [], 0);
+    }
     return groups[index];
   }
 
@@ -71,5 +74,23 @@ class DummyDataCalls {
     Group newGroup = group;
     newGroup.id = groups.length;
     groups.add(newGroup);
+  }
+
+  Bill getBill(int billID) {
+    if (billID >= bills.length || billID < 0) {
+      return Bill(-1, "new Bill", DateTime.now(), [], 0);
+    }
+    return bills[billID];
+  }
+
+  void overwriteBill(Bill bill) {
+    bills[bill.id] = bill;
+  }
+
+  void saveNewBill(Bill bill) {
+    print("save new bill");
+    Bill newBill = bill;
+    newBill.id = bills.length;
+    bills.add(newBill);
   }
 }
