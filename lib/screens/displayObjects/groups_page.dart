@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:split_the_bill/models/group.dart';
 import 'package:split_the_bill/providers/dummy_data_calls.dart';
-import 'package:split_the_bill/screens/displayObjects/group_page.dart';
+import 'package:split_the_bill/screens/addObject/add_group_page.dart';
 
 class GroupsPage extends StatefulWidget {
   const GroupsPage(this.changeIndex, this.dummyCalls, {Key? key})
@@ -101,7 +101,7 @@ class _GroupsPageState extends State<GroupsPage> {
   void navigateToGroupPage(BuildContext context, int id) async {
     final res = await Navigator.of(context).push(MaterialPageRoute(
         builder: (context) =>
-            GroupPage(id, widget.dummyCalls, widget.changeIndex)));
+            AddGroupPage(widget.changeIndex, widget.dummyCalls, id)));
     setState(() {
       groups = widget.dummyCalls.getAllGroups();
     });

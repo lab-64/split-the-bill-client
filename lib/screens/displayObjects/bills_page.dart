@@ -43,10 +43,12 @@ class _BillsPageState extends State<BillsPage> {
     );
   }
 
+  ///Helper method to build rows of a table.
   List<DataRow> buildAllRows() {
     return bills.map((bill) => buildRow(bill)).toList();
   }
 
+  ///Helper method to build a single row of the table.
   DataRow buildRow(BillMapping? billMapping) {
     return DataRow(cells: [
       DataCell(
@@ -69,6 +71,7 @@ class _BillsPageState extends State<BillsPage> {
     ]);
   }
 
+  ///Helper method to navigate to addBillPage and update variables accordingly.
   Future<void> navigateToAddBill(BuildContext context) async {
     final res = await Navigator.of(context).push(MaterialPageRoute(
         builder: (context) =>

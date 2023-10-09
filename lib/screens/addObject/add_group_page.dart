@@ -7,11 +7,12 @@ import '../../providers/dummy_data_calls.dart';
 import 'add_bill_page.dart';
 
 class AddGroupPage extends StatefulWidget {
-  const AddGroupPage(this.changeIndex, this.dummyCalls, {Key? key})
+  const AddGroupPage(this.changeIndex, this.dummyCalls, this.id, {Key? key})
       : super(key: key);
 
   final DummyDataCalls dummyCalls;
   final Function changeIndex;
+  final int id;
 
   @override
   State<AddGroupPage> createState() => _AddGroupPageState();
@@ -19,8 +20,9 @@ class AddGroupPage extends StatefulWidget {
 
 class _AddGroupPageState extends State<AddGroupPage> {
   bool membersMode = false;
-  Group group = Group(-1, '', [], [], 0);
-  final GlobalKey<FormState> _nameKey = GlobalKey<FormState>();
+  late Group group = widget.id < 0
+      ? Group(-1, '', [], [], 0)
+      : widget.dummyCalls.getGroup(widget.id);
 
   @override
   Widget build(BuildContext context) {
@@ -31,14 +33,13 @@ class _AddGroupPageState extends State<AddGroupPage> {
         children: [
           const SelectionContainer.disabled(
               child: Text(
-            "Group Page",
+            "Add Group Page",
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 40, height: 5),
           )),
           Padding(
               padding: const EdgeInsets.all(12),
               child: Form(
-                key: _nameKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
@@ -93,16 +94,12 @@ class _AddGroupPageState extends State<AddGroupPage> {
           ),
           FloatingActionButton(
             heroTag: 'bt1',
-            onPressed: () => navigateToAddBill(context),
+            onPressed: () => navigateToAddBill(context, -1),
             child: const Icon(Icons.add),
           ),
           FloatingActionButton(
             heroTag: 'bt2',
-            onPressed: () {
-              if (_nameKey.currentState!.validate()) {
-                saveGroupAndExit();
-              }
-            },
+            onPressed: () => saveGroupAndExit(),
             child: const Icon(Icons.check),
           )
         ],
@@ -110,10 +107,13 @@ class _AddGroupPageState extends State<AddGroupPage> {
     );
   }
 
-  Future<void> navigateToAddBill(BuildContext context) async {
+  ///Helper method to navigate to addBillPage and update variables accordingly.
+  Future<void> navigateToAddBill(BuildContext context, int billID) async {
     final res = await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) =>
-            AddBillPage(widget.changeIndex, widget.dummyCalls, -1, group.id)));
+        builder: (context) => billID == -1
+            ? AddBillPage(widget.changeIndex, widget.dummyCalls, -1, group.id)
+            : AddBillPage(
+                widget.changeIndex, widget.dummyCalls, billID, group.id)));
     //TODO remove
     BillMapping test = BillMapping(widget.dummyCalls.users[0],
         widget.dummyCalls.bills[0], [widget.dummyCalls.users[0]]);
@@ -122,37 +122,44 @@ class _AddGroupPageState extends State<AddGroupPage> {
     });
   }
 
+  ///Method to save the group and return to the correct screen.
   void saveGroupAndExit() {
+    if (group.name == '') group.name = "new Group";
     widget.dummyCalls.saveNewGroup(group);
     widget.changeIndex(0);
   }
 
+  ///Helper method to build rows of a table.
   List<DataRow> buildAllRows() {
     return membersMode
         ? group.members.map((member) => buildRow(null, member)).toList()
         : group.billMappings.map((bill) => buildRow(bill, null)).toList();
   }
 
+  ///Helper method to build a single row of the table.
   DataRow buildRow(BillMapping? billMapping, User? user) {
     if (!membersMode) {
-      return DataRow(cells: [
-        DataCell(
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Center(
-              child: Text(billMapping!.bill.name),
+      return DataRow(
+          cells: [
+            DataCell(
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: Center(
+                  child: Text(billMapping!.bill.name),
+                ),
+              ),
             ),
-          ),
-        ),
-        DataCell(
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Center(
-              child: Text(billMapping.bill.price.toString()),
-            ),
-          ),
-        )
-      ]);
+            DataCell(
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: Center(
+                  child: Text(billMapping.bill.price.toString()),
+                ),
+              ),
+            )
+          ],
+          onSelectChanged: (bool? values) =>
+              {navigateToAddBill(context, billMapping.bill.id)});
     } else {
       return DataRow(cells: [
         DataCell(

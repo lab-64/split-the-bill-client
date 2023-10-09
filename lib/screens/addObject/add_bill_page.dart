@@ -172,6 +172,7 @@ class _AddBillPageState extends State<AddBillPage> {
     ]);
   }
 
+  ///Helper method to navigate to addItemPage and update variables accordingly.
   navigateToAddItemPage() async {
     final res = await Navigator.of(context)
         .push(MaterialPageRoute(builder: (context) => const AddItemPage()));
@@ -182,18 +183,17 @@ class _AddBillPageState extends State<AddBillPage> {
     });
   }
 
+  ///Method to save the bill and return to the correct screen.
   saveBillAndExit() {
     if (bill.id == -1) {
       widget.dummyCalls.saveNewBill(bill);
       widget.dummyCalls.addBillToGroup(bill.id, widget.groupID);
-      print("here i am");
-      widget.changeIndex(0);
+      widget.changeIndex(4);
     } else {
       widget.dummyCalls.overwriteBill(bill);
       if (widget.groupID >= 0) {
         widget.dummyCalls.updateBillInGroup(bill.id, widget.groupID);
       }
-      print("once again");
       Navigator.pop(context); //TODO change to be part of navbar
     }
   }
