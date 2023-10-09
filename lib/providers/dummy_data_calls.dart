@@ -66,6 +66,25 @@ class DummyDataCalls {
     return groups[index];
   }
 
+  void addBillToGroup(int billID, int groupID) {
+    print("$billID $groupID");
+    if (groupID < 0) {
+      billMappings.add(
+          BillMapping(users[0], getBill(billID), [])); //TODO change to user
+    } else {
+      Group group = getGroup(groupID);
+      group.billMappings.add(BillMapping(
+          group.members.first, getBill(billID), [])); //TODO change to user
+    }
+  }
+
+  void updateBillInGroup(int billID, int groupID) {
+    Group group = getGroup(groupID);
+    int index =
+        group.billMappings.indexWhere((element) => element.bill.id == billID);
+    group.billMappings[index].bill = bills[billID];
+  }
+
   void overwriteGroup(Group group) {
     groups[group.id] = group;
   }
@@ -92,5 +111,10 @@ class DummyDataCalls {
     Bill newBill = bill;
     newBill.id = bills.length;
     bills.add(newBill);
+  }
+
+  List<BillMapping> getOwnBills() {
+    User user = users[0];//TODO change to real user
+    return billMappings.where((element) => element.owner.username == user.username).toList();
   }
 }

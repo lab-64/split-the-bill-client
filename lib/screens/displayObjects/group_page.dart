@@ -38,7 +38,8 @@ class _GroupPageState extends State<GroupPage> {
         children: [
           SizedBox(
             width: 200,
-            child: TextField(
+            child: TextFormField(
+              initialValue: group.name,
               onChanged: (grpName) => {group.name = grpName},
               decoration: InputDecoration(
                 hintStyle: const TextStyle(color: Colors.blue),
@@ -137,7 +138,7 @@ class _GroupPageState extends State<GroupPage> {
   /// Method to navigate to the bills page. It cleans up the Stack upon closing the bills page.
   Future<void> navigateToAddBill(BuildContext context) async {
     final res = await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => AddBillPage(widget.dummyCalls, -1)));
+        builder: (context) => AddBillPage(widget.changeIndex, widget.dummyCalls, -1, group.id)));
     setState(() {
       group = widget.dummyCalls.getGroup(widget.groupID);
     });
@@ -154,8 +155,8 @@ class _GroupPageState extends State<GroupPage> {
   }
 
   Future<void> navigateToEditBill(BuildContext context, int id) async {
-    final res = await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => AddBillPage(widget.dummyCalls, id)));
+    await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => AddBillPage(widget.changeIndex, widget.dummyCalls, id, group.id)));
     setState(() {
       group = widget.dummyCalls.getGroup(widget.groupID);
     });
@@ -216,7 +217,7 @@ class _GroupPageState extends State<GroupPage> {
             ),
           ),
         )
-      ], onSelectChanged: (bool? values) => {print("not implemented yet")});
+      ], onSelectChanged: (bool? values) => {print("not implemented yet")});//TODO change when members added
     }
   }
 }

@@ -1,27 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:split_the_bill/models/bill.dart';
+import 'package:split_the_bill/models/group.dart';
+import 'package:split_the_bill/screens/addObject/add_item_page.dart';
 
 import '../../models/item.dart';
 import '../../providers/dummy_data_calls.dart';
 
 class AddBillPage extends StatefulWidget {
-  const AddBillPage(this.dummyCalls, this.billID, {Key? key}) : super(key: key);
+  const AddBillPage(
+      this.changeIndex, this.dummyCalls, this.billID, this.groupID,
+      {Key? key})
+      : super(key: key);
 
   final DummyDataCalls dummyCalls;
   final int billID;
+  final int groupID;
+  final Function changeIndex;
 
   @override
   State<AddBillPage> createState() => _AddBillPageState();
 }
 
 class _AddBillPageState extends State<AddBillPage> {
-  late Bill bill;
-
-  @override
-  void initState() {
-    super.initState();
-    bill = widget.dummyCalls.getBill(widget.billID);
-  }
+  late Bill bill = widget.dummyCalls.getBill(widget.billID);
+  late DateTime date = bill.date;
+  late String dateString = date.toLocal().toString().split(' ')[0];
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +35,8 @@ class _AddBillPageState extends State<AddBillPage> {
           children: [
             SizedBox(
               width: 200,
-              child: TextField(
+              child: TextFormField(
+                initialValue: bill.name,
                 onChanged: (billName) => {bill.name = billName},
                 decoration: InputDecoration(
                   hintStyle: const TextStyle(color: Colors.blue),
@@ -41,6 +45,15 @@ class _AddBillPageState extends State<AddBillPage> {
                 ),
               ),
             ),
+            Center(
+              child: Text(
+                "Date: $dateString",
+                style: const TextStyle(height: 3),
+              ),
+            ),
+            ElevatedButton(
+                onPressed: () => selectDate(context),
+                child: const Text("Select Date")),
             DataTable(
               showCheckboxColumn: false,
               columns: const <DataColumn>[
@@ -111,6 +124,21 @@ class _AddBillPageState extends State<AddBillPage> {
         ));
   }
 
+  ///Helper method to select the date and update according variables.
+  Future<void> selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: date,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != date) {
+      setState(() {
+        date = picked;
+      });
+      bill.date = date;
+    }
+  }
+
   ///Helper method to build rows of a table.
   List<DataRow> buildAllRows() {
     return bill.items.map((item) => buildRow(item)).toList();
@@ -138,11 +166,29 @@ class _AddBillPageState extends State<AddBillPage> {
     ]);
   }
 
-  navigateToAddItemPage() {}
+  navigateToAddItemPage() async {
+    final res = await Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const AddItemPage()));
+    //TODO remove and replace with actual item add page
+    Item item = Item(45, "Test Item", 4);
+    setState(() {
+      bill.items.add(item);
+    });
+  }
 
   saveBillAndExit() {
-    if (bill.id == -1) widget.dummyCalls.saveNewBill(bill);
-    widget.dummyCalls.overwriteBill(bill);
-    Navigator.pop(context); //TODO change to be part of navbar
+    if (bill.id == -1) {
+      widget.dummyCalls.saveNewBill(bill);
+      widget.dummyCalls.addBillToGroup(bill.id, widget.groupID);
+      print("here i am");
+      widget.changeIndex(0);
+    } else {
+      widget.dummyCalls.overwriteBill(bill);
+      if (widget.groupID >= 0) {
+        widget.dummyCalls.updateBillInGroup(bill.id, widget.groupID);
+      }
+      print("once again");
+      Navigator.pop(context);//TODO change to be part of navbar
+    }
   }
 }

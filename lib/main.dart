@@ -65,9 +65,9 @@ class _MyHomePageState extends State<MyHomePage> {
     screens = [
       GroupsPage(changeIndex, dummyCalls),
       AddGroupPage(changeIndex, dummyCalls),
-      AddBillPage(dummyCalls, -1),
+      AddBillPage(changeIndex, dummyCalls, -1, -1),
       AddBillPageViaCamera(dummyCalls),
-      BillsPage(dummyCalls),
+      BillsPage(changeIndex, dummyCalls),
     ];
   }
 

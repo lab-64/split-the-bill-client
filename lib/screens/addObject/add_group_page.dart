@@ -40,13 +40,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
                       decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           hintText: 'Enter a group name'),
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        }
-                        group.name = value;
-                        return null;
-                      },
+                      initialValue: group.name,
                     ),
                   ],
                 ),
@@ -112,7 +106,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
 
   Future<void> navigateToAddBill(BuildContext context) async {
     final res = await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => AddBillPage(widget.dummyCalls, -1)));
+        builder: (context) => AddBillPage(widget.changeIndex, widget.dummyCalls, -1, group.id)));
     //TODO remove
     BillMapping test = BillMapping(widget.dummyCalls.users[0],
         widget.dummyCalls.bills[0], [widget.dummyCalls.users[0]]);
