@@ -30,31 +30,42 @@ class _GroupsPageState extends State<GroupsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: DataTable(
-          showCheckboxColumn: false,
-          columns: const <DataColumn>[
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  'Name',
-                  style: TextStyle(
-                      fontStyle: FontStyle.italic, fontWeight: FontWeight.bold),
+          child: Column(
+        children: [
+          const SelectionContainer.disabled(
+              child: Text(
+            "Groups Page",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 40, height: 5),
+          )),
+          DataTable(
+            showCheckboxColumn: false,
+            columns: const <DataColumn>[
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Name',
+                    style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
-            ),
-            DataColumn(
-              label: Expanded(
-                child: Text(
-                  'Balance',
-                  style: TextStyle(
-                      fontStyle: FontStyle.italic, fontWeight: FontWeight.bold),
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Balance',
+                    style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.bold),
+                  ),
                 ),
               ),
-            ),
-          ],
-          rows: buildAllRows(),
-        ),
-      ),
+            ],
+            rows: buildAllRows(),
+          ),
+        ],
+      )),
     );
   }
 

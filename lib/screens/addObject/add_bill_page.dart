@@ -33,6 +33,12 @@ class _AddBillPageState extends State<AddBillPage> {
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const SelectionContainer.disabled(
+                child: Text(
+              "Bill Page",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 40, height: 5),
+            )),
             SizedBox(
               width: 200,
               child: TextFormField(
@@ -188,7 +194,7 @@ class _AddBillPageState extends State<AddBillPage> {
         widget.dummyCalls.updateBillInGroup(bill.id, widget.groupID);
       }
       print("once again");
-      Navigator.pop(context);//TODO change to be part of navbar
+      Navigator.pop(context); //TODO change to be part of navbar
     }
   }
 }

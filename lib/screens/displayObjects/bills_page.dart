@@ -22,13 +22,23 @@ class _BillsPageState extends State<BillsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-          child: DataTable(
-        showCheckboxColumn: false,
-        columns: const [
-          DataColumn(label: Text("Bills")),
-          DataColumn(label: Text("Price"))
+          child: Column(
+        children: [
+          const SelectionContainer.disabled(
+              child: Text(
+            "Bills Page",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 40, height: 5),
+          )),
+          DataTable(
+            showCheckboxColumn: false,
+            columns: const [
+              DataColumn(label: Text("Bills")),
+              DataColumn(label: Text("Price"))
+            ],
+            rows: buildAllRows(),
+          )
         ],
-        rows: buildAllRows(),
       )),
     );
   }

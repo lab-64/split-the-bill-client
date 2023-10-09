@@ -29,6 +29,12 @@ class _AddGroupPageState extends State<AddGroupPage> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const SelectionContainer.disabled(
+              child: Text(
+            "Group Page",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 40, height: 5),
+          )),
           Padding(
               padding: const EdgeInsets.all(12),
               child: Form(
@@ -106,7 +112,8 @@ class _AddGroupPageState extends State<AddGroupPage> {
 
   Future<void> navigateToAddBill(BuildContext context) async {
     final res = await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => AddBillPage(widget.changeIndex, widget.dummyCalls, -1, group.id)));
+        builder: (context) =>
+            AddBillPage(widget.changeIndex, widget.dummyCalls, -1, group.id)));
     //TODO remove
     BillMapping test = BillMapping(widget.dummyCalls.users[0],
         widget.dummyCalls.bills[0], [widget.dummyCalls.users[0]]);

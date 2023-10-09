@@ -36,6 +36,12 @@ class _GroupPageState extends State<GroupPage> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const SelectionContainer.disabled(
+              child: Text(
+            "Group Page",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 40, height: 5),
+          )),
           SizedBox(
             width: 200,
             child: TextFormField(
@@ -138,7 +144,8 @@ class _GroupPageState extends State<GroupPage> {
   /// Method to navigate to the bills page. It cleans up the Stack upon closing the bills page.
   Future<void> navigateToAddBill(BuildContext context) async {
     final res = await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => AddBillPage(widget.changeIndex, widget.dummyCalls, -1, group.id)));
+        builder: (context) =>
+            AddBillPage(widget.changeIndex, widget.dummyCalls, -1, group.id)));
     setState(() {
       group = widget.dummyCalls.getGroup(widget.groupID);
     });
@@ -156,7 +163,8 @@ class _GroupPageState extends State<GroupPage> {
 
   Future<void> navigateToEditBill(BuildContext context, int id) async {
     await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => AddBillPage(widget.changeIndex, widget.dummyCalls, id, group.id)));
+        builder: (context) =>
+            AddBillPage(widget.changeIndex, widget.dummyCalls, id, group.id)));
     setState(() {
       group = widget.dummyCalls.getGroup(widget.groupID);
     });
@@ -200,24 +208,27 @@ class _GroupPageState extends State<GroupPage> {
           onSelectChanged: (bool? values) =>
               {navigateToEditBill(context, billMapping.bill.id)});
     } else {
-      return DataRow(cells: [
-        DataCell(
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Center(
-              child: Text(user!.username),
+      return DataRow(
+          cells: [
+            DataCell(
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: Center(
+                  child: Text(user!.username),
+                ),
+              ),
             ),
-          ),
-        ),
-        DataCell(
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: Center(
-              child: Text(user.email),
-            ),
-          ),
-        )
-      ], onSelectChanged: (bool? values) => {print("not implemented yet")});//TODO change when members added
+            DataCell(
+              Padding(
+                padding: const EdgeInsets.all(12),
+                child: Center(
+                  child: Text(user.email),
+                ),
+              ),
+            )
+          ],
+          onSelectChanged: (bool? values) =>
+              {print("not implemented yet")}); //TODO change when members added
     }
   }
 }
