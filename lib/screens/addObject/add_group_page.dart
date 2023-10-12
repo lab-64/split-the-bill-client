@@ -1,4 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:split_the_bill/models/bill.dart';
+import 'package:split_the_bill/screens/displayObjects/groups_page.dart';
 
 import '../../models/bill_mapping.dart';
 import '../../models/group.dart';
@@ -7,11 +11,9 @@ import '../../providers/dummy_data_calls.dart';
 import 'add_bill_page.dart';
 
 class AddGroupPage extends StatefulWidget {
-  const AddGroupPage(this.changeIndex, this.dummyCalls, this.id, {Key? key})
-      : super(key: key);
+  const AddGroupPage(this.dummyCalls, this.id, {Key? key}) : super(key: key);
 
   final DummyDataCalls dummyCalls;
-  final Function changeIndex;
   final int id;
 
   @override
@@ -22,7 +24,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
   bool membersMode = false;
   late Group group = widget.id < 0
       ? Group(-1, '', [], [], 0)
-      : widget.dummyCalls.getGroup(widget.id);
+      : DummyDataCalls().getGroup(widget.id);
 
   @override
   Widget build(BuildContext context) {
@@ -111,12 +113,12 @@ class _AddGroupPageState extends State<AddGroupPage> {
   Future<void> navigateToAddBill(BuildContext context, int billID) async {
     final res = await Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => billID == -1
-            ? AddBillPage(widget.changeIndex, widget.dummyCalls, -1, group.id)
-            : AddBillPage(
-                widget.changeIndex, widget.dummyCalls, billID, group.id)));
+            ? AddBillPage(-1, group.id, widget.dummyCalls)
+            : AddBillPage(billID, group.id, widget.dummyCalls)));
+    print(res);
     //TODO remove
-    BillMapping test = BillMapping(widget.dummyCalls.users[0],
-        widget.dummyCalls.bills[0], [widget.dummyCalls.users[0]]);
+    BillMapping test = BillMapping(
+        widget.dummyCalls.users[0], res as Bill, [widget.dummyCalls.users[0]]);
     setState(() {
       group.billMappings.add(test);
     });
@@ -124,9 +126,10 @@ class _AddGroupPageState extends State<AddGroupPage> {
 
   ///Method to save the group and return to the correct screen.
   void saveGroupAndExit() {
+    //TODO do not save new if not new
     if (group.name == '') group.name = "new Group";
     widget.dummyCalls.saveNewGroup(group);
-    widget.changeIndex(0);
+    Navigator.pop(context);
   }
 
   ///Helper method to build rows of a table.

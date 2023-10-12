@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:split_the_bill/providers/dummy_data_calls.dart';
-import 'package:split_the_bill/screens/addObject/add_bill_via_camera_page.dart';
 import 'package:split_the_bill/screens/addObject/add_bill_page.dart';
 import 'package:split_the_bill/screens/addObject/add_group_page.dart';
-import 'package:split_the_bill/screens/displayObjects/bills_page.dart';
+import 'package:split_the_bill/screens/addObject/add_item_page.dart';
 import 'package:split_the_bill/screens/displayObjects/groups_page.dart';
+import 'package:split_the_bill/widgets/navbar.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,8 +16,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    DummyDataCalls dummyCalls = DummyDataCalls();
     return MaterialApp(
       title: 'Flutter Demo',
+      routes: {
+        '/groups': (context) => GroupsPage(dummyCalls),
+        '/addBill': (context) => AddBillPage(-1, -2, dummyCalls),
+        '/addGroup': (context) => AddGroupPage(dummyCalls, -1),
+        '/addItems': (context) => const AddItemPage(),
+      },
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -30,13 +37,15 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(dummyCalls, title: 'Flutter Demo Home Page'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+  const MyHomePage(this.dummyCalls, {super.key, required this.title});
+
+  final DummyDataCalls dummyCalls;
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -54,58 +63,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int currentIndex = 0;
-  late final List<Widget> screens;
-  late DummyDataCalls dummyCalls;
-
-  @override
-  void initState() {
-    super.initState();
-    dummyCalls = DummyDataCalls();
-    screens = [
-      GroupsPage(changeIndex, dummyCalls),
-      AddGroupPage(changeIndex, dummyCalls, -1),
-      AddBillPage(changeIndex, dummyCalls, -1, -1),
-      AddBillPageViaCamera(dummyCalls),
-      BillsPage(changeIndex, dummyCalls),
-    ];
-  }
-
-  void changeIndex(int index) {
-    setState(() => currentIndex = index);
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: screens[currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.shifting,
-        currentIndex: currentIndex,
-        onTap: (index) => setState(() => currentIndex = index),
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.group),
-              label: 'groups',
-              backgroundColor: Colors.blue),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.group_add),
-              label: 'add group',
-              backgroundColor: Colors.blue),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.add_circle_outline),
-              label: 'add Bill single',
-              backgroundColor: Colors.blue),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.camera),
-              label: 'add Bill camera',
-              backgroundColor: Colors.blue),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.receipt),
-              label: 'bills',
-              backgroundColor: Colors.blue),
-        ],
-      ),
-    );
+    return Scaffold(bottomNavigationBar: Navbar(widget.dummyCalls));
   }
 }

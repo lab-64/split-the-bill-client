@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:split_the_bill/models/group.dart';
 import 'package:split_the_bill/providers/dummy_data_calls.dart';
 import 'package:split_the_bill/screens/addObject/add_group_page.dart';
 
 class GroupsPage extends StatefulWidget {
-  const GroupsPage(this.changeIndex, this.dummyCalls, {Key? key})
-      : super(key: key);
-
-  final Function changeIndex;
+  const GroupsPage(this.dummyCalls, {Key? key}) : super(key: key);
   final DummyDataCalls dummyCalls;
 
   @override
@@ -29,6 +27,9 @@ class _GroupsPageState extends State<GroupsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: ElevatedButton(
+          onPressed: () => {navigateToGroupPage(context, -1)},
+          child: const Icon(Icons.group_add)),
       body: Center(
           child: Column(
         children: [
@@ -99,12 +100,12 @@ class _GroupsPageState extends State<GroupsPage> {
 
   ///Method to navigate to the GroupPage of a single group. Updates navbar.
   void navigateToGroupPage(BuildContext context, int id) async {
-    final res = await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) =>
-            AddGroupPage(widget.changeIndex, widget.dummyCalls, id)));
+    print("before push ${groups.length}");
+    await PersistentNavBarNavigator.pushNewScreen(context,
+        screen: AddGroupPage(widget.dummyCalls, id));
     setState(() {
       groups = widget.dummyCalls.getAllGroups();
     });
-    widget.changeIndex(res);
+    print("after push ${groups.length}");
   }
 }

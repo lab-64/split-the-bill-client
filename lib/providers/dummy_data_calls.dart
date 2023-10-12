@@ -56,6 +56,7 @@ class DummyDataCalls {
   }
 
   List<Group> getAllGroups() {
+    print("get all groups ${groups.length}");
     return groups;
   }
 
@@ -90,9 +91,11 @@ class DummyDataCalls {
   }
 
   void saveNewGroup(Group group) {
+    print("saving new group ${groups.length}");
     Group newGroup = group;
     newGroup.id = groups.length;
     groups.add(newGroup);
+    print(groups.length);
   }
 
   Bill getBill(int billID) {
@@ -111,10 +114,14 @@ class DummyDataCalls {
     Bill newBill = bill;
     newBill.id = bills.length;
     bills.add(newBill);
+    billMappings
+        .add(BillMapping(users[0], newBill, [])); //TODO change to actual user
   }
 
   List<BillMapping> getOwnBills() {
-    User user = users[0];//TODO change to real user
-    return billMappings.where((element) => element.owner.username == user.username).toList();
+    User user = users[0]; //TODO change to real user
+    return billMappings
+        .where((element) => element.owner.username == user.username)
+        .toList();
   }
 }

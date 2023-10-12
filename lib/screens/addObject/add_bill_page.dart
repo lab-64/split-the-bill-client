@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:split_the_bill/models/bill.dart';
-import 'package:split_the_bill/models/group.dart';
 import 'package:split_the_bill/screens/addObject/add_item_page.dart';
-
+import 'package:split_the_bill/widgets/popupNotification.dart';
 import '../../models/item.dart';
 import '../../providers/dummy_data_calls.dart';
+import '../displayObjects/bills_page.dart';
 
 class AddBillPage extends StatefulWidget {
-  const AddBillPage(
-      this.changeIndex, this.dummyCalls, this.billID, this.groupID,
-      {Key? key})
+  const AddBillPage(this.billID, this.groupID, this.dummyCalls, {Key? key})
       : super(key: key);
 
-  final DummyDataCalls dummyCalls;
   final int billID;
   final int groupID;
-  final Function changeIndex;
+  final DummyDataCalls dummyCalls;
 
   @override
   State<AddBillPage> createState() => _AddBillPageState();
@@ -25,109 +23,82 @@ class _AddBillPageState extends State<AddBillPage> {
   late Bill bill = widget.dummyCalls.getBill(widget.billID);
   late DateTime date = bill.date;
   late String dateString = date.toLocal().toString().split(' ')[0];
+  int count = 0;
 
   @override
   Widget build(BuildContext context) {
+    Icon icon = const Icon(Icons.check);
+
     return Scaffold(
-        body: Center(
-            child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SelectionContainer.disabled(
-                child: Text(
-              "Bill Page",
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 40, height: 5),
-            )),
-            SizedBox(
-              width: 200,
-              child: TextFormField(
-                initialValue: bill.name,
-                onChanged: (billName) => {bill.name = billName},
-                decoration: InputDecoration(
-                  hintStyle: const TextStyle(color: Colors.blue),
-                  hintText: bill.name,
-                  border: const OutlineInputBorder(),
-                ),
-              ),
-            ),
-            Center(
+      key: ValueKey<int>(count),
+      body: Center(
+          child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const SelectionContainer.disabled(
               child: Text(
-                "Date: $dateString",
-                style: const TextStyle(height: 3),
+            "Bill Page",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 40, height: 5),
+          )),
+          SizedBox(
+            width: 200,
+            child: TextFormField(
+              initialValue: bill.name,
+              onChanged: (billName) => {bill.name = billName},
+              decoration: InputDecoration(
+                hintStyle: const TextStyle(color: Colors.blue),
+                hintText: bill.name,
+                border: const OutlineInputBorder(),
               ),
             ),
-            ElevatedButton(
-                onPressed: () => selectDate(context),
-                child: const Text("Select Date")),
-            DataTable(
-              showCheckboxColumn: false,
-              columns: const <DataColumn>[
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Items',
-                      style: TextStyle(
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.bold,
-                          backgroundColor: Colors.white),
-                    ),
+          ),
+          Center(
+            child: Text(
+              "Date: $dateString",
+              style: const TextStyle(height: 3),
+            ),
+          ),
+          ElevatedButton(
+              onPressed: () => selectDate(context),
+              child: const Text("Select Date")),
+          DataTable(
+            showCheckboxColumn: false,
+            columns: const <DataColumn>[
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Items',
+                    style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.bold,
+                        backgroundColor: Colors.white),
                   ),
                 ),
-                DataColumn(
-                  label: Expanded(
-                    child: Text(
-                      'Cost',
-                      style: TextStyle(
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.bold,
-                          backgroundColor: Colors.white),
-                    ),
+              ),
+              DataColumn(
+                label: Expanded(
+                  child: Text(
+                    'Cost',
+                    style: TextStyle(
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.bold,
+                        backgroundColor: Colors.white),
                   ),
                 ),
-              ],
-              rows: buildAllRows(),
-            ),
-            FloatingActionButton(
-              heroTag: 'add',
-              onPressed: () => {navigateToAddItemPage()},
-              child: const Icon(Icons.add),
-            ),
-            FloatingActionButton(
-              heroTag: 'saveAndExit',
-              onPressed: () => saveBillAndExit(),
-              child: const Icon(Icons.check),
-            )
-          ],
-        )),
-        bottomNavigationBar: BottomNavigationBar(
-          //TODO make into separate widget?
-          type: BottomNavigationBarType.shifting,
-          currentIndex: 0,
-          onTap: (index) => Navigator.pop(context, index),
-          items: const [
-            BottomNavigationBarItem(
-                icon: Icon(Icons.group),
-                label: 'groups',
-                backgroundColor: Colors.blue),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.group_add),
-                label: 'add group',
-                backgroundColor: Colors.blue),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.add_circle_outline),
-                label: 'add Bill single',
-                backgroundColor: Colors.blue),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.camera),
-                label: 'add Bill camera',
-                backgroundColor: Colors.blue),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.receipt),
-                label: 'bills',
-                backgroundColor: Colors.blue),
-          ],
-        ));
+              ),
+            ],
+            rows: buildAllRows(),
+          ),
+          FloatingActionButton(
+            heroTag: 'add',
+            onPressed: () => {navigateToAddItemPage()},
+            child: const Icon(Icons.add),
+          ),
+          Popup(saveBillAndExit, icon),
+        ],
+      )),
+    );
   }
 
   ///Helper method to select the date and update according variables.
@@ -185,16 +156,30 @@ class _AddBillPageState extends State<AddBillPage> {
 
   ///Method to save the bill and return to the correct screen.
   saveBillAndExit() {
-    if (bill.id == -1) {
+    print("saving");
+    if (bill.id < 0) {
       widget.dummyCalls.saveNewBill(bill);
-      widget.dummyCalls.addBillToGroup(bill.id, widget.groupID);
-      widget.changeIndex(4);
+      print("save new bill");
     } else {
       widget.dummyCalls.overwriteBill(bill);
-      if (widget.groupID >= 0) {
-        widget.dummyCalls.updateBillInGroup(bill.id, widget.groupID);
-      }
-      Navigator.pop(context); //TODO change to be part of navbar
+      print("overwrite bill");
+    }
+
+    if (widget.groupID == -1) {
+      //return values to new group
+      Navigator.pop(context, bill);
+    } else if (widget.groupID > 0) {
+      //update values in existing group
+      widget.dummyCalls.updateBillInGroup(bill.id, widget.groupID);
+      Navigator.pop(context);
+    } else {
+      setState(() {
+        //reset screen
+        bill = widget.dummyCalls.getBill(widget.billID);
+        date = bill.date;
+        dateString = date.toLocal().toString().split(' ')[0];
+        ++count;
+      });
     }
   }
 }

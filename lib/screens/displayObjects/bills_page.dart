@@ -5,11 +5,8 @@ import '../../providers/dummy_data_calls.dart';
 import '../addObject/add_bill_page.dart';
 
 class BillsPage extends StatefulWidget {
-  const BillsPage(this.changeIndex, this.dummyCalls, {Key? key})
-      : super(key: key);
-
+  const BillsPage(this.dummyCalls, {Key? key}) : super(key: key);
   final DummyDataCalls dummyCalls;
-  final Function changeIndex;
 
   @override
   State<BillsPage> createState() => _BillsPageState();
@@ -58,7 +55,7 @@ class _BillsPageState extends State<BillsPage> {
             child: Text(billMapping!.bill.name),
           ),
         ),
-        onTap: () => navigateToAddBill(context),
+        onTap: () => navigateToAddBill(context, billMapping.bill.id),
       ),
       DataCell(
         Padding(
@@ -72,15 +69,11 @@ class _BillsPageState extends State<BillsPage> {
   }
 
   ///Helper method to navigate to addBillPage and update variables accordingly.
-  Future<void> navigateToAddBill(BuildContext context) async {
-    final res = await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) =>
-            AddBillPage(widget.changeIndex, widget.dummyCalls, -1, -1)));
-    //TODO remove
-    BillMapping test = BillMapping(widget.dummyCalls.users[0],
-        widget.dummyCalls.bills[0], [widget.dummyCalls.users[0]]);
+  Future<void> navigateToAddBill(BuildContext context, int billID) async {
+    await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => AddBillPage(billID, -1, widget.dummyCalls)));
     setState(() {
-      bills.add(test);
+      bills = widget.dummyCalls.getOwnBills();
     });
   }
 }
