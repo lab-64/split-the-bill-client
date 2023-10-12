@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:split_the_bill/models/bill.dart';
 import 'package:split_the_bill/screens/addObject/add_item_page.dart';
-import 'package:split_the_bill/widgets/popupNotification.dart';
+import 'package:split_the_bill/widgets/addBillToGroupPopup.dart';
+import 'package:split_the_bill/widgets/saveBillPopup.dart';
 import '../../models/item.dart';
 import '../../providers/dummy_data_calls.dart';
-import '../displayObjects/bills_page.dart';
 
 class AddBillPage extends StatefulWidget {
+  ///The parameter [billID] should have a value of -1 if a new Bill is created, a value
+  ///of 0 or higher if an existing bill is opened. The parameter [groupID] should have
+  ///a value of -2 if a Bill is created/changed without a group, -1 if a bill is
+  ///created/changed with a non saved group and 0 if a bill is created/changed with an existing group.
   const AddBillPage(this.billID, this.groupID, this.dummyCalls, {Key? key})
       : super(key: key);
 
@@ -23,11 +26,13 @@ class _AddBillPageState extends State<AddBillPage> {
   late Bill bill = widget.dummyCalls.getBill(widget.billID);
   late DateTime date = bill.date;
   late String dateString = date.toLocal().toString().split(' ')[0];
+  int newGroupID = -1;
   int count = 0;
 
   @override
   Widget build(BuildContext context) {
-    Icon icon = const Icon(Icons.check);
+    Icon addBillIcon = const Icon(Icons.check);
+    Icon addToGroupIcon = const Icon(Icons.group_add);
 
     return Scaffold(
       key: ValueKey<int>(count),
@@ -91,11 +96,15 @@ class _AddBillPageState extends State<AddBillPage> {
             rows: buildAllRows(),
           ),
           FloatingActionButton(
-            heroTag: 'add',
+            heroTag: 'navigateToAddItemPage',
             onPressed: () => {navigateToAddItemPage()},
             child: const Icon(Icons.add),
           ),
-          Popup(saveBillAndExit, icon),
+          Visibility(
+              visible: widget.groupID == -2 || widget.billID != -1,
+              child: AddBillToGroupPopup(
+                  widget.dummyCalls, addToGroup, addToGroupIcon)),
+          SaveBillPopup(saveBillAndExit, addBillIcon),
         ],
       )),
     );
@@ -111,6 +120,7 @@ class _AddBillPageState extends State<AddBillPage> {
     if (picked != null && picked != date) {
       setState(() {
         date = picked;
+        dateString = date.toLocal().toString().split(' ')[0];
       });
       bill.date = date;
     }
@@ -156,23 +166,42 @@ class _AddBillPageState extends State<AddBillPage> {
 
   ///Method to save the bill and return to the correct screen.
   saveBillAndExit() {
-    print("saving");
-    if (bill.id < 0) {
+    //save as a new bill
+    if (widget.billID < 0)
       widget.dummyCalls.saveNewBill(bill);
-      print("save new bill");
-    } else {
+    //overwrite exiting bill
+    else
       widget.dummyCalls.overwriteBill(bill);
-      print("overwrite bill");
-    }
 
-    if (widget.groupID == -1) {
-      //return values to new group
-      Navigator.pop(context, bill);
-    } else if (widget.groupID > 0) {
-      //update values in existing group
-      widget.dummyCalls.updateBillInGroup(bill.id, widget.groupID);
-      Navigator.pop(context);
-    } else {
+    //already part of a group
+    if (widget.groupID > 0) {
+      print(widget.billID);
+      if (widget.billID >= 0) {
+        //change group
+        if (newGroupID >= 0)
+          widget.dummyCalls
+              .changeBillFromTo(bill.id, widget.groupID, newGroupID);
+        //no change
+        else
+          widget.dummyCalls.updateBillInGroup(bill.id, widget.groupID);
+
+        Navigator.pop(context);
+      } else
+        Navigator.pop(context, bill);
+    }
+    //part of a group, which is not saved yet
+    else if (widget.groupID == -1) {
+      if (widget.billID == -1)
+        Navigator.pop(context, bill);
+      else
+        Navigator.pop(context);
+    }
+    //not part of any group
+    else {
+      //add new bill to a group
+      if (newGroupID >= 0)
+        widget.dummyCalls.addBillToGroup(bill.id, newGroupID);
+
       setState(() {
         //reset screen
         bill = widget.dummyCalls.getBill(widget.billID);
@@ -181,5 +210,9 @@ class _AddBillPageState extends State<AddBillPage> {
         ++count;
       });
     }
+  }
+
+  void addToGroup(int groupID) {
+    newGroupID = groupID;
   }
 }

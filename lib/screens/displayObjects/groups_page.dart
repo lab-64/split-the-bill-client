@@ -27,7 +27,8 @@ class _GroupsPageState extends State<GroupsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: ElevatedButton(
+      floatingActionButton: FloatingActionButton(
+          heroTag: 'navigateToAddGroupPage',
           onPressed: () => {navigateToGroupPage(context, -1)},
           child: const Icon(Icons.group_add)),
       body: Center(
@@ -100,12 +101,10 @@ class _GroupsPageState extends State<GroupsPage> {
 
   ///Method to navigate to the GroupPage of a single group. Updates navbar.
   void navigateToGroupPage(BuildContext context, int id) async {
-    print("before push ${groups.length}");
     await PersistentNavBarNavigator.pushNewScreen(context,
         screen: AddGroupPage(widget.dummyCalls, id));
     setState(() {
       groups = widget.dummyCalls.getAllGroups();
     });
-    print("after push ${groups.length}");
   }
 }

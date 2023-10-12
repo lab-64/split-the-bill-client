@@ -47,31 +47,35 @@ class _BillsPageState extends State<BillsPage> {
 
   ///Helper method to build a single row of the table.
   DataRow buildRow(BillMapping? billMapping) {
-    return DataRow(cells: [
-      DataCell(
-        Padding(
-          padding: const EdgeInsets.all(12),
-          child: Center(
-            child: Text(billMapping!.bill.name),
+    return DataRow(
+      cells: [
+        DataCell(
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: Center(
+              child: Text(billMapping!.bill.name),
+            ),
           ),
         ),
-        onTap: () => navigateToAddBill(context, billMapping.bill.id),
-      ),
-      DataCell(
-        Padding(
-          padding: const EdgeInsets.all(12),
-          child: Center(
-            child: Text(billMapping.bill.price.toString()),
+        DataCell(
+          Padding(
+            padding: const EdgeInsets.all(12),
+            child: Center(
+              child: Text(billMapping.bill.price.toString()),
+            ),
           ),
-        ),
-      )
-    ]);
+        )
+      ],
+      onSelectChanged: (bool? values) =>
+          navigateToAddBill(context, billMapping.bill.id),
+    );
   }
 
   ///Helper method to navigate to addBillPage and update variables accordingly.
   Future<void> navigateToAddBill(BuildContext context, int billID) async {
     await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => AddBillPage(billID, -1, widget.dummyCalls)));
+        builder: (context) => AddBillPage(billID, widget.dummyCalls.getGroupIDOfBill(
+            billID), widget.dummyCalls)));
     setState(() {
       bills = widget.dummyCalls.getOwnBills();
     });

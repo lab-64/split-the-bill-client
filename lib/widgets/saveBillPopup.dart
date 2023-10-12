@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
-class Popup extends StatelessWidget {
-  const Popup(this.fnc, this.icon, {Key? key}) : super(key: key);
-  final Function fnc;
+class SaveBillPopup extends StatelessWidget {
+  const SaveBillPopup(this.closeFunction, this.icon, {Key? key})
+      : super(key: key);
+  final Function closeFunction;
   final Icon icon;
 
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
+      heroTag: 'openSaveBillPopup',
       onPressed: () => showDialog<String>(
         context: context,
         builder: (BuildContext context) => AlertDialog(
@@ -19,7 +21,7 @@ class Popup extends StatelessWidget {
             ),
             TextButton(
               onPressed: () {
-                fnc();
+                closeFunction();
                 Navigator.pop(context, 'Ok');
               },
               child: const Text('OK'),

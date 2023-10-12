@@ -56,7 +56,6 @@ class DummyDataCalls {
   }
 
   List<Group> getAllGroups() {
-    print("get all groups ${groups.length}");
     return groups;
   }
 
@@ -68,15 +67,19 @@ class DummyDataCalls {
   }
 
   void addBillToGroup(int billID, int groupID) {
-    print("$billID $groupID");
     if (groupID < 0) {
       billMappings.add(
           BillMapping(users[0], getBill(billID), [])); //TODO change to user
     } else {
-      Group group = getGroup(groupID);
-      group.billMappings.add(BillMapping(
-          group.members.first, getBill(billID), [])); //TODO change to user
+      groups[groupID].billMappings.add(BillMapping(
+          groups[groupID].members.first,
+          getBill(billID), [])); //TODO change to user
     }
+  }
+
+  List<Group> getOwnGroups() {
+    User user = users[0]; //TODO change to real user
+    return groups.where((group) => group.members.contains(user)).toList();
   }
 
   void updateBillInGroup(int billID, int groupID) {
@@ -91,11 +94,10 @@ class DummyDataCalls {
   }
 
   void saveNewGroup(Group group) {
-    print("saving new group ${groups.length}");
     Group newGroup = group;
+    newGroup.members.add(users[0]);
     newGroup.id = groups.length;
     groups.add(newGroup);
-    print(groups.length);
   }
 
   Bill getBill(int billID) {
@@ -110,7 +112,6 @@ class DummyDataCalls {
   }
 
   void saveNewBill(Bill bill) {
-    print("save new bill");
     Bill newBill = bill;
     newBill.id = bills.length;
     bills.add(newBill);
@@ -123,5 +124,18 @@ class DummyDataCalls {
     return billMappings
         .where((element) => element.owner.username == user.username)
         .toList();
+  }
+
+  void changeBillFromTo(int billID, int fromGroupID, int toGroupID) {
+    int index = groups[fromGroupID]
+        .billMappings
+        .indexWhere((element) => element.bill.id == billID);
+    BillMapping bill = groups[fromGroupID].billMappings.removeAt(index);
+    groups[toGroupID].billMappings.add(bill);
+  }
+
+  int getGroupIDOfBill(int billID) {
+    return groups.indexWhere((group) =>
+        group.billMappings.map((mapping) => mapping.bill.id).contains(billID));
   }
 }
