@@ -13,61 +13,19 @@ class GroupsPage extends StatefulWidget {
 }
 
 class _GroupsPageState extends State<GroupsPage> {
-  late List<Group> groups;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    //TODO replace by actual call to server
-    //initialize all groups
-    groups = widget.dummyCalls.getAllGroups();
-  }
+  late List<Group> groups = widget.dummyCalls.getAllGroups();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-          heroTag: 'navigateToAddGroupPage',
-          onPressed: () => {navigateToGroupPage(context, -1)},
-          child: const Icon(Icons.group_add)),
       body: Center(
           child: Column(
         children: [
-          const SelectionContainer.disabled(
-              child: Text(
-            "Groups Page",
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 40, height: 5),
-          )),
-          DataTable(
-            showCheckboxColumn: false,
-            columns: const <DataColumn>[
-              DataColumn(
-                label: Expanded(
-                  child: Text(
-                    'Name',
-                    style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-              DataColumn(
-                label: Expanded(
-                  child: Text(
-                    'Balance',
-                    style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-            ],
-            rows: buildAllRows(),
-          ),
+          const Title(),
+          buildDataTable(),
         ],
       )),
+      floatingActionButton: buildNavigateToAddGroupsPageButton(context),
     );
   }
 
@@ -106,5 +64,56 @@ class _GroupsPageState extends State<GroupsPage> {
     setState(() {
       groups = widget.dummyCalls.getAllGroups();
     });
+  }
+
+  DataTable buildDataTable() {
+    return DataTable(
+      showCheckboxColumn: false,
+      columns: const <DataColumn>[
+        DataColumn(
+          label: Expanded(
+            child: Text(
+              'Name',
+              style: TextStyle(
+                  fontStyle: FontStyle.italic, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+        DataColumn(
+          label: Expanded(
+            child: Text(
+              'Balance',
+              style: TextStyle(
+                  fontStyle: FontStyle.italic, fontWeight: FontWeight.bold),
+            ),
+          ),
+        ),
+      ],
+      rows: buildAllRows(),
+    );
+  }
+
+  FloatingActionButton buildNavigateToAddGroupsPageButton(
+      BuildContext context) {
+    return FloatingActionButton(
+        heroTag: 'navigateToAddGroupPage',
+        onPressed: () => {navigateToGroupPage(context, -1)},
+        child: const Icon(Icons.group_add));
+  }
+}
+
+class Title extends StatelessWidget {
+  const Title({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const SelectionContainer.disabled(
+        child: Text(
+      "Groups Page",
+      textAlign: TextAlign.center,
+      style: TextStyle(fontSize: 40, height: 5),
+    ));
   }
 }

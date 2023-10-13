@@ -3,6 +3,7 @@ import 'package:split_the_bill/models/bill.dart';
 import 'package:split_the_bill/screens/addObject/add_item_page.dart';
 import 'package:split_the_bill/widgets/addBillToGroupPopup.dart';
 import 'package:split_the_bill/widgets/saveBillPopup.dart';
+
 import '../../models/item.dart';
 import '../../providers/dummy_data_calls.dart';
 
@@ -40,70 +41,9 @@ class _AddBillPageState extends State<AddBillPage> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const SelectionContainer.disabled(
-              child: Text(
-            "Bill Page",
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 40, height: 5),
-          )),
-          SizedBox(
-            width: 200,
-            child: TextFormField(
-              initialValue: bill.name,
-              onChanged: (billName) => {bill.name = billName},
-              decoration: InputDecoration(
-                hintStyle: const TextStyle(color: Colors.blue),
-                hintText: bill.name,
-                border: const OutlineInputBorder(),
-              ),
-            ),
-          ),
-          Center(
-            child: Text(
-              "Date: $dateString",
-              style: const TextStyle(height: 3),
-            ),
-          ),
-          ElevatedButton(
-              onPressed: () => selectDate(context),
-              child: const Text("Select Date")),
-          DataTable(
-            showCheckboxColumn: false,
-            columns: const <DataColumn>[
-              DataColumn(
-                label: Expanded(
-                  child: Text(
-                    'Items',
-                    style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.bold,
-                        backgroundColor: Colors.white),
-                  ),
-                ),
-              ),
-              DataColumn(
-                label: Expanded(
-                  child: Text(
-                    'Cost',
-                    style: TextStyle(
-                        fontStyle: FontStyle.italic,
-                        fontWeight: FontWeight.bold,
-                        backgroundColor: Colors.white),
-                  ),
-                ),
-              ),
-            ],
-            rows: buildAllRows(),
-          ),
-          FloatingActionButton(
-            heroTag: 'navigateToAddItemPage',
-            onPressed: () => {navigateToAddItemPage()},
-            child: const Icon(Icons.add),
-          ),
-          Visibility(
-              visible: widget.groupID == -2 || widget.billID != -1,
-              child: AddBillToGroupPopup(
-                  widget.dummyCalls, addToGroup, addToGroupIcon)),
+          const Title(),
+          BillNameFormField(bill: bill),
+          buildDateSelection(context, addToGroupIcon),
           SaveBillPopup(saveBillAndExit, addBillIcon),
         ],
       )),
@@ -212,7 +152,105 @@ class _AddBillPageState extends State<AddBillPage> {
     }
   }
 
+  Column buildDateSelection(BuildContext context, Icon addToGroupIcon) {
+    return Column(
+      children: [
+        Center(
+          child: Text(
+            "Date: $dateString",
+            style: const TextStyle(height: 3),
+          ),
+        ),
+        ElevatedButton(
+            onPressed: () => selectDate(context),
+            child: const Text("Select Date")),
+        buildDataTable(),
+        FloatingActionButton(
+          heroTag: 'navigateToAddItemPage',
+          onPressed: () => {navigateToAddItemPage()},
+          child: const Icon(Icons.add),
+        ),
+        Visibility(
+            visible: widget.groupID == -2 || widget.billID != -1,
+            child: AddBillToGroupPopup(
+                widget.dummyCalls, addToGroup, addToGroupIcon)),
+      ],
+    );
+  }
+
+  DataTable buildDataTable() {
+    return DataTable(
+      showCheckboxColumn: false,
+      columns: const <DataColumn>[
+        DataColumn(
+          label: Expanded(
+            child: Text(
+              'Items',
+              style: TextStyle(
+                  fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.bold,
+                  backgroundColor: Colors.white),
+            ),
+          ),
+        ),
+        DataColumn(
+          label: Expanded(
+            child: Text(
+              'Cost',
+              style: TextStyle(
+                  fontStyle: FontStyle.italic,
+                  fontWeight: FontWeight.bold,
+                  backgroundColor: Colors.white),
+            ),
+          ),
+        ),
+      ],
+      rows: buildAllRows(),
+    );
+  }
+
   void addToGroup(int groupID) {
     newGroupID = groupID;
+  }
+}
+
+class BillNameFormField extends StatelessWidget {
+  const BillNameFormField({
+    super.key,
+    required this.bill,
+  });
+
+  final Bill bill;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: 200,
+      child: TextFormField(
+        initialValue: bill.name,
+        onChanged: (billName) => {bill.name = billName},
+        decoration: InputDecoration(
+          hintStyle: const TextStyle(color: Colors.blue),
+          hintText: bill.name,
+          border: const OutlineInputBorder(),
+        ),
+      ),
+    );
+  }
+}
+
+class Title extends StatelessWidget {
+  const Title({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const SelectionContainer.disabled(
+        child: Text(
+      "Bill Page",
+      textAlign: TextAlign.center,
+      style: TextStyle(fontSize: 40, height: 5),
+    ));
   }
 }

@@ -32,81 +32,28 @@ class _AddGroupPageState extends State<AddGroupPage> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const SelectionContainer.disabled(
-              child: Text(
-            "Add Group Page",
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 40, height: 5),
-          )),
-          Padding(
-              padding: const EdgeInsets.all(12),
-              child: Form(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    TextFormField(
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          hintText: 'Enter a group name'),
-                      onChanged: (value) => {group.name = value},
-                      initialValue: group.name,
-                    ),
-                  ],
-                ),
-              )),
-          DataTable(
-            showCheckboxColumn: false,
-            columns: <DataColumn>[
-              DataColumn(
-                label: Expanded(
-                  child: InkWell(
-                    onTap: () => setState(() {
-                      membersMode = false;
-                    }),
-                    child: Text(
-                      'Items',
-                      style: TextStyle(
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.bold,
-                          backgroundColor:
-                              membersMode ? Colors.white : Colors.blue),
-                    ),
-                  ),
-                ),
-              ),
-              DataColumn(
-                label: Expanded(
-                  child: InkWell(
-                    onTap: () => setState(() {
-                      membersMode = true;
-                    }),
-                    child: Text(
-                      'Members',
-                      style: TextStyle(
-                          fontStyle: FontStyle.italic,
-                          fontWeight: FontWeight.bold,
-                          backgroundColor:
-                              membersMode ? Colors.blue : Colors.white),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-            rows: buildAllRows(),
-          ),
-          FloatingActionButton(
-            heroTag: 'navigateToAddBIll',
-            onPressed: () => navigateToAddBill(context, -1),
-            child: const Icon(Icons.add),
-          ),
-          FloatingActionButton(
-            heroTag: 'saveGroupAndExit',
-            onPressed: () => saveGroupAndExit(),
-            child: const Icon(Icons.check),
-          )
+          const Title(),
+          GroupNameFormField(group: group),
+          buildDataTable(),
+          buildNavigateToAddBIllButton(context),
+          buildSaveGroupAndExitButton()
         ],
       )),
     );
+  }
+
+  ///Method to save the group and return to the correct screen.
+  void saveGroupAndExit() {
+    //new group
+    if (group.id == -1) {
+      if (group.name == '') group.name = "new Group";
+      widget.dummyCalls.saveNewGroup(group);
+    }
+    //existing group
+    else {
+      widget.dummyCalls.overwriteGroup(group);
+    }
+    Navigator.pop(context);
   }
 
   ///Helper method to navigate to addBillPage and update variables accordingly.
@@ -129,20 +76,6 @@ class _AddGroupPageState extends State<AddGroupPage> {
         group = widget.dummyCalls.getGroup(group.id);
       });
     }
-  }
-
-  ///Method to save the group and return to the correct screen.
-  void saveGroupAndExit() {
-    //new group
-    if (group.id == -1) {
-      if (group.name == '') group.name = "new Group";
-      widget.dummyCalls.saveNewGroup(group);
-    }
-    //existing group
-    else {
-      widget.dummyCalls.overwriteGroup(group);
-    }
-    Navigator.pop(context);
   }
 
   ///Helper method to build rows of a table.
@@ -196,5 +129,107 @@ class _AddGroupPageState extends State<AddGroupPage> {
         )
       ]);
     }
+  }
+
+  FloatingActionButton buildSaveGroupAndExitButton() {
+    return FloatingActionButton(
+      heroTag: 'saveGroupAndExit',
+      onPressed: () => saveGroupAndExit(),
+      child: const Icon(Icons.check),
+    );
+  }
+
+  FloatingActionButton buildNavigateToAddBIllButton(BuildContext context) {
+    return FloatingActionButton(
+      heroTag: 'navigateToAddBIll',
+      onPressed: () => navigateToAddBill(context, -1),
+      child: const Icon(Icons.add),
+    );
+  }
+
+  DataTable buildDataTable() {
+    return DataTable(
+      showCheckboxColumn: false,
+      columns: <DataColumn>[
+        DataColumn(
+          label: Expanded(
+            child: InkWell(
+              onTap: () => setState(() {
+                membersMode = false;
+              }),
+              child: Text(
+                'Items',
+                style: TextStyle(
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.bold,
+                    backgroundColor: membersMode ? Colors.white : Colors.blue),
+              ),
+            ),
+          ),
+        ),
+        DataColumn(
+          label: Expanded(
+            child: InkWell(
+              onTap: () => setState(() {
+                membersMode = true;
+              }),
+              child: Text(
+                'Members',
+                style: TextStyle(
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.bold,
+                    backgroundColor: membersMode ? Colors.blue : Colors.white),
+              ),
+            ),
+          ),
+        ),
+      ],
+      rows: buildAllRows(),
+    );
+  }
+}
+
+class Title extends StatelessWidget {
+  const Title({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const SelectionContainer.disabled(
+        child: Text(
+      "Add Group Page",
+      textAlign: TextAlign.center,
+      style: TextStyle(fontSize: 40, height: 5),
+    ));
+  }
+}
+
+class GroupNameFormField extends StatelessWidget {
+  const GroupNameFormField({
+    super.key,
+    required this.group,
+  });
+
+  final Group group;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.all(12),
+        child: Form(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              TextFormField(
+                decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Enter a group name'),
+                onChanged: (value) => {group.name = value},
+                initialValue: group.name,
+              ),
+            ],
+          ),
+        ));
   }
 }

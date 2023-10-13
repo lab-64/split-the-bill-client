@@ -20,29 +20,20 @@ class _BillsPageState extends State<BillsPage> {
     return Scaffold(
       body: Center(
           child: Column(
-        children: [
-          const SelectionContainer.disabled(
-              child: Text(
-            "Bills Page",
-            textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 40, height: 5),
-          )),
-          DataTable(
-            showCheckboxColumn: false,
-            columns: const [
-              DataColumn(label: Text("Bills")),
-              DataColumn(label: Text("Price"))
-            ],
-            rows: buildAllRows(),
-          )
-        ],
+        children: [const Title(), buildDataTable()],
       )),
     );
   }
 
-  ///Helper method to build rows of a table.
-  List<DataRow> buildAllRows() {
-    return bills.map((bill) => buildRow(bill)).toList();
+  DataTable buildDataTable() {
+    return DataTable(
+      showCheckboxColumn: false,
+      columns: const [
+        DataColumn(label: Text("Bills")),
+        DataColumn(label: Text("Price"))
+      ],
+      rows: bills.map((bill) => buildRow(bill)).toList(),
+    );
   }
 
   ///Helper method to build a single row of the table.
@@ -74,10 +65,26 @@ class _BillsPageState extends State<BillsPage> {
   ///Helper method to navigate to addBillPage and update variables accordingly.
   Future<void> navigateToAddBill(BuildContext context, int billID) async {
     await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => AddBillPage(billID, widget.dummyCalls.getGroupIDOfBill(
-            billID), widget.dummyCalls)));
+        builder: (context) => AddBillPage(billID,
+            widget.dummyCalls.getGroupIDOfBill(billID), widget.dummyCalls)));
     setState(() {
       bills = widget.dummyCalls.getOwnBills();
     });
+  }
+}
+
+class Title extends StatelessWidget {
+  const Title({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const SelectionContainer.disabled(
+        child: Text(
+      "Bills Page",
+      textAlign: TextAlign.center,
+      style: TextStyle(fontSize: 40, height: 5),
+    ));
   }
 }
