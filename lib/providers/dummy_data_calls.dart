@@ -35,9 +35,9 @@ class DummyDataCalls {
     ];
 
     bills = [
-      Bill(0, 'bill 0', DateTime.now(), [items[0], items[3]], 50),
-      Bill(1, 'bill 1', DateTime.now(), [items[1], items[4]], 70),
-      Bill(2, 'bill 2', DateTime.now(), [items[3], items[6], items[4]], 160)
+      Bill(0, 'bill 0', DateTime.now(), [items[0], items[3]]),
+      Bill(1, 'bill 1', DateTime.now(), [items[1], items[4]]),
+      Bill(2, 'bill 2', DateTime.now(), [items[3], items[6], items[4]])
     ];
 
     billMappings = [
@@ -102,7 +102,7 @@ class DummyDataCalls {
 
   Bill getBill(int billID) {
     if (billID >= bills.length || billID < 0) {
-      return Bill(-1, "new Bill", DateTime.now(), [], 0);
+      return Bill(-1, "new Bill", DateTime.now(), []);
     }
     return bills[billID];
   }
@@ -137,5 +137,20 @@ class DummyDataCalls {
   int getGroupIDOfBill(int billID) {
     return groups.indexWhere((group) =>
         group.billMappings.map((mapping) => mapping.bill.id).contains(billID));
+  }
+
+  Item getItem(int itemID) {
+    return itemID < 0
+        ? Item(-1, "new Item", 0)
+        : items.singleWhere((item) => item.id == itemID);
+  }
+
+  void overwriteItem(Item item) {
+    items[item.id] = item;
+  }
+
+  void deleteItem(int itemID) {
+    //TODO change to actual delete
+    items.where((element) => element.id == itemID).first.price = 0.0;
   }
 }

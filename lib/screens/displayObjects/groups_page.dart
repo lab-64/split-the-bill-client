@@ -3,6 +3,7 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:split_the_bill/models/group.dart';
 import 'package:split_the_bill/providers/dummy_data_calls.dart';
 import 'package:split_the_bill/screens/addObject/add_group_page.dart';
+import 'package:split_the_bill/widgets/screenTitle.dart';
 
 class GroupsPage extends StatefulWidget {
   const GroupsPage(this.dummyCalls, {Key? key}) : super(key: key);
@@ -21,7 +22,7 @@ class _GroupsPageState extends State<GroupsPage> {
       body: Center(
           child: Column(
         children: [
-          const Title(),
+          const ScreenTitle(text: "Groups Page"),
           buildDataTable(),
         ],
       )),
@@ -99,21 +100,5 @@ class _GroupsPageState extends State<GroupsPage> {
         heroTag: 'navigateToAddGroupPage',
         onPressed: () => {navigateToGroupPage(context, -1)},
         child: const Icon(Icons.group_add));
-  }
-}
-
-class Title extends StatelessWidget {
-  const Title({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return const SelectionContainer.disabled(
-        child: Text(
-      "Groups Page",
-      textAlign: TextAlign.center,
-      style: TextStyle(fontSize: 40, height: 5),
-    ));
   }
 }

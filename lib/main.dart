@@ -18,12 +18,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     DummyDataCalls dummyCalls = DummyDataCalls();
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       routes: {
         '/groups': (context) => GroupsPage(dummyCalls),
         '/addBill': (context) => AddBillPage(-1, -2, dummyCalls),
         '/addGroup': (context) => AddGroupPage(dummyCalls, -1),
-        '/addItems': (context) => const AddItemPage(),
+        '/addItems': (context) => AddItemPage(dummyCalls, -1),
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,

@@ -5,7 +5,12 @@ class Bill {
   late String name;
   late DateTime date;
   late List<Item> items;
-  late int price;
 
-  Bill(this.id, this.name, this.date, this.items, this.price);
+  Bill(this.id, this.name, this.date, this.items);
+
+  double getTotalPrice() {
+    return items
+        .map((e) => e.price)
+        .reduce((value, element) => value + element);
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:split_the_bill/models/bill.dart';
+import 'package:split_the_bill/widgets/screenTitle.dart';
 
 import '../../models/bill_mapping.dart';
 import '../../models/group.dart';
@@ -32,7 +33,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Title(),
+          const ScreenTitle(text: "Add Group Page"),
           GroupNameFormField(group: group),
           buildDataTable(),
           buildNavigateToAddBIllButton(context),
@@ -102,7 +103,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
               Padding(
                 padding: const EdgeInsets.all(12),
                 child: Center(
-                  child: Text(billMapping.bill.price.toString()),
+                  child: Text(billMapping.bill.getTotalPrice().toString()),
                 ),
               ),
             )
@@ -186,22 +187,6 @@ class _AddGroupPageState extends State<AddGroupPage> {
       ],
       rows: buildAllRows(),
     );
-  }
-}
-
-class Title extends StatelessWidget {
-  const Title({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return const SelectionContainer.disabled(
-        child: Text(
-      "Add Group Page",
-      textAlign: TextAlign.center,
-      style: TextStyle(fontSize: 40, height: 5),
-    ));
   }
 }
 

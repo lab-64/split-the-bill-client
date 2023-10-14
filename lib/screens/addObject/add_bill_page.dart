@@ -3,6 +3,7 @@ import 'package:split_the_bill/models/bill.dart';
 import 'package:split_the_bill/screens/addObject/add_item_page.dart';
 import 'package:split_the_bill/widgets/addBillToGroupPopup.dart';
 import 'package:split_the_bill/widgets/saveBillPopup.dart';
+import 'package:split_the_bill/widgets/screenTitle.dart';
 
 import '../../models/item.dart';
 import '../../providers/dummy_data_calls.dart';
@@ -26,7 +27,6 @@ class AddBillPage extends StatefulWidget {
 class _AddBillPageState extends State<AddBillPage> {
   late Bill bill = widget.dummyCalls.getBill(widget.billID);
   late DateTime date = bill.date;
-  late String dateString = date.toLocal().toString().split(' ')[0];
   int newGroupID = -1;
   int count = 0;
 
@@ -41,7 +41,7 @@ class _AddBillPageState extends State<AddBillPage> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Title(),
+          const ScreenTitle(text: "Add Bill Page"),
           BillNameFormField(bill: bill),
           buildDateSelection(context, addToGroupIcon),
           SaveBillPopup(saveBillAndExit, addBillIcon),
@@ -60,7 +60,6 @@ class _AddBillPageState extends State<AddBillPage> {
     if (picked != null && picked != date) {
       setState(() {
         date = picked;
-        dateString = date.toLocal().toString().split(' ')[0];
       });
       bill.date = date;
     }
@@ -90,17 +89,18 @@ class _AddBillPageState extends State<AddBillPage> {
           ),
         ),
       )
-    ]);
+    ], onSelectChanged: (bool? value) => {navigateToAddItemPage(item.id)});
   }
 
   ///Helper method to navigate to addItemPage and update variables accordingly.
-  navigateToAddItemPage() async {
-    final res = await Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const AddItemPage()));
-    //TODO remove and replace with actual item add page
-    Item item = Item(45, "Test Item", 4);
+  navigateToAddItemPage(int itemID) async {
+    final res = await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => AddItemPage(widget.dummyCalls, itemID)));
     setState(() {
-      bill.items.add(item);
+      if (res != null) {
+        if (res is Item) bill.items.add(res);
+        else widget.dummyCalls.deleteItem(res);
+      }
     });
   }
 
@@ -115,7 +115,6 @@ class _AddBillPageState extends State<AddBillPage> {
 
     //already part of a group
     if (widget.groupID > 0) {
-      print(widget.billID);
       if (widget.billID >= 0) {
         //change group
         if (newGroupID >= 0)
@@ -146,7 +145,6 @@ class _AddBillPageState extends State<AddBillPage> {
         //reset screen
         bill = widget.dummyCalls.getBill(widget.billID);
         date = bill.date;
-        dateString = date.toLocal().toString().split(' ')[0];
         ++count;
       });
     }
@@ -157,7 +155,7 @@ class _AddBillPageState extends State<AddBillPage> {
       children: [
         Center(
           child: Text(
-            "Date: $dateString",
+            "Date: ${date.day}.${date.month}.${date.year}",
             style: const TextStyle(height: 3),
           ),
         ),
@@ -167,7 +165,7 @@ class _AddBillPageState extends State<AddBillPage> {
         buildDataTable(),
         FloatingActionButton(
           heroTag: 'navigateToAddItemPage',
-          onPressed: () => {navigateToAddItemPage()},
+          onPressed: () => {navigateToAddItemPage(-1)},
           child: const Icon(Icons.add),
         ),
         Visibility(
@@ -236,21 +234,5 @@ class BillNameFormField extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-class Title extends StatelessWidget {
-  const Title({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return const SelectionContainer.disabled(
-        child: Text(
-      "Bill Page",
-      textAlign: TextAlign.center,
-      style: TextStyle(fontSize: 40, height: 5),
-    ));
   }
 }

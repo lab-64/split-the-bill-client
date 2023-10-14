@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:split_the_bill/models/bill_mapping.dart';
+import 'package:split_the_bill/widgets/screenTitle.dart';
 
 import '../../providers/dummy_data_calls.dart';
 import '../addObject/add_bill_page.dart';
@@ -20,7 +21,7 @@ class _BillsPageState extends State<BillsPage> {
     return Scaffold(
       body: Center(
           child: Column(
-        children: [const Title(), buildDataTable()],
+        children: [const ScreenTitle(text: "Bills page"), buildDataTable()],
       )),
     );
   }
@@ -52,7 +53,7 @@ class _BillsPageState extends State<BillsPage> {
           Padding(
             padding: const EdgeInsets.all(12),
             child: Center(
-              child: Text(billMapping.bill.price.toString()),
+              child: Text(billMapping.bill.getTotalPrice().toString()),
             ),
           ),
         )
@@ -70,21 +71,5 @@ class _BillsPageState extends State<BillsPage> {
     setState(() {
       bills = widget.dummyCalls.getOwnBills();
     });
-  }
-}
-
-class Title extends StatelessWidget {
-  const Title({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return const SelectionContainer.disabled(
-        child: Text(
-      "Bills Page",
-      textAlign: TextAlign.center,
-      style: TextStyle(fontSize: 40, height: 5),
-    ));
   }
 }
