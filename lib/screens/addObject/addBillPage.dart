@@ -11,7 +11,12 @@ class _AddBillPageState extends State<AddBillPage> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Text("Add Bill Page"),
+      body: Center(
+        child: Text(
+          "Add Bill Page",
+          style: TextStyle(fontSize: 60),
+        ),
+      ),
     );
   }
 }

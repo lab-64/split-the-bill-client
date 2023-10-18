@@ -11,7 +11,12 @@ class _GroupsPageState extends State<GroupsPage> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Text("Groups Page"),
+      body: Center(
+        child: Text(
+          "Groups Page",
+          style: TextStyle(fontSize: 60),
+        ),
+      ),
     );
   }
 }
