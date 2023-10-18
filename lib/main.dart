@@ -3,12 +3,12 @@ import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:split_the_bill/providers/dummy_authentication.dart';
 import 'package:split_the_bill/providers/dummy_data_calls.dart';
-import 'package:split_the_bill/screens/addObject/add_bill_page.dart';
-import 'package:split_the_bill/screens/addObject/add_group_page.dart';
-import 'package:split_the_bill/screens/addObject/add_item_page.dart';
-import 'package:split_the_bill/screens/displayObjects/groups_page.dart';
-import 'package:split_the_bill/screens/onboarding/login_page.dart';
-import 'package:split_the_bill/screens/onboarding/register_page.dart';
+import 'package:split_the_bill/screens/add_object/add_bill_page.dart';
+import 'package:split_the_bill/screens/add_object/add_group_page.dart';
+import 'package:split_the_bill/screens/add_object/add_item_page.dart';
+import 'package:split_the_bill/screens/display_objects/groups_page.dart';
+import 'package:split_the_bill/screens/on_boarding/login_page.dart';
+import 'package:split_the_bill/screens/on_boarding/register_page.dart';
 import 'package:split_the_bill/widgets/navbar.dart';
 
 void main() async {
@@ -21,10 +21,12 @@ void main() async {
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       routes: {
-        '/groups': (context) => GroupsPage(dummyCalls),
-        '/addBill': (context) => AddBillPage(-1, -2, dummyCalls),
-        '/addGroup': (context) => AddGroupPage(dummyCalls, -1),
-        '/addItems': (context) => AddItemPage(dummyCalls, -1),
+        '/groups': (context) => GroupsPage(dummyCalls: dummyCalls),
+        '/addBill': (context) =>
+            AddBillPage(billId: -1, groupId: -2, dummyCalls: dummyCalls),
+        '/addGroup': (context) => AddGroupPage(dummyCalls: dummyCalls, id: -1),
+        '/addItems': (context) =>
+            AddItemPage(dummyCalls: dummyCalls, itemId: -1),
         '/login': (context) => const LoginPage(),
         '/register': (context) => const RegisterPage(),
       },
@@ -61,7 +63,7 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: Navbar(widget.dummyCalls),
+      bottomNavigationBar: Navbar(dummyCalls: widget.dummyCalls),
       floatingActionButton: FloatingActionButton(
         heroTag: "logout",
         onPressed: () {

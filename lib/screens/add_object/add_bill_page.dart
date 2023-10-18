@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:split_the_bill/models/bill.dart';
-import 'package:split_the_bill/screens/addObject/add_item_page.dart';
-import 'package:split_the_bill/widgets/addBillToGroupPopup.dart';
-import 'package:split_the_bill/widgets/saveBillPopup.dart';
-import 'package:split_the_bill/widgets/screenTitle.dart';
+import 'package:split_the_bill/screens/add_object/add_item_page.dart';
+import 'package:split_the_bill/widgets/add_bill_to_group_popup.dart';
+import 'package:split_the_bill/widgets/save_bill_popup.dart';
+import 'package:split_the_bill/widgets/screen_title.dart';
 
 import '../../models/item.dart';
 import '../../providers/dummy_data_calls.dart';
 
 class AddBillPage extends StatefulWidget {
-  ///The parameter [billID] should have a value of -1 if a new Bill is created, a value
-  ///of 0 or higher if an existing bill is opened. The parameter [groupID] should have
+  ///The parameter [billId] should have a value of -1 if a new Bill is created, a value
+  ///of 0 or higher if an existing bill is opened. The parameter [groupId] should have
   ///a value of -2 if a Bill is created/changed without a group, -1 if a bill is
   ///created/changed with a non saved group and 0 if a bill is created/changed with an existing group.
-  const AddBillPage(this.billID, this.groupID, this.dummyCalls, {Key? key})
+  const AddBillPage(
+      {Key? key,
+      required this.billId,
+      required this.groupId,
+      required this.dummyCalls})
       : super(key: key);
 
-  final int billID;
-  final int groupID;
+  final int billId;
+  final int groupId;
   final DummyDataCalls dummyCalls;
 
   @override
@@ -25,9 +29,9 @@ class AddBillPage extends StatefulWidget {
 }
 
 class _AddBillPageState extends State<AddBillPage> {
-  late Bill bill = widget.dummyCalls.getBill(widget.billID);
+  late Bill bill = widget.dummyCalls.getBill(widget.billId);
   late DateTime date = bill.date;
-  int newGroupID = -1;
+  int newGroupId = -1; //change if bill should be added to new group
   int count = 0;
 
   @override
@@ -44,7 +48,7 @@ class _AddBillPageState extends State<AddBillPage> {
           const ScreenTitle(text: "Add Bill Page"),
           BillNameFormField(bill: bill),
           buildDateSelection(context, addToGroupIcon),
-          SaveBillPopup(saveBillAndExit, addBillIcon),
+          SaveBillPopup(closeFunction: saveBillAndExit, icon: addBillIcon),
         ],
       )),
     );
@@ -93,57 +97,71 @@ class _AddBillPageState extends State<AddBillPage> {
   }
 
   ///Helper method to navigate to addItemPage and update variables accordingly.
-  navigateToAddItemPage(int itemID) async {
+  navigateToAddItemPage(int itemId) async {
     final res = await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => AddItemPage(widget.dummyCalls, itemID)));
-    setState(() {
-      if (res != null) {
-        if (res is Item) bill.items.add(res);
-        else widget.dummyCalls.deleteItem(res);
-      }
-    });
+        builder: (context) =>
+            AddItemPage(dummyCalls: widget.dummyCalls, itemId: itemId)));
+
+    if (res != null) {
+      setState(() {
+        //case: result is an item
+        if (res is Item) {
+          bill.items.add(res);
+        }
+        //case result is an id
+        else {
+          widget.dummyCalls.deleteItem(res); //TODO maybe change to delete if bill is saved
+        }
+      });
+    }
   }
 
   ///Method to save the bill and return to the correct screen.
   saveBillAndExit() {
     //save as a new bill
-    if (widget.billID < 0)
+    if (widget.billId < 0) {
       widget.dummyCalls.saveNewBill(bill);
-    //overwrite exiting bill
-    else
+    } else {
       widget.dummyCalls.overwriteBill(bill);
+    }
 
     //already part of a group
-    if (widget.groupID > 0) {
-      if (widget.billID >= 0) {
+    if (widget.groupId > 0) {
+      if (widget.billId >= 0) {
         //change group
-        if (newGroupID >= 0)
+        if (newGroupId >= 0) {
           widget.dummyCalls
-              .changeBillFromTo(bill.id, widget.groupID, newGroupID);
-        //no change
-        else
-          widget.dummyCalls.updateBillInGroup(bill.id, widget.groupID);
-
+              .changeBillFromTo(bill.id, widget.groupId, newGroupId);
+        } else {
+          widget.dummyCalls.updateBillInGroup(bill.id, widget.groupId);
+        }
+        //return nothing, as bill is only changed
         Navigator.pop(context);
-      } else
+      } else {
+        //return bill to add to new bill
         Navigator.pop(context, bill);
+      }
     }
     //part of a group, which is not saved yet
-    else if (widget.groupID == -1) {
-      if (widget.billID == -1)
+    else if (widget.groupId == -1) {
+      if (widget.billId == -1) {
+        //return bill to add to bill
         Navigator.pop(context, bill);
-      else
+      } else {
+        //return nothing, as bill is only changed
         Navigator.pop(context);
+      }
     }
     //not part of any group
     else {
       //add new bill to a group
-      if (newGroupID >= 0)
-        widget.dummyCalls.addBillToGroup(bill.id, newGroupID);
+      if (newGroupId >= 0) {
+        widget.dummyCalls.addBillToGroup(bill.id, newGroupId);
+      }
 
       setState(() {
         //reset screen
-        bill = widget.dummyCalls.getBill(widget.billID);
+        bill = widget.dummyCalls.getBill(widget.billId);
         date = bill.date;
         ++count;
       });
@@ -169,9 +187,11 @@ class _AddBillPageState extends State<AddBillPage> {
           child: const Icon(Icons.add),
         ),
         Visibility(
-            visible: widget.groupID == -2 || widget.billID != -1,
+            visible: widget.groupId == -2 || widget.billId != -1, //make visible if not
             child: AddBillToGroupPopup(
-                widget.dummyCalls, addToGroup, addToGroupIcon)),
+                dummyCalls: widget.dummyCalls,
+                closeFunction: addToGroup,
+                icon: addToGroupIcon)),
       ],
     );
   }
@@ -208,7 +228,7 @@ class _AddBillPageState extends State<AddBillPage> {
   }
 
   void addToGroup(int groupID) {
-    newGroupID = groupID;
+    newGroupId = groupID;
   }
 }
 

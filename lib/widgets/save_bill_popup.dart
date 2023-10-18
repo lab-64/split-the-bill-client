@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class SaveBillPopup extends StatelessWidget {
-  const SaveBillPopup(this.closeFunction, this.icon, {Key? key})
+  const SaveBillPopup(
+      {Key? key, required this.closeFunction, required this.icon})
       : super(key: key);
   final Function closeFunction;
   final Icon icon;

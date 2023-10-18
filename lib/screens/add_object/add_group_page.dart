@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:split_the_bill/models/bill.dart';
-import 'package:split_the_bill/widgets/screenTitle.dart';
+import 'package:split_the_bill/widgets/screen_title.dart';
 
 import '../../models/bill_mapping.dart';
 import '../../models/group.dart';
@@ -11,7 +11,8 @@ import 'add_bill_page.dart';
 class AddGroupPage extends StatefulWidget {
   ///The parameter [id] should have a value of -1 if it is a new group and any
   ///value of 0 or higher if it already exists.
-  const AddGroupPage(this.dummyCalls, this.id, {Key? key}) : super(key: key);
+  const AddGroupPage({Key? key, required this.dummyCalls, required this.id})
+      : super(key: key);
 
   final DummyDataCalls dummyCalls;
   final int id;
@@ -24,7 +25,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
   bool membersMode = false;
   late Group group = widget.id < 0
       ? Group(-1, '', [], [], 0)
-      : widget.dummyCalls.getGroup(widget.id);
+      : widget.dummyCalls.getGroup(widget.id); //create new group if id < 0
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,10 @@ class _AddGroupPageState extends State<AddGroupPage> {
   void saveGroupAndExit() {
     //new group
     if (group.id == -1) {
-      if (group.name == '') group.name = "new Group";
+      //no group name set
+      if (group.name == '') {
+        group.name = "new Group";
+      }
       widget.dummyCalls.saveNewGroup(group);
     }
     //existing group
@@ -58,12 +62,11 @@ class _AddGroupPageState extends State<AddGroupPage> {
   }
 
   ///Helper method to navigate to addBillPage and update variables accordingly.
-  Future<void> navigateToAddBill(BuildContext context, int billID) async {
+  Future<void> navigateToAddBill(BuildContext context, int billId) async {
     final res = await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => billID == -1
-            ? AddBillPage(-1, group.id, widget.dummyCalls)
-            : AddBillPage(billID, group.id, widget.dummyCalls)));
-    //add to group, which isn't saved yet
+        builder: (context) => AddBillPage(
+            billId: billId, groupId: group.id, dummyCalls: widget.dummyCalls)));
+    //add to current group, which isn't saved yet
     if (res != null) {
       BillMapping test = BillMapping(widget.dummyCalls.users[0], res as Bill,
           [widget.dummyCalls.users[0]]);
@@ -71,7 +74,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
         group.billMappings.add(test);
       });
     }
-    //add to existing group
+    //add to existing current group
     else {
       setState(() {
         group = widget.dummyCalls.getGroup(group.id);

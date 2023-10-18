@@ -2,23 +2,23 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:split_the_bill/providers/dummy_data_calls.dart';
-import 'package:split_the_bill/screens/addObject/add_bill_page.dart';
-import 'package:split_the_bill/screens/displayObjects/bills_page.dart';
-import 'package:split_the_bill/screens/displayObjects/groups_page.dart';
+import 'package:split_the_bill/screens/add_object/add_bill_page.dart';
+import 'package:split_the_bill/screens/display_objects/bills_page.dart';
+import 'package:split_the_bill/screens/display_objects/groups_page.dart';
 
 class Navbar extends StatelessWidget {
-  const Navbar(this.dummyCalls, {Key? key}) : super(key: key);
+  const Navbar({Key? key, required this.dummyCalls}) : super(key: key);
   final DummyDataCalls dummyCalls;
 
-  List<Widget> _buildScreens() {
+  List<Widget> buildScreens() {
     return [
-      GroupsPage(dummyCalls),
-      AddBillPage(-1, -2, dummyCalls),
-      BillsPage(dummyCalls)
+      GroupsPage(dummyCalls: dummyCalls),
+      AddBillPage(billId: -1, groupId: -2, dummyCalls: dummyCalls),
+      BillsPage(dummyCalls: dummyCalls)
     ];
   }
 
-  List<PersistentBottomNavBarItem> _navBarsItems() {
+  List<PersistentBottomNavBarItem> navBarsItems() {
     return [
       PersistentBottomNavBarItem(
         icon: const Icon(Icons.group),
@@ -50,14 +50,14 @@ class Navbar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    PersistentTabController _controller;
-    _controller = PersistentTabController(initialIndex: 0);
+    PersistentTabController controller;
+    controller = PersistentTabController(initialIndex: 0);
 
     return PersistentTabView(
       context,
-      controller: _controller,
-      screens: _buildScreens(),
-      items: _navBarsItems(),
+      controller: controller,
+      screens: buildScreens(),
+      items: navBarsItems(),
       confineInSafeArea: true,
       backgroundColor: Colors.white,
       // Default is Colors.white.

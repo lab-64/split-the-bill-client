@@ -3,7 +3,11 @@ import 'package:split_the_bill/models/group.dart';
 import 'package:split_the_bill/providers/dummy_data_calls.dart';
 
 class AddBillToGroupPopup extends StatelessWidget {
-  const AddBillToGroupPopup(this.dummyCalls, this.closeFunction, this.icon, {Key? key})
+  const AddBillToGroupPopup(
+      {Key? key,
+      required this.icon,
+      required this.closeFunction,
+      required this.dummyCalls})
       : super(key: key);
   final Icon icon;
   final Function closeFunction;
@@ -19,7 +23,7 @@ class AddBillToGroupPopup extends StatelessWidget {
           title: const Text('To which Group should this bill be added?'),
           actions: dummyCalls
               .getOwnGroups()
-              .map((group) => createItem(group, context))
+              .map((group) => createGroupTextButton(group, context))
               .toList(),
         ),
       ),
@@ -27,7 +31,7 @@ class AddBillToGroupPopup extends StatelessWidget {
     );
   }
 
-  Widget createItem(Group group, BuildContext context) {
+  Widget createGroupTextButton(Group group, BuildContext context) {
     return TextButton(
         onPressed: () {
           closeFunction(group.id);

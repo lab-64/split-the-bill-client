@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:split_the_bill/models/bill_mapping.dart';
-import 'package:split_the_bill/widgets/screenTitle.dart';
+import 'package:split_the_bill/widgets/screen_title.dart';
 
 import '../../providers/dummy_data_calls.dart';
-import '../addObject/add_bill_page.dart';
+import '../add_object/add_bill_page.dart';
 
 class BillsPage extends StatefulWidget {
-  const BillsPage(this.dummyCalls, {Key? key}) : super(key: key);
+  const BillsPage({Key? key, required this.dummyCalls}) : super(key: key);
   final DummyDataCalls dummyCalls;
 
   @override
@@ -64,10 +64,13 @@ class _BillsPageState extends State<BillsPage> {
   }
 
   ///Helper method to navigate to addBillPage and update variables accordingly.
-  Future<void> navigateToAddBill(BuildContext context, int billID) async {
+  Future<void> navigateToAddBill(BuildContext context, int billId) async {
     await Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => AddBillPage(billID,
-            widget.dummyCalls.getGroupIDOfBill(billID), widget.dummyCalls)));
+        builder: (context) => AddBillPage(
+            billId: billId,
+            groupId: widget.dummyCalls.getGroupIDOfBill(billId),
+            dummyCalls: widget.dummyCalls)));
+    //update bills list
     setState(() {
       bills = widget.dummyCalls.getOwnBills();
     });

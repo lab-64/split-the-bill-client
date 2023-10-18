@@ -1,4 +1,4 @@
-import 'package:split_the_bill/models/assignedItem.dart';
+import 'package:split_the_bill/models/assigned_item.dart';
 import 'package:split_the_bill/models/bill.dart';
 import 'package:split_the_bill/models/item.dart';
 import 'package:split_the_bill/models/user.dart';
@@ -66,14 +66,14 @@ class DummyDataCalls {
     return groups[index];
   }
 
-  void addBillToGroup(int billID, int groupID) {
+  void addBillToGroup(int billId, int groupID) {
     if (groupID < 0) {
       billMappings.add(
-          BillMapping(users[0], getBill(billID), [])); //TODO change to user
+          BillMapping(users[0], getBill(billId), [])); //TODO change to user
     } else {
       groups[groupID].billMappings.add(BillMapping(
           groups[groupID].members.first,
-          getBill(billID), [])); //TODO change to user
+          getBill(billId), [])); //TODO change to user
     }
   }
 
@@ -82,11 +82,11 @@ class DummyDataCalls {
     return groups.where((group) => group.members.contains(user)).toList();
   }
 
-  void updateBillInGroup(int billID, int groupID) {
+  void updateBillInGroup(int billId, int groupID) {
     Group group = getGroup(groupID);
     int index =
-        group.billMappings.indexWhere((element) => element.bill.id == billID);
-    group.billMappings[index].bill = bills[billID];
+        group.billMappings.indexWhere((element) => element.bill.id == billId);
+    group.billMappings[index].bill = bills[billId];
   }
 
   void overwriteGroup(Group group) {
@@ -100,11 +100,11 @@ class DummyDataCalls {
     groups.add(newGroup);
   }
 
-  Bill getBill(int billID) {
-    if (billID >= bills.length || billID < 0) {
+  Bill getBill(int billId) {
+    if (billId >= bills.length || billId < 0) {
       return Bill(-1, "new Bill", DateTime.now(), []);
     }
-    return bills[billID];
+    return bills[billId];
   }
 
   void overwriteBill(Bill bill) {
@@ -126,31 +126,31 @@ class DummyDataCalls {
         .toList();
   }
 
-  void changeBillFromTo(int billID, int fromGroupID, int toGroupID) {
-    int index = groups[fromGroupID]
+  void changeBillFromTo(int billId, int fromGroupId, int toGroupId) {
+    int index = groups[fromGroupId]
         .billMappings
-        .indexWhere((element) => element.bill.id == billID);
-    BillMapping bill = groups[fromGroupID].billMappings.removeAt(index);
-    groups[toGroupID].billMappings.add(bill);
+        .indexWhere((element) => element.bill.id == billId);
+    BillMapping bill = groups[fromGroupId].billMappings.removeAt(index);
+    groups[toGroupId].billMappings.add(bill);
   }
 
-  int getGroupIDOfBill(int billID) {
+  int getGroupIDOfBill(int billId) {
     return groups.indexWhere((group) =>
-        group.billMappings.map((mapping) => mapping.bill.id).contains(billID));
+        group.billMappings.map((mapping) => mapping.bill.id).contains(billId));
   }
 
-  Item getItem(int itemID) {
-    return itemID < 0
+  Item getItem(int itemId) {
+    return itemId < 0
         ? Item(-1, "new Item", 0)
-        : items.singleWhere((item) => item.id == itemID);
+        : items.singleWhere((item) => item.id == itemId);
   }
 
   void overwriteItem(Item item) {
     items[item.id] = item;
   }
 
-  void deleteItem(int itemID) {
+  void deleteItem(int itemId) {
     //TODO change to actual delete
-    items.where((element) => element.id == itemID).first.price = 0.0;
+    items.where((element) => element.id == itemId).first.price = 0.0;
   }
 }

@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:split_the_bill/models/group.dart';
 import 'package:split_the_bill/providers/dummy_data_calls.dart';
-import 'package:split_the_bill/screens/addObject/add_group_page.dart';
-import 'package:split_the_bill/widgets/screenTitle.dart';
+import 'package:split_the_bill/screens/add_object/add_group_page.dart';
+import 'package:split_the_bill/widgets/screen_title.dart';
 
 class GroupsPage extends StatefulWidget {
-  const GroupsPage(this.dummyCalls, {Key? key}) : super(key: key);
+  const GroupsPage({Key? key, required this.dummyCalls}) : super(key: key);
   final DummyDataCalls dummyCalls;
 
   @override
@@ -61,7 +61,7 @@ class _GroupsPageState extends State<GroupsPage> {
   ///Method to navigate to the GroupPage of a single group. Updates navbar.
   void navigateToGroupPage(BuildContext context, int id) async {
     await PersistentNavBarNavigator.pushNewScreen(context,
-        screen: AddGroupPage(widget.dummyCalls, id));
+        screen: AddGroupPage(dummyCalls: widget.dummyCalls, id: id));
     setState(() {
       groups = widget.dummyCalls.getAllGroups();
     });

@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:split_the_bill/providers/dummy_data_calls.dart';
-import 'package:split_the_bill/widgets/screenTitle.dart';
+import 'package:split_the_bill/widgets/screen_title.dart';
 
 import '../../models/item.dart';
 
 class AddItemPage extends StatefulWidget {
-  const AddItemPage(this.dummyCalls, this.itemID, {Key? key}) : super(key: key);
+  const AddItemPage({Key? key, required this.dummyCalls, required this.itemId})
+      : super(key: key);
   final DummyDataCalls dummyCalls;
-  final int itemID;
+  final int itemId;
 
   @override
   State<AddItemPage> createState() => _AddItemPageState();
 }
 
 class _AddItemPageState extends State<AddItemPage> {
-  late Item item = widget.dummyCalls.getItem(widget.itemID);
-  bool delete = false;
+  late Item item = widget.dummyCalls.getItem(widget.itemId);
 
   @override
   Widget build(BuildContext context) {
@@ -36,10 +36,7 @@ class _AddItemPageState extends State<AddItemPage> {
             ),
             FloatingActionButton(
               heroTag: "DeleteAndExit",
-              onPressed: () {
-                delete = true;
-                saveItemAndExit();
-              },
+              onPressed: () => {saveItemAndExit(delete: true)},
               child: const Icon(Icons.delete),
             )
           ],
@@ -48,14 +45,20 @@ class _AddItemPageState extends State<AddItemPage> {
     );
   }
 
-  saveItemAndExit() {
-    if (item.id < 0) {
-      Navigator.pop(context, item);
-    } else if (delete == true) {
-      Navigator.pop(context, item.id);
+  saveItemAndExit({bool delete = false}) {
+    if (delete) {
+      if (item.id < 0) {
+        Navigator.pop(context);
+      } else {
+        Navigator.pop(context, item.id);
+      }
     } else {
-      widget.dummyCalls.overwriteItem(item);
-      Navigator.pop(context);
+      if (item.id < 0) {
+        Navigator.pop(context, item);
+      } else {
+        widget.dummyCalls.overwriteItem(item);
+        Navigator.pop(context);
+      }
     }
   }
 }
@@ -75,7 +78,7 @@ class ItemFormFields extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("Name: "),
+            const Text("Name:"),
             SizedBox(
               width: 200,
               child: TextFormField(
@@ -93,7 +96,7 @@ class ItemFormFields extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text("Price:  "),
+            const Text("Price:"),
             SizedBox(
               width: 50,
               child: TextFormField(
@@ -109,6 +112,7 @@ class ItemFormFields extends StatelessWidget {
                 keyboardType: const TextInputType.numberWithOptions(
                     signed: false, decimal: true),
                 inputFormatters: [
+                  //int, double and float allowed
                   FilteringTextInputFormatter.allow(RegExp(r'^\d+\.?\d{0,2}'))
                 ],
               ),
