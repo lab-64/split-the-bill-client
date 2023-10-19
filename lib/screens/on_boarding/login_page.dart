@@ -21,40 +21,43 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          const ScreenTitle(
-            text: 'Login Page',
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text("Do not have an account yet?"),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: ElevatedButton(
-                    onPressed: () => {
-                          PersistentNavBarNavigator.pushNewScreen(context,
-                              screen: const RegisterPage())
-                        },
-                    child: const Icon(Icons.app_registration)),
-              )
-            ],
-          ),
-          LoginFormFields(
-            onChangedValue: onChangedValue,
-          ),
-          TextButton(
-              onPressed: () {
-                if (username.isNotEmpty && password.isNotEmpty) {
-                  DummyAuthentication.login(username, password);
-                  Navigator.pop(context);
-                }
-                //TODO add error message
-              },
-              child: const Text("Login")),
-        ],
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        body: Column(
+          children: [
+            const ScreenTitle(
+              text: 'Login Page',
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("Do not have an account yet?"),
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: ElevatedButton(
+                      onPressed: () => {
+                            PersistentNavBarNavigator.pushNewScreen(context,
+                                screen: const RegisterPage())
+                          },
+                      child: const Icon(Icons.app_registration)),
+                )
+              ],
+            ),
+            LoginFormFields(
+              onChangedValue: onChangedValue,
+            ),
+            TextButton(
+                onPressed: () {
+                  if (username.isNotEmpty && password.isNotEmpty) {
+                    DummyAuthentication.login(username, password);
+                    Navigator.pop(context);
+                  }
+                  //TODO add error message
+                },
+                child: const Text("Login")),
+          ],
+        ),
       ),
     );
   }
