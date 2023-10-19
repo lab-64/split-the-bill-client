@@ -9,8 +9,8 @@ class Bill {
   Bill(this.id, this.name, this.date, this.items);
 
   double getTotalPrice() {
-    return items
-        .map((e) => e.price)
-        .reduce((value, element) => value + element);
+    return items.isNotEmpty
+        ? items.map((e) => e.price).reduce((value, element) => value + element)
+        : 0.0;
   }
 }

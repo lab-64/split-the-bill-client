@@ -110,7 +110,8 @@ class _AddBillPageState extends State<AddBillPage> {
         }
         //case result is an id
         else {
-          widget.dummyCalls.deleteItem(res); //TODO maybe change to delete if bill is saved
+          widget.dummyCalls
+              .deleteItem(res); //TODO maybe change to delete if bill is saved
         }
       });
     }
@@ -126,7 +127,7 @@ class _AddBillPageState extends State<AddBillPage> {
     }
 
     //already part of a group
-    if (widget.groupId > 0) {
+    if (widget.groupId >= 0) {
       if (widget.billId >= 0) {
         //change group
         if (newGroupId >= 0) {
@@ -187,7 +188,8 @@ class _AddBillPageState extends State<AddBillPage> {
           child: const Icon(Icons.add),
         ),
         Visibility(
-            visible: widget.groupId == -2 || widget.billId != -1, //make visible if not
+            visible: widget.groupId == -2 || widget.billId != -1,
+            //make visible if not
             child: AddBillToGroupPopup(
                 dummyCalls: widget.dummyCalls,
                 closeFunction: addToGroup,

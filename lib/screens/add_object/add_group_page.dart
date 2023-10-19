@@ -68,6 +68,7 @@ class _AddGroupPageState extends State<AddGroupPage> {
             billId: billId, groupId: group.id, dummyCalls: widget.dummyCalls)));
     //add to current group, which isn't saved yet
     if (res != null) {
+      print("new bill");
       BillMapping test = BillMapping(widget.dummyCalls.users[0], res as Bill,
           [widget.dummyCalls.users[0]]);
       setState(() {
