@@ -5,6 +5,7 @@ import 'package:split_the_bill/widgets/add_bill_to_group_popup.dart';
 import 'package:split_the_bill/widgets/save_bill_popup.dart';
 import 'package:split_the_bill/widgets/screen_title.dart';
 
+import '../../models/group.dart';
 import '../../models/item.dart';
 import '../../providers/dummy_data_calls.dart';
 
@@ -31,8 +32,21 @@ class AddBillPage extends StatefulWidget {
 class _AddBillPageState extends State<AddBillPage> {
   late Bill bill = widget.dummyCalls.getBill(widget.billId);
   late DateTime date = bill.date;
+  late List<Group> groups = [];
   int newGroupId = -1; //change if bill should be added to new group
   int count = 0;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    print("init");
+    widget.dummyCalls.getOwnGroups().then((value) {
+      setState(() {
+        groups = value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -191,9 +205,11 @@ class _AddBillPageState extends State<AddBillPage> {
             visible: widget.groupId == -2 || widget.billId != -1,
             //make visible if not
             child: AddBillToGroupPopup(
-                dummyCalls: widget.dummyCalls,
-                closeFunction: addToGroup,
-                icon: addToGroupIcon)),
+              dummyCalls: widget.dummyCalls,
+              closeFunction: addToGroup,
+              icon: addToGroupIcon,
+              groups: groups,
+            )),
       ],
     );
   }

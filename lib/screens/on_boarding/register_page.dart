@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:split_the_bill/providers/dummy_authentication.dart';
+import 'package:split_the_bill/providers/dummy_data_calls.dart';
 import 'package:split_the_bill/widgets/screen_title.dart';
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({Key? key}) : super(key: key);
+  const RegisterPage({Key? key, required this.dummyCalls}) : super(key: key);
+  final DummyDataCalls dummyCalls;
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
@@ -32,7 +33,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 if (username.isNotEmpty &&
                     email.isNotEmpty &&
                     password.isNotEmpty) {
-                  DummyAuthentication.register(username, email, password);
+                  widget.dummyCalls.register(username, email, password);
                   Navigator.popUntil(context, (route) => route.isFirst);
                 }
               },

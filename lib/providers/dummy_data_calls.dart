@@ -1,3 +1,4 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:split_the_bill/models/assigned_item.dart';
 import 'package:split_the_bill/models/bill.dart';
 import 'package:split_the_bill/models/item.dart';
@@ -16,10 +17,11 @@ class DummyDataCalls {
 
   DummyDataCalls() {
     users = [
-      User(0, 'user0', 'user0@mail.com'),
-      User(1, 'user1', 'user1@mail.com'),
-      User(2, 'user2', 'user2@mail.com'),
-      User(3, 'user3', 'user3@mail.com')
+      User(0, 'user0', 'user0@mail.com', 'user0'),
+      User(1, 'user1', 'user1@mail.com', 'user1'),
+      User(2, 'user2', 'user2@mail.com', 'user2'),
+      User(3, 'user3', 'user3@mail.com', 'user3'),
+      User(4, 'test', 'test', 'test')
     ];
 
     items = [
@@ -66,19 +68,22 @@ class DummyDataCalls {
     return groups[index];
   }
 
-  void addBillToGroup(int billId, int groupID) {
+  Future<void> addBillToGroup(int billId, int groupID) async {
     if (groupID < 0) {
-      billMappings.add(
-          BillMapping(users[0], getBill(billId), [])); //TODO change to user
+      billMappings.add(BillMapping(
+          await getUser(), getBill(billId), [])); //TODO change contributors
     } else {
       groups[groupID].billMappings.add(BillMapping(
-          groups[groupID].members.first,
-          getBill(billId), [])); //TODO change to user
+          await getUser(), getBill(billId), [])); //TODO change contributors
     }
   }
 
-  List<Group> getOwnGroups() {
-    User user = users[0]; //TODO change to real user
+  Future<List<Group>> getOwnGroups() async {
+    print("getUsergroups");
+    User user = await getUser();
+    print(user.username);
+    print(
+        groups.where((group) => group.members.contains(user)).toList().length);
     return groups.where((group) => group.members.contains(user)).toList();
   }
 
@@ -93,9 +98,9 @@ class DummyDataCalls {
     groups[group.id] = group;
   }
 
-  void saveNewGroup(Group group) {
+  void saveNewGroup(Group group) async {
     Group newGroup = group;
-    newGroup.members.add(users[0]);
+    newGroup.members.add(await getUser());
     newGroup.id = groups.length;
     groups.add(newGroup);
   }
@@ -152,5 +157,48 @@ class DummyDataCalls {
   void deleteItem(int itemId) {
     //TODO change to actual delete
     items.where((element) => element.id == itemId).first.price = 0.0;
+  }
+
+  ///----------------User authentication--------------------
+
+  bool login(String username, String password) {
+    if (users.where((user) => user.username == username).isNotEmpty) {
+      setUserInPrefs(username);
+      return true;
+    }
+    return false;
+  }
+
+  setUserInPrefs(String username) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('username', username);
+  }
+
+  Future<String?> getUsername() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('username');
+  }
+
+  Future<User> getUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (prefs.getString('username') != null) {
+      return users
+          .where((user) => user.username == prefs.getString('username'))
+          .toList()[0];
+    } else {
+      return User(-1, 'no name', 'no email', 'no password');
+    }
+  }
+
+  register(String username, String email, String password) async {
+    setUserInPrefs(username);
+    users.add(User(users.length, username, email, password));
+  }
+
+  Future<void> logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.remove('username');
+    prefs.remove('email');
+    prefs.remove('password');
   }
 }

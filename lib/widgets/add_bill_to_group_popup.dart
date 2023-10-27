@@ -7,12 +7,15 @@ class AddBillToGroupPopup extends StatelessWidget {
       {Key? key,
       required this.icon,
       required this.closeFunction,
-      required this.dummyCalls})
+      required this.dummyCalls,
+      required this.groups})
       : super(key: key);
   final Icon icon;
   final Function closeFunction;
   final DummyDataCalls dummyCalls;
+  final List<Group> groups;
 
+  //TODO use futurebuilder
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
@@ -21,8 +24,7 @@ class AddBillToGroupPopup extends StatelessWidget {
         context: context,
         builder: (BuildContext context) => AlertDialog(
           title: const Text('To which Group should this bill be added?'),
-          actions: dummyCalls
-              .getOwnGroups()
+          actions: groups
               .map((group) => createGroupTextButton(group, context))
               .toList(),
         ),

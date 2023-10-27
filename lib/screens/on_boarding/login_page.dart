@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:split_the_bill/providers/dummy_data_calls.dart';
 import 'package:split_the_bill/screens/on_boarding/register_page.dart';
 import 'package:split_the_bill/widgets/screen_title.dart';
 
-import '../../providers/dummy_authentication.dart';
-
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({Key? key, required this.dummyCalls}) : super(key: key);
+
+  final DummyDataCalls dummyCalls;
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -38,7 +39,8 @@ class _LoginPageState extends State<LoginPage> {
                   child: ElevatedButton(
                       onPressed: () => {
                             PersistentNavBarNavigator.pushNewScreen(context,
-                                screen: const RegisterPage())
+                                screen:
+                                    RegisterPage(dummyCalls: widget.dummyCalls))
                           },
                       child: const Icon(Icons.app_registration)),
                 )
@@ -50,10 +52,12 @@ class _LoginPageState extends State<LoginPage> {
             TextButton(
                 onPressed: () {
                   if (username.isNotEmpty && password.isNotEmpty) {
-                    DummyAuthentication.login(username, password);
-                    Navigator.pop(context);
+                    if (widget.dummyCalls.login(username, password)) {
+                      Navigator.pop(context);
+                    } else {
+                      //TODO add error message
+                    }
                   }
-                  //TODO add error message
                 },
                 child: const Text("Login")),
           ],

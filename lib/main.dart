@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:split_the_bill/providers/dummy_authentication.dart';
 import 'package:split_the_bill/providers/dummy_data_calls.dart';
 import 'package:split_the_bill/screens/add_object/add_bill_page.dart';
 import 'package:split_the_bill/screens/add_object/add_group_page.dart';
@@ -27,8 +26,8 @@ void main() async {
         '/addGroup': (context) => AddGroupPage(dummyCalls: dummyCalls, id: -1),
         '/addItems': (context) =>
             AddItemPage(dummyCalls: dummyCalls, itemId: -1),
-        '/login': (context) => const LoginPage(),
-        '/register': (context) => const RegisterPage(),
+        '/login': (context) => LoginPage(dummyCalls: dummyCalls),
+        '/register': (context) => RegisterPage(dummyCalls: dummyCalls),
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -67,9 +66,9 @@ class _MainAppState extends State<MainApp> {
       floatingActionButton: FloatingActionButton(
         heroTag: "logout",
         onPressed: () {
-          DummyAuthentication.logout();
+          widget.dummyCalls.logout();
           PersistentNavBarNavigator.pushNewScreen(context,
-              screen: const LoginPage());
+              screen: LoginPage(dummyCalls: widget.dummyCalls));
         },
         child: const Icon(Icons.logout),
       ),
@@ -80,8 +79,8 @@ class _MainAppState extends State<MainApp> {
   void checkIfLoggedIn() async {
     if (!widget.isLoggedIn) {
       Future.delayed(Duration.zero, () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => const LoginPage()));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => LoginPage(dummyCalls: widget.dummyCalls)));
       });
     }
   }
