@@ -1,0 +1,99 @@
+import 'package:flutter/material.dart';
+import 'package:split_the_bill/models/group.dart';
+import 'package:split_the_bill/providers/dummy_data_calls.dart';
+import 'package:split_the_bill/screens/displayObjects/group_page.dart';
+
+class GroupsPage extends StatefulWidget {
+  const GroupsPage(this.changeIndex, this.dummyCalls, {Key? key})
+      : super(key: key);
+
+  final Function changeIndex;
+  final DummyDataCalls dummyCalls;
+
+  @override
+  State<GroupsPage> createState() => _GroupsPageState();
+}
+
+class _GroupsPageState extends State<GroupsPage> {
+  late List<Group> groups;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    //TODO replace by actual call to server
+    //initialize all groups
+    groups = widget.dummyCalls.getAllGroups();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: DataTable(
+          showCheckboxColumn: false,
+          columns: const <DataColumn>[
+            DataColumn(
+              label: Expanded(
+                child: Text(
+                  'Name',
+                  style: TextStyle(
+                      fontStyle: FontStyle.italic, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+            DataColumn(
+              label: Expanded(
+                child: Text(
+                  'Balance',
+                  style: TextStyle(
+                      fontStyle: FontStyle.italic, fontWeight: FontWeight.bold),
+                ),
+              ),
+            ),
+          ],
+          rows: buildAllRows(),
+        ),
+      ),
+    );
+  }
+
+  ///Helper method to build all table rows.
+  List<DataRow> buildAllRows() => groups.map((row) => buildRow(row)).toList();
+
+  ///Helper method to build a single table row.
+  DataRow buildRow(Group cells, {bool isHeader = false}) {
+    return DataRow(
+        cells: [
+          DataCell(
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Center(
+                child: Text(cells.name),
+              ),
+            ),
+          ),
+          DataCell(
+            Padding(
+              padding: const EdgeInsets.all(12),
+              child: Center(
+                child: Text(cells.userBalance.toString()),
+              ),
+            ),
+          )
+        ],
+        onSelectChanged: (bool? values) =>
+            {navigateToGroupPage(context, cells.id)});
+  }
+
+  ///Method to navigate to the GroupPage of a single group. Updates navbar.
+  void navigateToGroupPage(BuildContext context, int id) async {
+    final res = await Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) =>
+            GroupPage(id, widget.dummyCalls, widget.changeIndex)));
+    setState(() {
+      groups = widget.dummyCalls.getAllGroups();
+    });
+    widget.changeIndex(res);
+  }
+}

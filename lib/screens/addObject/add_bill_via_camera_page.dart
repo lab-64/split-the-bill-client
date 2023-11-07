@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../../providers/dummy_data_calls.dart';
+
 class AddBillPageViaCamera extends StatefulWidget {
-  const AddBillPageViaCamera({Key? key}) : super(key: key);
+  const AddBillPageViaCamera(this.dummyCalls, {Key? key}) : super(key: key);
+
+  final DummyDataCalls dummyCalls;
 
   @override
   State<AddBillPageViaCamera> createState() => _AddBillPageViaCameraState();
