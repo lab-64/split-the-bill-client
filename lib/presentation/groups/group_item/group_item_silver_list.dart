@@ -6,8 +6,8 @@ import 'package:split_the_bill/presentation/groups/group_item/controllers.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/bill/bill_list_tile.dart';
 
-class GroupBillsSilverList extends ConsumerWidget {
-  const GroupBillsSilverList(
+class GroupItemSilverList extends ConsumerWidget {
+  const GroupItemSilverList(
       {super.key, required this.scrollController, required this.groupId});
   final ScrollController scrollController;
   final String groupId;

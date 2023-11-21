@@ -5,14 +5,14 @@ import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/presentation/groups/new_group/controllers.dart';
 import 'package:split_the_bill/presentation/shared/primary_button.dart';
 
-class NewGroupScreen extends ConsumerStatefulWidget {
+class NewGroupScreen extends StatefulWidget {
   const NewGroupScreen({super.key});
 
   @override
-  ConsumerState<NewGroupScreen> createState() => _NewGroupScreenState();
+  State<NewGroupScreen> createState() => _NewGroupScreenState();
 }
 
-class _NewGroupScreenState extends ConsumerState<NewGroupScreen> {
+class _NewGroupScreenState extends State<NewGroupScreen> {
   TextEditingController name = TextEditingController();
 
   @override
@@ -40,20 +40,23 @@ class _NewGroupScreenState extends ConsumerState<NewGroupScreen> {
               ),
             ),
             gapH48,
-            Row(
-              children: [
-                Expanded(
-                  child: PrimaryButton(
-                    isLoading: ref.watch(newGroupControllerProvider).isLoading,
-                    onPressed: () => ref
-                        .read(newGroupControllerProvider.notifier)
-                        .addGroup(name.text)
-                        .then((_) => context.pop()),
-                    text: 'Add',
+            Consumer(builder: (context, ref, child) {
+              return Row(
+                children: [
+                  Expanded(
+                    child: PrimaryButton(
+                      isLoading:
+                          ref.watch(newGroupControllerProvider).isLoading,
+                      onPressed: () => ref
+                          .read(newGroupControllerProvider.notifier)
+                          .addGroup(name.text)
+                          .then((_) => context.pop()),
+                      text: 'Add',
+                    ),
                   ),
-                ),
-              ],
-            )
+                ],
+              );
+            }),
           ],
         ),
       ),

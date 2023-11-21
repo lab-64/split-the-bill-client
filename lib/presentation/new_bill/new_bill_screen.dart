@@ -4,18 +4,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/group/group.dart';
-import 'package:split_the_bill/domain/group/states/groups_state.dart';
 import 'package:split_the_bill/presentation/new_bill/controllers.dart';
+import 'package:split_the_bill/presentation/new_bill/new_bill_groups_dropdown.dart';
 import 'package:split_the_bill/presentation/shared/primary_button.dart';
 
-class NewBillScreen extends ConsumerStatefulWidget {
+class NewBillScreen extends StatefulWidget {
   const NewBillScreen({super.key});
 
   @override
-  ConsumerState<NewBillScreen> createState() => _NewBillScreenState();
+  State<NewBillScreen> createState() => _NewBillScreenState();
 }
 
-class _NewBillScreenState extends ConsumerState<NewBillScreen> {
+class _NewBillScreenState extends State<NewBillScreen> {
   TextEditingController name = TextEditingController();
   TextEditingController price = TextEditingController();
   Group? group;
@@ -29,8 +29,6 @@ class _NewBillScreenState extends ConsumerState<NewBillScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final groups = ref.watch(groupsStateProvider).requireValue;
-
     return Scaffold(
       appBar: AppBar(
         title: const Text("New Bill"),
@@ -62,42 +60,36 @@ class _NewBillScreenState extends ConsumerState<NewBillScreen> {
               ),
             ),
             gapH32,
-            Row(
-              children: [
-                Expanded(
-                  child: DropdownMenu<Group>(
-                    label: const Text("Group"),
-                    textStyle: const TextStyle(color: Colors.black),
-                    initialSelection: group,
-                    onSelected: (Group? value) {
-                      setState(() {
-                        group = value;
-                      });
-                    },
-                    dropdownMenuEntries:
-                        groups.map<DropdownMenuEntry<Group>>((Group group) {
-                      return DropdownMenuEntry<Group>(
-                          value: group, label: group.name);
-                    }).toList(),
-                  ),
-                ),
-              ],
+            Consumer(
+              builder: (context, ref, child) {
+                return NewBillGroupsDropdown(
+                  initialSelection: group,
+                  onSelected: (Group? value) {
+                    setState(() => group = value);
+                  },
+                );
+              },
             ),
             gapH48,
-            Row(
-              children: [
-                Expanded(
-                  child: PrimaryButton(
-                    isLoading: ref.watch(newBillControllerProvider).isLoading,
-                    onPressed: () => ref
-                        .read(newBillControllerProvider.notifier)
-                        .addBill(name.text, price.text, group!.id)
-                        .then((_) => context.pop()),
-                    text: 'Add',
-                  ),
-                ),
-              ],
-            )
+            Consumer(
+              builder: (context, ref, child) {
+                return Row(
+                  children: [
+                    Expanded(
+                      child: PrimaryButton(
+                        isLoading:
+                            ref.watch(newBillControllerProvider).isLoading,
+                        onPressed: () => ref
+                            .read(newBillControllerProvider.notifier)
+                            .addBill(name.text, price.text, group!.id)
+                            .then((_) => context.pop()),
+                        text: 'Add',
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
           ],
         ),
       ),
