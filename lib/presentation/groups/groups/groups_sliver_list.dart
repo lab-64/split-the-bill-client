@@ -9,8 +9,8 @@ import 'package:split_the_bill/routes.dart';
 
 import 'group_card.dart';
 
-class GroupsSilverList extends ConsumerWidget {
-  const GroupsSilverList({super.key, required this.scrollController});
+class GroupsSliverList extends ConsumerWidget {
+  const GroupsSliverList({super.key, required this.scrollController});
   final ScrollController scrollController;
 
   @override

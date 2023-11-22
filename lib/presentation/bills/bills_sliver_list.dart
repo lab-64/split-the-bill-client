@@ -6,8 +6,8 @@ import 'package:split_the_bill/domain/bill/states/bills_state.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/bill/bill_list_tile.dart';
 
-class BillsSilverList extends ConsumerWidget {
-  const BillsSilverList({super.key, required this.scrollController});
+class BillsSliverList extends ConsumerWidget {
+  const BillsSliverList({super.key, required this.scrollController});
   final ScrollController scrollController;
 
   @override

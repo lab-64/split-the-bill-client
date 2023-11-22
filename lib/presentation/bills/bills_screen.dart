@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:split_the_bill/presentation/bills/bills_silver_list.dart';
+import 'package:split_the_bill/presentation/bills/bills_sliver_list.dart';
 
 class BillsScreen extends ConsumerWidget {
   const BillsScreen({super.key});
@@ -14,7 +14,7 @@ class BillsScreen extends ConsumerWidget {
         title: const Text("Bills"),
       ),
       body: CustomScrollView(slivers: [
-        BillsSilverList(scrollController: scrollController),
+        BillsSliverList(scrollController: scrollController),
       ]),
     );
   }
