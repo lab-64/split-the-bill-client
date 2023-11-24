@@ -1,8 +1,8 @@
 import 'package:split_the_bill/constants/constants.dart';
 
-class UserAPI {
+class AuthAPI {
   static const String _baseUrl = Constants.baseApiUrl;
-  static const String _apiPath = "api/user";
+  static const String _apiPath = "/user";
 
   Uri getUser(String id) => _buildUri(
         endpoint: "/$id",

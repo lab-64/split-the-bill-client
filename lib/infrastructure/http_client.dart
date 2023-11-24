@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:http/http.dart' as http;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:split_the_bill/infrastructure/app_exception.dart';
 
 part 'http_client.g.dart';
 
@@ -16,24 +17,20 @@ class HttpClient {
   }) async {
     try {
       final response = await client.get(uri);
+      final data = json.decode(response.body);
+
       switch (response.statusCode) {
         case 200:
-          final data = json.decode(response.body);
-          return builder(data);
+          return builder(data['data']);
         case 401:
-          return Future.error("unauthorized");
-        //throw InvalidApiKeyException();
+          throw UnauthenticatedException(data['message']);
         case 404:
-          return Future.error("not found");
-
-        //throw CityNotFoundException();
+          throw NotFoundException((data['message']));
         default:
-          return Future.error("unknown");
-        //throw UnknownException();
+          throw UnknownException((data['message']));
       }
     } on SocketException catch (_) {
-      return Future.error(_);
-      //throw NoInternetConnectionException();
+      throw NoInternetConnectionException();
     }
   }
 }

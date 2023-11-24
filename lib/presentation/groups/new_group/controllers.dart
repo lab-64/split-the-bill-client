@@ -22,6 +22,7 @@ class NewGroupController extends _$NewGroupController {
       balance: 0,
       members: [user.id],
       bills: [],
+      owner: user.id,
     );
 
     final groupsState = ref.read(groupsStateProvider.notifier);

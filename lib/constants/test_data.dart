@@ -9,6 +9,7 @@ final testGroups = [
     name: "Wohnung",
     balance: testBills[0].price + testBills[1].price,
     members: ["1", "2"],
+    owner: "1",
     bills: [testBills[0], testBills[1]],
   ),
   Group(
@@ -16,6 +17,7 @@ final testGroups = [
     name: "Urlaub",
     balance: testBills[2].price + testBills[3].price + testBills[4].price,
     members: ["1", "2", "5"],
+    owner: "1",
     bills: [testBills[2], testBills[3], testBills[4]],
   ),
   Group(
@@ -23,6 +25,7 @@ final testGroups = [
     name: "Shit",
     balance: 0.00,
     members: ["1", "2", "3"],
+    owner: "1",
     bills: [],
   ),
   Group(
@@ -30,6 +33,7 @@ final testGroups = [
     name: "Blalbleerrrrskere",
     balance: 0.00,
     members: ["1", "4", "5"],
+    owner: "1",
     bills: [],
   ),
   Group(
@@ -37,6 +41,7 @@ final testGroups = [
     name: "Party",
     balance: 0.00,
     members: ["1", "2", "5"],
+    owner: "1",
     bills: [],
   ),
 ];
