@@ -49,27 +49,22 @@ final testGroups = [
 final testUsers = [
   User(
     id: '1',
-    username: "Marvin",
     email: "hoho@go.com",
   ),
   User(
     id: '2',
-    username: "Felix",
     email: "hoho@go.com",
   ),
   User(
     id: '3',
-    username: "Jannis",
     email: "hoho@go.com",
   ),
   User(
     id: '4',
-    username: "Grzegi",
     email: "hoho@go.com",
   ),
   User(
     id: '5',
-    username: "Jan",
     email: "hoho@go.com",
   ),
 ];

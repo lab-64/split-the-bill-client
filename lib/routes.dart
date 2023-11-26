@@ -44,7 +44,6 @@ GoRouter goRouter(GoRouterRef ref) {
           final isGroupsOrBillsRoute =
               state.uri.path == '/groups' || state.uri.path == '/bills';
 
-          debugPrint(state.uri.path);
           if (isGroupsOrBillsRoute) {
             return Navigation(child: child);
           } else {

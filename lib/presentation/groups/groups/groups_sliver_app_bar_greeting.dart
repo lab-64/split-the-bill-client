@@ -21,7 +21,7 @@ class GroupSliverAppBarGreeting extends ConsumerWidget {
         ),
         gapW8,
         Text(
-          user.username,
+          user.email,
           style: Theme.of(context)
               .textTheme
               .headlineLarge

@@ -1,7 +1,6 @@
 import 'package:split_the_bill/auth/data/auth_api.dart';
 import 'package:split_the_bill/auth/data/auth_repository.dart';
 import 'package:split_the_bill/auth/user.dart';
-import 'package:split_the_bill/constants/test_data.dart';
 import 'package:split_the_bill/infrastructure/http_client.dart';
 
 class RemoteAuthRepository extends AuthRepository {
@@ -18,15 +17,13 @@ class RemoteAuthRepository extends AuthRepository {
     };
 
     try {
-      await client.post(
-        uri: api.getLogin(), // Use the appropriate URI for adding a group
+      return await client.post(
+        uri: api.getLogin(),
         body: credentials,
         builder: (data) => User.fromMap(data),
       );
-      return true;
     } catch (e) {
-      // Handle exceptions or return false if the request fails
-      return false;
+      rethrow;
     }
   }
 

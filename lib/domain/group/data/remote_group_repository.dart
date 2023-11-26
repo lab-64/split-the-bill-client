@@ -17,14 +17,29 @@ class RemoteGroupRepository extends GroupRepository {
       );
 
   @override
-  Future<List<Group>> getGroupsByUser(String userId) {
-    // TODO: implement getGroupsByUser
-    throw UnimplementedError();
+  Future<List<Group>> getGroupsByUser(String userId) async {
+    try {
+      return await client.get<List<Group>>(
+        uri: api.getGroupsByUser(userId),
+        builder: (data) {
+          if (data == null || data.isEmpty) {
+            return [];
+          }
+          //TODO
+          return data.map((groupData) => Group.fromMap(groupData)).toList()
+              as List<Group>;
+        },
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
   @override
-  Future<bool> add(Group group) {
-    // TODO: implement add
-    throw UnimplementedError();
-  }
+  Future<bool> add(Group group) => client.post(
+        uri: api.createGroup(),
+        body: group.toMap(),
+        // TODO
+        builder: (data) => true,
+      );
 }

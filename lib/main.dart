@@ -4,8 +4,23 @@ import 'package:split_the_bill/app.dart';
 
 void main() {
   runApp(
-    const ProviderScope(
-      child: MyApp(),
+    ProviderScope(
+      observers: [
+        MyObserver(),
+      ],
+      child: const MyApp(),
     ),
   );
+}
+
+class MyObserver extends ProviderObserver {
+  @override
+  void providerDidFail(
+    ProviderBase<Object?> provider,
+    Object error,
+    StackTrace stackTrace,
+    ProviderContainer container,
+  ) {
+    print('Provider ${provider.name} threw $error at $stackTrace');
+  }
 }
