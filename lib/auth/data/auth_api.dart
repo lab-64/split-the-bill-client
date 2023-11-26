@@ -9,9 +9,13 @@ class AuthAPI {
         parametersBuilder: () => getUserParameters(id),
       );
 
+  Uri getLogin() => _buildUri(
+        endpoint: "/login",
+      );
+
   Uri _buildUri({
     required String endpoint,
-    required Map<String, dynamic> Function() parametersBuilder,
+    Map<String, dynamic> Function()? parametersBuilder,
   }) {
     return Uri(
       scheme: "http",

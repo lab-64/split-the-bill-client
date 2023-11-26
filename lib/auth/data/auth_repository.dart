@@ -5,7 +5,7 @@ import 'package:split_the_bill/auth/user.dart';
 part 'auth_repository.g.dart';
 
 abstract class AuthRepository {
-  Future<User> login(String username, String password);
+  Future<User> login(String email, String password);
 
   Future<void> register(String email, String password);
 }

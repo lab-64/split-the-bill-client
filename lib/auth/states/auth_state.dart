@@ -15,9 +15,9 @@ class AuthState extends _$AuthState {
     //return const User(id: "", username: "", email: "");
   }
 
-  Future<void> login(String username, String password) async {
+  Future<void> login(String email, String password) async {
     state = const AsyncLoading();
     state =
-        await AsyncValue.guard(() => _authRepository.login(username, password));
+        await AsyncValue.guard(() => _authRepository.login(email, password));
   }
 }

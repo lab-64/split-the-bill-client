@@ -33,6 +33,35 @@ class HttpClient {
       throw NoInternetConnectionException();
     }
   }
+
+  Future<T> post<T>({
+    required Uri uri,
+    required Map<String, dynamic> body,
+    required T Function(dynamic data) builder,
+  }) async {
+    try {
+      final response = await client.post(
+        uri,
+        body: json.encode(body),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      final data = json.decode(response.body);
+
+      switch (response.statusCode) {
+        case 200:
+          return builder(data['data']);
+        case 201:
+          return builder(data['data']);
+        case 401:
+          throw UnauthenticatedException(data['message']);
+        default:
+          throw UnknownException(data['message']);
+      }
+    } on SocketException catch (_) {
+      throw NoInternetConnectionException();
+    }
+  }
 }
 
 @Riverpod(keepAlive: true)
