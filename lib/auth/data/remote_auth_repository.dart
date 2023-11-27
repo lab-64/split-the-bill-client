@@ -11,20 +11,13 @@ class RemoteAuthRepository extends AuthRepository {
 
   @override
   Future<User> login(String email, String password) async {
-    final Map<String, dynamic> credentials = {
-      'email': email,
-      'password': password,
-    };
+    final credentials = {'email': email, 'password': password};
 
-    try {
-      return await client.post(
-        uri: api.getLogin(),
-        body: credentials,
-        builder: (data) => User.fromMap(data),
-      );
-    } catch (e) {
-      rethrow;
-    }
+    return client.post(
+      uri: api.getLogin(),
+      body: credentials,
+      builder: (data) => User.fromMap(data),
+    );
   }
 
   @override
