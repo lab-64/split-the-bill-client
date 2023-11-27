@@ -23,12 +23,12 @@ class FakeGroupRepository extends GroupRepository {
   }
 
   @override
-  Future<bool> add(Group group) async {
+  Future<Group> create(Group group) async {
     await Future.delayed(const Duration(milliseconds: 200));
     var lastId = int.parse(testGroups.last.id);
     group = group.copyWith(id: (lastId + 1).toString());
 
     testGroups.add(group);
-    return true;
+    return group;
   }
 }

@@ -1,13 +1,11 @@
 // TODO: Use Freezed or json_serializable
 
-import 'package:flutter/cupertino.dart';
 import 'package:split_the_bill/domain/bill/bill.dart';
 
 class Group {
   final String id;
   final String name;
   final String owner;
-  final double balance;
   final List<String> members;
   final List<Bill> bills;
 
@@ -16,7 +14,6 @@ class Group {
     required this.id,
     required this.name,
     required this.owner,
-    required this.balance,
     required this.members,
     required this.bills,
   });
@@ -29,7 +26,6 @@ class Group {
           id == other.id &&
           name == other.name &&
           owner == other.owner &&
-          balance == other.balance &&
           members == other.members &&
           bills == other.bills);
 
@@ -38,7 +34,6 @@ class Group {
       id.hashCode ^
       name.hashCode ^
       owner.hashCode ^
-      balance.hashCode ^
       members.hashCode ^
       bills.hashCode;
 
@@ -48,7 +43,6 @@ class Group {
         ' id: $id,' +
         ' name: $name,' +
         ' owner: $owner,' +
-        ' balance: $balance,' +
         ' members: $members,' +
         ' bills: $bills,' +
         '}';
@@ -66,7 +60,6 @@ class Group {
       id: id ?? this.id,
       name: name ?? this.name,
       owner: owner ?? this.owner,
-      balance: balance ?? this.balance,
       members: members ?? this.members,
       bills: bills ?? this.bills,
     );
@@ -77,19 +70,16 @@ class Group {
       'id': this.id,
       'name': this.name,
       'owner': this.owner,
-      'balance': this.balance,
       'members': this.members,
       'bills': this.bills,
     };
   }
 
   factory Group.fromMap(Map<String, dynamic> map) {
-    debugPrint(map.toString());
     return Group(
       id: map['id'] as String,
       name: map['name'] as String,
       owner: map['owner'] as String,
-      balance: map['balance'] ?? 0.00,
       members: (map['members'] as List<dynamic>)
           .map((member) => member as String)
           .toList(),

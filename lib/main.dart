@@ -1,26 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/app.dart';
+import 'package:split_the_bill/utils/async_error_logger.dart';
 
 void main() {
   runApp(
     ProviderScope(
       observers: [
-        MyObserver(),
+        AsyncErrorLogger(),
       ],
       child: const MyApp(),
     ),
   );
-}
-
-class MyObserver extends ProviderObserver {
-  @override
-  void providerDidFail(
-    ProviderBase<Object?> provider,
-    Object error,
-    StackTrace stackTrace,
-    ProviderContainer container,
-  ) {
-    print('Provider ${provider.name} threw $error at $stackTrace');
-  }
 }

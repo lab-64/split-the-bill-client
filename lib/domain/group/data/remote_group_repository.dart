@@ -11,13 +11,13 @@ class RemoteGroupRepository extends GroupRepository {
   final HttpClient client;
 
   @override
-  Future<Group> getGroup(String groupId) async => client.get(
+  Future<Group> getGroup(String groupId) => client.get(
         uri: api.getGroup(groupId),
         builder: (data) => Group.fromMap(data),
       );
 
   @override
-  Future<List<Group>> getGroupsByUser(String userId) async => client.get(
+  Future<List<Group>> getGroupsByUser(String userId) => client.get(
         uri: api.getGroupsByUser(userId),
         builder: (data) => data
             .map((groupData) => Group.fromMap(groupData))
@@ -26,10 +26,9 @@ class RemoteGroupRepository extends GroupRepository {
       );
 
   @override
-  Future<bool> add(Group group) => client.post(
+  Future<Group> create(Group group) => client.post(
         uri: api.createGroup(),
         body: group.toMap(),
-        // TODO
-        builder: (data) => true,
+        builder: (data) => Group.fromMap(data),
       );
 }

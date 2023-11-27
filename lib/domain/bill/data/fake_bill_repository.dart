@@ -12,7 +12,7 @@ class FakeBillRepository extends BillRepository {
   }
 
   @override
-  Future<bool> add(Bill bill) async {
+  Future<bool> create(Bill bill) async {
     await Future.delayed(const Duration(milliseconds: 200));
     // This code is total garbage and is here just for testing purposes, don't repeat this at home XD
 
@@ -27,8 +27,7 @@ class FakeBillRepository extends BillRepository {
       var bills = [...group.bills];
       bills.add(bill);
 
-      var updatedGroup =
-          group.copyWith(bills: bills, balance: group.balance + bill.price);
+      var updatedGroup = group.copyWith(bills: bills);
 
       var index = testGroups.indexWhere((element) => element.id == group.id);
       testGroups[index] = updatedGroup;

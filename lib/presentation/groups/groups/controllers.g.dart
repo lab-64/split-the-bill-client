@@ -7,7 +7,7 @@ part of 'controllers.dart';
 // **************************************************************************
 
 String _$groupsTotalBalanceHash() =>
-    r'858265c7dcc6f633463ed69c9a78a2e5d3e7ffd9';
+    r'66dcd09610a90e7b0e9558dc3104268f148482dc';
 
 /// See also [groupsTotalBalance].
 @ProviderFor(groupsTotalBalance)

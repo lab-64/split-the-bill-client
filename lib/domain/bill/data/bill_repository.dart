@@ -7,7 +7,7 @@ part 'bill_repository.g.dart';
 abstract class BillRepository {
   Future<List<Bill>> getBillsByUser(String userId);
 
-  Future<bool> add(Bill bill);
+  Future<bool> create(Bill bill);
 }
 
 @Riverpod(keepAlive: true)

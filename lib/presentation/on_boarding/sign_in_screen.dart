@@ -35,7 +35,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     ref.listen(
-        authStateProvider, (_, next) => next.showAlertDialogOnError(context));
+        authStateProvider, (_, next) => next.showSnackBarOnError(context));
 
     final state = ref.watch(authStateProvider);
 

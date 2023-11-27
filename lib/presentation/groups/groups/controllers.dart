@@ -7,7 +7,8 @@ part 'controllers.g.dart';
 @riverpod
 double groupsTotalBalance(GroupsTotalBalanceRef ref) {
   final groups = ref.watch(groupsStateProvider).value;
-  return groups?.fold(0.0, (acc, group) => acc! + group.balance) ?? 0;
+  return 0;
+  //return groups?.fold(0.0, (acc, group) => acc! + group.balance) ?? 0;
 }
 
 @riverpod
