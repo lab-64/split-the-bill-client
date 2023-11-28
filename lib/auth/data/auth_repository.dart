@@ -14,7 +14,6 @@ abstract class AuthRepository {
 
 @Riverpod(keepAlive: true)
 AuthRepository authRepository(AuthRepositoryRef ref) {
-  // TODO: Replace with a real repository when it's available
   return RemoteAuthRepository(
     api: AuthAPI(),
     client: ref.read(httpClientProvider),

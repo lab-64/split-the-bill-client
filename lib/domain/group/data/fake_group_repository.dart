@@ -1,6 +1,5 @@
 import 'package:split_the_bill/constants/test_data.dart';
 import 'package:split_the_bill/domain/group/data/group_repository.dart';
-import 'package:split_the_bill/infrastructure/app_exception.dart';
 
 import '../group.dart';
 
@@ -12,7 +11,6 @@ class FakeGroupRepository extends GroupRepository {
     await Future.delayed(const Duration(milliseconds: 200));
 
     final group = testGroups.where((group) => group.id == groupId).first;
-    if (group == null) throw GroupNotFoundException();
     return group;
   }
 

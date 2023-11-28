@@ -17,6 +17,7 @@ class RemoteAuthRepository extends AuthRepository {
       uri: api.getLogin(),
       body: credentials,
       builder: (data) => User.fromMap(data),
+      isLogin: true,
     );
   }
 

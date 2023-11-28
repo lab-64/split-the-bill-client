@@ -8,11 +8,6 @@ sealed class AppException implements Exception {
   String toString() => message;
 }
 
-/// Group
-class GroupNotFoundException extends AppException {
-  GroupNotFoundException() : super('group-not-found', 'Group not found');
-}
-
 /// API
 class UnauthenticatedException extends AppException {
   UnauthenticatedException(String message) : super('unauthenticated', message);
