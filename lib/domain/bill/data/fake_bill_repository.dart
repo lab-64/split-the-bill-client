@@ -7,7 +7,8 @@ class FakeBillRepository extends BillRepository {
   Future<List<Bill>> getBillsByUser(String userId) async {
     await Future.delayed(const Duration(milliseconds: 200));
     return testBills
-        .where((bill) => bill.contributors.contains(userId))
+        .where((bill) =>
+            bill.items.any((item) => item.contributors.contains(userId)))
         .toList();
   }
 
