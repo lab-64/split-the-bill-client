@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:split_the_bill/constants/app_sizes.dart';
-import 'package:split_the_bill/domain/bill/bill.dart';
 
-import '../../../routes.dart';
+import '../../../constants/app_sizes.dart';
+import '../../../domain/item/item.dart';
 
-class BillListTile extends StatelessWidget {
-  const BillListTile({super.key, required this.bill});
+class ItemListTile extends StatelessWidget {
+  const ItemListTile({super.key, required this.item});
 
-  final Bill bill;
+  final Item item;
 
   @override
   Widget build(BuildContext context) {
@@ -31,18 +29,15 @@ class BillListTile extends StatelessWidget {
           color: Colors.lightGreenAccent,
         ),
         title: Text(
-          bill.name,
+          item.name,
           style: Theme.of(context).textTheme.titleMedium,
         ),
-        subtitle: Text('${bill.price} €'),
+        subtitle: Text('${item.price} €'),
         trailing: const Icon(
           Icons.navigate_next,
           color: Colors.white,
         ),
-        onTap: () => context.goNamed(
-          Routes.bill.name,
-          pathParameters: {'id': bill.groupId, 'billId': bill.id},
-        ),
+        onTap: () {},
       ),
     );
   }

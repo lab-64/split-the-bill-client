@@ -7,6 +7,8 @@ part 'bill_repository.g.dart';
 abstract class BillRepository {
   Future<List<Bill>> getBillsByUser(String userId);
 
+  Future<Bill> getBillById(String billId);
+
   Future<bool> add(Bill bill);
 }
 
