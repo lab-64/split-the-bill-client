@@ -22,9 +22,8 @@ class NewBillController extends _$NewBillController {
       groupId: groupId,
       ownerId: user!.id,
       date: DateTime.now(),
-      // TODO: Add contributor selection
-      contributors: [user.id, '2'],
       price: double.parse(price),
+      items: []
     );
 
     final billState = ref.read(billsStateProvider.notifier);

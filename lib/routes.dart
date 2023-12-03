@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
-import 'package:split_the_bill/presentation/bills/bills_screen.dart';
+import 'package:split_the_bill/presentation/bills/bill/bill_screen.dart';
+import 'package:split_the_bill/presentation/bills/bills/bills_screen.dart';
 import 'package:split_the_bill/presentation/groups/groups/groups_screen.dart';
 import 'package:split_the_bill/presentation/groups/new_group/new_group_screen.dart';
 import 'package:split_the_bill/presentation/new_bill/new_bill_screen.dart';
@@ -13,7 +14,7 @@ import 'presentation/groups/group_item/group_item_screen.dart';
 
 part 'routes.g.dart';
 
-enum Routes { groups, group, newGroup, bills, signIn, newBill }
+enum Routes { groups, group, newGroup, bills, bill, signIn, newBill }
 
 @Riverpod(keepAlive: true)
 GoRouter goRouter(GoRouterRef ref) {
@@ -65,13 +66,22 @@ GoRouter goRouter(GoRouterRef ref) {
                 builder: (context, state) => const NewGroupScreen(),
               ),
               GoRoute(
-                path: ':id',
-                name: Routes.group.name,
-                builder: (context, state) {
-                  final groupId = state.pathParameters['id']!;
-                  return GroupItemScreen(groupId: groupId);
-                },
-              ),
+                  path: ':id',
+                  name: Routes.group.name,
+                  builder: (context, state) {
+                    final groupId = state.pathParameters['id']!;
+                    return GroupItemScreen(groupId: groupId);
+                  },
+                  routes: [
+                    GoRoute(
+                      path: ':billId',
+                      name: Routes.bill.name,
+                      builder: (context, state) {
+                        final billId = state.pathParameters["billId"]!;
+                        return BillItemScreen(billId: billId);
+                      },
+                    ),
+                  ]),
             ],
           ),
           GoRoute(
