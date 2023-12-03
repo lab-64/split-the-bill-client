@@ -47,7 +47,7 @@ class FakeBillRepository extends BillRepository {
     await Future.delayed(const Duration(milliseconds: 200));
 
     final bill = testBills.where((bill) => bill.id == billId).first;
-    if (bill == null) throw GroupNotFoundException();
+    if (bill == null) throw ItemNotFoundException();
     return bill;
   }
 }

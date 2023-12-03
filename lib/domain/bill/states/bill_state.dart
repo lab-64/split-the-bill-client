@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/domain/bill/data/bill_repository.dart';
-import 'package:split_the_bill/domain/group/data/group_repository.dart';
 
 import '../bill.dart';
 
