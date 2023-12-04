@@ -1,11 +1,13 @@
+import '../item/item.dart';
+
 class Bill {
   final String id;
   final String name;
   final String groupId;
   final String ownerId;
   final DateTime date;
-  final List<String> contributors;
   final double price;
+  final List<Item> items;
 
 //<editor-fold desc="Data Methods">
   const Bill({
@@ -14,22 +16,22 @@ class Bill {
     required this.groupId,
     required this.ownerId,
     required this.date,
-    required this.contributors,
     required this.price,
+    required this.items,
   });
 
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is Bill &&
+      other is Bill &&
           runtimeType == other.runtimeType &&
           id == other.id &&
           name == other.name &&
           groupId == other.groupId &&
           ownerId == other.ownerId &&
           date == other.date &&
-          contributors == other.contributors &&
-          price == other.price);
+          price == other.price &&
+          items == other.items;
 
   @override
   int get hashCode =>
@@ -38,12 +40,12 @@ class Bill {
       groupId.hashCode ^
       ownerId.hashCode ^
       date.hashCode ^
-      contributors.hashCode ^
-      price.hashCode;
+      price.hashCode ^
+      items.hashCode;
 
   @override
   String toString() {
-    return 'Bill{ id: $id, name: $name, groupId: $groupId, ownerId: $ownerId, date: $date, contributors: $contributors, price: $price,}';
+    return 'Bill{id: $id, name: $name, groupId: $groupId, ownerId: $ownerId, date: $date, price: $price, items: $items}';
   }
 
   Bill copyWith({
@@ -52,8 +54,8 @@ class Bill {
     String? groupId,
     String? ownerId,
     DateTime? date,
-    List<String>? contributors,
     double? price,
+    List<Item>? items,
   }) {
     return Bill(
       id: id ?? this.id,
@@ -61,8 +63,8 @@ class Bill {
       groupId: groupId ?? this.groupId,
       ownerId: ownerId ?? this.ownerId,
       date: date ?? this.date,
-      contributors: contributors ?? this.contributors,
       price: price ?? this.price,
+      items: items ?? this.items,
     );
   }
 
@@ -73,8 +75,8 @@ class Bill {
       'groupId': groupId,
       'ownerId': ownerId,
       'date': date,
-      'contributors': contributors,
       'price': price,
+      'items': items,
     };
   }
 
@@ -85,10 +87,9 @@ class Bill {
       groupId: map['groupId'] as String,
       ownerId: map['ownerId'] as String,
       date: map['date'] as DateTime,
-      contributors: map['contributors'] as List<String>,
       price: map['price'] as double,
+      items: map['items'] as List<Item>,
     );
   }
-
 //</editor-fold>
 }

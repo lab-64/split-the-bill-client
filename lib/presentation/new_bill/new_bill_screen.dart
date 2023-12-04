@@ -77,6 +77,7 @@ class _NewBillScreenState extends State<NewBillScreen> {
                   children: [
                     Expanded(
                       child: PrimaryButton(
+                        //TODO give standard values or do not allow if no values given
                         isLoading:
                             ref.watch(newBillControllerProvider).isLoading,
                         onPressed: () => ref
