@@ -17,7 +17,9 @@ class FakeGroupRepository extends GroupRepository {
   @override
   Future<List<Group>> getGroupsByUser(String userId) async {
     await Future.delayed(const Duration(milliseconds: 200));
-    return testGroups.where((group) => group.members.contains(userId)).toList();
+    return testGroups
+        .where((group) => group.memberIDs.contains(userId))
+        .toList();
   }
 
   @override

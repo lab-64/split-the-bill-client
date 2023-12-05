@@ -5,16 +5,16 @@ import 'package:split_the_bill/domain/bill/bill.dart';
 class Group {
   final String id;
   final String name;
-  final String owner;
-  final List<String> members;
+  final String ownerID;
+  final List<String> memberIDs;
   final List<Bill> bills;
 
 //<editor-fold desc="Data Methods">
   const Group({
     required this.id,
     required this.name,
-    required this.owner,
-    required this.members,
+    required this.ownerID,
+    required this.memberIDs,
     required this.bills,
   });
 
@@ -25,16 +25,16 @@ class Group {
           runtimeType == other.runtimeType &&
           id == other.id &&
           name == other.name &&
-          owner == other.owner &&
-          members == other.members &&
+          ownerID == other.ownerID &&
+          memberIDs == other.memberIDs &&
           bills == other.bills);
 
   @override
   int get hashCode =>
       id.hashCode ^
       name.hashCode ^
-      owner.hashCode ^
-      members.hashCode ^
+      ownerID.hashCode ^
+      memberIDs.hashCode ^
       bills.hashCode;
 
   @override
@@ -42,8 +42,8 @@ class Group {
     return 'Group{' +
         ' id: $id,' +
         ' name: $name,' +
-        ' owner: $owner,' +
-        ' members: $members,' +
+        ' ownerID: $ownerID,' +
+        ' members: $memberIDs,' +
         ' bills: $bills,' +
         '}';
   }
@@ -51,16 +51,16 @@ class Group {
   Group copyWith({
     String? id,
     String? name,
-    String? owner,
+    String? ownerID,
     double? balance,
-    List<String>? members,
+    List<String>? memberIDs,
     List<Bill>? bills,
   }) {
     return Group(
       id: id ?? this.id,
       name: name ?? this.name,
-      owner: owner ?? this.owner,
-      members: members ?? this.members,
+      ownerID: ownerID ?? this.ownerID,
+      memberIDs: memberIDs ?? this.memberIDs,
       bills: bills ?? this.bills,
     );
   }
@@ -69,8 +69,8 @@ class Group {
     return {
       'id': this.id,
       'name': this.name,
-      'owner': this.owner,
-      'members': this.members,
+      'ownerID': this.ownerID,
+      'memberIDs': this.memberIDs,
       'bills': this.bills,
     };
   }
@@ -79,13 +79,14 @@ class Group {
     return Group(
       id: map['id'] as String,
       name: map['name'] as String,
-      owner: map['owner'] as String,
-      members: (map['members'] as List<dynamic>)
+      ownerID: map['ownerID'] as String,
+      memberIDs: (map['memberIDs'] as List<dynamic>)
           .map((member) => member as String)
           .toList(),
-      bills: (map['bills'] as List<dynamic>)
+      bills: [],
+/*      bills: (map['bills'] as List<dynamic>)
           .map((bill) => Bill.fromMap(bill))
-          .toList(),
+          .toList()*/
     );
   }
 

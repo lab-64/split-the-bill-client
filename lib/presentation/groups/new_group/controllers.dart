@@ -17,9 +17,9 @@ class NewGroupController extends _$NewGroupController {
     final group = Group(
       id: '',
       name: groupName,
-      members: [user.id],
+      memberIDs: [],
       bills: [],
-      owner: user.id,
+      ownerID: user.id,
     );
 
     final groupsState = ref.read(groupsStateProvider.notifier);
