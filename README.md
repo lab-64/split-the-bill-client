@@ -15,7 +15,19 @@
 - type `File nesting` and click Enter
 - add `; .g.dart;` to Child File Suffix for `.dart` File Suffix
 
-**6. Install plugins (Android Studio):**
+**6. Hide not needed log messages (for less noise in the terminal):**:
+- click Shift twice
+- type `Console` and click Enter
+- look for section `Fold console lines that contain
+- click `+` and add following substrings:
+  - `D/`
+  - `E/`
+  - `I/AssistStructure`
+  - `I/ImeTracker`
+  - `I/TextInputPlugin`
+  - `W/`
+
+**7. Install plugins (Android Studio):**
 - Dart
 - Dart Data Class
 - Flutter
