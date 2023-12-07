@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/group/group.dart';
-import 'package:split_the_bill/presentation/new_bill/controllers.dart';
-import 'package:split_the_bill/presentation/new_bill/new_bill_groups_dropdown.dart';
+import 'package:split_the_bill/presentation/new_bill/new_bill_bar.dart';
 import 'package:split_the_bill/presentation/shared/primary_button.dart';
+
+import 'item_container.dart';
 
 class NewBillScreen extends StatefulWidget {
   const NewBillScreen({super.key});
@@ -16,15 +14,23 @@ class NewBillScreen extends StatefulWidget {
 }
 
 class _NewBillScreenState extends State<NewBillScreen> {
-  TextEditingController name = TextEditingController();
-  TextEditingController price = TextEditingController();
+  final ScrollController scrollController = ScrollController();
+  List<TextEditingController> names = [TextEditingController()];
+  List<TextEditingController> prices = [TextEditingController()];
+  List<ItemContainer> items = [];
   Group? group;
 
   @override
   void dispose() {
-    name.dispose();
-    price.dispose();
+    names.map((e) => e.dispose());
+    prices.map((e) => e.dispose());
     super.dispose();
+  }
+
+  @override
+  void initState() {
+    addItem();
+    super.initState();
   }
 
   @override
@@ -37,63 +43,72 @@ class _NewBillScreenState extends State<NewBillScreen> {
         padding: const EdgeInsets.all(Sizes.p32),
         child: Column(
           children: [
-            TextField(
-              style: const TextStyle(color: Colors.black),
-              controller: name,
-              decoration: const InputDecoration(
-                labelText: "Name",
-                prefixIcon: Icon(Icons.drive_file_rename_outline),
+            NewBillBar(
+              names: names,
+              prices: prices,
+              group: group,
+              changeGroup: setGroup,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(Sizes.p16),
+              child: PrimaryButton(
+                isLoading: false,
+                text: 'Add Item',
+                onPressed: () => {addItem()},
               ),
             ),
-            TextField(
-              style: const TextStyle(color: Colors.black),
-              controller: price,
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly
-              ],
-              decoration: const InputDecoration(
-                prefixIcon: Icon(
-                  Icons.attach_money,
-                ),
-                labelText: "Price",
+            Padding(
+              padding: const EdgeInsets.all(Sizes.p8),
+              child: ListView(
+                controller: scrollController,
+                shrinkWrap: true,
+                children: [for (final item in items) item],
               ),
-            ),
-            gapH32,
-            Consumer(
-              builder: (context, ref, child) {
-                return NewBillGroupsDropdown(
-                  initialSelection: group,
-                  onSelected: (Group? value) {
-                    setState(() => group = value);
-                  },
-                );
-              },
-            ),
-            gapH48,
-            Consumer(
-              builder: (context, ref, child) {
-                return Row(
-                  children: [
-                    Expanded(
-                      child: PrimaryButton(
-                        //TODO give standard values or do not allow if no values given
-                        isLoading:
-                            ref.watch(newBillControllerProvider).isLoading,
-                        onPressed: () => ref
-                            .read(newBillControllerProvider.notifier)
-                            .addBill(name.text, price.text, group!.id)
-                            .then((_) => context.pop()),
-                        text: 'Add',
-                      ),
-                    ),
-                  ],
-                );
-              },
             ),
           ],
         ),
       ),
     );
+  }
+
+  void setGroup(Group group) {
+    setState(() {
+      this.group = group;
+    });
+  }
+
+  void addItem() {
+    setState(() {
+      names.add(TextEditingController());
+      prices.add(TextEditingController());
+      items.add(ItemContainer(
+        name: names.last,
+        price: prices.last,
+        index: items.length,
+        deleteSelf: deleteItem,
+        onChanged: onChange,
+      ));
+    });
+  }
+
+  void deleteItem(int index) {
+    if (items.length > 1) {
+      setState(() {
+        items.removeAt(index);
+        names.removeAt(index);
+        prices.removeAt(index);
+      });
+    }
+  }
+
+  void onChange(String value, bool name, int index) {
+    setState(() {
+      if (name) {
+        names[index].text = value;
+      } else {
+        prices[index].text = value;
+      }
+      //items[index] = item;
+    });
   }
 }
