@@ -7,12 +7,12 @@ part of 'controllers.dart';
 // **************************************************************************
 
 String _$newGroupControllerHash() =>
-    r'a28bc4d7168c6eb6dc549c39d0c4c9d615d4431a';
+    r'578908be37938021ad5616cca801ccd2b3681f07';
 
 /// See also [NewGroupController].
 @ProviderFor(NewGroupController)
 final newGroupControllerProvider =
-    AsyncNotifierProvider<NewGroupController, bool>.internal(
+    AsyncNotifierProvider<NewGroupController, void>.internal(
   NewGroupController.new,
   name: r'newGroupControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,6 +22,6 @@ final newGroupControllerProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$NewGroupController = AsyncNotifier<bool>;
+typedef _$NewGroupController = AsyncNotifier<void>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

@@ -7,7 +7,7 @@ part of 'controllers.dart';
 // **************************************************************************
 
 String _$groupsTotalBalanceHash() =>
-    r'858265c7dcc6f633463ed69c9a78a2e5d3e7ffd9';
+    r'f82c3fae45038d0853f2ec06d8129187e66d875a';
 
 /// See also [groupsTotalBalance].
 @ProviderFor(groupsTotalBalance)
@@ -22,7 +22,7 @@ final groupsTotalBalanceProvider = AutoDisposeProvider<double>.internal(
 );
 
 typedef GroupsTotalBalanceRef = AutoDisposeProviderRef<double>;
-String _$groupBalanceHash() => r'70ffa361d4e4eff89d00d6df578118fdbecdb6c4';
+String _$groupBalanceHash() => r'497f23a7378ad6d251685a7ca83b187af82b7fd6';
 
 /// Copied from Dart SDK
 class _SystemHash {

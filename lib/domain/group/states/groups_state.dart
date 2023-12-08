@@ -22,9 +22,9 @@ class GroupsState extends _$GroupsState {
     return await _groupRepository.getGroupsByUser(userId);
   }
 
-  Future<bool> add(Group group) async {
-    final success = await _groupRepository.add(group);
-    if (success) ref.invalidateSelf();
-    return success;
+  Future<void> create(Group group) async {
+    final newGroup = await _groupRepository.create(group);
+    final previousState = await future;
+    state = AsyncData([...previousState, newGroup]);
   }
 }

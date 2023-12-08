@@ -9,36 +9,36 @@ final testGroups = [
   Group(
     id: '1',
     name: "Wohnung",
-    balance: testBills[0].price + testBills[1].price,
-    members: ["1", "2"],
+    memberIDs: ["1", "2"],
+    ownerID: "1",
     bills: [testBills[0], testBills[1]],
   ),
   Group(
     id: '2',
     name: "Urlaub",
-    balance: testBills[2].price + testBills[3].price + testBills[4].price,
-    members: ["1", "2", "5"],
+    memberIDs: ["1", "2", "5"],
+    ownerID: "1",
     bills: [testBills[2], testBills[3], testBills[4]],
   ),
   Group(
     id: '3',
     name: "Shit",
-    balance: 0.00,
-    members: ["1", "2", "3"],
+    memberIDs: ["1", "2", "3"],
+    ownerID: "1",
     bills: [testBills[5]],
   ),
   Group(
     id: '4',
     name: "Blalbleerrrrskere",
-    balance: 0.00,
-    members: ["1", "4", "5"],
+    memberIDs: ["1", "4", "5"],
+    ownerID: "1",
     bills: [],
   ),
   Group(
     id: '5',
     name: "Party",
-    balance: 0.00,
-    members: ["1", "2", "5"],
+    memberIDs: ["1", "2", "5"],
+    ownerID: "1",
     bills: [],
   ),
 ];
@@ -46,27 +46,22 @@ final testGroups = [
 final testUsers = [
   User(
     id: '1',
-    username: "Marvin",
     email: "hoho@go.com",
   ),
   User(
     id: '2',
-    username: "Felix",
     email: "hoho@go.com",
   ),
   User(
     id: '3',
-    username: "Jannis",
     email: "hoho@go.com",
   ),
   User(
     id: '4',
-    username: "Grzegi",
     email: "hoho@go.com",
   ),
   User(
     id: '5',
-    username: "Jan",
     email: "hoho@go.com",
   ),
 ];
@@ -151,8 +146,7 @@ final testItems = [
       id: '4', name: 'Wein', price: 1.20000, billId: '3', contributors: []),
   const Item(
       id: '5', name: 'Joghurt', price: 3.0000, billId: '6', contributors: []),
-  const Item(
-      id: '6', name: 'Auto', price: 600, billId: '5', contributors: []),
+  const Item(id: '6', name: 'Auto', price: 600, billId: '5', contributors: []),
   const Item(
       id: '7', name: 'Miete', price: 450.67, billId: '2', contributors: []),
   const Item(

@@ -44,7 +44,7 @@ class GroupCard extends ConsumerWidget {
                     ),
                     Text("$balance €",
                         style: Theme.of(context).textTheme.titleLarge?.apply(
-                            color: group.balance >= 0
+                            color: balance >= 0
                                 ? Colors.lightGreenAccent
                                 : Colors.red)),
                   ],

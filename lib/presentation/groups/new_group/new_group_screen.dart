@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
+import 'package:split_the_bill/infrastructure/async_value_ui.dart';
 import 'package:split_the_bill/presentation/groups/new_group/controllers.dart';
 import 'package:split_the_bill/presentation/shared/primary_button.dart';
 
@@ -41,6 +42,9 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
             ),
             gapH48,
             Consumer(builder: (context, ref, child) {
+              ref.listen(newGroupControllerProvider,
+                  (_, next) => next.showSnackBarOnError(context));
+
               return Row(
                 children: [
                   Expanded(

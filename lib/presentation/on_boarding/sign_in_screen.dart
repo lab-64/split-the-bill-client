@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
+import 'package:split_the_bill/infrastructure/async_value_ui.dart';
 import 'package:split_the_bill/presentation/shared/primary_button.dart';
-import 'package:split_the_bill/routes.dart';
 
 class SignInScreen extends ConsumerStatefulWidget {
   const SignInScreen({super.key});
@@ -24,9 +23,22 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     super.dispose();
   }
 
-  //final SignInFormType formType;
+  Future<void> _login() async {
+    final controller = ref.read(authStateProvider.notifier);
+
+    await controller.login(
+      email: email.text,
+      password: password.text,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    ref.listen(
+        authStateProvider, (_, next) => next.showSnackBarOnError(context));
+
+    final state = ref.watch(authStateProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -40,18 +52,19 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             TextField(
               style: const TextStyle(color: Colors.black),
               controller: email,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: "Email",
-                prefixIcon: Icon(Icons.email),
+                prefixIcon: const Icon(Icons.email),
+                enabled: !state.isLoading,
               ),
             ),
             TextField(
               style: const TextStyle(color: Colors.black),
               controller: password,
-              decoration: const InputDecoration(
-                prefixIcon:
-                    Icon(Icons.lock), //you can use prefixIcon property too.
+              decoration: InputDecoration(
                 labelText: "Password",
+                prefixIcon: const Icon(Icons.lock),
+                enabled: !state.isLoading,
               ),
             ),
             gapH48,
@@ -59,12 +72,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               children: [
                 Expanded(
                   child: PrimaryButton(
-                      isLoading: ref.watch(authStateProvider).isLoading,
-                      onPressed: () => ref
-                          .read(authStateProvider.notifier)
-                          .login(email.text, password.text)
-                          .then((value) => context.goNamed(Routes.groups.name)),
-                      text: 'Login'),
+                    isLoading: state.isLoading,
+                    onPressed: state.isLoading ? null : () => _login(),
+                    text: 'Login',
+                  ),
                 ),
               ],
             )

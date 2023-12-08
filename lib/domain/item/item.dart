@@ -1,5 +1,3 @@
-import 'package:split_the_bill/domain/bill/bill.dart';
-
 class Item {
   final String id;
   final String name;
