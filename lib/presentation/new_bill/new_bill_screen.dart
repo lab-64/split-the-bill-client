@@ -15,8 +15,8 @@ class NewBillScreen extends StatefulWidget {
 
 class _NewBillScreenState extends State<NewBillScreen> {
   final ScrollController scrollController = ScrollController();
-  List<TextEditingController> names = [TextEditingController()];
-  List<TextEditingController> prices = [TextEditingController()];
+  List<TextEditingController> names = [];
+  List<TextEditingController> prices = [];
   List<ItemContainer> items = [];
   Group? group;
 
@@ -108,7 +108,6 @@ class _NewBillScreenState extends State<NewBillScreen> {
       } else {
         prices[index].text = value;
       }
-      //items[index] = item;
     });
   }
 }

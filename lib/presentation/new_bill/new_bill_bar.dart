@@ -53,25 +53,26 @@ class _NewBillBarState extends State<NewBillBar> {
                 children: [
                   Expanded(
                     child: PrimaryButton(
-                      //TODO give standard values or do not allow if no values given
                       isLoading: ref.watch(newBillControllerProvider).isLoading,
                       onPressed: () {
                         //TODO make more simple
+                        if (widget.group == null) {
+                          return;
+                        }
                         List<Item> itemList = [];
                         for (var i = 0; i < widget.names.length; i++) {
-                          //TODO names & prices is not getting updated, if value changed
                           itemList.add(Item(
                               id: i.toString(),
                               name: widget.names[i].text,
-                              price: double.parse(widget.prices[i].value.text),
+                              price: widget.prices[i].text == ""
+                                  ? 0
+                                  : double.parse(widget.prices[i].text),
                               billId: '',
                               contributors: []));
                         }
                         ref
                             .read(newBillControllerProvider.notifier)
-                            .addBill(
-                                widget.names[0].text,
-                                widget.group!.id,
+                            .addBill(widget.names[0].text, widget.group!.id,
                                 itemList)
                             .then((_) => context.pop());
                       },

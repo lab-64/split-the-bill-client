@@ -6,7 +6,7 @@ part of 'controllers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$newBillControllerHash() => r'08808759ed72e1bf34446f3758aa4271e0e15960';
+String _$newBillControllerHash() => r'965377cd321d2cf93917f76f3aa32102ca09ef18';
 
 /// See also [NewBillController].
 @ProviderFor(NewBillController)
