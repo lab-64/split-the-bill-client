@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/group/group.dart';
 import 'package:split_the_bill/presentation/new_bill/new_bill_bar.dart';
+import 'package:split_the_bill/presentation/shared/bill/item_controller.dart';
 import 'package:split_the_bill/presentation/shared/primary_button.dart';
 
 import 'item_container.dart';
@@ -15,26 +16,21 @@ class NewBillScreen extends StatefulWidget {
 
 class _NewBillScreenState extends State<NewBillScreen> {
   final ScrollController scrollController = ScrollController();
-  List<TextEditingController> names = [];
-  List<TextEditingController> prices = [];
+  ItemController itemController = ItemController();
   List<ItemContainer> items = [];
   Group? group;
 
   @override
   void dispose() {
-    names.map((e) => e.dispose());
-    prices.map((e) => e.dispose());
+    itemController.dispose();
     super.dispose();
   }
 
   @override
-  void initState() {
-    addItem();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    items = itemController.getItems();
+    itemController.setUpdateListView(updateListView);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("New Bill"),
@@ -44,8 +40,8 @@ class _NewBillScreenState extends State<NewBillScreen> {
         child: Column(
           children: [
             NewBillBar(
-              names: names,
-              prices: prices,
+              names: itemController.getNames(),
+              prices: itemController.getPrices(),
               group: group,
               changeGroup: setGroup,
             ),
@@ -54,12 +50,17 @@ class _NewBillScreenState extends State<NewBillScreen> {
               child: PrimaryButton(
                 isLoading: false,
                 text: 'Add Item',
-                onPressed: () => {addItem()},
+                onPressed: () {
+                  setState(() {
+                    itemController.addNewItem();
+                  });
+                },
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(Sizes.p8),
               child: ListView(
+                //TODO scrolling function doesn't work
                 controller: scrollController,
                 shrinkWrap: true,
                 children: [for (final item in items) item],
@@ -77,37 +78,10 @@ class _NewBillScreenState extends State<NewBillScreen> {
     });
   }
 
-  void addItem() {
+  void updateListView() {
+    //TODO maybe find a better way to update the listView, as this saves an unnecessary copy of items
     setState(() {
-      names.add(TextEditingController());
-      prices.add(TextEditingController());
-      items.add(ItemContainer(
-        name: names.last,
-        price: prices.last,
-        index: items.length,
-        deleteSelf: deleteItem,
-        onChanged: onChange,
-      ));
-    });
-  }
-
-  void deleteItem(int index) {
-    if (items.length > 1) {
-      setState(() {
-        items.removeAt(index);
-        names.removeAt(index);
-        prices.removeAt(index);
-      });
-    }
-  }
-
-  void onChange(String value, bool name, int index) {
-    setState(() {
-      if (name) {
-        names[index].text = value;
-      } else {
-        prices[index].text = value;
-      }
+      items = itemController.getItems();
     });
   }
 }
