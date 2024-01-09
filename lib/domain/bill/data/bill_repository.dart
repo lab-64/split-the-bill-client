@@ -10,6 +10,8 @@ abstract class BillRepository {
   Future<Bill> getBillById(String billId);
 
   Future<bool> add(Bill bill);
+
+  Future<bool> edit(Bill bill);
 }
 
 @Riverpod(keepAlive: true)

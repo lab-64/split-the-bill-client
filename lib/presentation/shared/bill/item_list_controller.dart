@@ -1,16 +1,16 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 
+import '../../../domain/item/item.dart';
 import '../../new_bill/item_container.dart';
 
-class ItemController {
+class ItemListController {
   final List<TextEditingController> _names = [];
   final List<TextEditingController> _prices = [];
   final List<ItemContainer> _items = [];
   Function updateListView = () => {};
 
-  ItemController() {
-    addNewItem();
-  }
 
   void setUpdateListView(Function newUpdateListView) {
     updateListView = newUpdateListView;
@@ -31,6 +31,18 @@ class ItemController {
       deleteSelf: deleteItem,
       onChanged: onChange,
     ));
+    updateListView();
+  }
+
+  void addExistingItem(Item item) {
+    _names.add(TextEditingController(text: item.name));
+    _prices.add(TextEditingController(text: item.price.toString()));
+    _items.add(ItemContainer(
+        name: _names.last,
+        price: _prices.last,
+        index: _items.length,
+        deleteSelf: deleteItem,
+        onChanged: onChange));
     updateListView();
   }
 
