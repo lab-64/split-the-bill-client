@@ -1,9 +1,7 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 
 import '../../../domain/item/item.dart';
-import '../../new_bill/item_container.dart';
+import 'item_container.dart';
 
 class ItemListController {
   final List<TextEditingController> _names = [];

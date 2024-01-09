@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import '../../domain/item/item.dart';
 
 class ItemContainer extends StatelessWidget {
   const ItemContainer({

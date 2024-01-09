@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import '../../../constants/app_sizes.dart';
 import '../../../domain/group/group.dart';
 import '../../../domain/item/item.dart';
-import '../../new_bill/item_container.dart';
-import 'bill_bar.dart';
+import 'item_container.dart';
+import 'bill_header.dart';
 import '../primary_button.dart';
 import 'item_list_controller.dart';
 
@@ -26,9 +26,12 @@ class ItemListScreen extends StatefulWidget {
 }
 
 class _ItemListScreenState extends State<ItemListScreen> {
+
   final ScrollController scrollController = ScrollController();
   ItemListController itemController = ItemListController();
   List<ItemContainer> itemContainers = [];
+
+  //concerning existing bill
   Group? group;
   bool newBill = true;
 
@@ -66,7 +69,7 @@ class _ItemListScreenState extends State<ItemListScreen> {
       padding: const EdgeInsets.all(Sizes.p32),
       child: Column(
         children: [
-          BillBar(
+          BillHeader(
             names: itemController.getNames(),
             prices: itemController.getPrices(),
             group: group,
@@ -107,7 +110,6 @@ class _ItemListScreenState extends State<ItemListScreen> {
   }
 
   void updateListView() {
-    //TODO maybe find a better way to update the listView, as this saves an unnecessary copy of items
     setState(() {
       itemContainers = itemController.getItems();
     });

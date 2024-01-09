@@ -8,8 +8,8 @@ import 'package:split_the_bill/presentation/shared/bill/controllers.dart';
 import 'package:split_the_bill/presentation/new_bill/new_bill_groups_dropdown.dart';
 import 'package:split_the_bill/presentation/shared/primary_button.dart';
 
-class BillBar extends StatefulWidget {
-  const BillBar(
+class BillHeader extends StatefulWidget {
+  const BillHeader(
       {super.key,
       required this.names,
       required this.prices,
@@ -26,10 +26,10 @@ class BillBar extends StatefulWidget {
   final String? billId;
 
   @override
-  State<BillBar> createState() => _BillBarState();
+  State<BillHeader> createState() => _BillHeaderState();
 }
 
-class _BillBarState extends State<BillBar> {
+class _BillHeaderState extends State<BillHeader> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -59,34 +59,23 @@ class _BillBarState extends State<BillBar> {
                     child: PrimaryButton(
                       isLoading: ref.watch(billControllerProvider).isLoading,
                       onPressed: () {
-                        //TODO make more simple
                         if (widget.group == null) {
                           return;
                         }
-                        List<Item> itemList = [];
-                        for (var i = 0; i < widget.names.length; i++) {
-                          itemList.add(Item(
-                              id: i.toString(),
-                              name: widget.names[i].text,
-                              price: widget.prices[i].text == ""
-                                  ? 0
-                                  : double.parse(widget.prices[i].text),
-                              billId: '',
-                              contributors: []));
-                        }
+
                         if (widget.newBill) {
                           //addBill
                           ref
                               .read(billControllerProvider.notifier)
                               .addBill(widget.names[0].text, widget.group!.id,
-                                  itemList)
+                              makeItemList())
                               .then((_) => context.pop());
                         } else {
                           //editBill
                           ref
                               .read(billControllerProvider.notifier)
                               .editBill(widget.billId!, widget.names[0].text,
-                                  widget.group!.id, itemList)
+                                  widget.group!.id, makeItemList())
                               .then((_) => context.pop());
                         }
                       },
@@ -100,5 +89,20 @@ class _BillBarState extends State<BillBar> {
         ),
       ],
     );
+  }
+
+  List<Item> makeItemList() {
+    List<Item> itemList = [];
+    for (var i = 0; i < widget.names.length; i++) {
+      itemList.add(Item(
+          id: i.toString(),
+          name: widget.names[i].text,
+          price: widget.prices[i].text == ""
+              ? 0
+              : double.parse(widget.prices[i].text),
+          billId: '',
+          contributors: []));
+    }
+    return itemList;
   }
 }

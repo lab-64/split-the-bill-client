@@ -15,8 +15,6 @@ class EditBillScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final group = ref.watch(groupStateProvider(groupId));
-    print("GROUPID: " + groupId);
-    print("BILLID: " + billId);
 
     return Scaffold(
       appBar: AppBar(

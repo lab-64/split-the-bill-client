@@ -44,14 +44,6 @@ class FakeBillRepository extends BillRepository {
 
   @override
   Future<bool> edit(Bill bill) async {
-    print("FAKE BILL REPOSITORY");
-    print("BILL ID: " + bill.id);
-    print("BILL NAME: " + bill.name);
-
-    for(var bill in testBills){
-      print(bill.name);
-      print(bill.id);
-    }
 
     await Future.delayed(const Duration(milliseconds: 200));
     try {
@@ -72,11 +64,6 @@ class FakeBillRepository extends BillRepository {
       testGroups[index] = updatedGroup;
     } catch (e) {
       print(e);
-    }
-    print("--------");
-    for(var bill in testBills){
-      print(bill.name);
-      print(bill.id);
     }
     return true;
   }

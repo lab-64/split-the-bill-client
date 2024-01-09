@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/domain/bill/bill.dart';
 import 'package:split_the_bill/domain/bill/data/bill_repository.dart';
+import 'package:split_the_bill/domain/bill/states/bill_state.dart';
 import 'package:split_the_bill/domain/group/states/group_state.dart';
 
 import '../../group/states/groups_state.dart';
@@ -36,6 +37,7 @@ class BillsState extends _$BillsState {
     final success = await _billRepository.edit(bill);
     if (success) {
       ref.invalidate(groupStateProvider(bill.groupId));
+      ref.invalidate(billStateProvider(bill.id));
       ref.invalidate(groupsStateProvider);
       ref.invalidateSelf();
     }
