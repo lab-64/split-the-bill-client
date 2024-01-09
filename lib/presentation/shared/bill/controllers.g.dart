@@ -6,21 +6,21 @@ part of 'controllers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$newBillControllerHash() => r'965377cd321d2cf93917f76f3aa32102ca09ef18';
+String _$billControllerHash() => r'f60122750a4e27a22989bae841a3e3548a51b554';
 
-/// See also [NewBillController].
-@ProviderFor(NewBillController)
-final newBillControllerProvider =
-    AsyncNotifierProvider<NewBillController, bool>.internal(
-  NewBillController.new,
-  name: r'newBillControllerProvider',
+/// See also [BillController].
+@ProviderFor(BillController)
+final billControllerProvider =
+    AsyncNotifierProvider<BillController, bool>.internal(
+  BillController.new,
+  name: r'billControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$newBillControllerHash,
+      : _$billControllerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$NewBillController = AsyncNotifier<bool>;
+typedef _$BillController = AsyncNotifier<bool>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

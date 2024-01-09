@@ -31,4 +31,14 @@ class BillsState extends _$BillsState {
     }
     return success;
   }
+
+  Future<bool> edit(Bill bill) async {
+    final success = await _billRepository.edit(bill);
+    if (success) {
+      ref.invalidate(groupStateProvider(bill.groupId));
+      ref.invalidate(groupsStateProvider);
+      ref.invalidateSelf();
+    }
+    return success;
+  }
 }

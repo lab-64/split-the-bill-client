@@ -3,12 +3,12 @@ import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/domain/bill/bill.dart';
 import 'package:split_the_bill/domain/bill/states/bills_state.dart';
 
-import '../../domain/item/item.dart';
+import '../../../domain/item/item.dart';
 
 part 'controllers.g.dart';
 
 @Riverpod(keepAlive: true)
-class NewBillController extends _$NewBillController {
+class BillController extends _$BillController {
   @override
   FutureOr<bool> build() {
     return false;
@@ -31,5 +31,24 @@ class NewBillController extends _$NewBillController {
 
     final billState = ref.read(billsStateProvider.notifier);
     state = await AsyncValue.guard(() => billState.add(bill));
+  }
+
+  Future<void> editBill(
+      String billId, String billName, String groupId, List<Item> items) async {
+    state = const AsyncLoading();
+    final user = ref.watch(authStateProvider).value;
+
+    final bill = Bill(
+        id: billId,
+        name: billName,
+        groupId: groupId,
+        ownerId: user!.id,
+        date: DateTime.now(),
+        price: items.fold(
+            0, (previousValue, element) => previousValue + element.price),
+        items: items);
+
+    final billState = ref.read(billsStateProvider.notifier);
+    state = await AsyncValue.guard(() => billState.edit(bill));
   }
 }

@@ -6,7 +6,7 @@ part of 'bills_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$billsStateHash() => r'e49e5a9cfeb142b1442a84de53b2d0139652e6f8';
+String _$billsStateHash() => r'296760b20cfad1671c2ae3511ae132029919414c';
 
 /// See also [BillsState].
 @ProviderFor(BillsState)

@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/presentation/bills/bill/bill_screen.dart';
+import 'package:split_the_bill/presentation/bills/bill/edit_bill_screen.dart';
 import 'package:split_the_bill/presentation/bills/bills/bills_screen.dart';
 import 'package:split_the_bill/presentation/groups/groups/groups_screen.dart';
 import 'package:split_the_bill/presentation/groups/new_group/new_group_screen.dart';
@@ -14,7 +15,7 @@ import 'presentation/groups/group_item/group_item_screen.dart';
 
 part 'routes.g.dart';
 
-enum Routes { groups, group, newGroup, bills, bill, signIn, newBill }
+enum Routes { groups, group, newGroup, bills, bill, editBill, signIn, newBill }
 
 @Riverpod(keepAlive: true)
 GoRouter goRouter(GoRouterRef ref) {
@@ -74,13 +75,27 @@ GoRouter goRouter(GoRouterRef ref) {
                   },
                   routes: [
                     GoRoute(
-                      path: ':billId',
-                      name: Routes.bill.name,
-                      builder: (context, state) {
-                        final billId = state.pathParameters["billId"]!;
-                        return BillItemScreen(billId: billId);
-                      },
-                    ),
+                        path: ':billId',
+                        name: Routes.bill.name,
+                        builder: (context, state) {
+                          final groupId = state.pathParameters["id"]!;
+                          final billId = state.pathParameters["billId"]!;
+                          return BillItemScreen(
+                              groupId: groupId, billId: billId);
+                        },
+                        routes: [
+                          GoRoute(
+                              path: 'editBill',
+                              name: Routes.editBill.name,
+                              builder: (context, state) {
+                                final groupId = state.pathParameters["id"]!;
+                                final billId = state.pathParameters["billId"]!;
+                                return EditBillScreen(
+                                  groupId: groupId,
+                                  billId: billId,
+                                );
+                              }),
+                        ]),
                   ]),
             ],
           ),

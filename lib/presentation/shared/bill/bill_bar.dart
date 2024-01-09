@@ -4,28 +4,32 @@ import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/group/group.dart';
 import 'package:split_the_bill/domain/item/item.dart';
-import 'package:split_the_bill/presentation/new_bill/controllers.dart';
+import 'package:split_the_bill/presentation/shared/bill/controllers.dart';
 import 'package:split_the_bill/presentation/new_bill/new_bill_groups_dropdown.dart';
 import 'package:split_the_bill/presentation/shared/primary_button.dart';
 
-class NewBillBar extends StatefulWidget {
-  const NewBillBar(
+class BillBar extends StatefulWidget {
+  const BillBar(
       {super.key,
       required this.names,
       required this.prices,
       required this.group,
-      required this.changeGroup});
+      required this.changeGroup,
+      required this.newBill,
+      this.billId});
 
   final List<TextEditingController> names;
   final List<TextEditingController> prices;
   final Group? group;
   final Function changeGroup;
+  final bool newBill;
+  final String? billId;
 
   @override
-  State<NewBillBar> createState() => _NewBillBarState();
+  State<BillBar> createState() => _BillBarState();
 }
 
-class _NewBillBarState extends State<NewBillBar> {
+class _BillBarState extends State<BillBar> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -53,7 +57,7 @@ class _NewBillBarState extends State<NewBillBar> {
                 children: [
                   Expanded(
                     child: PrimaryButton(
-                      isLoading: ref.watch(newBillControllerProvider).isLoading,
+                      isLoading: ref.watch(billControllerProvider).isLoading,
                       onPressed: () {
                         //TODO make more simple
                         if (widget.group == null) {
@@ -70,11 +74,21 @@ class _NewBillBarState extends State<NewBillBar> {
                               billId: '',
                               contributors: []));
                         }
-                        ref
-                            .read(newBillControllerProvider.notifier)
-                            .addBill(widget.names[0].text, widget.group!.id,
-                                itemList)
-                            .then((_) => context.pop());
+                        if (widget.newBill) {
+                          //addBill
+                          ref
+                              .read(billControllerProvider.notifier)
+                              .addBill(widget.names[0].text, widget.group!.id,
+                                  itemList)
+                              .then((_) => context.pop());
+                        } else {
+                          //editBill
+                          ref
+                              .read(billControllerProvider.notifier)
+                              .editBill(widget.billId!, widget.names[0].text,
+                                  widget.group!.id, itemList)
+                              .then((_) => context.pop());
+                        }
                       },
                       text: 'Save',
                     ),

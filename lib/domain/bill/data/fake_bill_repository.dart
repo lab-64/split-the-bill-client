@@ -43,6 +43,45 @@ class FakeBillRepository extends BillRepository {
   }
 
   @override
+  Future<bool> edit(Bill bill) async {
+    print("FAKE BILL REPOSITORY");
+    print("BILL ID: " + bill.id);
+    print("BILL NAME: " + bill.name);
+
+    for(var bill in testBills){
+      print(bill.name);
+      print(bill.id);
+    }
+
+    await Future.delayed(const Duration(milliseconds: 200));
+    try {
+      var billIndex = testBills.indexWhere((element) => element.id == bill.id);
+      testBills[billIndex] = bill;
+      var group =
+          testGroups.firstWhere((element) => element.id == bill.groupId);
+
+      var bills = [...group.bills];
+      var groupIndex = bills.indexWhere((element) => element.id == bill.id);
+      bills[groupIndex] = bill;
+
+
+      var updatedGroup =
+          group.copyWith(bills: bills, balance: group.balance + bill.price);
+
+      var index = testGroups.indexWhere((element) => element.id == group.id);
+      testGroups[index] = updatedGroup;
+    } catch (e) {
+      print(e);
+    }
+    print("--------");
+    for(var bill in testBills){
+      print(bill.name);
+      print(bill.id);
+    }
+    return true;
+  }
+
+  @override
   Future<Bill> getBillById(String billId) async {
     await Future.delayed(const Duration(milliseconds: 200));
 
