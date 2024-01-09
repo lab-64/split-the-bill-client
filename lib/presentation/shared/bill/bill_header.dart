@@ -68,7 +68,7 @@ class _BillHeaderState extends State<BillHeader> {
                           ref
                               .read(billControllerProvider.notifier)
                               .addBill(widget.names[0].text, widget.group!.id,
-                              makeItemList())
+                                  makeItemList())
                               .then((_) => context.pop());
                         } else {
                           //editBill
