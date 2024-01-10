@@ -1,6 +1,5 @@
 import 'package:split_the_bill/constants/test_data.dart';
 import 'package:split_the_bill/domain/group/data/group_repository.dart';
-import 'package:split_the_bill/infrastructure/app_exception.dart';
 
 import '../group.dart';
 
@@ -12,23 +11,24 @@ class FakeGroupRepository extends GroupRepository {
     await Future.delayed(const Duration(milliseconds: 200));
 
     final group = testGroups.where((group) => group.id == groupId).first;
-    if (group == null) throw GroupNotFoundException();
     return group;
   }
 
   @override
   Future<List<Group>> getGroupsByUser(String userId) async {
     await Future.delayed(const Duration(milliseconds: 200));
-    return testGroups.where((group) => group.members.contains(userId)).toList();
+    return testGroups
+        .where((group) => group.memberIDs.contains(userId))
+        .toList();
   }
 
   @override
-  Future<bool> add(Group group) async {
+  Future<Group> create(Group group) async {
     await Future.delayed(const Duration(milliseconds: 200));
     var lastId = int.parse(testGroups.last.id);
     group = group.copyWith(id: (lastId + 1).toString());
 
     testGroups.add(group);
-    return true;
+    return group;
   }
 }

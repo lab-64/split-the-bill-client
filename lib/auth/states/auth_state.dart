@@ -1,7 +1,6 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/auth/data/auth_repository.dart';
 import 'package:split_the_bill/auth/user.dart';
-import 'package:split_the_bill/constants/test_data.dart';
 
 part 'auth_state.g.dart';
 
@@ -11,13 +10,15 @@ class AuthState extends _$AuthState {
 
   @override
   FutureOr<User> build() {
-    return testUsers[0];
-    //return const User(id: "", username: "", email: "");
+    return const User(id: "", email: "");
   }
 
-  Future<void> login(String username, String password) async {
+  Future<void> login({
+    required String email,
+    required String password,
+  }) async {
     state = const AsyncLoading();
     state =
-        await AsyncValue.guard(() => _authRepository.login(username, password));
+        await AsyncValue.guard(() => _authRepository.login(email, password));
   }
 }

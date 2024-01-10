@@ -8,9 +8,7 @@ part 'controllers.g.dart';
 @Riverpod(keepAlive: true)
 class NewGroupController extends _$NewGroupController {
   @override
-  FutureOr<bool> build() async {
-    return false;
-  }
+  FutureOr<void> build() async {}
 
   Future<void> addGroup(String groupName) async {
     state = const AsyncLoading();
@@ -19,12 +17,12 @@ class NewGroupController extends _$NewGroupController {
     final group = Group(
       id: '',
       name: groupName,
-      balance: 0,
-      members: [user.id],
+      memberIDs: [],
       bills: [],
+      ownerID: user.id,
     );
 
     final groupsState = ref.read(groupsStateProvider.notifier);
-    state = await AsyncValue.guard(() => groupsState.add(group));
+    state = await AsyncValue.guard(() => groupsState.create(group));
   }
 }

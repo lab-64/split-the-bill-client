@@ -5,14 +5,14 @@ import '../item.dart';
 
 part 'item_repository.g.dart';
 
-abstract class ItemRepository{
-  Future<Item> getItem(String itemId);
+abstract class ItemRepository {
+  Future<Item> getItem(String itemID);
 
-  Future<List<Item>> getItemsFromBill(String billId);
+  Future<List<Item>> getItemsFromBill(String billID);
 
-  Future<bool> addItemToBill(Item item, String billId);
+  Future<bool> addItemToBill(Item item, String billID);
 
-  Future<bool> deleteItemFromBill(String itemId, String billId);
+  Future<bool> deleteItemFromBill(String itemID, String billID);
 }
 
 @Riverpod(keepAlive: true)

@@ -24,7 +24,7 @@ class BillsState extends _$BillsState {
   }
 
   Future<bool> add(Bill bill) async {
-    final success = await _billRepository.add(bill);
+    final success = await _billRepository.create(bill);
     if (success) {
       ref.invalidate(groupStateProvider(bill.groupId));
       ref.invalidate(groupsStateProvider);
