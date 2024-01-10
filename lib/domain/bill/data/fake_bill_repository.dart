@@ -57,7 +57,7 @@ class FakeBillRepository extends BillRepository {
 
 
       var updatedGroup =
-          group.copyWith(bills: bills, balance: group.balance + bill.price);
+          group.copyWith(bills: bills);
 
       var index = testGroups.indexWhere((element) => element.id == group.id);
       testGroups[index] = updatedGroup;
