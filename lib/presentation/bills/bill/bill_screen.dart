@@ -27,8 +27,10 @@ class BillItemScreen extends ConsumerWidget {
         isLoading: false,
         text: 'Edit',
         onPressed: () {
-          context.goNamed(Routes.editBill.name,
-              pathParameters: {'id': groupId, 'billId': billId});
+          context.goNamed(
+            Routes.editBill.name,
+            pathParameters: {'id': groupId, 'billId': billId},
+          );
         },
       ),
       body: CustomScrollView(
