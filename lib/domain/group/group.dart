@@ -75,17 +75,15 @@ class Group {
 
   factory Group.fromMap(Map<String, dynamic> map) {
     return Group(
-      id: map['id'] as String,
-      name: map['name'] as String,
-      owner: User.fromMap(map['owner'] as Map<String, dynamic>),
-      members: (map['members'] as List<dynamic>)
-          .map((member) => User.fromMap(member))
-          .toList(),
-      bills: [],
-/*      bills: (map['bills'] as List<dynamic>)
-          .map((bill) => Bill.fromMap(bill))
-          .toList()*/
-    );
+        id: map['id'] as String,
+        name: map['name'] as String,
+        owner: User.fromMap(map['owner'] as Map<String, dynamic>),
+        members: (map['members'] as List<dynamic>)
+            .map((member) => User.fromMap(member))
+            .toList(),
+        bills: (map['bills'] as List<dynamic>)
+            .map((bill) => Bill.fromMap(bill))
+            .toList());
   }
 
 //</editor-fold>

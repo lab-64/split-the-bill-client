@@ -3,19 +3,17 @@ import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/presentation/bills/bill/bill_screen.dart';
-import 'package:split_the_bill/presentation/bills/bill/edit_bill_screen.dart';
 import 'package:split_the_bill/presentation/bills/bills/bills_screen.dart';
+import 'package:split_the_bill/presentation/bills/edit_bill/edit_bill_screen.dart';
+import 'package:split_the_bill/presentation/groups/group/group_screen.dart';
 import 'package:split_the_bill/presentation/groups/groups/groups_screen.dart';
 import 'package:split_the_bill/presentation/groups/new_group/new_group_screen.dart';
-import 'package:split_the_bill/presentation/new_bill/new_bill_screen.dart';
 import 'package:split_the_bill/presentation/on_boarding/sign_in_screen.dart';
 import 'package:split_the_bill/presentation/shared/navigation/navigation.dart';
 
-import 'presentation/groups/group_item/group_item_screen.dart';
-
 part 'routes.g.dart';
 
-enum Routes { groups, group, newGroup, bills, bill, editBill, signIn, newBill }
+enum Routes { groups, group, newGroup, bills, bill, editBill, newBill, signIn }
 
 @Riverpod(keepAlive: true)
 GoRouter goRouter(GoRouterRef ref) {
@@ -66,36 +64,33 @@ GoRouter goRouter(GoRouterRef ref) {
                 builder: (context, state) => const NewGroupScreen(),
               ),
               GoRoute(
-                  path: ':id',
-                  name: Routes.group.name,
-                  builder: (context, state) {
-                    final groupId = state.pathParameters['id']!;
-                    return GroupItemScreen(groupId: groupId);
-                  },
-                  routes: [
-                    GoRoute(
-                        path: ':billId',
-                        name: Routes.bill.name,
-                        builder: (context, state) {
-                          final groupId = state.pathParameters["id"]!;
-                          final billId = state.pathParameters["billId"]!;
-                          return BillItemScreen(
-                              groupId: groupId, billId: billId);
-                        },
-                        routes: [
-                          GoRoute(
-                              path: 'editBill',
-                              name: Routes.editBill.name,
-                              builder: (context, state) {
-                                final groupId = state.pathParameters["id"]!;
-                                final billId = state.pathParameters["billId"]!;
-                                return EditBillScreen(
-                                  groupId: groupId,
-                                  billId: billId,
-                                );
-                              }),
-                        ]),
-                  ]),
+                path: ':id',
+                name: Routes.group.name,
+                builder: (context, state) {
+                  final groupId = state.pathParameters['id']!;
+                  return GroupScreen(groupId: groupId);
+                },
+                routes: [
+                  GoRoute(
+                    path: ':billId',
+                    name: Routes.bill.name,
+                    builder: (context, state) {
+                      final groupId = state.pathParameters["id"]!;
+                      final billId = state.pathParameters["billId"]!;
+                      return BillScreen(groupId: groupId, billId: billId);
+                    },
+                    routes: [
+                      GoRoute(
+                          path: 'edit',
+                          name: Routes.editBill.name,
+                          builder: (context, state) {
+                            final billId = state.pathParameters["billId"]!;
+                            return EditBillScreen(billId: billId);
+                          }),
+                    ],
+                  ),
+                ],
+              ),
             ],
           ),
           GoRoute(
@@ -108,7 +103,7 @@ GoRouter goRouter(GoRouterRef ref) {
       GoRoute(
         path: '/new_bill',
         name: Routes.newBill.name,
-        builder: (context, state) => const NewBillScreen(),
+        builder: (context, state) => const EditBillScreen(billId: '0'),
       ),
       GoRoute(
         path: '/signIn',

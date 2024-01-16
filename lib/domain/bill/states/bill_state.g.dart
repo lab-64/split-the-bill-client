@@ -6,7 +6,7 @@ part of 'bill_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$billStateHash() => r'9bb4928771972072eac8f431c4d35730ccd7cafb';
+String _$billStateHash() => r'e984eece75c0129e8b00e41da7aad6d52966dd1d';
 
 /// Copied from Dart SDK
 class _SystemHash {

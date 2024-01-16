@@ -4,8 +4,8 @@ import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/group/group.dart';
 import 'package:split_the_bill/presentation/groups/groups/controllers.dart';
 
-class GroupCard extends ConsumerWidget {
-  const GroupCard({super.key, required this.group, this.onPressed});
+class GroupTile extends ConsumerWidget {
+  const GroupTile({super.key, required this.group, this.onPressed});
 
   final Group group;
   final VoidCallback? onPressed;

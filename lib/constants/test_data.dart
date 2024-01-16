@@ -73,10 +73,6 @@ final testBills = [
       date: DateTime(2022, 11, 7),
       groupId: "1",
       ownerId: "1",
-      price: testItems
-          .where((item) => item.billId == '1')
-          .toList()
-          .fold(0, (previousValue, element) => previousValue + element.price),
       items: [testItems[2], testItems[9]]),
   Bill(
       id: '2',
@@ -84,10 +80,6 @@ final testBills = [
       date: DateTime(2022, 11, 14),
       groupId: "1",
       ownerId: "2",
-      price: testItems
-          .where((item) => item.billId == '2')
-          .toList()
-          .fold(0, (previousValue, element) => previousValue + element.price),
       items: [testItems[6]]),
   Bill(
       id: '3',
@@ -95,10 +87,6 @@ final testBills = [
       date: DateTime(2022, 09, 15),
       groupId: "2",
       ownerId: "1",
-      price: testItems
-          .where((item) => item.billId == '3')
-          .toList()
-          .fold(0, (previousValue, element) => previousValue + element.price),
       items: [testItems[3], testItems[8]]),
   Bill(
       id: '4',
@@ -106,10 +94,6 @@ final testBills = [
       date: DateTime(2022, 09, 17),
       groupId: "2",
       ownerId: "2",
-      price: testItems
-          .where((item) => item.billId == '4')
-          .toList()
-          .fold(0, (previousValue, element) => previousValue + element.price),
       items: [testItems[7]]),
   Bill(
       id: '5',
@@ -117,10 +101,6 @@ final testBills = [
       date: DateTime(2022, 09, 18),
       groupId: "2",
       ownerId: "5",
-      price: testItems
-          .where((item) => item.billId == '5')
-          .toList()
-          .fold(0, (previousValue, element) => previousValue + element.price),
       items: [testItems[5]]),
   Bill(
       id: '6',
@@ -128,10 +108,6 @@ final testBills = [
       date: DateTime(2022, 09, 18),
       groupId: "2",
       ownerId: "5",
-      price: testItems
-          .where((item) => item.billId == '6')
-          .toList()
-          .fold(0, (previousValue, element) => previousValue + element.price),
       items: [testItems[0], testItems[1]]),
 ];
 

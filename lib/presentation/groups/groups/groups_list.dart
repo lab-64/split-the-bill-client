@@ -6,10 +6,10 @@ import 'package:split_the_bill/domain/group/states/groups_state.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/routes.dart';
 
-import 'group_card.dart';
+import 'group_tile.dart';
 
-class GroupsSliverList extends ConsumerWidget {
-  const GroupsSliverList({super.key, required this.scrollController});
+class GroupsList extends ConsumerWidget {
+  const GroupsList({super.key, required this.scrollController});
   final ScrollController scrollController;
 
   @override
@@ -28,7 +28,7 @@ class GroupsSliverList extends ConsumerWidget {
                 shrinkWrap: true,
                 children: [
                   for (final group in groups)
-                    GroupCard(
+                    GroupTile(
                       group: group,
                       onPressed: () => context.goNamed(
                         Routes.group.name,

@@ -6,7 +6,6 @@ class Bill {
   final String groupId;
   final String ownerId;
   final DateTime date;
-  final double price;
   final List<Item> items;
 
 //<editor-fold desc="Data Methods">
@@ -16,9 +15,21 @@ class Bill {
     required this.groupId,
     required this.ownerId,
     required this.date,
-    required this.price,
     required this.items,
   });
+
+  factory Bill.getDefault() {
+    return Bill(
+      id: '0',
+      name: '',
+      groupId: '',
+      ownerId: '',
+      date: DateTime.now(),
+      items: [
+        Item.getDefault(),
+      ],
+    );
+  }
 
   @override
   bool operator ==(Object other) =>
@@ -30,7 +41,6 @@ class Bill {
           groupId == other.groupId &&
           ownerId == other.ownerId &&
           date == other.date &&
-          price == other.price &&
           items == other.items;
 
   @override
@@ -40,12 +50,11 @@ class Bill {
       groupId.hashCode ^
       ownerId.hashCode ^
       date.hashCode ^
-      price.hashCode ^
       items.hashCode;
 
   @override
   String toString() {
-    return 'Bill{id: $id, name: $name, groupId: $groupId, ownerId: $ownerId, date: $date, price: $price, items: $items}';
+    return 'Bill{id: $id, name: $name, groupId: $groupId, ownerId: $ownerId, date: $date, items: $items}';
   }
 
   Bill copyWith({
@@ -63,7 +72,6 @@ class Bill {
       groupId: groupId ?? this.groupId,
       ownerId: ownerId ?? this.ownerId,
       date: date ?? this.date,
-      price: price ?? this.price,
       items: items ?? this.items,
     );
   }
@@ -74,9 +82,9 @@ class Bill {
       'name': name,
       'groupId': groupId,
       'ownerId': ownerId,
-      'date': date,
-      'price': price,
-      'items': items,
+      // TODO: convert date
+      //'date': date,
+      'items': items.map((item) => item.toMap()).toList(),
     };
   }
 
@@ -84,11 +92,14 @@ class Bill {
     return Bill(
       id: map['id'] as String,
       name: map['name'] as String,
-      groupId: map['groupId'] as String,
-      ownerId: map['ownerId'] as String,
-      date: map['date'] as DateTime,
-      price: map['price'] as double,
-      items: map['items'] as List<Item>,
+      groupId: map['groupID'] as String,
+      ownerId: map['ownerID'] as String,
+      date: DateTime.now(),
+      // TODO: get and convert date
+      // date: map['date'] as DateTime,
+      items: (map['items'] as List<dynamic>)
+          .map((item) => Item.fromMap(item))
+          .toList(),
     );
   }
 //</editor-fold>
