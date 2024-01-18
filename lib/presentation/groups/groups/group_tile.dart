@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
@@ -5,59 +7,72 @@ import 'package:split_the_bill/domain/group/group.dart';
 import 'package:split_the_bill/presentation/groups/groups/controllers.dart';
 
 class GroupTile extends ConsumerWidget {
-  const GroupTile({super.key, required this.group, this.onPressed});
+  const GroupTile({super.key, required this.group, this.onTap});
 
   final Group group;
-  final VoidCallback? onPressed;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final balance = ref.watch(groupBalanceProvider(group.id));
+    List<String> colors = ['green', 'purple', 'red', 'blue'];
+    List<String> icons = ['home', 'beach_access', 'food'];
+    Random random = Random();
 
     return Card(
-      color: Colors.blue,
-      margin:
-          const EdgeInsets.symmetric(vertical: Sizes.p8, horizontal: Sizes.p16),
-      elevation: 16,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(Sizes.p24),
-      ),
-      child: InkWell(
-        onTap: onPressed,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: Sizes.p24,
-            vertical: Sizes.p32,
+      margin: const EdgeInsets.only(bottom: Sizes.p16),
+      elevation: 0,
+      child: ListTile(
+        contentPadding: const EdgeInsets.all(Sizes.p16),
+        leading: Container(
+          width: 40.0,
+          height: 40.0,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            gradient: LinearGradient(
+              colors: [Colors.purple.shade300, Colors.purple.shade700],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
           ),
-          child: Row(
-            children: <Widget>[
-              const FlutterLogo(size: Sizes.p48),
-              gapW16,
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Text(
-                      group.name,
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
-                    Text("$balance €",
-                        style: Theme.of(context).textTheme.titleLarge?.apply(
-                            color: balance >= 0
-                                ? Colors.lightGreenAccent
-                                : Colors.red)),
-                  ],
-                ),
-              ),
-              const Icon(
-                Icons.navigate_next,
-                size: Sizes.p32,
-                color: Colors.white,
-              ),
-            ],
+          child: const Icon(
+            Icons.home,
+            color: Colors.white,
           ),
         ),
+        title: Text(
+          group.name,
+          style: const TextStyle(
+            fontSize: 16.0,
+          ),
+        ),
+        subtitle: Row(
+          children: [
+            for (var member in group.members)
+              const Padding(
+                padding: EdgeInsets.only(right: 4.0),
+                child: CircleAvatar(
+                  radius: 10.0,
+                  backgroundImage: AssetImage('assets/avatar.jpg'),
+                ),
+              ),
+          ],
+        ),
+        trailing: const Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.only(right: Sizes.p8),
+              child: Text(
+                "343 €",
+                style: TextStyle(
+                  fontSize: 16.0,
+                ),
+              ),
+            ),
+            Icon(Icons.navigate_next),
+          ],
+        ),
+        onTap: onTap,
       ),
     );
   }

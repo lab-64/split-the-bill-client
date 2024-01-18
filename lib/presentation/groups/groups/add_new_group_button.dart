@@ -10,16 +10,9 @@ class AddNewGroupButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SliverToBoxAdapter(
-      child: Padding(
-        padding: const EdgeInsets.only(
-          left: Sizes.p16,
-          right: Sizes.p16,
-          top: Sizes.p32,
-        ),
-        child: PrimaryButton(
-          onPressed: () => context.pushNamed(Routes.newGroup.name),
-          text: 'Add New Group',
-        ),
+      child: PrimaryButton(
+        onPressed: () => context.pushNamed(Routes.newGroup.name),
+        text: 'Add New Group',
       ),
     );
   }

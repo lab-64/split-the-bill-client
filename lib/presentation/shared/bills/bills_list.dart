@@ -22,15 +22,12 @@ class BillsList extends ConsumerWidget {
       data: (bills) => SliverToBoxAdapter(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: Sizes.p8),
-              child: ListView(
-                controller: scrollController,
-                shrinkWrap: true,
-                children: [
-                  for (final bill in bills) BillListTile(bill: bill),
-                ],
-              ),
+            ListView(
+              controller: scrollController,
+              shrinkWrap: true,
+              children: [
+                for (final bill in bills) BillListTile(bill: bill),
+              ],
             ),
           ],
         ),

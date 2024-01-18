@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/presentation/groups/groups/add_new_group_button.dart';
+import 'package:split_the_bill/presentation/groups/groups/balance_card.dart';
 import 'package:split_the_bill/presentation/groups/groups/groups_list.dart';
+import 'package:split_the_bill/presentation/groups/groups/headline.dart';
 
 import 'app_bar/groups_app_bar.dart';
 
@@ -12,65 +15,23 @@ class GroupsScreen extends StatelessWidget {
     final ScrollController scrollController = ScrollController();
 
     return Scaffold(
-      /*
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(60.0),
-        child: AppBar(
-          backgroundColor: Colors.blue, // Set your desired background color
-          elevation: 0, // Remove the shadow
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 20.0,
-                    backgroundImage: NetworkImage(
-                        'https://example.com/path/to/your/image.jpg'),
-                    // or you can use AssetImage for local images
-                    // backgroundImage: AssetImage('assets/your_image.png'),
-                  ),
-                  SizedBox(width: 8.0),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Hi',
-                        style: TextStyle(
-                          fontSize: 12.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        'Felix',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              IconButton(
-                icon: Icon(Icons.settings),
-                onPressed: () {
-                  // Handle settings icon click
-                },
-              ),
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: Sizes.p24),
+          child: CustomScrollView(
+            slivers: [
+              const GroupsAppBar(),
+              const SliverToBoxAdapter(child: gapH24),
+              const BalanceCard(),
+              const SliverToBoxAdapter(child: gapH24),
+              //const AddNewGroupButton(),
+              const SliverToBoxAdapter(child: Headline(title: "My Groups")),
+              const SliverToBoxAdapter(child: gapH8),
+              GroupsList(scrollController: scrollController),
+              const SliverToBoxAdapter(child: gapH8),
+              const SliverToBoxAdapter(child: Headline(title: "Recent Bills")),
             ],
           ),
-        ),
-      ),
-
-       */
-      body: SafeArea(
-        child: CustomScrollView(
-          slivers: [
-            const GroupsAppBar(),
-            const AddNewGroupButton(),
-            GroupsList(scrollController: scrollController),
-          ],
         ),
       ),
     );

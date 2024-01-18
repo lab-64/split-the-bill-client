@@ -39,8 +39,8 @@ class _NavbarState extends State<Navbar> {
         selectedIndex: selectedIndex,
         destinations: const <Widget>[
           NavigationDestination(
-            icon: Icon(Icons.group),
-            label: 'Groups',
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
           NavigationDestination(
             icon: Icon(Icons.receipt),

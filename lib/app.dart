@@ -14,10 +14,10 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       routerConfig: goRouter,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.blue,
+        scaffoldBackgroundColor: const Color(0xFFEFEFEF),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFFEFEFEF),
         ),
-        appBarTheme: AppBarTheme(),
       ),
     );
   }

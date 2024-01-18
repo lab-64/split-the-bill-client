@@ -13,8 +13,7 @@ class BillListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: Colors.blue,
-      margin:
-          const EdgeInsets.symmetric(vertical: Sizes.p8, horizontal: Sizes.p16),
+      margin: const EdgeInsets.symmetric(vertical: Sizes.p8),
       elevation: 16,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(Sizes.p24),

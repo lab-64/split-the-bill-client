@@ -9,11 +9,22 @@ import 'package:split_the_bill/presentation/groups/group/group_screen.dart';
 import 'package:split_the_bill/presentation/groups/groups/groups_screen.dart';
 import 'package:split_the_bill/presentation/groups/new_group/new_group_screen.dart';
 import 'package:split_the_bill/presentation/on_boarding/sign_in_screen.dart';
+import 'package:split_the_bill/presentation/profile/profile_screen.dart';
 import 'package:split_the_bill/presentation/shared/navigation/navigation.dart';
 
 part 'routes.g.dart';
 
-enum Routes { groups, group, newGroup, bills, bill, editBill, newBill, signIn }
+enum Routes {
+  groups,
+  group,
+  newGroup,
+  bills,
+  bill,
+  editBill,
+  newBill,
+  signIn,
+  profile
+}
 
 @Riverpod(keepAlive: true)
 GoRouter goRouter(GoRouterRef ref) {
@@ -58,6 +69,11 @@ GoRouter goRouter(GoRouterRef ref) {
             name: Routes.groups.name,
             builder: (context, state) => const GroupsScreen(),
             routes: [
+              GoRoute(
+                path: 'profile',
+                name: Routes.profile.name,
+                builder: (context, state) => const ProfileScreen(),
+              ),
               GoRoute(
                 path: 'new',
                 name: Routes.newGroup.name,

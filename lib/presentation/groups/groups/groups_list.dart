@@ -21,22 +21,19 @@ class GroupsList extends ConsumerWidget {
       data: (groups) => SliverToBoxAdapter(
         child: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(bottom: Sizes.p8),
-              child: ListView(
-                controller: scrollController,
-                shrinkWrap: true,
-                children: [
-                  for (final group in groups)
-                    GroupTile(
-                      group: group,
-                      onPressed: () => context.goNamed(
-                        Routes.group.name,
-                        pathParameters: {'id': group.id},
-                      ),
+            ListView(
+              controller: scrollController,
+              shrinkWrap: true,
+              children: [
+                for (final group in groups)
+                  GroupTile(
+                    group: group,
+                    onTap: () => context.goNamed(
+                      Routes.group.name,
+                      pathParameters: {'id': group.id},
                     ),
-                ],
-              ),
+                  ),
+              ],
             ),
           ],
         ),
