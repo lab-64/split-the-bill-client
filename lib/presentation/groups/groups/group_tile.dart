@@ -14,13 +14,9 @@ class GroupTile extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    List<String> colors = ['green', 'purple', 'red', 'blue'];
-    List<String> icons = ['home', 'beach_access', 'food'];
-    Random random = Random();
-
     return Card(
       margin: const EdgeInsets.only(bottom: Sizes.p16),
-      elevation: 0,
+      elevation: 0.5,
       child: ListTile(
         contentPadding: const EdgeInsets.all(Sizes.p16),
         leading: Container(

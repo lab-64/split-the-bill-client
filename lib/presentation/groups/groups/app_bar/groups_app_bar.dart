@@ -40,11 +40,25 @@ class GroupsAppBar extends ConsumerWidget {
               ),
             ],
           ),
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              context.goNamed(Routes.profile.name);
-            },
+          Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.settings),
+                onPressed: () {
+                  context.goNamed(Routes.profile.name);
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.notifications),
+                onPressed: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Not implemented yet'),
+                    ),
+                  );
+                },
+              ),
+            ],
           ),
         ],
       ),

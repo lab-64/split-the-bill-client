@@ -28,7 +28,7 @@ class BalanceCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  'Your Balance',
+                  'My Balance',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 14.0,

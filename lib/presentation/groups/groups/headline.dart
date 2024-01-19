@@ -13,18 +13,21 @@ class Headline extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 18.0,
-            fontWeight: FontWeight.bold,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: Sizes.p8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
           ),
-        ),
-        const Text("See All"),
-      ],
+          const Text("See All"),
+        ],
+      ),
     );
   }
 }

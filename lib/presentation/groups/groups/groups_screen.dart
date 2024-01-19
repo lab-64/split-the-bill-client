@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
-import 'package:split_the_bill/presentation/groups/groups/add_new_group_button.dart';
 import 'package:split_the_bill/presentation/groups/groups/balance_card.dart';
+import 'package:split_the_bill/presentation/groups/groups/bills_list.dart';
 import 'package:split_the_bill/presentation/groups/groups/groups_list.dart';
 import 'package:split_the_bill/presentation/groups/groups/headline.dart';
 
@@ -26,10 +26,13 @@ class GroupsScreen extends StatelessWidget {
               const SliverToBoxAdapter(child: gapH24),
               //const AddNewGroupButton(),
               const SliverToBoxAdapter(child: Headline(title: "My Groups")),
-              const SliverToBoxAdapter(child: gapH8),
               GroupsList(scrollController: scrollController),
               const SliverToBoxAdapter(child: gapH8),
               const SliverToBoxAdapter(child: Headline(title: "Recent Bills")),
+              BillsList(
+                scrollController: scrollController,
+                groupId: "d3acdb50-89ee-4bed-b533-a09ecf1909a6",
+              ),
             ],
           ),
         ),

@@ -24,6 +24,8 @@ class _NavbarState extends State<Navbar> {
       context.goNamed(Routes.groups.name);
     } else if (index == 1) {
       context.goNamed(Routes.bills.name);
+    } else if (index == 2) {
+      context.goNamed(Routes.bills.name);
     }
   }
 
@@ -41,6 +43,10 @@ class _NavbarState extends State<Navbar> {
           NavigationDestination(
             icon: Icon(Icons.home),
             label: 'Home',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.group),
+            label: 'Groups',
           ),
           NavigationDestination(
             icon: Icon(Icons.receipt),
