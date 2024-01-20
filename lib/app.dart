@@ -14,6 +14,7 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       routerConfig: goRouter,
       theme: ThemeData(
+        primaryColor: Colors.blue.shade400,
         scaffoldBackgroundColor: const Color(0xFFEFEFEF),
         appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xFFEFEFEF),

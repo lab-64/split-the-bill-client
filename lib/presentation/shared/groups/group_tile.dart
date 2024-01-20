@@ -1,10 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/group/group.dart';
-import 'package:split_the_bill/presentation/groups/groups/controllers.dart';
 
 class GroupTile extends ConsumerWidget {
   const GroupTile({super.key, required this.group, this.onTap});
@@ -17,6 +14,7 @@ class GroupTile extends ConsumerWidget {
     return Card(
       margin: const EdgeInsets.only(bottom: Sizes.p16),
       elevation: 0.5,
+      color: Colors.white,
       child: ListTile(
         contentPadding: const EdgeInsets.all(Sizes.p16),
         leading: Container(

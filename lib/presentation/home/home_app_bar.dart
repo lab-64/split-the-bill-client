@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
-import 'package:split_the_bill/routes.dart';
 
-class GroupsAppBar extends ConsumerWidget {
-  const GroupsAppBar({super.key});
+class HomeAppBar extends ConsumerWidget {
+  const HomeAppBar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -43,13 +41,21 @@ class GroupsAppBar extends ConsumerWidget {
           Row(
             children: [
               IconButton(
-                icon: const Icon(Icons.settings),
+                icon: const Icon(
+                  Icons.settings_outlined,
+                ),
                 onPressed: () {
-                  context.goNamed(Routes.profile.name);
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Not implemented yet'),
+                    ),
+                  );
                 },
               ),
               IconButton(
-                icon: const Icon(Icons.notifications),
+                icon: const Icon(
+                  Icons.notifications_outlined,
+                ),
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(

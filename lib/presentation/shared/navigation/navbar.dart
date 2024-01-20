@@ -21,36 +21,54 @@ class _NavbarState extends State<Navbar> {
     });
 
     if (index == 0) {
-      context.goNamed(Routes.groups.name);
+      context.goNamed(Routes.home.name);
     } else if (index == 1) {
-      context.goNamed(Routes.bills.name);
+      context.goNamed(Routes.groups.name);
     } else if (index == 2) {
       context.goNamed(Routes.bills.name);
+    } else if (index == 3) {
+      context.goNamed(Routes.profile.name);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
-      shape: const CircularNotchedRectangle(),
-      clipBehavior: Clip.antiAlias,
+      color: Colors.blue.shade400,
+      notchMargin: 6.0,
+      elevation: 0,
+      shape: CircularNotchedRectangle(),
       child: NavigationBar(
         onDestinationSelected: handleDestinationSelected,
-        labelBehavior: NavigationDestinationLabelBehavior.onlyShowSelected,
-        indicatorColor: Colors.blue[400],
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
         selectedIndex: selectedIndex,
-        destinations: const <Widget>[
+        backgroundColor: Colors.transparent,
+        indicatorColor: Colors.white,
+        elevation: 0,
+        destinations: <Widget>[
           NavigationDestination(
-            icon: Icon(Icons.home),
+            icon: Icon(Icons.home,
+                color:
+                    selectedIndex == 0 ? Colors.blue.shade400 : Colors.white),
             label: 'Home',
           ),
           NavigationDestination(
-            icon: Icon(Icons.group),
+            icon: Icon(Icons.group,
+                color:
+                    selectedIndex == 1 ? Colors.blue.shade400 : Colors.white),
             label: 'Groups',
           ),
           NavigationDestination(
-            icon: Icon(Icons.receipt),
+            icon: Icon(Icons.receipt_long,
+                color:
+                    selectedIndex == 2 ? Colors.blue.shade400 : Colors.white),
             label: 'Bills',
+          ),
+          NavigationDestination(
+            icon: Icon(Icons.settings,
+                color:
+                    selectedIndex == 3 ? Colors.blue.shade400 : Colors.white),
+            label: 'Profile',
           ),
         ],
       ),

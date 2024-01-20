@@ -1,17 +1,17 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/bill/bill.dart';
-import 'package:split_the_bill/domain/group/group.dart';
-import 'package:split_the_bill/presentation/groups/groups/controllers.dart';
 
 class BillTile extends StatelessWidget {
-  const BillTile({super.key, required this.bill, required this.showGroup});
+  const BillTile(
+      {super.key,
+      required this.bill,
+      required this.showGroup,
+      required this.onTap});
 
   final Bill bill;
   final bool showGroup;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class BillTile extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 0.0, bottom: 8.0),
+          padding: const EdgeInsets.only(bottom: Sizes.p4),
           child: Text(
             "18.01",
             style: TextStyle(
@@ -30,8 +30,9 @@ class BillTile extends StatelessWidget {
         ),
         Card(
           margin: const EdgeInsets.only(bottom: Sizes.p16),
-          elevation: 0.5,
+          elevation: 0,
           child: ListTile(
+            onTap: onTap,
             contentPadding: const EdgeInsets.symmetric(
                 horizontal: Sizes.p16, vertical: Sizes.p4),
             leading: Container(
@@ -103,8 +104,8 @@ class BillTile extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(width: Sizes.p4),
-                      const Text(
-                        "Wohnung",
+                      Text(
+                        "Some Group",
                         style: TextStyle(
                           color: Colors.grey,
                         ),
@@ -124,8 +125,6 @@ class BillTile extends StatelessWidget {
                     color: Colors.green,
                   ),
                 ),
-                SizedBox(width: Sizes.p8),
-                Icon(Icons.navigate_next),
               ],
             ),
           ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:split_the_bill/presentation/shared/bills/bills_list.dart';
 
 class BillsScreen extends ConsumerWidget {
   const BillsScreen({super.key});
@@ -13,8 +12,13 @@ class BillsScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text("Bills"),
       ),
-      body: CustomScrollView(slivers: [
-        BillsList(scrollController: scrollController),
+      body: const CustomScrollView(slivers: [
+        SliverToBoxAdapter(
+          child: Center(
+            child: Text("Not implemented yet."),
+          ),
+        ),
+        //BillsList(scrollController: scrollController),
       ]),
     );
   }

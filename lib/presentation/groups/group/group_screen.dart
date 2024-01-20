@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/group/states/group_state.dart';
+import 'package:split_the_bill/presentation/groups/group/floating_with_menu.dart';
 import 'package:split_the_bill/presentation/groups/group/group_history.dart';
 import 'package:split_the_bill/presentation/groups/group/member_list.dart';
-import 'package:split_the_bill/presentation/groups/groups/bills_list.dart';
+import 'package:split_the_bill/presentation/shared/bills/bills_list.dart';
 
 class GroupScreen extends ConsumerWidget {
   const GroupScreen({super.key, required this.groupId});
@@ -19,21 +20,13 @@ class GroupScreen extends ConsumerWidget {
       initialIndex: 0,
       length: 3,
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            // Add your action when the button is pressed
-          },
-          elevation: 4.0,
-          backgroundColor: Colors.blue,
-          foregroundColor: Colors.white,
-          child: Icon(Icons.more_vert),
-        ),
+        floatingActionButton: FloatingWithMenu(),
         appBar: AppBar(
           title: Text(group.value?.name ?? ""),
           bottom: const TabBar(
             tabs: <Widget>[
               Tab(
-                icon: Icon(Icons.receipt),
+                icon: Icon(Icons.receipt_long),
               ),
               Tab(
                 icon: Icon(Icons.people),
@@ -62,7 +55,7 @@ class GroupScreen extends ConsumerWidget {
               padding: const EdgeInsets.symmetric(
                   horizontal: Sizes.p24, vertical: Sizes.p16),
               child: MemberListWidget(
-                members: group.requireValue.members,
+                members: group.requireValue.members, //TODO
               ),
             ),
             const Padding(

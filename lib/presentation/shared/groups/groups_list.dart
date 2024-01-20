@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/group/states/groups_state.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/routes.dart';
@@ -28,10 +27,14 @@ class GroupsList extends ConsumerWidget {
                 for (final group in groups)
                   GroupTile(
                     group: group,
-                    onTap: () => context.goNamed(
-                      Routes.group.name,
-                      pathParameters: {'id': group.id},
-                    ),
+                    onTap: () => {
+                      context.goNamed(
+                        GoRouterState.of(context).name == Routes.home.name
+                            ? Routes.homeGroup.name
+                            : Routes.group.name,
+                        pathParameters: {'id': group.id},
+                      )
+                    },
                   ),
               ],
             ),
