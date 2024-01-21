@@ -11,18 +11,21 @@ class PrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: Sizes.p48,
-      child: ElevatedButton(
-        style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+      child: OutlinedButton(
         onPressed: onPressed,
+        style: OutlinedButton.styleFrom(
+          side: BorderSide(color: Colors.white),
+        ),
         child: isLoading
             ? const CircularProgressIndicator()
             : Text(
                 text,
                 textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge!
-                    .copyWith(color: Colors.white),
+                style: const TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
       ),
     );

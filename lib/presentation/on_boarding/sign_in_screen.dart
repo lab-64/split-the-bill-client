@@ -16,7 +16,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
 
-  // Used for testing, remove on production
+  // TODO: Used for testing, set only on debug mode
   @override
   void initState() {
     super.initState();
@@ -48,47 +48,64 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     final state = ref.watch(authStateProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          'Sign In',
+      body: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Colors.blue.shade300, Colors.blue.shade800],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
         ),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(Sizes.p32),
-        child: Column(
-          children: [
-            TextField(
-              style: const TextStyle(color: Colors.black),
-              controller: email,
-              decoration: InputDecoration(
-                labelText: "Email",
-                prefixIcon: const Icon(Icons.email),
-                enabled: !state.isLoading,
-              ),
-            ),
-            TextField(
-              style: const TextStyle(color: Colors.black),
-              controller: password,
-              obscureText: true,
-              decoration: InputDecoration(
-                labelText: "Password",
-                prefixIcon: const Icon(Icons.lock),
-                enabled: !state.isLoading,
-              ),
-            ),
-            gapH48,
-            Row(
+        child: SafeArea(
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: Sizes.p24),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Expanded(
-                  child: PrimaryButton(
-                    isLoading: state.isLoading,
-                    onPressed: state.isLoading ? null : () => _login(),
-                    text: 'Login',
+                Image.asset('assets/logo.png'),
+                gapH64,
+                TextField(
+                  style: const TextStyle(color: Colors.black),
+                  controller: email,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    labelText: "Email",
+                    fillColor: Colors.white,
+                    filled: true,
+                    prefixIcon: const Icon(Icons.alternate_email),
+                    enabled: !state.isLoading,
                   ),
                 ),
+                gapH16,
+                TextField(
+                  style: const TextStyle(color: Colors.black),
+                  controller: password,
+                  obscureText: true,
+                  decoration: InputDecoration(
+                    border: InputBorder.none,
+                    labelText: "Password",
+                    fillColor: Colors.white,
+                    filled: true,
+                    prefixIcon: const Icon(Icons.lock),
+                    enabled: !state.isLoading,
+                  ),
+                ),
+                gapH48,
+                Row(
+                  children: [
+                    Expanded(
+                      child: PrimaryButton(
+                        isLoading: state.isLoading,
+                        onPressed: state.isLoading ? null : () => _login(),
+                        text: 'Sign In',
+                      ),
+                    ),
+                  ],
+                ),
               ],
-            )
-          ],
+            ),
+          ),
         ),
       ),
     );
