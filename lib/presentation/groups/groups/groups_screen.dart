@@ -15,9 +15,11 @@ class GroupsScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Sizes.p24),
-        child: CustomScrollView(slivers: [
-          GroupsList(scrollController: scrollController),
-        ]),
+        child: CustomScrollView(
+          slivers: [
+            GroupsList(scrollController: scrollController),
+          ],
+        ),
       ),
     );
   }

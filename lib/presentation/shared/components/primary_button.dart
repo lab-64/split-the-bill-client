@@ -14,7 +14,7 @@ class PrimaryButton extends StatelessWidget {
       child: OutlinedButton(
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
-          side: BorderSide(color: Colors.white),
+          side: const BorderSide(color: Colors.white),
         ),
         child: isLoading
             ? const CircularProgressIndicator()

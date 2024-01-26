@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/domain/bill/states/bills_state.dart';
 import 'package:split_the_bill/presentation/groups/group/controllers.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
-import 'package:split_the_bill/presentation/shared/bills/bile_tile.dart';
+import 'package:split_the_bill/presentation/shared/bills/bill_tile.dart';
 import 'package:split_the_bill/routes.dart';
 
 class BillsList extends ConsumerWidget {
@@ -36,13 +36,27 @@ class BillsList extends ConsumerWidget {
                   BillTile(
                     bill: bill,
                     showGroup: showGroup,
-                    onTap: () => {
+                    onTap: () {
+                      // TODO
+                      final String currentLocation =
+                          GoRouterState.of(context).name ?? "";
+
+                      final String targetLocation;
+                      final Map<String, String> pathParameters = {};
+
+                      if (currentLocation == Routes.home.name) {
+                        targetLocation = Routes.homeBill.name;
+                        pathParameters['billId'] = bill.id;
+                      } else {
+                        targetLocation = Routes.bill.name;
+                        pathParameters['groupId'] = bill.groupId;
+                        pathParameters['billId'] = bill.id;
+                      }
+
                       context.goNamed(
-                        GoRouterState.of(context).name == Routes.home.name
-                            ? Routes.homeBill.name
-                            : Routes.bill.name,
-                        pathParameters: {'id': bill.id},
-                      )
+                        targetLocation,
+                        pathParameters: pathParameters,
+                      );
                     },
                   ),
               ],

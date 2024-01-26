@@ -13,7 +13,7 @@ class GroupTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Card(
       margin: const EdgeInsets.only(bottom: Sizes.p16),
-      elevation: 0.5,
+      elevation: 0,
       color: Colors.white,
       child: ListTile(
         contentPadding: const EdgeInsets.all(Sizes.p16),

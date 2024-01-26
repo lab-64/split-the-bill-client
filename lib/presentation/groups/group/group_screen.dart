@@ -4,11 +4,15 @@ import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/group/states/group_state.dart';
 import 'package:split_the_bill/presentation/groups/group/floating_with_menu.dart';
 import 'package:split_the_bill/presentation/groups/group/group_history.dart';
-import 'package:split_the_bill/presentation/groups/group/member_list.dart';
+import 'package:split_the_bill/presentation/groups/group/group_members.dart';
 import 'package:split_the_bill/presentation/shared/bills/bills_list.dart';
 
 class GroupScreen extends ConsumerWidget {
-  const GroupScreen({super.key, required this.groupId});
+  const GroupScreen({
+    super.key,
+    required this.groupId,
+  });
+
   final String groupId;
 
   @override
@@ -17,14 +21,13 @@ class GroupScreen extends ConsumerWidget {
     final group = ref.watch(groupStateProvider(groupId));
 
     return DefaultTabController(
-      initialIndex: 0,
       length: 3,
       child: Scaffold(
         floatingActionButton: FloatingWithMenu(),
         appBar: AppBar(
           title: Text(group.value?.name ?? ""),
           bottom: const TabBar(
-            tabs: <Widget>[
+            tabs: [
               Tab(
                 icon: Icon(Icons.receipt_long),
               ),
@@ -41,28 +44,21 @@ class GroupScreen extends ConsumerWidget {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.symmetric(
-                  horizontal: Sizes.p24, vertical: Sizes.p16),
+                horizontal: Sizes.p24,
+                vertical: Sizes.p16,
+              ),
               child: CustomScrollView(
                 slivers: [
                   BillsList(
-                      scrollController: scrollController,
-                      groupId: groupId,
-                      showGroup: false),
+                    scrollController: scrollController,
+                    groupId: groupId,
+                    showGroup: false,
+                  ),
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: Sizes.p24, vertical: Sizes.p16),
-              child: MemberListWidget(
-                members: group.requireValue.members, //TODO
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(
-                  horizontal: Sizes.p24, vertical: Sizes.p16),
-              child: GroupHistory(),
-            ),
+            GroupMembers(members: group.requireValue.members), //TODO
+            const GroupHistory(),
           ],
         ),
       ),

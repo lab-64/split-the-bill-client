@@ -15,7 +15,7 @@ class Navigation extends StatelessWidget {
           Routes.newBill.name,
         ),
         backgroundColor: Colors.blue.shade400,
-        shape: CircleBorder(),
+        shape: const CircleBorder(),
         child: const Icon(
           Icons.add,
           color: Colors.white,

@@ -19,9 +19,9 @@ class HomeScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: Sizes.p24),
           child: CustomScrollView(
             slivers: [
-              const HomeAppBar(),
+              const SliverToBoxAdapter(child: HomeAppBar()),
               const SliverToBoxAdapter(child: gapH24),
-              const HomeBalanceCard(),
+              const SliverToBoxAdapter(child: HomeBalanceCard()),
               const SliverToBoxAdapter(child: gapH24),
               const SliverToBoxAdapter(child: Headline(title: "My Groups")),
               GroupsList(scrollController: scrollController),
@@ -29,7 +29,7 @@ class HomeScreen extends StatelessWidget {
               const SliverToBoxAdapter(child: Headline(title: "Recent Bills")),
               BillsList(
                 scrollController: scrollController,
-                groupId: "f3bab6ba-2218-4dfa-875f-d6d7805ffb0c", //TODO
+                groupId: "a5516323-4e61-4401-a9df-8281f014fbcd", //TODO
               ),
               const SliverToBoxAdapter(child: gapH32),
             ],

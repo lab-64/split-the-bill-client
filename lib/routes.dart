@@ -85,20 +85,19 @@ GoRouter goRouter(GoRouterRef ref) {
             builder: (context, state) => const HomeScreen(),
             routes: [
               GoRoute(
-                path: 'group/:id',
+                path: 'group/:groupId',
                 name: Routes.homeGroup.name,
                 builder: (context, state) {
-                  final groupId = state.pathParameters['id']!;
+                  final groupId = state.pathParameters['groupId']!;
                   return GroupScreen(groupId: groupId);
                 },
               ),
               GoRoute(
-                path: 'bill/:id',
+                path: 'bill/:billId',
                 name: Routes.homeBill.name,
                 builder: (context, state) {
-                  //final groupId = state.pathParameters["id"]!;
-                  final billId = state.pathParameters["id"]!;
-                  return BillScreen(/*groupId: groupId, */ billId: billId);
+                  final billId = state.pathParameters["billId"]!;
+                  return BillScreen(billId: billId);
                 },
               ),
               GoRoute(
@@ -119,21 +118,21 @@ GoRouter goRouter(GoRouterRef ref) {
                 builder: (context, state) => const NewGroupScreen(),
               ),
               GoRoute(
-                path: ':id',
+                path: ':groupId',
                 name: Routes.group.name,
                 builder: (context, state) {
-                  final groupId = state.pathParameters['id']!;
+                  final groupId = state.pathParameters['groupId']!;
                   return GroupScreen(groupId: groupId);
                 },
-/*                routes: [
+                routes: [
                   GoRoute(
                     path: ':billId',
                     name: Routes.bill.name,
                     builder: (context, state) {
-                      final groupId = state.pathParameters["id"]!;
                       final billId = state.pathParameters["billId"]!;
-                      return BillScreen(groupId: groupId, billId: billId);
+                      return BillScreen(billId: billId);
                     },
+                    /*
                     routes: [
                       GoRoute(
                           path: 'edit',
@@ -143,8 +142,10 @@ GoRouter goRouter(GoRouterRef ref) {
                             return EditBillScreen(billId: billId);
                           }),
                     ],
+
+                     */
                   ),
-                ],*/
+                ],
               ),
             ],
           ),

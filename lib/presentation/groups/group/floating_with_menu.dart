@@ -50,8 +50,8 @@ class _FloatingWithMenuState extends State<FloatingWithMenu> {
       backgroundColor: backgroundColor,
       foregroundColor: Colors.white,
       labelBackgroundColor: Colors.blue.shade400,
-      labelStyle: TextStyle(color: Colors.white),
-      shape: CircleBorder(),
+      labelStyle: const TextStyle(color: Colors.white),
+      shape: const CircleBorder(),
       onTap: () {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(

@@ -45,7 +45,7 @@ class _NavbarState extends State<Navbar> {
         backgroundColor: Colors.transparent,
         indicatorColor: Colors.white,
         elevation: 0,
-        destinations: <Widget>[
+        destinations: [
           NavigationDestination(
             icon: Icon(Icons.home,
                 color:

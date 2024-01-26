@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:split_the_bill/constants/app_sizes.dart';
 
 class GroupHistory extends StatelessWidget {
   const GroupHistory({super.key});
@@ -53,22 +54,28 @@ class GroupHistory extends StatelessWidget {
       // Add more mappings as needed
     };
 
-    return ListView.builder(
-      itemCount: historyItems.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          leading: Icon(
-            iconDataMap[historyItems[index].icon],
-          ),
-          title: buildHistoryText(historyItems[index]),
-          subtitle: Text(
-            historyItems[index].date,
-            style: const TextStyle(
-              color: Colors.grey,
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: Sizes.p24,
+        vertical: Sizes.p16,
+      ),
+      child: ListView.builder(
+        itemCount: historyItems.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            leading: Icon(
+              iconDataMap[historyItems[index].icon],
             ),
-          ),
-        );
-      },
+            title: buildHistoryText(historyItems[index]),
+            subtitle: Text(
+              historyItems[index].date,
+              style: const TextStyle(
+                color: Colors.grey,
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 
