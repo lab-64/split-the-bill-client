@@ -29,7 +29,7 @@ class HomeScreen extends StatelessWidget {
               const SliverToBoxAdapter(child: Headline(title: "Recent Bills")),
               BillsList(
                 scrollController: scrollController,
-                groupId: "a5516323-4e61-4401-a9df-8281f014fbcd", //TODO
+                groupId: "3baeeb41-6267-44df-bea0-c8ae50357d58", //TODO
               ),
               const SliverToBoxAdapter(child: gapH32),
             ],

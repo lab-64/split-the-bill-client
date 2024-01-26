@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
+import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/bill/states/bills_state.dart';
 import 'package:split_the_bill/presentation/groups/group/controllers.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
@@ -32,9 +34,11 @@ class BillsList extends ConsumerWidget {
               controller: scrollController,
               shrinkWrap: true,
               children: [
-                for (final bill in bills)
+                for (int i = 0; i < bills.length; i++) ...[
+                  if (i == 0 || bills[i].date.day != bills[i - 1].date.day)
+                    DateLabel(date: bills[i].date),
                   BillTile(
-                    bill: bill,
+                    bill: bills[i],
                     showGroup: showGroup,
                     onTap: () {
                       // TODO
@@ -46,11 +50,11 @@ class BillsList extends ConsumerWidget {
 
                       if (currentLocation == Routes.home.name) {
                         targetLocation = Routes.homeBill.name;
-                        pathParameters['billId'] = bill.id;
+                        pathParameters['billId'] = bills[i].id;
                       } else {
                         targetLocation = Routes.bill.name;
-                        pathParameters['groupId'] = bill.groupId;
-                        pathParameters['billId'] = bill.id;
+                        pathParameters['groupId'] = bills[i].groupId;
+                        pathParameters['billId'] = bills[i].id;
                       }
 
                       context.goNamed(
@@ -59,9 +63,30 @@ class BillsList extends ConsumerWidget {
                       );
                     },
                   ),
+                ],
               ],
             ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class DateLabel extends StatelessWidget {
+  final DateTime date;
+
+  const DateLabel({super.key, required this.date});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: Sizes.p4),
+      child: Text(
+        DateFormat('dd. MMMM').format(date), // Customize the date format
+        style: TextStyle(
+          fontSize: 14.0,
+          color: Colors.grey.shade700,
         ),
       ),
     );

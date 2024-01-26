@@ -1,4 +1,4 @@
-import '../item/item.dart';
+import 'item.dart';
 
 class Bill {
   final String id;
@@ -7,6 +7,7 @@ class Bill {
   final String ownerId;
   final DateTime date;
   final List<Item> items;
+  final Map<String, double> balance;
 
 //<editor-fold desc="Data Methods">
   const Bill({
@@ -16,6 +17,7 @@ class Bill {
     required this.ownerId,
     required this.date,
     required this.items,
+    required this.balance,
   });
 
   factory Bill.getDefault() {
@@ -28,6 +30,7 @@ class Bill {
       items: [
         Item.getDefault(),
       ],
+      balance: {},
     );
   }
 
@@ -41,7 +44,8 @@ class Bill {
           groupId == other.groupId &&
           ownerId == other.ownerId &&
           date == other.date &&
-          items == other.items;
+          items == other.items &&
+          balance == other.balance;
 
   @override
   int get hashCode =>
@@ -50,11 +54,12 @@ class Bill {
       groupId.hashCode ^
       ownerId.hashCode ^
       date.hashCode ^
-      items.hashCode;
+      items.hashCode ^
+      balance.hashCode;
 
   @override
   String toString() {
-    return 'Bill{id: $id, name: $name, groupId: $groupId, ownerId: $ownerId, date: $date, items: $items}';
+    return 'Bill{id: $id, name: $name, groupId: $groupId, ownerId: $ownerId, date: $date, items: $items, balance: $balance}';
   }
 
   Bill copyWith({
@@ -65,6 +70,7 @@ class Bill {
     DateTime? date,
     double? price,
     List<Item>? items,
+    Map<String, double>? balance,
   }) {
     return Bill(
       id: id ?? this.id,
@@ -73,6 +79,7 @@ class Bill {
       ownerId: ownerId ?? this.ownerId,
       date: date ?? this.date,
       items: items ?? this.items,
+      balance: balance ?? this.balance,
     );
   }
 
@@ -94,12 +101,12 @@ class Bill {
       name: map['name'] as String,
       groupId: map['groupID'] as String,
       ownerId: map['ownerID'] as String,
-      date: DateTime.now(),
-      // TODO: get and convert date
-      // date: map['date'] as DateTime,
+      date: DateTime.parse(map['date']),
       items: (map['items'] as List<dynamic>)
           .map((item) => Item.fromMap(item))
           .toList(),
+      balance: (map['balance'] as Map<String, dynamic>? ?? {})
+          .map((key, value) => MapEntry(key, value.toDouble())),
     );
   }
 //</editor-fold>

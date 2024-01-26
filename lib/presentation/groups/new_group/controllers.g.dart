@@ -7,7 +7,7 @@ part of 'controllers.dart';
 // **************************************************************************
 
 String _$newGroupControllerHash() =>
-    r'a6a7f7fa9a250017294e04ea4bed9a45738f9447';
+    r'c5b4fbd722227b2342daff5bc0ff32a76708eeab';
 
 /// See also [NewGroupController].
 @ProviderFor(NewGroupController)

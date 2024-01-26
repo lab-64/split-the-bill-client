@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/bill/bill.dart';
+import 'package:split_the_bill/presentation/shared/extensions/currency_formatter.dart';
 
-class BillTile extends StatelessWidget {
+class BillTile extends ConsumerWidget {
   const BillTile({
     super.key,
     required this.bill,
@@ -15,51 +18,41 @@ class BillTile extends StatelessWidget {
   final VoidCallback? onTap;
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: Sizes.p4),
-          child: Text(
-            "18.01", // TODO: grouping should happen heere
-            style: TextStyle(
-              fontSize: 14.0,
-              color: Colors.grey.shade700,
-            ),
-          ),
-        ),
-        Card(
-          margin: const EdgeInsets.only(bottom: Sizes.p16),
-          elevation: 0,
-          child: _buildListTile(),
-        ),
-      ],
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(authStateProvider).requireValue;
+    double balance = bill.balance[user.id] ?? 0;
+
+    return Card(
+      margin: const EdgeInsets.only(bottom: Sizes.p16),
+      elevation: 0,
+      child: _buildListTile(balance),
     );
   }
 
-  Widget _buildListTile() {
+  Widget _buildListTile(double balance) {
     return ListTile(
       onTap: onTap,
       contentPadding: const EdgeInsets.symmetric(
         horizontal: Sizes.p16,
         vertical: Sizes.p4,
       ),
-      leading: _buildLeadingIcon(),
+      leading: _buildLeadingIcon(balance),
       title: _buildBillName(),
       subtitle: _buildSubtitle(),
-      trailing: _buildTrailingAmount(),
+      trailing: _buildTrailingAmount(balance),
     );
   }
 
-  Widget _buildLeadingIcon() {
+  Widget _buildLeadingIcon(double balance) {
     return Container(
       width: 40.0,
       height: 40.0,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: LinearGradient(
-          colors: [Colors.green.shade300, Colors.green.shade700],
+          colors: balance >= 0
+              ? [Colors.green.shade300, Colors.green.shade700]
+              : [Colors.red.shade300, Colors.red.shade700],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -97,7 +90,7 @@ class BillTile extends StatelessWidget {
     return const Row(
       children: [
         CircleAvatar(
-          radius: 8.0,
+          radius: Sizes.p8,
           backgroundImage: AssetImage('assets/avatar.jpg'),
         ),
         SizedBox(width: Sizes.p4),
@@ -142,15 +135,15 @@ class BillTile extends StatelessWidget {
     );
   }
 
-  Widget _buildTrailingAmount() {
-    return const Row(
+  Widget _buildTrailingAmount(double balance) {
+    return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          "235,53 €", // TODO
+          balance.toCurrencyString(),
           style: TextStyle(
             fontSize: 16.0,
-            color: Colors.green, // TODO
+            color: balance >= 0 ? Colors.green : Colors.red,
           ),
         ),
       ],

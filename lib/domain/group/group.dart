@@ -9,6 +9,7 @@ class Group {
   final User owner;
   final List<User> members;
   final List<Bill> bills;
+  final Map<String, double> balance;
 
 //<editor-fold desc="Data Methods">
   const Group({
@@ -17,6 +18,7 @@ class Group {
     required this.owner,
     required this.members,
     required this.bills,
+    required this.balance,
   });
 
   @override
@@ -28,7 +30,8 @@ class Group {
           name == other.name &&
           owner == other.owner &&
           members == other.members &&
-          bills == other.bills);
+          bills == other.bills &&
+          balance == other.balance);
 
   @override
   int get hashCode =>
@@ -36,7 +39,8 @@ class Group {
       name.hashCode ^
       owner.hashCode ^
       members.hashCode ^
-      bills.hashCode;
+      bills.hashCode ^
+      balance.hashCode;
 
   @override
   String toString() {
@@ -46,6 +50,7 @@ class Group {
         ' owner: $owner,' +
         ' members: $members,' +
         ' bills: $bills,' +
+        ' balance: $balance,' +
         '}';
   }
 
@@ -53,9 +58,9 @@ class Group {
     String? id,
     String? name,
     User? owner,
-    double? balance,
     List<User>? members,
     List<Bill>? bills,
+    Map<String, double>? balance,
   }) {
     return Group(
       id: id ?? this.id,
@@ -63,6 +68,7 @@ class Group {
       owner: owner ?? this.owner,
       members: members ?? this.members,
       bills: bills ?? this.bills,
+      balance: balance ?? this.balance,
     );
   }
 
@@ -75,15 +81,18 @@ class Group {
 
   factory Group.fromMap(Map<String, dynamic> map) {
     return Group(
-        id: map['id'] as String,
-        name: map['name'] as String,
-        owner: User.fromMap(map['owner'] as Map<String, dynamic>),
-        members: (map['members'] as List<dynamic>)
-            .map((member) => User.fromMap(member))
-            .toList(),
-        bills: (map['bills'] as List<dynamic>)
-            .map((bill) => Bill.fromMap(bill))
-            .toList());
+      id: map['id'] as String,
+      name: map['name'] as String,
+      owner: User.fromMap(map['owner'] as Map<String, dynamic>),
+      members: (map['members'] as List<dynamic>)
+          .map((member) => User.fromMap(member))
+          .toList(),
+      bills: (map['bills'] as List<dynamic>)
+          .map((bill) => Bill.fromMap(bill))
+          .toList(),
+      balance: (map['balance'] as Map<String, dynamic>? ?? {})
+          .map((key, value) => MapEntry(key, value.toDouble())),
+    );
   }
 
 //</editor-fold>

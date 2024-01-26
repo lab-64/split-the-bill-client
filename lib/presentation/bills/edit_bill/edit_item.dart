@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
-import 'package:split_the_bill/domain/item/item.dart';
+import 'package:split_the_bill/domain/bill/item.dart';
 
 class EditItem extends StatefulWidget {
   const EditItem({

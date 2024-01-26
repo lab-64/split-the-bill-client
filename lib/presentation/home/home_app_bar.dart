@@ -25,7 +25,7 @@ class HomeAppBar extends ConsumerWidget {
     return Row(
       children: [
         const CircleAvatar(
-          radius: 25.0,
+          radius: Sizes.p24,
           backgroundImage: AssetImage('assets/avatar.jpg'),
         ),
         gapW16,

@@ -45,7 +45,7 @@ class MemberItemWidget extends StatelessWidget {
     return Column(
       children: [
         const CircleAvatar(
-          radius: 36.0,
+          radius: Sizes.p32,
           backgroundImage: AssetImage('assets/avatar.jpg'),
         ),
         gapH8,

@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
+import 'package:split_the_bill/presentation/home/controllers.dart';
+import 'package:split_the_bill/presentation/shared/extensions/currency_formatter.dart';
 
-class HomeBalanceCard extends StatelessWidget {
+class HomeBalanceCard extends ConsumerWidget {
   const HomeBalanceCard({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userTotalBalance = ref.watch(userTotalBalanceProvider);
+
     return Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(Sizes.p24),
@@ -13,7 +18,7 @@ class HomeBalanceCard extends StatelessWidget {
         decoration: _cardDecoration,
         child: Padding(
           padding: const EdgeInsets.all(Sizes.p24),
-          child: _buildCardContent(),
+          child: _buildCardContent(userTotalBalance),
         ),
       ),
     );
@@ -32,22 +37,31 @@ class HomeBalanceCard extends StatelessWidget {
     );
   }
 
-  Widget _buildCardContent() {
+  Widget _buildCardContent(double userTotalBalance) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _buildCardText('My Balance', 14.0),
-        _buildCardText('450.00 €', 36.0, fontWeight: FontWeight.w900),
+        _buildCardText(
+          'My Balance',
+          14.0,
+          Colors.white,
+        ),
+        _buildCardText(
+          userTotalBalance.toCurrencyString(),
+          36.0,
+          userTotalBalance >= 0 ? Colors.green.shade200 : Colors.pink.shade200,
+          fontWeight: FontWeight.w900,
+        ),
       ],
     );
   }
 
-  Widget _buildCardText(String text, double fontSize,
+  Widget _buildCardText(String text, double fontSize, Color color,
       {FontWeight? fontWeight}) {
     return Text(
       text,
       style: TextStyle(
-        color: Colors.white,
+        color: color,
         fontSize: fontSize,
         fontWeight: fontWeight,
       ),

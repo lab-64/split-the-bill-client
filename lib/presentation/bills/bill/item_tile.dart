@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
-import 'package:split_the_bill/domain/item/item.dart';
+import 'package:split_the_bill/domain/bill/item.dart';
 
 class ItemTile extends StatelessWidget {
   const ItemTile({super.key, required this.item});
@@ -31,7 +31,7 @@ class ItemTile extends StatelessWidget {
                     return const Row(
                       children: [
                         CircleAvatar(
-                          radius: 8.0,
+                          radius: Sizes.p8,
                           backgroundImage: AssetImage('assets/avatar.jpg'),
                         ),
                         gapW4,

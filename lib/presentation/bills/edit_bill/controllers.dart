@@ -1,8 +1,8 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/domain/bill/bill.dart';
+import 'package:split_the_bill/domain/bill/item.dart';
 import 'package:split_the_bill/domain/bill/states/bills_state.dart';
-import 'package:split_the_bill/domain/item/item.dart';
 
 part 'controllers.g.dart';
 
@@ -22,6 +22,7 @@ class EditBillController extends _$EditBillController {
       ownerId: user!.id,
       date: DateTime.now(),
       items: items,
+      balance: {}, //TODO remove from reuiqred?
     );
 
     final billsState = ref.read(billsStateProvider.notifier);
