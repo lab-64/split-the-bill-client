@@ -1,4 +1,3 @@
-// TODO: Use Freezed or json_serializable
 class User {
   final String id;
   final String email;

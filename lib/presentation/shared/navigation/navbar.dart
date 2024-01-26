@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/routes.dart';
 
-// TODO: temporary solution, we will later use ShellRoute from GoRouter and make this widget stateless
-// see: https://codewithandrea.com/articles/flutter-bottom-navigation-bar-nested-routes-gorouter/
-
 class Navbar extends StatefulWidget {
   const Navbar({super.key});
 
@@ -14,6 +11,12 @@ class Navbar extends StatefulWidget {
 
 class _NavbarState extends State<Navbar> {
   int selectedIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedIndex = selectedIndex;
+  }
 
   void handleDestinationSelected(int index) {
     setState(() {
@@ -37,7 +40,7 @@ class _NavbarState extends State<Navbar> {
       color: Colors.blue.shade400,
       notchMargin: 6.0,
       elevation: 0,
-      shape: CircularNotchedRectangle(),
+      shape: const CircularNotchedRectangle(),
       child: NavigationBar(
         onDestinationSelected: handleDestinationSelected,
         labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,

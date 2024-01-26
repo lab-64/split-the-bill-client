@@ -41,22 +41,23 @@ enum Routes {
 
 @Riverpod(keepAlive: true)
 GoRouter goRouter(GoRouterRef ref) {
-  final authService = ref.watch(authStateProvider);
+  final user = ref.watch(authStateProvider);
 
   return GoRouter(
     initialLocation: '/home',
     redirect: (context, state) {
-      final isLoggedIn = authService.value!.id.isNotEmpty;
+      final isLoggedIn = user.value!.id.isNotEmpty;
       final path = state.uri.path;
-      if (isLoggedIn) {
-        if (path == '/signIn') {
-          return '/';
-        }
-      } else {
-        return '/signIn';
+
+      if (!isLoggedIn) {
+        return "/signIn";
       }
 
-      return null;
+      if (isLoggedIn && path == "/signIn") {
+        return "/";
+      }
+
+      return path;
     },
     routes: [
       ShellRoute(

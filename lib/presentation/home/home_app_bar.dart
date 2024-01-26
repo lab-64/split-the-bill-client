@@ -10,7 +10,7 @@ class HomeAppBar extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(authStateProvider).requireValue; //TODO
+    final user = ref.watch(authStateProvider).requireValue;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
