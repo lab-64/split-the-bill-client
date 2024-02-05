@@ -11,12 +11,12 @@ class Group {
 
 //<editor-fold desc="Data Methods">
   const Group({
-    required this.id,
+    this.id = '',
     required this.name,
     required this.owner,
-    required this.members,
-    required this.bills,
-    required this.balance,
+    this.members = const [],
+    this.bills = const [],
+    this.balance = const {},
   });
 
   @override

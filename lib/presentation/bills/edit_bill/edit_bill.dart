@@ -45,49 +45,23 @@ class _EditBillState extends ConsumerState<EditBill> {
         title: Text(isNewBill ? "New Bill" : "Edit Bill"),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: Sizes.p32),
+        padding: const EdgeInsets.all(Sizes.p24),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Consumer(
-                  builder: (context, ref, child) {
-                    return GroupsDropdown(
-                      groups: groups,
-                      selectedGroupId: widget.bill.groupId,
-                      onSelected: (Group? value) {
-                        setState(() => selectedGroupId = value!.id);
-                      },
-                    );
-                  },
-                ),
-                Consumer(
-                  builder: (context, ref, child) {
-                    return PrimaryButton(
-                      isLoading:
-                          ref.watch(editBillControllerProvider).isLoading,
-                      onPressed: () {
-                        if (isNewBill) {
-                          _addBill(ref);
-                        } else {
-                          _editBill(widget.bill, ref);
-                        }
-                      },
-                      text: 'Save',
-                    );
-                  },
-                ),
-              ],
+            GroupsDropdown(
+              groups: groups,
+              selectedGroupId: widget.bill.groupId,
+              onSelected: (Group? value) {
+                setState(() => selectedGroupId = value!.id);
+              },
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: Sizes.p32),
-              child: PrimaryButton(
-                isLoading: false,
-                text: 'Add Item',
-                onPressed: () => _addItem(),
-              ),
+            gapH32,
+            PrimaryButton(
+              isLoading: false,
+              icon: Icons.add_circle_outline,
+              onPressed: () => _addItem(),
             ),
+            gapH32,
             Expanded(
               child: ListView.builder(
                 itemCount: items.length,
@@ -99,6 +73,17 @@ class _EditBillState extends ConsumerState<EditBill> {
                   );
                 },
               ),
+            ),
+            PrimaryButton(
+              isLoading: ref.watch(editBillControllerProvider).isLoading,
+              onPressed: () {
+                if (isNewBill) {
+                  _addBill(ref);
+                } else {
+                  _editBill(widget.bill, ref);
+                }
+              },
+              icon: Icons.add,
             ),
           ],
         ),

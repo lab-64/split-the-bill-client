@@ -36,14 +36,20 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
         title: const Text("New Group"),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(Sizes.p32),
+        padding: const EdgeInsets.all(Sizes.p24),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             TextField(
               style: const TextStyle(color: Colors.black),
               controller: nameController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(Sizes.p24),
+                ),
                 labelText: "Name",
+                fillColor: Colors.white,
+                filled: true,
                 prefixIcon: Icon(Icons.drive_file_rename_outline),
               ),
             ),
@@ -59,7 +65,7 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
                       isLoading:
                           ref.watch(newGroupControllerProvider).isLoading,
                       onPressed: () => _add(ref),
-                      text: 'Add',
+                      icon: Icons.add,
                     ),
                   ),
                 ],

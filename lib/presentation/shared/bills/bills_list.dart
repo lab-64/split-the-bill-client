@@ -47,14 +47,16 @@ class BillsList extends ConsumerWidget {
 
                       final String targetLocation;
                       final Map<String, String> pathParameters = {};
+                      pathParameters['billId'] = bills[i].id;
 
-                      if (currentLocation == Routes.home.name) {
+                      if (currentLocation == NavbarRoutes.home.name) {
                         targetLocation = Routes.homeBill.name;
-                        pathParameters['billId'] = bills[i].id;
+                      } else if (currentLocation == Routes.homeGroup.name) {
+                        targetLocation = Routes.homeGroupBill.name;
+                        pathParameters['groupId'] = bills[i].groupId;
                       } else {
                         targetLocation = Routes.bill.name;
                         pathParameters['groupId'] = bills[i].groupId;
-                        pathParameters['billId'] = bills[i].id;
                       }
 
                       context.goNamed(

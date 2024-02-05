@@ -45,7 +45,7 @@ class GroupsList extends ConsumerWidget {
 
   void _onTap(BuildContext context, Group group) {
     context.goNamed(
-      GoRouterState.of(context).name == Routes.home.name
+      GoRouterState.of(context).name == NavbarRoutes.home.name
           ? Routes.homeGroup.name
           : Routes.group.name,
       pathParameters: {'groupId': group.id},

@@ -15,28 +15,30 @@ import 'package:split_the_bill/presentation/shared/navigation/navigation.dart';
 
 part 'routes.g.dart';
 
+enum NavbarRoutes {
+  home,
+  groups,
+  bills,
+  profile,
+}
+
 enum Routes {
   // HOME
-  home,
   homeGroup,
   homeBill,
+  homeGroupBill,
 
   // SIGN IN
   signIn,
 
   // GROUP
-  groups,
   group,
   newGroup,
 
   // BILL
-  bills,
   bill,
   editBill,
   newBill,
-
-  // PROFILE
-  profile
 }
 
 @Riverpod(keepAlive: true)
@@ -82,17 +84,26 @@ GoRouter goRouter(GoRouterRef ref) {
         routes: [
           GoRoute(
             path: '/home',
-            name: Routes.home.name,
+            name: NavbarRoutes.home.name,
             builder: (context, state) => const HomeScreen(),
             routes: [
               GoRoute(
-                path: 'group/:groupId',
-                name: Routes.homeGroup.name,
-                builder: (context, state) {
-                  final groupId = state.pathParameters['groupId']!;
-                  return GroupScreen(groupId: groupId);
-                },
-              ),
+                  path: 'group/:groupId',
+                  name: Routes.homeGroup.name,
+                  builder: (context, state) {
+                    final groupId = state.pathParameters['groupId']!;
+                    return GroupScreen(groupId: groupId);
+                  },
+                  routes: [
+                    GoRoute(
+                      path: 'bill/:billId',
+                      name: Routes.homeGroupBill.name,
+                      builder: (context, state) {
+                        final billId = state.pathParameters["billId"]!;
+                        return BillScreen(billId: billId);
+                      },
+                    ),
+                  ]),
               GoRoute(
                 path: 'bill/:billId',
                 name: Routes.homeBill.name,
@@ -110,7 +121,7 @@ GoRouter goRouter(GoRouterRef ref) {
           ),
           GoRoute(
             path: '/groups',
-            name: Routes.groups.name,
+            name: NavbarRoutes.groups.name,
             builder: (context, state) => const GroupsScreen(),
             routes: [
               GoRoute(
@@ -152,12 +163,12 @@ GoRouter goRouter(GoRouterRef ref) {
           ),
           GoRoute(
             path: '/bills',
-            name: Routes.bills.name,
+            name: NavbarRoutes.bills.name,
             builder: (context, state) => const BillsScreen(),
           ),
           GoRoute(
             path: '/profile',
-            name: Routes.profile.name,
+            name: NavbarRoutes.profile.name,
             builder: (context, state) => const ProfileScreen(),
           ),
         ],

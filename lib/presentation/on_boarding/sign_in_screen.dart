@@ -135,7 +135,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
           child: PrimaryButton(
             isLoading: state.isLoading,
             onPressed: state.isLoading ? null : () => _login(),
-            text: 'Sign In',
+            icon: Icons.login,
           ),
         ),
       ],
