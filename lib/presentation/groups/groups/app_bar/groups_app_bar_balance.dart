@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/presentation/groups/groups/controllers.dart';
 
-class GroupSliverAppBarBalance extends StatelessWidget {
-  const GroupSliverAppBarBalance({super.key});
+class GroupsAppBarBalance extends StatelessWidget {
+  const GroupsAppBarBalance({super.key});
 
   @override
   Widget build(BuildContext context) {

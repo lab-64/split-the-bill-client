@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/infrastructure/async_value_ui.dart';
-import 'package:split_the_bill/presentation/shared/primary_button.dart';
+import 'package:split_the_bill/presentation/shared/components/primary_button.dart';
 
 class SignInScreen extends ConsumerStatefulWidget {
   const SignInScreen({super.key});
@@ -15,6 +15,14 @@ class SignInScreen extends ConsumerStatefulWidget {
 class _SignInScreenState extends ConsumerState<SignInScreen> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+
+  // Used for testing, remove on production
+  @override
+  void initState() {
+    super.initState();
+    email.text = "felix@gmail.com";
+    password.text = "test";
+  }
 
   @override
   void dispose() {
@@ -61,6 +69,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             TextField(
               style: const TextStyle(color: Colors.black),
               controller: password,
+              obscureText: true,
               decoration: InputDecoration(
                 labelText: "Password",
                 prefixIcon: const Icon(Icons.lock),

@@ -9,36 +9,36 @@ final testGroups = [
   Group(
     id: '1',
     name: "Wohnung",
-    memberIDs: ["1", "2"],
-    ownerID: "1",
+    members: [testUsers[0], testUsers[1]],
+    owner: testUsers[0],
     bills: [testBills[0], testBills[1]],
   ),
   Group(
     id: '2',
     name: "Urlaub",
-    memberIDs: ["1", "2", "5"],
-    ownerID: "1",
+    members: [testUsers[0], testUsers[1], testUsers[4]],
+    owner: testUsers[0],
     bills: [testBills[2], testBills[3], testBills[4]],
   ),
   Group(
     id: '3',
     name: "Shit",
-    memberIDs: ["1", "2", "3"],
-    ownerID: "1",
+    members: [testUsers[0], testUsers[1], testUsers[2]],
+    owner: testUsers[0],
     bills: [testBills[5]],
   ),
   Group(
     id: '4',
     name: "Blalbleerrrrskere",
-    memberIDs: ["1", "4", "5"],
-    ownerID: "1",
+    members: [testUsers[0], testUsers[3], testUsers[4]],
+    owner: testUsers[0],
     bills: [],
   ),
   Group(
     id: '5',
     name: "Party",
-    memberIDs: ["1", "2", "5"],
-    ownerID: "1",
+    members: [testUsers[0], testUsers[1], testUsers[4]],
+    owner: testUsers[0],
     bills: [],
   ),
 ];
@@ -73,10 +73,6 @@ final testBills = [
       date: DateTime(2022, 11, 7),
       groupId: "1",
       ownerId: "1",
-      price: testItems
-          .where((item) => item.billId == '1')
-          .toList()
-          .fold(0, (previousValue, element) => previousValue + element.price),
       items: [testItems[2], testItems[9]]),
   Bill(
       id: '2',
@@ -84,10 +80,6 @@ final testBills = [
       date: DateTime(2022, 11, 14),
       groupId: "1",
       ownerId: "2",
-      price: testItems
-          .where((item) => item.billId == '2')
-          .toList()
-          .fold(0, (previousValue, element) => previousValue + element.price),
       items: [testItems[6]]),
   Bill(
       id: '3',
@@ -95,10 +87,6 @@ final testBills = [
       date: DateTime(2022, 09, 15),
       groupId: "2",
       ownerId: "1",
-      price: testItems
-          .where((item) => item.billId == '3')
-          .toList()
-          .fold(0, (previousValue, element) => previousValue + element.price),
       items: [testItems[3], testItems[8]]),
   Bill(
       id: '4',
@@ -106,10 +94,6 @@ final testBills = [
       date: DateTime(2022, 09, 17),
       groupId: "2",
       ownerId: "2",
-      price: testItems
-          .where((item) => item.billId == '4')
-          .toList()
-          .fold(0, (previousValue, element) => previousValue + element.price),
       items: [testItems[7]]),
   Bill(
       id: '5',
@@ -117,10 +101,6 @@ final testBills = [
       date: DateTime(2022, 09, 18),
       groupId: "2",
       ownerId: "5",
-      price: testItems
-          .where((item) => item.billId == '5')
-          .toList()
-          .fold(0, (previousValue, element) => previousValue + element.price),
       items: [testItems[5]]),
   Bill(
       id: '6',
@@ -128,10 +108,6 @@ final testBills = [
       date: DateTime(2022, 09, 18),
       groupId: "2",
       ownerId: "5",
-      price: testItems
-          .where((item) => item.billId == '6')
-          .toList()
-          .fold(0, (previousValue, element) => previousValue + element.price),
       items: [testItems[0], testItems[1]]),
 ];
 

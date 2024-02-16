@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:split_the_bill/presentation/groups/groups/groups_sliver_app_bar_balance.dart';
-import 'package:split_the_bill/presentation/groups/groups/groups_sliver_app_bar_greeting.dart';
+import 'package:split_the_bill/presentation/groups/groups/app_bar/groups_app_bar_balance.dart';
+import 'package:split_the_bill/presentation/groups/groups/app_bar/groups_app_bar_greeting.dart';
 
-class GroupSliverAppBar extends StatelessWidget {
-  const GroupSliverAppBar({super.key});
+class GroupsAppBar extends StatelessWidget {
+  const GroupsAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -24,8 +24,8 @@ class GroupSliverAppBar extends StatelessWidget {
         child: const Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            GroupSliverAppBarGreeting(),
-            GroupSliverAppBarBalance(),
+            GroupsAppBarGreeting(),
+            GroupsAppBarBalance(),
           ],
         ),
       ),

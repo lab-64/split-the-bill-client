@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/domain/bill/states/bill_state.dart';
-import 'package:split_the_bill/presentation/bills/bill/bill_sliver_list_item.dart';
+import 'package:split_the_bill/presentation/bills/bill/items_list.dart';
+import 'package:split_the_bill/presentation/shared/components/primary_button.dart';
+import 'package:split_the_bill/routes.dart';
 
-class BillItemScreen extends ConsumerWidget {
-  const BillItemScreen({super.key, required this.billId});
-
+class BillScreen extends ConsumerWidget {
+  const BillScreen({
+    super.key,
+    required this.groupId,
+    required this.billId,
+  });
+  final String groupId;
   final String billId;
 
   @override
@@ -17,10 +24,24 @@ class BillItemScreen extends ConsumerWidget {
       appBar: AppBar(
         title: Text(bill.value?.name ?? ""),
       ),
+      floatingActionButton: PrimaryButton(
+        text: 'Edit',
+        onPressed: () {
+          context.goNamed(
+            Routes.editBill.name,
+            pathParameters: {
+              'id': groupId,
+              'billId': billId,
+            },
+          );
+        },
+      ),
       body: CustomScrollView(
         slivers: [
-          BillItemSliverList(
-              scrollController: scrollController, billId: billId),
+          ItemsList(
+            scrollController: scrollController,
+            bill: bill,
+          ),
         ],
       ),
     );

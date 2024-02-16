@@ -6,21 +6,22 @@ part of 'controllers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$newBillControllerHash() => r'c5055197bc5571097d5b42d585a4a443debb5525';
+String _$editBillControllerHash() =>
+    r'3b6b8225d820f3f65eaca2a0f409fb949a7d978d';
 
-/// See also [NewBillController].
-@ProviderFor(NewBillController)
-final newBillControllerProvider =
-    AsyncNotifierProvider<NewBillController, bool>.internal(
-  NewBillController.new,
-  name: r'newBillControllerProvider',
+/// See also [EditBillController].
+@ProviderFor(EditBillController)
+final editBillControllerProvider =
+    AsyncNotifierProvider<EditBillController, void>.internal(
+  EditBillController.new,
+  name: r'editBillControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$newBillControllerHash,
+      : _$editBillControllerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$NewBillController = AsyncNotifier<bool>;
+typedef _$EditBillController = AsyncNotifier<void>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

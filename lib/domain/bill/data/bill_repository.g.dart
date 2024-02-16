@@ -6,7 +6,7 @@ part of 'bill_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$billRepositoryHash() => r'681bf2b701aac19032e3d28b2a78fca95780c5b2';
+String _$billRepositoryHash() => r'3c173c1a6eaf1f442fea63e7cc53569c5c8fce82';
 
 /// See also [billRepository].
 @ProviderFor(billRepository)

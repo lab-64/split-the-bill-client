@@ -75,6 +75,39 @@ class HttpClient {
       throw NoInternetConnectionException();
     }
   }
+
+  Future<T> put<T>({
+    required Uri uri,
+    required Map<String, dynamic> body,
+    required T Function(dynamic data) builder,
+  }) async {
+    try {
+      // Merge session headers with additional headers for an HTTP POST request.
+      final mergedHeaders = Map<String, String>.from(session.headers);
+      mergedHeaders['Content-Type'] = 'application/json';
+
+      final response = await client.put(
+        uri,
+        body: json.encode(body),
+        headers: mergedHeaders,
+      );
+
+      final data = json.decode(response.body);
+
+      switch (response.statusCode) {
+        case 200:
+          return builder(data['data']);
+        case 201:
+          return builder(data['data']);
+        case 401:
+          throw UnauthenticatedException(data['message']);
+        default:
+          throw UnknownException(data['message']);
+      }
+    } on SocketException catch (_) {
+      throw NoInternetConnectionException();
+    }
+  }
 }
 
 @Riverpod(keepAlive: true)

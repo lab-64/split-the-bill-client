@@ -12,6 +12,16 @@ class Item {
       required this.billId,
       required this.contributors});
 
+  factory Item.getDefault() {
+    return const Item(
+      id: '0',
+      name: '',
+      price: 0,
+      billId: '',
+      contributors: [],
+    );
+  }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -54,10 +64,8 @@ class Item {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'name': name,
       'price': price,
-      'billId': billId,
       'contributors': contributors,
     };
   }
@@ -66,9 +74,14 @@ class Item {
     return Item(
       id: map['id'] as String,
       name: map['name'] as String,
-      price: map['price'] as double,
+      price: (map['price'] is int)
+          ? (map['price'] as int).toDouble()
+          : map['price'] as double,
       billId: map['billId'] as String,
-      contributors: map['contributors'] as List<String>,
+      contributors: (map['contributorIDs'] as List<dynamic>?)
+              ?.map((contributorId) => contributorId as String)
+              .toList() ??
+          [],
     );
   }
 }

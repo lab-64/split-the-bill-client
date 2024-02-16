@@ -15,34 +15,47 @@ class FakeBillRepository extends BillRepository {
   }
 
   @override
-  Future<bool> create(Bill bill) async {
+  Future<Bill> create(Bill bill) async {
     await Future.delayed(const Duration(milliseconds: 200));
     // This code is total garbage and is here just for testing purposes, don't repeat this at home XD
 
-    try {
-      var lastId = int.parse(testBills.last.id);
-      bill = bill.copyWith(id: (lastId + 1).toString());
+    var lastId = int.parse(testBills.last.id);
+    bill = bill.copyWith(id: (lastId + 1).toString());
 
-      testBills.add(bill);
+    testBills.add(bill);
 
-      var group =
-          testGroups.firstWhere((element) => element.id == bill.groupId);
-      var bills = [...group.bills];
-      bills.add(bill);
+    var group = testGroups.firstWhere((element) => element.id == bill.groupId);
+    var bills = [...group.bills];
+    bills.add(bill);
 
-      var updatedGroup = group.copyWith(bills: bills);
+    var updatedGroup = group.copyWith(bills: bills);
 
-      var index = testGroups.indexWhere((element) => element.id == group.id);
-      testGroups[index] = updatedGroup;
-    } catch (e) {
-      print(e);
-    }
-
-    return true;
+    var index = testGroups.indexWhere((element) => element.id == group.id);
+    testGroups[index] = updatedGroup;
+    return bill;
   }
 
   @override
-  Future<Bill> getBillById(String billId) async {
+  Future<Bill> edit(Bill bill) async {
+    await Future.delayed(const Duration(milliseconds: 200));
+    var billIndex = testBills.indexWhere((element) => element.id == bill.id);
+    testBills[billIndex] = bill;
+    var group = testGroups.firstWhere((element) => element.id == bill.groupId);
+
+    var bills = [...group.bills];
+    var groupIndex = bills.indexWhere((element) => element.id == bill.id);
+    bills[groupIndex] = bill;
+
+    var updatedGroup = group.copyWith(bills: bills);
+
+    var index = testGroups.indexWhere((element) => element.id == group.id);
+    testGroups[index] = updatedGroup;
+
+    return bill;
+  }
+
+  @override
+  Future<Bill> getBill(String billId) async {
     await Future.delayed(const Duration(milliseconds: 200));
 
     final bill = testBills.where((bill) => bill.id == billId).first;
