@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
-import 'package:split_the_bill/domain/item/item.dart';
+import 'package:split_the_bill/domain/bill/item.dart';
 
 class EditItem extends StatefulWidget {
   const EditItem({
@@ -39,51 +39,52 @@ class _EditItemState extends State<EditItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(
-          horizontal: Sizes.p32, vertical: Sizes.p16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            child: TextField(
-              style: const TextStyle(color: Colors.black),
-              controller: nameController,
-              onChanged: (name) => widget.onChanged(name, priceController.text),
-              decoration: const InputDecoration(
-                labelText: "Name",
-                isDense: true,
-                prefixIcon: Icon(Icons.drive_file_rename_outline),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Expanded(
+          child: TextField(
+            style: const TextStyle(color: Colors.black),
+            controller: nameController,
+            onChanged: (name) => widget.onChanged(name, priceController.text),
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(Sizes.p24),
               ),
+              labelText: "Name",
+              fillColor: Colors.white,
+              filled: true,
+              prefixIcon: Icon(Icons.drive_file_rename_outline),
             ),
           ),
-          gapW12,
-          Expanded(
-            child: TextField(
-              style: const TextStyle(color: Colors.black),
-              controller: priceController,
-              onChanged: (price) =>
-                  widget.onChanged(nameController.text, price),
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly
-              ],
-              decoration: const InputDecoration(
-                prefixIcon: Icon(
-                  Icons.attach_money,
-                ),
-                isDense: true,
-                labelText: "Price",
+        ),
+        gapW12,
+        Expanded(
+          child: TextField(
+            style: const TextStyle(color: Colors.black),
+            controller: priceController,
+            onChanged: (price) => widget.onChanged(nameController.text, price),
+            keyboardType: TextInputType.number,
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.digitsOnly
+            ],
+            decoration: InputDecoration(
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(Sizes.p24),
               ),
+              labelText: "Price",
+              fillColor: Colors.white,
+              filled: true,
+              prefixIcon: Icon(Icons.attach_money),
             ),
           ),
-          IconButton(
-            onPressed: widget.onDelete,
-            icon: const Icon(Icons.delete),
-            color: Colors.red,
-          ),
-        ],
-      ),
+        ),
+        IconButton(
+          onPressed: widget.onDelete,
+          icon: const Icon(Icons.delete),
+          color: Colors.red,
+        ),
+      ],
     );
   }
 }

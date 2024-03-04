@@ -1,6 +1,6 @@
 import 'package:split_the_bill/domain/bill/bill.dart';
+import 'package:split_the_bill/domain/bill/data/bill_api.dart';
 import 'package:split_the_bill/domain/bill/data/bill_repository.dart';
-import 'package:split_the_bill/domain/item/data/bill_api.dart';
 import 'package:split_the_bill/infrastructure/http_client.dart';
 
 class RemoteBillRepository extends BillRepository {

@@ -11,7 +11,10 @@ class RemoteAuthRepository extends AuthRepository {
 
   @override
   Future<User> login(String email, String password) async {
-    final credentials = {'email': email, 'password': password};
+    final credentials = {
+      'email': email,
+      'password': password,
+    };
 
     return client.post(
       uri: api.getLogin(),

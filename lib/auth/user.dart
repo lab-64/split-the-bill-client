@@ -1,4 +1,3 @@
-// TODO: Use Freezed or json_serializable
 class User {
   final String id;
   final String email;
@@ -8,6 +7,13 @@ class User {
     required this.id,
     required this.email,
   });
+
+  factory User.getDefault() {
+    return const User(
+      id: '0',
+      email: '',
+    );
+  }
 
   @override
   bool operator ==(Object other) =>

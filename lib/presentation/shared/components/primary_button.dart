@@ -2,27 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 
 class PrimaryButton extends StatelessWidget {
-  const PrimaryButton(
-      {super.key, required this.text, this.isLoading = false, this.onPressed});
-  final String text;
+  const PrimaryButton({
+    super.key,
+    this.text,
+    required this.icon,
+    this.isLoading = false,
+    this.onPressed,
+  });
+
+  final String? text;
+  final IconData icon;
   final bool isLoading;
   final VoidCallback? onPressed;
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: Sizes.p48,
       child: ElevatedButton(
-        style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
         onPressed: onPressed,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.blue.shade400,
+        ),
         child: isLoading
             ? const CircularProgressIndicator()
-            : Text(
-                text,
-                textAlign: TextAlign.center,
-                style: Theme.of(context)
-                    .textTheme
-                    .titleLarge!
-                    .copyWith(color: Colors.white),
+            : Icon(
+                icon,
+                size: Sizes.p32,
+                color: Colors.white,
               ),
       ),
     );

@@ -10,15 +10,12 @@ class NewGroupController extends _$NewGroupController {
   @override
   FutureOr<void> build() async {}
 
-  Future<void> addGroup(String groupName) async {
+  Future<void> addGroup(String name) async {
     state = const AsyncLoading();
     final user = ref.watch(authStateProvider).requireValue;
 
     final group = Group(
-      id: '',
-      name: groupName,
-      members: [],
-      bills: [],
+      name: name,
       owner: user,
     );
 
