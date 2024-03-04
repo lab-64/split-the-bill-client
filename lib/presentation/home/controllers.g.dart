@@ -1,25 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'item_repository.dart';
+part of 'controllers.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$itemRepositoryHash() => r'd9f7f3846c18c5437c090e0b7be01ef6bea32227';
+String _$userTotalBalanceHash() => r'0eb282ecfc650ca7d8a62005958f1222ce4f02e2';
 
-/// See also [itemRepository].
-@ProviderFor(itemRepository)
-final itemRepositoryProvider = Provider<ItemRepository>.internal(
-  itemRepository,
-  name: r'itemRepositoryProvider',
+/// See also [userTotalBalance].
+@ProviderFor(userTotalBalance)
+final userTotalBalanceProvider = AutoDisposeProvider<double>.internal(
+  userTotalBalance,
+  name: r'userTotalBalanceProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$itemRepositoryHash,
+      : _$userTotalBalanceHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef ItemRepositoryRef = ProviderRef<ItemRepository>;
+typedef UserTotalBalanceRef = AutoDisposeProviderRef<double>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

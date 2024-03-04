@@ -8,31 +8,58 @@ import 'package:split_the_bill/presentation/bills/edit_bill/edit_bill_screen.dar
 import 'package:split_the_bill/presentation/groups/group/group_screen.dart';
 import 'package:split_the_bill/presentation/groups/groups/groups_screen.dart';
 import 'package:split_the_bill/presentation/groups/new_group/new_group_screen.dart';
+import 'package:split_the_bill/presentation/home/home_screen.dart';
 import 'package:split_the_bill/presentation/on_boarding/sign_in_screen.dart';
+import 'package:split_the_bill/presentation/profile/profile_screen.dart';
 import 'package:split_the_bill/presentation/shared/navigation/navigation.dart';
 
 part 'routes.g.dart';
 
-enum Routes { groups, group, newGroup, bills, bill, editBill, newBill, signIn }
+enum NavbarRoutes {
+  home,
+  groups,
+  bills,
+  profile,
+}
+
+enum Routes {
+  // HOME
+  homeGroup,
+  homeBill,
+  homeGroupBill,
+
+  // SIGN IN
+  signIn,
+
+  // GROUP
+  group,
+  newGroup,
+
+  // BILL
+  bill,
+  editBill,
+  newBill,
+}
 
 @Riverpod(keepAlive: true)
 GoRouter goRouter(GoRouterRef ref) {
-  final authService = ref.watch(authStateProvider);
+  final user = ref.watch(authStateProvider);
 
   return GoRouter(
-    initialLocation: '/groups',
+    initialLocation: '/home',
     redirect: (context, state) {
-      final isLoggedIn = authService.value!.id.isNotEmpty;
+      final isLoggedIn = user.value!.id.isNotEmpty;
       final path = state.uri.path;
-      if (isLoggedIn) {
-        if (path == '/signIn') {
-          return '/';
-        }
-      } else {
-        return '/signIn';
+
+      if (!isLoggedIn) {
+        return "/signIn";
       }
 
-      return null;
+      if (isLoggedIn && path == "/signIn") {
+        return "/";
+      }
+
+      return path;
     },
     routes: [
       ShellRoute(
@@ -41,10 +68,12 @@ GoRouter goRouter(GoRouterRef ref) {
           GoRouterState state,
           Widget child,
         ) {
-          final isGroupsOrBillsRoute =
-              state.uri.path == '/groups' || state.uri.path == '/bills';
+          final isMainRoute = state.uri.path == '/home' ||
+              state.uri.path == '/groups' ||
+              state.uri.path == '/bills' ||
+              state.uri.path == '/profile';
 
-          if (isGroupsOrBillsRoute) {
+          if (isMainRoute) {
             return Navigation(child: child);
           } else {
             return Scaffold(
@@ -54,8 +83,45 @@ GoRouter goRouter(GoRouterRef ref) {
         },
         routes: [
           GoRoute(
+            path: '/home',
+            name: NavbarRoutes.home.name,
+            builder: (context, state) => const HomeScreen(),
+            routes: [
+              GoRoute(
+                  path: 'group/:groupId',
+                  name: Routes.homeGroup.name,
+                  builder: (context, state) {
+                    final groupId = state.pathParameters['groupId']!;
+                    return GroupScreen(groupId: groupId);
+                  },
+                  routes: [
+                    GoRoute(
+                      path: 'bill/:billId',
+                      name: Routes.homeGroupBill.name,
+                      builder: (context, state) {
+                        final billId = state.pathParameters["billId"]!;
+                        return BillScreen(billId: billId);
+                      },
+                    ),
+                  ]),
+              GoRoute(
+                path: 'bill/:billId',
+                name: Routes.homeBill.name,
+                builder: (context, state) {
+                  final billId = state.pathParameters["billId"]!;
+                  return BillScreen(billId: billId);
+                },
+              ),
+              GoRoute(
+                path: 'new_bill',
+                name: Routes.newBill.name,
+                builder: (context, state) => const EditBillScreen(billId: '0'),
+              ),
+            ],
+          ),
+          GoRoute(
             path: '/groups',
-            name: Routes.groups.name,
+            name: NavbarRoutes.groups.name,
             builder: (context, state) => const GroupsScreen(),
             routes: [
               GoRoute(
@@ -64,10 +130,10 @@ GoRouter goRouter(GoRouterRef ref) {
                 builder: (context, state) => const NewGroupScreen(),
               ),
               GoRoute(
-                path: ':id',
+                path: ':groupId',
                 name: Routes.group.name,
                 builder: (context, state) {
-                  final groupId = state.pathParameters['id']!;
+                  final groupId = state.pathParameters['groupId']!;
                   return GroupScreen(groupId: groupId);
                 },
                 routes: [
@@ -75,10 +141,10 @@ GoRouter goRouter(GoRouterRef ref) {
                     path: ':billId',
                     name: Routes.bill.name,
                     builder: (context, state) {
-                      final groupId = state.pathParameters["id"]!;
                       final billId = state.pathParameters["billId"]!;
-                      return BillScreen(groupId: groupId, billId: billId);
+                      return BillScreen(billId: billId);
                     },
+                    /*
                     routes: [
                       GoRoute(
                           path: 'edit',
@@ -88,6 +154,8 @@ GoRouter goRouter(GoRouterRef ref) {
                             return EditBillScreen(billId: billId);
                           }),
                     ],
+
+                     */
                   ),
                 ],
               ),
@@ -95,15 +163,15 @@ GoRouter goRouter(GoRouterRef ref) {
           ),
           GoRoute(
             path: '/bills',
-            name: Routes.bills.name,
+            name: NavbarRoutes.bills.name,
             builder: (context, state) => const BillsScreen(),
           ),
+          GoRoute(
+            path: '/profile',
+            name: NavbarRoutes.profile.name,
+            builder: (context, state) => const ProfileScreen(),
+          ),
         ],
-      ),
-      GoRoute(
-        path: '/new_bill',
-        name: Routes.newBill.name,
-        builder: (context, state) => const EditBillScreen(billId: '0'),
       ),
       GoRoute(
         path: '/signIn',

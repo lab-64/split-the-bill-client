@@ -16,11 +16,6 @@ class BillAPI {
         endpoint: "/$billId",
       );
 
-  Uri getGroupsByUser(String userId) => _buildUri(
-        endpoint: "",
-        parametersBuilder: () => {"userId": userId},
-      );
-
   Uri _buildUri({
     required String endpoint,
     Map<String, dynamic> Function()? parametersBuilder,

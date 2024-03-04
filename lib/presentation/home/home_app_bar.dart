@@ -1,0 +1,63 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:split_the_bill/auth/states/auth_state.dart';
+import 'package:split_the_bill/auth/user.dart';
+import 'package:split_the_bill/constants/app_sizes.dart';
+import 'package:split_the_bill/presentation/shared/util/util.dart';
+
+class HomeAppBar extends ConsumerWidget {
+  const HomeAppBar({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(authStateProvider).requireValue;
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        _buildUserInfo(user),
+        _buildActionIcons(context),
+      ],
+    );
+  }
+
+  Widget _buildUserInfo(User user) {
+    return Row(
+      children: [
+        const CircleAvatar(
+          radius: Sizes.p24,
+          backgroundImage: AssetImage('assets/avatar.jpg'),
+        ),
+        gapW16,
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Welcome back!'),
+            Text(
+              user.email,
+              style: const TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildActionIcons(BuildContext context) {
+    return Row(
+      children: [
+        IconButton(
+          icon: const Icon(Icons.settings_outlined),
+          onPressed: () => showNotImplementedSnackBar(context),
+        ),
+        IconButton(
+          icon: const Icon(Icons.notifications_outlined),
+          onPressed: () => showNotImplementedSnackBar(context),
+        ),
+      ],
+    );
+  }
+}
