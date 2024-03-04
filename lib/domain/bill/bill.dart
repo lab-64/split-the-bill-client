@@ -1,10 +1,12 @@
+import 'package:split_the_bill/auth/user.dart';
+
 import 'item.dart';
 
 class Bill {
   final String id;
   final String name;
   final String groupId;
-  final String ownerId;
+  final User owner;
   final DateTime date;
   final List<Item> items;
   final Map<String, double> balance;
@@ -14,7 +16,7 @@ class Bill {
     required this.id,
     required this.name,
     required this.groupId,
-    required this.ownerId,
+    required this.owner,
     required this.date,
     required this.items,
     required this.balance,
@@ -25,7 +27,7 @@ class Bill {
       id: '0',
       name: '',
       groupId: '',
-      ownerId: '',
+      owner: User.getDefault(),
       date: DateTime.now(),
       items: [
         Item.getDefault(),
@@ -42,7 +44,7 @@ class Bill {
           id == other.id &&
           name == other.name &&
           groupId == other.groupId &&
-          ownerId == other.ownerId &&
+          owner == other.owner &&
           date == other.date &&
           items == other.items &&
           balance == other.balance;
@@ -52,21 +54,21 @@ class Bill {
       id.hashCode ^
       name.hashCode ^
       groupId.hashCode ^
-      ownerId.hashCode ^
+      owner.hashCode ^
       date.hashCode ^
       items.hashCode ^
       balance.hashCode;
 
   @override
   String toString() {
-    return 'Bill{id: $id, name: $name, groupId: $groupId, ownerId: $ownerId, date: $date, items: $items, balance: $balance}';
+    return 'Bill{id: $id, name: $name, groupId: $groupId, owner: $owner, date: $date, items: $items, balance: $balance}';
   }
 
   Bill copyWith({
     String? id,
     String? name,
     String? groupId,
-    String? ownerId,
+    User? owner,
     DateTime? date,
     double? price,
     List<Item>? items,
@@ -76,7 +78,7 @@ class Bill {
       id: id ?? this.id,
       name: name ?? this.name,
       groupId: groupId ?? this.groupId,
-      ownerId: ownerId ?? this.ownerId,
+      owner: owner ?? this.owner,
       date: date ?? this.date,
       items: items ?? this.items,
       balance: balance ?? this.balance,
@@ -88,7 +90,7 @@ class Bill {
       'id': id,
       'name': name,
       'groupId': groupId,
-      'ownerId': ownerId,
+      'ownerID': owner.id,
       // TODO: convert date
       //'date': date,
       'items': items.map((item) => item.toMap()).toList(),
@@ -100,7 +102,7 @@ class Bill {
       id: map['id'] as String,
       name: map['name'] as String,
       groupId: map['groupID'] as String,
-      ownerId: map['ownerID'] as String,
+      owner: User.fromMap(map['owner'] as Map<String, dynamic>),
       date: DateTime.parse(map['date']),
       items: (map['items'] as List<dynamic>)
           .map((item) => Item.fromMap(item))

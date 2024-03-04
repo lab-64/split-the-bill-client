@@ -8,6 +8,13 @@ class User {
     required this.email,
   });
 
+  factory User.getDefault() {
+    return const User(
+      id: '0',
+      email: '',
+    );
+  }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
