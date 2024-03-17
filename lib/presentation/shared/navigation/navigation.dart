@@ -12,7 +12,7 @@ class Navigation extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () => context.goNamed(
-          Routes.newBill.name,
+          Routes.newBillGroupSelection.name,
         ),
         backgroundColor: Colors.blue.shade400,
         shape: const CircleBorder(),

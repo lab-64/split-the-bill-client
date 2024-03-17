@@ -91,8 +91,7 @@ class Bill {
       'name': name,
       'groupId': groupId,
       'ownerID': owner.id,
-      // TODO: convert date
-      //'date': date,
+      'date': '${date.toIso8601String().split('.')[0]}Z',
       'items': items.map((item) => item.toMap()).toList(),
     };
   }

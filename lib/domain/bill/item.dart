@@ -1,9 +1,11 @@
+import 'package:split_the_bill/auth/user.dart';
+
 class Item {
   final String id;
   final String name;
   final double price;
   final String billId;
-  final List<String> contributors;
+  final List<User> contributors;
 
   const Item(
       {required this.id,
@@ -51,7 +53,7 @@ class Item {
     String? name,
     double? price,
     String? billId,
-    List<String>? contributors,
+    List<User>? contributors,
   }) {
     return Item(
       id: id ?? this.id,
@@ -78,8 +80,8 @@ class Item {
           ? (map['price'] as int).toDouble()
           : map['price'] as double,
       billId: map['billId'] as String,
-      contributors: (map['contributorIDs'] as List<dynamic>?)
-              ?.map((contributorId) => contributorId as String)
+      contributors: (map['members'] as List<dynamic>?)
+              ?.map((member) => User.fromMap(member))
               .toList() ??
           [],
     );
