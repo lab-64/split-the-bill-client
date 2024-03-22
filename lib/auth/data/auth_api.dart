@@ -8,6 +8,10 @@ class AuthAPI {
         endpoint: "/login",
       );
 
+  Uri getRegister() => _buildUri(
+    endpoint: "",
+  );
+
   Uri _buildUri({
     required String endpoint,
   }) {

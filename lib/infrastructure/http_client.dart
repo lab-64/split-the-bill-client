@@ -56,6 +56,7 @@ class HttpClient {
         body: json.encode(body),
         headers: mergedHeaders,
       );
+      print(response.headers['set-cookie']);
 
       if (isLogin) session.updateCookie(response);
 

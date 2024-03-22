@@ -9,6 +9,7 @@ import 'package:split_the_bill/presentation/groups/group/group_screen.dart';
 import 'package:split_the_bill/presentation/groups/groups/groups_screen.dart';
 import 'package:split_the_bill/presentation/groups/new_group/new_group_screen.dart';
 import 'package:split_the_bill/presentation/home/home_screen.dart';
+import 'package:split_the_bill/presentation/on_boarding/register_screen.dart';
 import 'package:split_the_bill/presentation/on_boarding/sign_in_screen.dart';
 import 'package:split_the_bill/presentation/profile/profile_screen.dart';
 import 'package:split_the_bill/presentation/shared/navigation/navigation.dart';
@@ -31,6 +32,9 @@ enum Routes {
   // SIGN IN
   signIn,
 
+  // REGISTER
+  register,
+
   // GROUP
   group,
   newGroup,
@@ -51,7 +55,7 @@ GoRouter goRouter(GoRouterRef ref) {
       final isLoggedIn = user.value!.id.isNotEmpty;
       final path = state.uri.path;
 
-      if (!isLoggedIn) {
+      if (!isLoggedIn && path != "/register") {
         return "/signIn";
       }
 
@@ -170,6 +174,11 @@ GoRouter goRouter(GoRouterRef ref) {
             path: '/profile',
             name: NavbarRoutes.profile.name,
             builder: (context, state) => const ProfileScreen(),
+          ),
+          GoRoute(
+            path: '/register',
+            name: Routes.register.name,
+            builder: (context, state) => const RegisterScreen(),
           ),
         ],
       ),

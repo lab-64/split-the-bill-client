@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -10,14 +9,14 @@ import 'package:split_the_bill/infrastructure/async_value_ui.dart';
 import '../../routes.dart';
 import '../shared/components/primary_text_button.dart';
 
-class SignInScreen extends ConsumerStatefulWidget {
-  const SignInScreen({super.key});
+class RegisterScreen extends ConsumerStatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  ConsumerState<SignInScreen> createState() => _SignInScreenState();
+  ConsumerState<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _SignInScreenState extends ConsumerState<SignInScreen> {
+class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
 
@@ -25,8 +24,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   @override
   void initState() {
     super.initState();
-    email.text = "felix@gmail.com";
-    password.text = "test";
+    email.text = "test@gmail.com";
+    password.text = "test123...";
   }
 
   @override
@@ -36,10 +35,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     super.dispose();
   }
 
-  Future<void> _login() async {
+  Future<void> _register() async {
     final controller = ref.read(authStateProvider.notifier);
 
-    await controller.login(
+    await controller.register(
       email: email.text,
       password: password.text,
     );
@@ -55,11 +54,11 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     final state = ref.watch(authStateProvider);
 
     return Scaffold(
-      body: _buildSignInBody(state),
+      body: _buildRegisterBody(state),
     );
   }
 
-  Widget _buildSignInBody(AsyncValue<User> state) {
+  Widget _buildRegisterBody(AsyncValue<User> state) {
     return Container(
       decoration: _buildBackgroundDecoration(),
       child: SafeArea(
@@ -74,9 +73,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               gapH16,
               _buildPasswordTextField(state),
               gapH16,
-              _buildRegisterRoute(),
+              _buildSignInRoute(),
               gapH16,
-              _buildSignInButton(state),
+              _buildRegisterButton(state),
             ],
           ),
         ),
@@ -84,16 +83,17 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     );
   }
 
-  GestureDetector _buildRegisterRoute(){
+
+  GestureDetector _buildSignInRoute(){
     return GestureDetector(
         onTap: () => context.goNamed(
-          Routes.register.name,
+          Routes.signIn.name,
         ),
         child: RichText(
             text: const TextSpan(
               text: "Click here to ",
               children: <TextSpan>[
-                TextSpan(text: 'Register', style: TextStyle(fontWeight: FontWeight.bold)),
+                TextSpan(text: 'Login', style: TextStyle(fontWeight: FontWeight.bold)),
               ],
             )
         )
@@ -135,9 +135,11 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     );
   }
 
-  InputDecoration _buildInputDecoration(String labelText,
+  InputDecoration _buildInputDecoration(
+      String labelText,
       IconData prefixIcon,
-      bool isLoading,) {
+      bool isLoading,
+      ) {
     return InputDecoration(
       border: InputBorder.none,
       labelText: labelText,
@@ -148,14 +150,14 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     );
   }
 
-  Widget _buildSignInButton(AsyncValue<User> state) {
+  Widget _buildRegisterButton(AsyncValue<User> state) {
     return Row(
       children: [
         Expanded(
           child: PrimaryTextButton(
             isLoading: state.isLoading,
-            onPressed: state.isLoading ? null : () => _login(),
-            text: "Login",
+            onPressed: state.isLoading ? null : () => _register(),
+            text: "Register",
           ),
         ),
       ],
