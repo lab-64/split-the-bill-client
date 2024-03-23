@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
+import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 
 class GroupMemberList extends StatefulWidget {
   const GroupMemberList({
@@ -47,12 +48,12 @@ class _GroupMemberListState extends State<GroupMemberList> {
           itemCount: widget.members.length,
           itemBuilder: (BuildContext context, int index) {
             return CheckboxListTile(
-              secondary: const CircleAvatar(
-                backgroundImage: AssetImage('assets/avatar.jpg'),
-                radius: 20,
+              secondary: ProfileImage(
+                user: widget.members[index],
+                size: Sizes.p20,
               ),
               dense: true,
-              title: Text(widget.members[index].email),
+              title: Text(widget.members[index].getDisplayName()),
               value: _isSelectedList[index],
               onChanged: (bool? value) {
                 setState(() {

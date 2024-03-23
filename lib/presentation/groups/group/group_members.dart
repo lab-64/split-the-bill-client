@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
+import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 
 class GroupMembers extends StatelessWidget {
   const GroupMembers({
@@ -44,13 +45,13 @@ class MemberItemWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const CircleAvatar(
-          radius: Sizes.p32,
-          backgroundImage: AssetImage('assets/avatar.jpg'),
+        ProfileImage(
+          user: user,
+          size: Sizes.p32,
         ),
         gapH8,
         Text(
-          user.email,
+          user.getDisplayName(),
           textAlign: TextAlign.center,
         ),
       ],

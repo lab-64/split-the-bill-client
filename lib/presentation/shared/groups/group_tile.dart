@@ -4,6 +4,7 @@ import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/group/group.dart';
 import 'package:split_the_bill/presentation/shared/extensions/currency_formatter.dart';
+import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 
 class GroupTile extends ConsumerWidget {
   const GroupTile({
@@ -69,11 +70,11 @@ Widget _buildMemberAvatars(Group group) {
   return Row(
     children: [
       for (var member in group.members)
-        const Padding(
-          padding: EdgeInsets.only(right: 5.0),
-          child: CircleAvatar(
-            radius: 10,
-            backgroundImage: AssetImage('assets/avatar.jpg'),
+        Padding(
+          padding: const EdgeInsets.only(right: Sizes.p4),
+          child: ProfileImage(
+            user: member,
+            size: Sizes.p12,
           ),
         ),
     ],

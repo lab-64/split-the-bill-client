@@ -1,17 +1,37 @@
+import 'package:split_the_bill/constants/constants.dart';
+
 class User {
   final String id;
   final String email;
+  final String username;
+  final String profileImgPath;
+
+  String getDisplayName() {
+    return username.isNotEmpty ? username : email;
+  }
+
+  String getImagePath() {
+    if (profileImgPath.isNotEmpty) {
+      return '${Constants.baseScheme}${Constants.baseApiUrl}:${Constants.basePort}$profileImgPath';
+    } else {
+      return '';
+    }
+  }
 
 //<editor-fold desc="Data Methods">
   const User({
     required this.id,
     required this.email,
+    required this.username,
+    required this.profileImgPath,
   });
 
   factory User.getDefault() {
     return const User(
       id: '0',
       email: '',
+      username: '',
+      profileImgPath: '',
     );
   }
 
@@ -21,14 +41,27 @@ class User {
       (other is User &&
           runtimeType == other.runtimeType &&
           id == other.id &&
-          email == other.email);
+          email == other.email &&
+          username == other.username &&
+          profileImgPath == other.profileImgPath);
 
   @override
-  int get hashCode => id.hashCode ^ email.hashCode;
+  int get hashCode =>
+      id.hashCode ^
+      email.hashCode ^
+      username.hashCode ^
+      profileImgPath.hashCode;
 
   @override
   String toString() {
-    return 'User{' + ' id: $id,' + ' email: $email,' + '}';
+    return 'User{' +
+        ' id: $id,' +
+        ' email: $email,' +
+        '}' +
+        ' username: $username,' +
+        '}' +
+        ' profileImgPath: $profileImgPath,' +
+        '}';
   }
 
   User copyWith({
@@ -38,6 +71,8 @@ class User {
     return User(
       id: id ?? this.id,
       email: email ?? this.email,
+      username: username,
+      profileImgPath: profileImgPath,
     );
   }
 
@@ -45,6 +80,7 @@ class User {
     return {
       'id': this.id,
       'email': this.email,
+      'username': this.username,
     };
   }
 
@@ -52,6 +88,8 @@ class User {
     return User(
       id: map['id'] as String,
       email: map['email'] as String,
+      username: map['username'] as String,
+      profileImgPath: map['profileImgPath'] as String,
     );
   }
 

@@ -10,7 +10,7 @@ class AuthState extends _$AuthState {
 
   @override
   FutureOr<User> build() {
-    return const User(id: "", email: "");
+    return const User(id: "", email: "", username: "", profileImgPath: "");
   }
 
   Future<void> login({

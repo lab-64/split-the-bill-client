@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/bill/item.dart';
+import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 
 class ItemTile extends StatelessWidget {
   const ItemTile({super.key, required this.item});
@@ -28,12 +29,9 @@ class ItemTile extends StatelessWidget {
                 gapW8,
                 Row(
                   children: item.contributors.map((user) {
-                    return const Row(
+                    return Row(
                       children: [
-                        CircleAvatar(
-                          radius: Sizes.p8,
-                          backgroundImage: AssetImage('assets/avatar.jpg'),
-                        ),
+                        ProfileImage(user: user, size: Sizes.p12),
                         gapW4,
                       ],
                     );
