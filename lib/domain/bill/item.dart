@@ -80,8 +80,8 @@ class Item {
           ? (map['price'] as int).toDouble()
           : map['price'] as double,
       billId: map['billId'] as String,
-      contributors: (map['members'] as List<dynamic>?)
-              ?.map((member) => User.fromMap(member))
+      contributors: (map['contributors'] as List<dynamic>?)
+              ?.map((contributor) => User.fromMap(contributor))
               .toList() ??
           [],
     );

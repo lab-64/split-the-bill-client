@@ -92,7 +92,16 @@ class _EditBillState extends ConsumerState<EditBill> {
           ),
           ElevatedButton(
             onPressed: _addItem,
-            child: const Text('Add Item'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.blue.shade400,
+              textStyle: const TextStyle(color: Colors.white),
+            ),
+            child: const Text(
+              "Add Item",
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
           ),
         ],
       ),
