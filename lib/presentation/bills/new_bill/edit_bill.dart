@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/bill/bill.dart';
 import 'package:split_the_bill/domain/bill/item.dart';
@@ -79,8 +80,8 @@ class _EditBillState extends ConsumerState<EditBill> {
                       EditItem(
                         item: items[index],
                         group: widget.group,
-                        onChanged: (name, price) =>
-                            _updateItem(index, name, price),
+                        onChanged: (name, price, contributors) =>
+                            _updateItem(index, name, price, contributors),
                       ),
                       gapH24,
                     ],
@@ -108,10 +109,11 @@ class _EditBillState extends ConsumerState<EditBill> {
     });
   }
 
-  void _updateItem(int index, String name, String price) {
+  void _updateItem(
+      int index, String name, String price, List<User> contributors) {
     ref
         .read(itemsProvider(widget.bill.id).notifier)
-        .updateItem(index, name, price);
+        .updateItem(index, name, price, contributors);
   }
 
   void _removeItem(int index) {
@@ -119,6 +121,7 @@ class _EditBillState extends ConsumerState<EditBill> {
 
     setState(() {
       itemExpanded.removeAt(index);
+      itemExpanded = List.generate(itemExpanded.length, (index) => false);
     });
   }
 }

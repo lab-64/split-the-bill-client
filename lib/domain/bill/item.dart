@@ -68,7 +68,7 @@ class Item {
     return {
       'name': name,
       'price': price,
-      'contributors': contributors,
+      'contributorIDs': contributors.map((user) => user.id).toList(),
     };
   }
 

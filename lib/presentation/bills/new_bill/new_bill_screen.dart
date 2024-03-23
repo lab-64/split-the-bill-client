@@ -20,7 +20,8 @@ class NewBillScreen extends ConsumerWidget {
       appBar: AppBar(title: const Text("New Bill"), actions: [
         IconButton(
           icon: const Icon(Icons.save),
-          onPressed: () => _addBill(ref),
+          onPressed: () =>
+              _addBill(ref).then((_) => Navigator.of(context).pop()),
         ),
       ]),
       body: AsyncValueWidget(
@@ -36,7 +37,7 @@ class NewBillScreen extends ConsumerWidget {
     );
   }
 
-  void _addBill(WidgetRef ref) {
-    ref.read(editBillControllerProvider.notifier).addBill(groupId);
+  Future<void> _addBill(WidgetRef ref) {
+    return ref.read(editBillControllerProvider.notifier).addBill(groupId);
   }
 }

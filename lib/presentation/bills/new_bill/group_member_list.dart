@@ -3,9 +3,16 @@ import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 
 class GroupMemberList extends StatefulWidget {
-  const GroupMemberList({super.key, required this.members});
+  const GroupMemberList({
+    super.key,
+    required this.members,
+    required this.contributors,
+    required this.onChanged,
+  });
 
   final List<User> members;
+  final List<User> contributors;
+  final Function(List<User>) onChanged;
 
   @override
   State<GroupMemberList> createState() => _GroupMemberListState();
@@ -13,11 +20,16 @@ class GroupMemberList extends StatefulWidget {
 
 class _GroupMemberListState extends State<GroupMemberList> {
   List<bool> _isSelectedList = [];
+  List<User> contributors = [];
 
   @override
   void initState() {
     super.initState();
-    _isSelectedList = List<bool>.filled(widget.members.length, false);
+    contributors = List.from(widget.contributors);
+    _isSelectedList = List.generate(widget.members.length, (index) {
+      final memberId = widget.members[index].id;
+      return contributors.any((contributor) => contributor.id == memberId);
+    });
   }
 
   @override
@@ -40,14 +52,19 @@ class _GroupMemberListState extends State<GroupMemberList> {
                 radius: 20,
               ),
               dense: true,
-              selectedTileColor: Colors.red,
-              controlAffinity: ListTileControlAffinity.trailing,
               title: Text(widget.members[index].email),
               value: _isSelectedList[index],
               onChanged: (bool? value) {
                 setState(() {
                   _isSelectedList[index] = value!;
+                  if (value) {
+                    contributors.add(widget.members[index]);
+                  } else {
+                    contributors.removeWhere((contributor) =>
+                        contributor.id == widget.members[index].id);
+                  }
                 });
+                widget.onChanged(contributors);
               },
             );
           },

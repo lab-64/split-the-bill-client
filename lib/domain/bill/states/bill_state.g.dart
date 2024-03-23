@@ -6,7 +6,7 @@ part of 'bill_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$billStateHash() => r'e984eece75c0129e8b00e41da7aad6d52966dd1d';
+String _$billStateHash() => r'be7cac7ce39ae57c6b638a6ab93fc98cc6fd33b8';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,7 +29,7 @@ class _SystemHash {
   }
 }
 
-abstract class _$BillState extends BuildlessAsyncNotifier<Bill> {
+abstract class _$BillState extends BuildlessAutoDisposeAsyncNotifier<Bill> {
   late final String billId;
 
   FutureOr<Bill> build(
@@ -80,7 +80,8 @@ class BillStateFamily extends Family<AsyncValue<Bill>> {
 }
 
 /// See also [BillState].
-class BillStateProvider extends AsyncNotifierProviderImpl<BillState, Bill> {
+class BillStateProvider
+    extends AutoDisposeAsyncNotifierProviderImpl<BillState, Bill> {
   /// See also [BillState].
   BillStateProvider(
     String billId,
@@ -135,7 +136,7 @@ class BillStateProvider extends AsyncNotifierProviderImpl<BillState, Bill> {
   }
 
   @override
-  AsyncNotifierProviderElement<BillState, Bill> createElement() {
+  AutoDisposeAsyncNotifierProviderElement<BillState, Bill> createElement() {
     return _BillStateProviderElement(this);
   }
 
@@ -153,13 +154,14 @@ class BillStateProvider extends AsyncNotifierProviderImpl<BillState, Bill> {
   }
 }
 
-mixin BillStateRef on AsyncNotifierProviderRef<Bill> {
+mixin BillStateRef on AutoDisposeAsyncNotifierProviderRef<Bill> {
   /// The parameter `billId` of this provider.
   String get billId;
 }
 
 class _BillStateProviderElement
-    extends AsyncNotifierProviderElement<BillState, Bill> with BillStateRef {
+    extends AutoDisposeAsyncNotifierProviderElement<BillState, Bill>
+    with BillStateRef {
   _BillStateProviderElement(super.provider);
 
   @override

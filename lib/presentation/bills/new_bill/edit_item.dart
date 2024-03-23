@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/bill/item.dart';
 import 'package:split_the_bill/domain/group/group.dart';
@@ -15,7 +16,7 @@ class EditItem extends StatefulWidget {
 
   final Item item;
   final Group group;
-  final Function(String, String) onChanged;
+  final Function(String, String, List<User>) onChanged;
 
   @override
   State<EditItem> createState() => _EditItemState();
@@ -24,12 +25,14 @@ class EditItem extends StatefulWidget {
 class _EditItemState extends State<EditItem> {
   late TextEditingController nameController;
   late TextEditingController priceController;
+  late List<User> contributors;
 
   @override
   void initState() {
     super.initState();
     nameController = TextEditingController(text: widget.item.name);
     priceController = TextEditingController(text: widget.item.price.toString());
+    contributors = List.from(widget.item.contributors);
   }
 
   @override
@@ -46,7 +49,8 @@ class _EditItemState extends State<EditItem> {
       children: [
         TextField(
           controller: nameController,
-          onChanged: (name) => widget.onChanged(name, priceController.text),
+          onChanged: (name) =>
+              widget.onChanged(name, priceController.text, contributors),
           decoration: InputDecoration(
             labelText: 'Description',
             prefixIcon: const Icon(Icons.description),
@@ -68,7 +72,8 @@ class _EditItemState extends State<EditItem> {
           inputFormatters: <TextInputFormatter>[
             FilteringTextInputFormatter.digitsOnly
           ],
-          onChanged: (price) => widget.onChanged(nameController.text, price),
+          onChanged: (price) =>
+              widget.onChanged(nameController.text, price, contributors),
           decoration: InputDecoration(
             labelText: 'Price',
             prefixIcon: const Icon(Icons.attach_money),
@@ -86,7 +91,18 @@ class _EditItemState extends State<EditItem> {
         gapH24,
         const Text("Contributors"),
         gapH8,
-        GroupMemberList(members: widget.group.members),
+        GroupMemberList(
+          members: widget.group.members,
+          contributors: contributors,
+          onChanged: (newContributors) {
+            contributors = newContributors;
+            widget.onChanged(
+              nameController.text,
+              priceController.text,
+              contributors,
+            );
+          },
+        ),
         gapH24,
       ],
     );
