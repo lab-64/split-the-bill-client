@@ -16,8 +16,24 @@ class MyApp extends ConsumerWidget {
       theme: ThemeData(
         primaryColor: Colors.blue.shade400,
         scaffoldBackgroundColor: const Color(0xFFEFEFEF),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFFEFEFEF),
+        tabBarTheme: const TabBarTheme(
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.white,
+          indicator: UnderlineTabIndicator(
+            borderSide: BorderSide(
+              color: Colors.white,
+              width: 4,
+            ),
+          ),
+        ),
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.blue.shade400,
+          foregroundColor: Colors.white,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(24),
+            ),
+          ),
         ),
       ),
     );

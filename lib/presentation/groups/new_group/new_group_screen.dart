@@ -4,7 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/infrastructure/async_value_ui.dart';
 import 'package:split_the_bill/presentation/groups/new_group/controllers.dart';
-import 'package:split_the_bill/presentation/shared/components/primary_button.dart';
+import 'package:split_the_bill/presentation/shared/components/action_button.dart';
+import 'package:split_the_bill/presentation/shared/components/input_text_field.dart';
 
 class NewGroupScreen extends StatefulWidget {
   const NewGroupScreen({super.key});
@@ -35,42 +36,25 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
       appBar: AppBar(
         title: const Text("New Group"),
       ),
+      floatingActionButton: Consumer(builder: (context, ref, child) {
+        ref.listen(newGroupControllerProvider,
+            (_, next) => next.showSnackBarOnError(context));
+        return ActionButton(
+          icon: Icons.save,
+          onPressed: () => _add(ref),
+        );
+      }),
       body: Padding(
         padding: const EdgeInsets.all(Sizes.p24),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            TextField(
-              style: const TextStyle(color: Colors.black),
+            InputTextField(
+              labelText: 'Name*',
+              prefixIcon: const Icon(Icons.description),
               controller: nameController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(Sizes.p24),
-                ),
-                labelText: "Name",
-                fillColor: Colors.white,
-                filled: true,
-                prefixIcon: Icon(Icons.drive_file_rename_outline),
-              ),
             ),
             gapH48,
-            Consumer(builder: (context, ref, child) {
-              ref.listen(newGroupControllerProvider,
-                  (_, next) => next.showSnackBarOnError(context));
-
-              return Row(
-                children: [
-                  Expanded(
-                    child: PrimaryButton(
-                      isLoading:
-                          ref.watch(newGroupControllerProvider).isLoading,
-                      onPressed: () => _add(ref),
-                      icon: Icons.add,
-                    ),
-                  ),
-                ],
-              );
-            }),
           ],
         ),
       ),

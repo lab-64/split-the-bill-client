@@ -26,6 +26,7 @@ class GroupSelectionScreen extends ConsumerWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            gapH16,
             const Headline(title: "Select a group"),
             Expanded(
               child: CustomScrollView(

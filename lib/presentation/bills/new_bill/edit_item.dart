@@ -5,6 +5,7 @@ import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/bill/item.dart';
 import 'package:split_the_bill/domain/group/group.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/group_member_list.dart';
+import 'package:split_the_bill/presentation/shared/components/input_text_field.dart';
 
 class EditItem extends StatefulWidget {
   const EditItem({
@@ -47,48 +48,36 @@ class _EditItemState extends State<EditItem> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextField(
-          controller: nameController,
-          onChanged: (name) =>
-              widget.onChanged(name, priceController.text, contributors),
-          decoration: InputDecoration(
-            labelText: 'Description',
-            prefixIcon: const Icon(Icons.description),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.0),
-              borderSide: const BorderSide(
-                width: 0,
-                style: BorderStyle.none,
-              ),
+        gapH8,
+        Row(
+          children: [
+            Expanded(
+              child: Padding(
+                  padding: const EdgeInsets.only(right: Sizes.p8),
+                  child: InputTextField(
+                    controller: nameController,
+                    onChanged: (name) => widget.onChanged(
+                        name, priceController.text, contributors),
+                    labelText: 'Name*',
+                    prefixIcon: const Icon(Icons.description),
+                  )),
             ),
-            fillColor: Colors.white,
-            filled: true,
-          ),
-        ),
-        gapH24,
-        TextField(
-          controller: priceController,
-          keyboardType: TextInputType.number,
-          inputFormatters: <TextInputFormatter>[
-            FilteringTextInputFormatter.digitsOnly
+            Expanded(
+              child: Padding(
+                  padding: const EdgeInsets.only(left: Sizes.p8),
+                  child: InputTextField(
+                    controller: priceController,
+                    onChanged: (price) => widget.onChanged(
+                        nameController.text, price, contributors),
+                    labelText: 'Price*',
+                    prefixIcon: const Icon(Icons.attach_money),
+                    keyboardType: TextInputType.number,
+                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                  )),
+            ),
           ],
-          onChanged: (price) =>
-              widget.onChanged(nameController.text, price, contributors),
-          decoration: InputDecoration(
-            labelText: 'Price',
-            prefixIcon: const Icon(Icons.attach_money),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10.0),
-              borderSide: const BorderSide(
-                width: 0,
-                style: BorderStyle.none,
-              ),
-            ),
-            fillColor: Colors.white,
-            filled: true,
-          ),
         ),
-        gapH24,
+        gapH16,
         const Text("Contributors"),
         gapH8,
         GroupMemberList(
@@ -103,7 +92,6 @@ class _EditItemState extends State<EditItem> {
             );
           },
         ),
-        gapH24,
       ],
     );
   }

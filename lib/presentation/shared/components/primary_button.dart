@@ -4,34 +4,53 @@ import 'package:split_the_bill/constants/app_sizes.dart';
 class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
     super.key,
-    this.text,
-    required this.icon,
+    required this.onPressed,
+    this.icon,
+    required this.text,
+    required this.color,
     this.isLoading = false,
-    this.onPressed,
   });
 
-  final String? text;
-  final IconData icon;
-  final bool isLoading;
   final VoidCallback? onPressed;
+  final IconData? icon;
+  final String text;
+  final bool isLoading;
+  final Color color;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: Sizes.p48,
-      child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.blue.shade400,
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.green.shade400,
+        textStyle: const TextStyle(color: Colors.white),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(8.0),
         ),
-        child: isLoading
-            ? const CircularProgressIndicator()
-            : Icon(
-                icon,
-                size: Sizes.p32,
-                color: Colors.white,
-              ),
+        minimumSize: const Size(0, Sizes.p48),
       ),
+      child: isLoading
+          ? const CircularProgressIndicator()
+          : Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (icon != null)
+                  Row(
+                    children: [
+                      Icon(icon, color: Colors.white),
+                      gapW12,
+                    ],
+                  ),
+                Text(
+                  text,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    letterSpacing: 1.5,
+                    fontSize: 20,
+                  ),
+                ),
+              ],
+            ),
     );
   }
 }

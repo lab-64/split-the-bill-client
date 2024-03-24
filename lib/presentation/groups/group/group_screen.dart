@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/group/states/group_state.dart';
-import 'package:split_the_bill/presentation/groups/group/floating_with_menu.dart';
 import 'package:split_the_bill/presentation/groups/group/group_members.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/bills/bills_list.dart';
+import 'package:split_the_bill/presentation/shared/components/action_button.dart';
+import 'package:split_the_bill/routes.dart';
 
 class GroupScreen extends ConsumerWidget {
   const GroupScreen({
@@ -25,7 +27,13 @@ class GroupScreen extends ConsumerWidget {
       child: AsyncValueWidget(
         value: group,
         data: (group) => Scaffold(
-          floatingActionButton: FloatingWithMenu(),
+          floatingActionButton: ActionButton(
+            icon: Icons.add,
+            onPressed: () => context.goNamed(
+              Routes.homeGroupNewBill.name,
+              pathParameters: {'groupId': group.id},
+            ),
+          ),
           appBar: AppBar(
             title: Text(group.name ?? ""),
             bottom: const TabBar(
@@ -47,12 +55,10 @@ class GroupScreen extends ConsumerWidget {
           body: TabBarView(
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: Sizes.p24,
-                  vertical: Sizes.p16,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: Sizes.p24),
                 child: CustomScrollView(
                   slivers: [
+                    const SliverToBoxAdapter(child: gapH16),
                     BillsList(
                       scrollController: scrollController,
                       groupId: groupId,
