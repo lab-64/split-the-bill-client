@@ -70,7 +70,7 @@ class _EditItemState extends State<EditItem> {
           controller: priceController,
           keyboardType: TextInputType.number,
           inputFormatters: <TextInputFormatter>[
-            FilteringTextInputFormatter.allow(RegExp(r'^\d+(\.\d{0,2})?$')),
+            FilteringTextInputFormatter.allow(RegExp(r'^\d+(\.\d{0,2})?|^$')),
           ],
           onChanged: (price) =>
               widget.onChanged(nameController.text, price, contributors),
