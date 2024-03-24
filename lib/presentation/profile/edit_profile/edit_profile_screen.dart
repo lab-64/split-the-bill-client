@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
-import 'package:split_the_bill/infrastructure/async_value_ui.dart';
 import 'package:split_the_bill/presentation/profile/edit_profile/controllers.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
 import 'package:split_the_bill/presentation/shared/components/input_text_field.dart';
@@ -18,12 +18,14 @@ class EditProfileScreen extends ConsumerStatefulWidget {
 
 class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   TextEditingController username = TextEditingController();
+  TextEditingController email = TextEditingController();
   late User user;
 
   @override
   void initState() {
     user = ref.read(authStateProvider).requireValue;
     username.text = user.username;
+    email.text = user.email;
     super.initState();
   }
 
@@ -40,16 +42,11 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    ref.listen(
-      editProfileControllerProvider,
-      (_, next) => next.showSnackBarOnError(context),
-    );
-
     return Scaffold(
       appBar: AppBar(title: const Text("Edit Profile")),
       floatingActionButton: ActionButton(
         icon: Icons.save,
-        onPressed: () => _update(),
+        onPressed: () => _update().then((value) => context.pop()),
       ),
       body: Padding(
         padding: const EdgeInsets.all(Sizes.p24),
@@ -60,6 +57,13 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
               size: Sizes.p64,
             ),
             gapH24,
+            InputTextField(
+              labelText: "Email",
+              prefixIcon: const Icon(Icons.email),
+              controller: email,
+              isDisabled: true,
+            ),
+            gapH16,
             InputTextField(
               labelText: "Username",
               prefixIcon: const Icon(Icons.person),

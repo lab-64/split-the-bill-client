@@ -25,6 +25,13 @@ class RemoteAuthRepository extends AuthRepository {
   }
 
   @override
+  Future<User> update(User user) => client.put(
+        uri: api.updateUser(user.id),
+        body: user.toMap(),
+        builder: (data) => User.fromMap(data),
+      );
+
+  @override
   Future<void> register(String email, String password) {
     // TODO: implement register
     throw UnimplementedError();

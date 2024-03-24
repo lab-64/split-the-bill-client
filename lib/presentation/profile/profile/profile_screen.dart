@@ -13,7 +13,8 @@ class ProfileScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authStateProvider).requireValue;
-    final controller = TextEditingController(text: user.username);
+    final email = TextEditingController(text: user.email);
+    final username = TextEditingController(text: user.username);
 
     return Scaffold(
       appBar: AppBar(title: const Text("Profile"), actions: [
@@ -34,9 +35,16 @@ class ProfileScreen extends ConsumerWidget {
             ),
             gapH24,
             InputTextField(
+              labelText: "Email",
+              prefixIcon: const Icon(Icons.email),
+              controller: email,
+              isDisabled: true,
+            ),
+            gapH16,
+            InputTextField(
               labelText: "Username",
               prefixIcon: const Icon(Icons.person),
-              controller: controller,
+              controller: username,
               isDisabled: true,
             ),
           ],

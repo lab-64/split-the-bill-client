@@ -46,11 +46,14 @@ enum Routes {
   newBill,
 }
 
+final _key = GlobalKey<NavigatorState>();
+
 @Riverpod(keepAlive: true)
 GoRouter goRouter(GoRouterRef ref) {
   final user = ref.watch(authStateProvider);
 
   return GoRouter(
+    navigatorKey: _key,
     initialLocation: '/home',
     redirect: (context, state) {
       final isLoggedIn = user.value!.id.isNotEmpty;
