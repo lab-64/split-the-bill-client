@@ -15,7 +15,6 @@ class RemoteAuthRepository extends AuthRepository {
       'email': email,
       'password': password,
     };
-
     return client.post(
       uri: api.getLogin(),
       body: credentials,
@@ -35,7 +34,7 @@ class RemoteAuthRepository extends AuthRepository {
       uri: api.getRegister(),
       body: credentials,
       builder: (data) => User.fromMap(data),
-      isLogin: true,
+      isLogin: false,
     );
   }
 }

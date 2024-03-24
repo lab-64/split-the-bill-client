@@ -6,7 +6,7 @@
 
 **2. Clone the repository**
 
-**3. Run `fluter pub get` in the root folder**
+**3. Run `flutter pub get` in the root folder**
 
 **4. Run `dart run build_runner watch -d` in the root folder** (needed for code generation, has to always run while development)
 
