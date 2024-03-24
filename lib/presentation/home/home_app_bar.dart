@@ -45,17 +45,9 @@ class HomeAppBar extends ConsumerWidget {
   }
 
   Widget _buildActionIcons(BuildContext context) {
-    return Row(
-      children: [
-        IconButton(
-          icon: const Icon(Icons.settings_outlined),
-          onPressed: () => showNotImplementedSnackBar(context),
-        ),
-        IconButton(
-          icon: const Icon(Icons.notifications_outlined),
-          onPressed: () => showNotImplementedSnackBar(context),
-        ),
-      ],
+    return IconButton(
+      icon: const Icon(Icons.notifications_outlined),
+      onPressed: () => showNotImplementedSnackBar(context),
     );
   }
 }

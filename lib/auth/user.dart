@@ -67,12 +67,14 @@ class User {
   User copyWith({
     String? id,
     String? email,
+    String? username,
+    String? profileImgPath,
   }) {
     return User(
       id: id ?? this.id,
       email: email ?? this.email,
-      username: username,
-      profileImgPath: profileImgPath,
+      username: username ?? this.username,
+      profileImgPath: profileImgPath ?? this.profileImgPath,
     );
   }
 

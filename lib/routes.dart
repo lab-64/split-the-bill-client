@@ -11,7 +11,8 @@ import 'package:split_the_bill/presentation/groups/groups/groups_screen.dart';
 import 'package:split_the_bill/presentation/groups/new_group/new_group_screen.dart';
 import 'package:split_the_bill/presentation/home/home_screen.dart';
 import 'package:split_the_bill/presentation/on_boarding/sign_in_screen.dart';
-import 'package:split_the_bill/presentation/profile/profile_screen.dart';
+import 'package:split_the_bill/presentation/profile/edit_profile/edit_profile_screen.dart';
+import 'package:split_the_bill/presentation/profile/profile/profile_screen.dart';
 import 'package:split_the_bill/presentation/shared/navigation/navigation.dart';
 
 part 'routes.g.dart';
@@ -29,6 +30,7 @@ enum Routes {
   homeBill,
   homeGroupBill,
   homeGroupNewBill,
+  homeEditProfile,
 
   // SIGN IN
   signIn,
@@ -192,6 +194,13 @@ GoRouter goRouter(GoRouterRef ref) {
             path: '/profile',
             name: NavbarRoutes.profile.name,
             builder: (context, state) => const ProfileScreen(),
+            routes: [
+              GoRoute(
+                path: 'edit',
+                name: Routes.homeEditProfile.name,
+                builder: (context, state) => const EditProfileScreen(),
+              ),
+            ],
           ),
         ],
       ),

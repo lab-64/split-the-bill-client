@@ -1,0 +1,73 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:split_the_bill/auth/states/auth_state.dart';
+import 'package:split_the_bill/auth/user.dart';
+import 'package:split_the_bill/constants/app_sizes.dart';
+import 'package:split_the_bill/infrastructure/async_value_ui.dart';
+import 'package:split_the_bill/presentation/profile/edit_profile/controllers.dart';
+import 'package:split_the_bill/presentation/shared/components/action_button.dart';
+import 'package:split_the_bill/presentation/shared/components/input_text_field.dart';
+import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
+
+class EditProfileScreen extends ConsumerStatefulWidget {
+  const EditProfileScreen({super.key});
+
+  @override
+  ConsumerState<EditProfileScreen> createState() => _EditProfileScreenState();
+}
+
+class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
+  TextEditingController username = TextEditingController();
+  late User user;
+
+  @override
+  void initState() {
+    user = ref.read(authStateProvider).requireValue;
+    username.text = user.username;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    username.dispose();
+    super.dispose();
+  }
+
+  Future<void> _update() async {
+    final controller = ref.read(editProfileControllerProvider.notifier);
+    await controller.updateUser(username.text);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    ref.listen(
+      editProfileControllerProvider,
+      (_, next) => next.showSnackBarOnError(context),
+    );
+
+    return Scaffold(
+      appBar: AppBar(title: const Text("Edit Profile")),
+      floatingActionButton: ActionButton(
+        icon: Icons.save,
+        onPressed: () => _update(),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(Sizes.p24),
+        child: Column(
+          children: [
+            ProfileImage(
+              user: user,
+              size: Sizes.p64,
+            ),
+            gapH24,
+            InputTextField(
+              labelText: "Username",
+              prefixIcon: const Icon(Icons.person),
+              controller: username,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
