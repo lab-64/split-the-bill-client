@@ -19,7 +19,7 @@ class AuthState extends _$AuthState {
   }) async {
     state = const AsyncLoading();
     state =
-    await AsyncValue.guard(() => _authRepository.login(email, password));
+        await AsyncValue.guard(() => _authRepository.login(email, password));
   }
 
   Future<void> register({
@@ -27,7 +27,13 @@ class AuthState extends _$AuthState {
     required String password,
   }) async {
     state = const AsyncLoading();
+    //register
     state =
-    await AsyncValue.guard(() => _authRepository.register(email, password));
+        await AsyncValue.guard(() => _authRepository.register(email, password));
+    //login if register successful
+    if (!state.hasError) {
+      state =
+          await AsyncValue.guard(() => _authRepository.login(email, password));
+    }
   }
 }
