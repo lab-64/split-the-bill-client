@@ -46,17 +46,32 @@ enum Routes {
   newBill,
 }
 
-final _key = GlobalKey<NavigatorState>();
+final routerKey = GlobalKey<NavigatorState>(debugLabel: 'routerKey');
 
 @Riverpod(keepAlive: true)
 GoRouter goRouter(GoRouterRef ref) {
-  final user = ref.watch(authStateProvider);
+  // Listen to the auth state
+  final isAuth = ValueNotifier<AsyncValue<bool>>(const AsyncLoading());
+  ref
+    ..onDispose(isAuth.dispose)
+    ..listen(
+      authStateProvider
+          .select((value) => value.whenData((value) => value.id.isNotEmpty)),
+      (_, next) {
+        isAuth.value = next;
+      },
+    );
 
   return GoRouter(
-    navigatorKey: _key,
-    initialLocation: '/home',
+    navigatorKey: routerKey,
+    debugLogDiagnostics: true,
+    refreshListenable: isAuth,
+    initialLocation: '/signIn',
     redirect: (context, state) {
-      final isLoggedIn = user.value!.id.isNotEmpty;
+      // Redirect the user to the correct route based on their auth status
+      if (isAuth.value.isLoading || !isAuth.value.hasValue) return null;
+
+      final isLoggedIn = isAuth.value.requireValue;
       final path = state.uri.path;
 
       if (!isLoggedIn) {
@@ -64,10 +79,10 @@ GoRouter goRouter(GoRouterRef ref) {
       }
 
       if (isLoggedIn && path == "/signIn") {
-        return "/";
+        return "/home";
       }
 
-      return path;
+      return null;
     },
     routes: [
       ShellRoute(
