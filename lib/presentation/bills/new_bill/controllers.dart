@@ -60,7 +60,7 @@ class Items extends _$Items {
   ) {
     state[index] = state[index].copyWith(
       name: name,
-      price: double.parse(price),
+      price: price.isEmpty ? 0 : double.parse(price),
       contributors: contributors,
     );
   }

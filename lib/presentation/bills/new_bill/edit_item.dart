@@ -72,7 +72,10 @@ class _EditItemState extends State<EditItem> {
                     labelText: 'Price*',
                     prefixIcon: const Icon(Icons.attach_money),
                     keyboardType: TextInputType.number,
-                    inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                    inputFormatters: <TextInputFormatter>[
+                      FilteringTextInputFormatter.allow(
+                          RegExp(r'^\d+(\.\d{0,2})?|^$')),
+                    ],
                   )),
             ),
           ],
