@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/group/states/group_state.dart';
 import 'package:split_the_bill/presentation/groups/group/floating_with_menu.dart';
-import 'package:split_the_bill/presentation/groups/group/group_history.dart';
 import 'package:split_the_bill/presentation/groups/group/group_members.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/bills/bills_list.dart';
@@ -22,7 +21,7 @@ class GroupScreen extends ConsumerWidget {
     final group = ref.watch(groupStateProvider(groupId));
 
     return DefaultTabController(
-      length: 3,
+      length: 2,
       child: AsyncValueWidget(
         value: group,
         data: (group) => Scaffold(
@@ -37,9 +36,11 @@ class GroupScreen extends ConsumerWidget {
                 Tab(
                   icon: Icon(Icons.people),
                 ),
+                /* TODO: Implement GroupHistory in backend
                 Tab(
                   icon: Icon(Icons.history),
                 ),
+                */
               ],
             ),
           ),
@@ -61,7 +62,7 @@ class GroupScreen extends ConsumerWidget {
                 ),
               ),
               GroupMembers(members: group.members),
-              const GroupHistory(),
+              // const GroupHistory(),
             ],
           ),
         ),

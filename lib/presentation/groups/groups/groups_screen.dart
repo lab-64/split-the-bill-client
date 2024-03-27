@@ -15,13 +15,10 @@ class GroupsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Groups"),
         actions: [
-          Padding(
-            padding: const EdgeInsets.all(Sizes.p8),
-            child: IconButton(
-              icon: const Icon(Icons.add),
-              onPressed: () => context.goNamed(
-                Routes.newGroup.name,
-              ),
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () => context.goNamed(
+              Routes.newGroup.name,
             ),
           ),
         ],

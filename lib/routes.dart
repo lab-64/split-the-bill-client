@@ -4,7 +4,8 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/presentation/bills/bill/bill_screen.dart';
 import 'package:split_the_bill/presentation/bills/bills/bills_screen.dart';
-import 'package:split_the_bill/presentation/bills/edit_bill/edit_bill_screen.dart';
+import 'package:split_the_bill/presentation/bills/new_bill/group_selection_screen.dart';
+import 'package:split_the_bill/presentation/bills/new_bill/new_bill_screen.dart';
 import 'package:split_the_bill/presentation/groups/group/group_screen.dart';
 import 'package:split_the_bill/presentation/groups/groups/groups_screen.dart';
 import 'package:split_the_bill/presentation/groups/new_group/new_group_screen.dart';
@@ -38,6 +39,7 @@ enum Routes {
   // BILL
   bill,
   editBill,
+  newBillGroupSelection,
   newBill,
 }
 
@@ -114,8 +116,18 @@ GoRouter goRouter(GoRouterRef ref) {
               ),
               GoRoute(
                 path: 'new_bill',
-                name: Routes.newBill.name,
-                builder: (context, state) => const EditBillScreen(billId: '0'),
+                name: Routes.newBillGroupSelection.name,
+                builder: (context, state) => GroupSelectionScreen(),
+                routes: [
+                  GoRoute(
+                    path: 'new_bill/:groupId',
+                    name: Routes.newBill.name,
+                    builder: (context, state) {
+                      final groupId = state.pathParameters["groupId"]!;
+                      return NewBillScreen(groupId: groupId);
+                    },
+                  ),
+                ],
               ),
             ],
           ),

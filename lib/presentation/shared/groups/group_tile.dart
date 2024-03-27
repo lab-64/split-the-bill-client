@@ -10,10 +10,12 @@ class GroupTile extends ConsumerWidget {
     super.key,
     required this.group,
     this.onTap,
+    this.isDetailed = true,
   });
 
   final Group group;
   final VoidCallback? onTap;
+  final bool isDetailed;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -25,7 +27,10 @@ class GroupTile extends ConsumerWidget {
       elevation: 0,
       color: Colors.white,
       child: ListTile(
-        contentPadding: const EdgeInsets.all(Sizes.p16),
+        contentPadding: EdgeInsets.symmetric(
+          vertical: isDetailed ? Sizes.p16 : Sizes.p4,
+          horizontal: Sizes.p16,
+        ),
         leading: _buildGroupIcon(),
         title: Text(
           group.name,
@@ -34,7 +39,7 @@ class GroupTile extends ConsumerWidget {
           ),
         ),
         subtitle: _buildMemberAvatars(group),
-        trailing: _buildBalanceInfo(balance),
+        trailing: isDetailed ? _buildBalanceInfo(balance) : null,
         onTap: onTap,
       ),
     );

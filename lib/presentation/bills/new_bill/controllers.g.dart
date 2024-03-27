@@ -1,12 +1,29 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'bill_state.dart';
+part of 'controllers.dart';
 
 // **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
-String _$billStateHash() => r'be7cac7ce39ae57c6b638a6ab93fc98cc6fd33b8';
+String _$editBillControllerHash() =>
+    r'69398b622eebba6d3c6389f60362924b1ee96af8';
+
+/// See also [EditBillController].
+@ProviderFor(EditBillController)
+final editBillControllerProvider =
+    AsyncNotifierProvider<EditBillController, void>.internal(
+  EditBillController.new,
+  name: r'editBillControllerProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$editBillControllerHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$EditBillController = AsyncNotifier<void>;
+String _$itemsHash() => r'c5c475ebccdd44f81985c93fbc564bfbbccab2bb';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,35 +46,35 @@ class _SystemHash {
   }
 }
 
-abstract class _$BillState extends BuildlessAutoDisposeAsyncNotifier<Bill> {
+abstract class _$Items extends BuildlessAutoDisposeNotifier<List<Item>> {
   late final String billId;
 
-  FutureOr<Bill> build(
+  List<Item> build(
     String billId,
   );
 }
 
-/// See also [BillState].
-@ProviderFor(BillState)
-const billStateProvider = BillStateFamily();
+/// See also [Items].
+@ProviderFor(Items)
+const itemsProvider = ItemsFamily();
 
-/// See also [BillState].
-class BillStateFamily extends Family<AsyncValue<Bill>> {
-  /// See also [BillState].
-  const BillStateFamily();
+/// See also [Items].
+class ItemsFamily extends Family<List<Item>> {
+  /// See also [Items].
+  const ItemsFamily();
 
-  /// See also [BillState].
-  BillStateProvider call(
+  /// See also [Items].
+  ItemsProvider call(
     String billId,
   ) {
-    return BillStateProvider(
+    return ItemsProvider(
       billId,
     );
   }
 
   @override
-  BillStateProvider getProviderOverride(
-    covariant BillStateProvider provider,
+  ItemsProvider getProviderOverride(
+    covariant ItemsProvider provider,
   ) {
     return call(
       provider.billId,
@@ -76,29 +93,28 @@ class BillStateFamily extends Family<AsyncValue<Bill>> {
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'billStateProvider';
+  String? get name => r'itemsProvider';
 }
 
-/// See also [BillState].
-class BillStateProvider
-    extends AutoDisposeAsyncNotifierProviderImpl<BillState, Bill> {
-  /// See also [BillState].
-  BillStateProvider(
+/// See also [Items].
+class ItemsProvider extends AutoDisposeNotifierProviderImpl<Items, List<Item>> {
+  /// See also [Items].
+  ItemsProvider(
     String billId,
   ) : this._internal(
-          () => BillState()..billId = billId,
-          from: billStateProvider,
-          name: r'billStateProvider',
+          () => Items()..billId = billId,
+          from: itemsProvider,
+          name: r'itemsProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$billStateHash,
-          dependencies: BillStateFamily._dependencies,
-          allTransitiveDependencies: BillStateFamily._allTransitiveDependencies,
+                  : _$itemsHash,
+          dependencies: ItemsFamily._dependencies,
+          allTransitiveDependencies: ItemsFamily._allTransitiveDependencies,
           billId: billId,
         );
 
-  BillStateProvider._internal(
+  ItemsProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -111,8 +127,8 @@ class BillStateProvider
   final String billId;
 
   @override
-  FutureOr<Bill> runNotifierBuild(
-    covariant BillState notifier,
+  List<Item> runNotifierBuild(
+    covariant Items notifier,
   ) {
     return notifier.build(
       billId,
@@ -120,10 +136,10 @@ class BillStateProvider
   }
 
   @override
-  Override overrideWith(BillState Function() create) {
+  Override overrideWith(Items Function() create) {
     return ProviderOverride(
       origin: this,
-      override: BillStateProvider._internal(
+      override: ItemsProvider._internal(
         () => create()..billId = billId,
         from: from,
         name: null,
@@ -136,13 +152,13 @@ class BillStateProvider
   }
 
   @override
-  AutoDisposeAsyncNotifierProviderElement<BillState, Bill> createElement() {
-    return _BillStateProviderElement(this);
+  AutoDisposeNotifierProviderElement<Items, List<Item>> createElement() {
+    return _ItemsProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is BillStateProvider && other.billId == billId;
+    return other is ItemsProvider && other.billId == billId;
   }
 
   @override
@@ -154,18 +170,18 @@ class BillStateProvider
   }
 }
 
-mixin BillStateRef on AutoDisposeAsyncNotifierProviderRef<Bill> {
+mixin ItemsRef on AutoDisposeNotifierProviderRef<List<Item>> {
   /// The parameter `billId` of this provider.
   String get billId;
 }
 
-class _BillStateProviderElement
-    extends AutoDisposeAsyncNotifierProviderElement<BillState, Bill>
-    with BillStateRef {
-  _BillStateProviderElement(super.provider);
+class _ItemsProviderElement
+    extends AutoDisposeNotifierProviderElement<Items, List<Item>>
+    with ItemsRef {
+  _ItemsProviderElement(super.provider);
 
   @override
-  String get billId => (origin as BillStateProvider).billId;
+  String get billId => (origin as ItemsProvider).billId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
