@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
+import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 import 'package:split_the_bill/presentation/shared/util/util.dart';
 
 class HomeAppBar extends ConsumerWidget {
@@ -24,17 +25,14 @@ class HomeAppBar extends ConsumerWidget {
   Widget _buildUserInfo(User user) {
     return Row(
       children: [
-        const CircleAvatar(
-          radius: Sizes.p24,
-          backgroundImage: AssetImage('assets/avatar.jpg'),
-        ),
+        ProfileImage(user: user),
         gapW16,
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text('Welcome back!'),
             Text(
-              user.email,
+              user.getDisplayName(),
               style: const TextStyle(
                 fontSize: 18.0,
                 fontWeight: FontWeight.bold,

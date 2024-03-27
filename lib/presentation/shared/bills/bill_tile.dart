@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
+import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/bill/bill.dart';
 import 'package:split_the_bill/presentation/shared/extensions/currency_formatter.dart';
+import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 
 class BillTile extends ConsumerWidget {
   const BillTile({
@@ -25,11 +27,11 @@ class BillTile extends ConsumerWidget {
     return Card(
       margin: const EdgeInsets.only(bottom: Sizes.p16),
       elevation: 0,
-      child: _buildListTile(balance),
+      child: _buildListTile(balance, bill.owner),
     );
   }
 
-  Widget _buildListTile(double balance) {
+  Widget _buildListTile(double balance, User owner) {
     return ListTile(
       onTap: onTap,
       contentPadding: const EdgeInsets.symmetric(
@@ -38,7 +40,7 @@ class BillTile extends ConsumerWidget {
       ),
       leading: _buildLeadingIcon(balance),
       title: _buildBillName(),
-      subtitle: _buildSubtitle(),
+      subtitle: _buildSubtitle(owner),
       trailing: _buildTrailingAmount(balance),
     );
   }
@@ -73,11 +75,11 @@ class BillTile extends ConsumerWidget {
     );
   }
 
-  Widget _buildSubtitle() {
+  Widget _buildSubtitle(User owner) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildOwnerRow(),
+        _buildOwnerRow(owner),
         Visibility(
           visible: showGroup,
           child: _buildGroupRow(),
@@ -86,17 +88,17 @@ class BillTile extends ConsumerWidget {
     );
   }
 
-  Widget _buildOwnerRow() {
-    return const Row(
+  Widget _buildOwnerRow(User owner) {
+    return Row(
       children: [
-        CircleAvatar(
-          radius: Sizes.p8,
-          backgroundImage: AssetImage('assets/avatar.jpg'),
+        ProfileImage(
+          user: owner,
+          size: Sizes.p12,
         ),
-        SizedBox(width: Sizes.p4),
+        const SizedBox(width: Sizes.p4),
         Text(
-          "Felix", //TODO
-          style: TextStyle(
+          owner.getDisplayName(),
+          style: const TextStyle(
             color: Colors.grey,
           ),
         ),
