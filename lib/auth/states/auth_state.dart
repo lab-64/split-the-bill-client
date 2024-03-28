@@ -21,4 +21,9 @@ class AuthState extends _$AuthState {
     state =
         await AsyncValue.guard(() => _authRepository.login(email, password));
   }
+
+  Future<void> updateUser(User user) async {
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() => _authRepository.update(user));
+  }
 }

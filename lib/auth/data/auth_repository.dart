@@ -10,6 +10,8 @@ abstract class AuthRepository {
   Future<User> login(String email, String password);
 
   Future<void> register(String email, String password);
+
+  Future<User> update(User user);
 }
 
 @Riverpod(keepAlive: true)

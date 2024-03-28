@@ -11,7 +11,8 @@ import 'package:split_the_bill/presentation/groups/groups/groups_screen.dart';
 import 'package:split_the_bill/presentation/groups/new_group/new_group_screen.dart';
 import 'package:split_the_bill/presentation/home/home_screen.dart';
 import 'package:split_the_bill/presentation/on_boarding/sign_in_screen.dart';
-import 'package:split_the_bill/presentation/profile/profile_screen.dart';
+import 'package:split_the_bill/presentation/profile/edit_profile/edit_profile_screen.dart';
+import 'package:split_the_bill/presentation/profile/profile/profile_screen.dart';
 import 'package:split_the_bill/presentation/shared/navigation/navigation.dart';
 
 part 'routes.g.dart';
@@ -29,6 +30,7 @@ enum Routes {
   homeBill,
   homeGroupBill,
   homeGroupNewBill,
+  homeEditProfile,
 
   // SIGN IN
   signIn,
@@ -44,14 +46,32 @@ enum Routes {
   newBill,
 }
 
+final routerKey = GlobalKey<NavigatorState>(debugLabel: 'routerKey');
+
 @Riverpod(keepAlive: true)
 GoRouter goRouter(GoRouterRef ref) {
-  final user = ref.watch(authStateProvider);
+  // Listen to the auth state
+  final isAuth = ValueNotifier<AsyncValue<bool>>(const AsyncLoading());
+  ref
+    ..onDispose(isAuth.dispose)
+    ..listen(
+      authStateProvider
+          .select((value) => value.whenData((value) => value.id.isNotEmpty)),
+      (_, next) {
+        isAuth.value = next;
+      },
+    );
 
   return GoRouter(
-    initialLocation: '/home',
+    navigatorKey: routerKey,
+    debugLogDiagnostics: true,
+    refreshListenable: isAuth,
+    initialLocation: '/signIn',
     redirect: (context, state) {
-      final isLoggedIn = user.value!.id.isNotEmpty;
+      // Redirect the user to the correct route based on their auth status
+      if (isAuth.value.isLoading || !isAuth.value.hasValue) return null;
+
+      final isLoggedIn = isAuth.value.requireValue;
       final path = state.uri.path;
 
       if (!isLoggedIn) {
@@ -59,10 +79,10 @@ GoRouter goRouter(GoRouterRef ref) {
       }
 
       if (isLoggedIn && path == "/signIn") {
-        return "/";
+        return "/home";
       }
 
-      return path;
+      return null;
     },
     routes: [
       ShellRoute(
@@ -192,6 +212,13 @@ GoRouter goRouter(GoRouterRef ref) {
             path: '/profile',
             name: NavbarRoutes.profile.name,
             builder: (context, state) => const ProfileScreen(),
+            routes: [
+              GoRoute(
+                path: 'edit',
+                name: Routes.homeEditProfile.name,
+                builder: (context, state) => const EditProfileScreen(),
+              ),
+            ],
           ),
         ],
       ),

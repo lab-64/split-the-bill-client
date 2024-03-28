@@ -11,6 +11,7 @@ class InputTextField extends StatelessWidget {
     this.keyboardType,
     this.inputFormatters,
     this.isLoading = false,
+    this.isDisabled = false,
     this.obscureText = false,
   });
 
@@ -21,6 +22,7 @@ class InputTextField extends StatelessWidget {
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final bool isLoading;
+  final bool isDisabled;
   final bool obscureText;
 
   @override
@@ -34,7 +36,7 @@ class InputTextField extends StatelessWidget {
       decoration: InputDecoration(
         labelText: labelText,
         prefixIcon: prefixIcon,
-        enabled: !isLoading,
+        enabled: !isLoading && !isDisabled,
         border: UnderlineInputBorder(
           borderRadius: BorderRadius.circular(8.0),
           borderSide: BorderSide.none,

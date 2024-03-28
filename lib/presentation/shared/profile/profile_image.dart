@@ -16,12 +16,15 @@ class ProfileImage extends ConsumerWidget {
 
     return CircleAvatar(
       radius: size,
-      backgroundImage: imagePath.isNotEmpty
-          ? NetworkImage(
-              imagePath,
-              headers: Map<String, String>.from(session.headers),
-            ) as ImageProvider<Object>
-          : const AssetImage('assets/avatar.jpg'),
+      child: CircleAvatar(
+        radius: size - 1,
+        backgroundImage: imagePath.isNotEmpty
+            ? NetworkImage(
+                imagePath,
+                headers: Map<String, String>.from(session.headers),
+              ) as ImageProvider<Object>
+            : const AssetImage('assets/avatar.jpg'),
+      ),
     );
   }
 }

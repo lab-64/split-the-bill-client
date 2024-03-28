@@ -8,6 +8,10 @@ class AuthAPI {
         endpoint: "/login",
       );
 
+  Uri updateUser(String userId) => _buildUri(
+        endpoint: "/$userId",
+      );
+
   Uri _buildUri({
     required String endpoint,
   }) {
