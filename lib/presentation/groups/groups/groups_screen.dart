@@ -27,6 +27,7 @@ class GroupsScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: Sizes.p24),
         child: CustomScrollView(
           slivers: [
+            const SliverToBoxAdapter(child: gapH16),
             GroupsList(scrollController: scrollController),
           ],
         ),

@@ -28,6 +28,7 @@ enum Routes {
   homeGroup,
   homeBill,
   homeGroupBill,
+  homeGroupNewBill,
 
   // SIGN IN
   signIn,
@@ -90,22 +91,31 @@ GoRouter goRouter(GoRouterRef ref) {
             builder: (context, state) => const HomeScreen(),
             routes: [
               GoRoute(
-                  path: 'group/:groupId',
-                  name: Routes.homeGroup.name,
-                  builder: (context, state) {
-                    final groupId = state.pathParameters['groupId']!;
-                    return GroupScreen(groupId: groupId);
-                  },
-                  routes: [
-                    GoRoute(
-                      path: 'bill/:billId',
-                      name: Routes.homeGroupBill.name,
-                      builder: (context, state) {
-                        final billId = state.pathParameters["billId"]!;
-                        return BillScreen(billId: billId);
-                      },
-                    ),
-                  ]),
+                path: 'group/:groupId',
+                name: Routes.homeGroup.name,
+                builder: (context, state) {
+                  final groupId = state.pathParameters['groupId']!;
+                  return GroupScreen(groupId: groupId);
+                },
+                routes: [
+                  GoRoute(
+                    path: 'bill/:billId',
+                    name: Routes.homeGroupBill.name,
+                    builder: (context, state) {
+                      final billId = state.pathParameters["billId"]!;
+                      return BillScreen(billId: billId);
+                    },
+                  ),
+                  GoRoute(
+                    path: 'new_bill',
+                    name: Routes.homeGroupNewBill.name,
+                    builder: (context, state) {
+                      final groupId = state.pathParameters['groupId']!;
+                      return NewBillScreen(groupId: groupId);
+                    },
+                  ),
+                ],
+              ),
               GoRoute(
                 path: 'bill/:billId',
                 name: Routes.homeBill.name,

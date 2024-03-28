@@ -4,6 +4,7 @@ import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/infrastructure/async_value_ui.dart';
+import 'package:split_the_bill/presentation/shared/components/input_text_field.dart';
 import 'package:split_the_bill/presentation/shared/components/primary_button.dart';
 
 class SignInScreen extends ConsumerStatefulWidget {
@@ -66,9 +67,20 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             children: [
               Image.asset('assets/logo.png'),
               gapH64,
-              _buildEmailTextField(state),
+              InputTextField(
+                labelText: 'Email*',
+                prefixIcon: const Icon(Icons.alternate_email),
+                controller: email,
+                isLoading: state.isLoading,
+              ),
               gapH16,
-              _buildPasswordTextField(state),
+              InputTextField(
+                labelText: 'Password*',
+                prefixIcon: const Icon(Icons.lock),
+                controller: password,
+                isLoading: state.isLoading,
+                obscureText: true,
+              ),
               gapH48,
               _buildSignInButton(state),
             ],
@@ -88,46 +100,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     );
   }
 
-  TextField _buildEmailTextField(AsyncValue<User> state) {
-    return TextField(
-      style: const TextStyle(color: Colors.black),
-      controller: email,
-      decoration: _buildInputDecoration(
-        "Email",
-        Icons.alternate_email,
-        state.isLoading,
-      ),
-    );
-  }
-
-  TextField _buildPasswordTextField(AsyncValue<User> state) {
-    return TextField(
-      style: const TextStyle(color: Colors.black),
-      controller: password,
-      obscureText: true,
-      decoration: _buildInputDecoration(
-        "Password",
-        Icons.lock,
-        state.isLoading,
-      ),
-    );
-  }
-
-  InputDecoration _buildInputDecoration(
-    String labelText,
-    IconData prefixIcon,
-    bool isLoading,
-  ) {
-    return InputDecoration(
-      border: InputBorder.none,
-      labelText: labelText,
-      fillColor: Colors.white,
-      filled: true,
-      prefixIcon: Icon(prefixIcon),
-      enabled: !isLoading,
-    );
-  }
-
   Widget _buildSignInButton(AsyncValue<User> state) {
     return Row(
       children: [
@@ -136,6 +108,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             isLoading: state.isLoading,
             onPressed: state.isLoading ? null : () => _login(),
             icon: Icons.login,
+            text: 'Login',
+            color: Colors.green.shade400,
           ),
         ),
       ],

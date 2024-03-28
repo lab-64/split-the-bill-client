@@ -31,7 +31,7 @@ class Navbar extends ConsumerWidget {
             label: 'Home',
           ),
           NavigationDestination(
-            icon: Icon(Icons.group,
+            icon: Icon(Icons.groups,
                 color: index == 1 ? Colors.blue.shade400 : Colors.white),
             label: 'Groups',
           ),

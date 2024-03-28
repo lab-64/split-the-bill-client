@@ -9,6 +9,7 @@ import 'package:split_the_bill/infrastructure/async_value_ui.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/controllers.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/edit_item.dart';
 import 'package:split_the_bill/presentation/shared/components/headline.dart';
+import 'package:split_the_bill/presentation/shared/components/primary_button.dart';
 
 class EditBill extends ConsumerStatefulWidget {
   const EditBill({super.key, required this.bill, required this.group});
@@ -56,7 +57,10 @@ class _EditBillState extends ConsumerState<EditBill> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Headline(title: 'Item ${index + 1}'),
+                          Headline(
+                              title: items[index].name.isNotEmpty
+                                  ? items[index].name
+                                  : 'Item ${index + 1}'),
                           Row(
                             children: [
                               if (items.length > 1)
@@ -83,24 +87,25 @@ class _EditBillState extends ConsumerState<EditBill> {
                         onChanged: (name, price, contributors) =>
                             _updateItem(index, name, price, contributors),
                       ),
-                      gapH24,
+                      gapH12,
                     ],
+                    if (index == items.length - 1)
+                      Column(
+                        children: [
+                          gapH8,
+                          SizedBox(
+                            width: double.infinity,
+                            child: PrimaryButton(
+                              onPressed: _addItem,
+                              text: "+1 Item",
+                              color: Colors.green.shade400,
+                            ),
+                          ),
+                        ],
+                      ),
                   ],
                 );
               },
-            ),
-          ),
-          ElevatedButton(
-            onPressed: _addItem,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.blue.shade400,
-              textStyle: const TextStyle(color: Colors.white),
-            ),
-            child: const Text(
-              "Add Item",
-              style: TextStyle(
-                color: Colors.white,
-              ),
             ),
           ),
         ],
