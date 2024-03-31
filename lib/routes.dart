@@ -10,6 +10,7 @@ import 'package:split_the_bill/presentation/groups/group/group_screen.dart';
 import 'package:split_the_bill/presentation/groups/groups/groups_screen.dart';
 import 'package:split_the_bill/presentation/groups/new_group/new_group_screen.dart';
 import 'package:split_the_bill/presentation/home/home_screen.dart';
+import 'package:split_the_bill/presentation/on_boarding/register.dart';
 import 'package:split_the_bill/presentation/on_boarding/sign_in_screen.dart';
 import 'package:split_the_bill/presentation/profile/edit_profile/edit_profile_screen.dart';
 import 'package:split_the_bill/presentation/profile/profile/profile_screen.dart';
@@ -34,6 +35,9 @@ enum Routes {
 
   // SIGN IN
   signIn,
+
+  //REGISTER
+  register,
 
   // GROUP
   group,
@@ -219,6 +223,11 @@ GoRouter goRouter(GoRouterRef ref) {
                 builder: (context, state) => const EditProfileScreen(),
               ),
             ],
+          ),
+          GoRoute(
+            path: '/register',
+            name: Routes.register.name,
+            builder: (context, state) => const RegisterScreen(),
           ),
         ],
       ),

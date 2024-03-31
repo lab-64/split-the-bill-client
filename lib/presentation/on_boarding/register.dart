@@ -10,14 +10,14 @@ import 'package:split_the_bill/presentation/shared/components/primary_button.dar
 
 import '../../routes.dart';
 
-class SignInScreen extends ConsumerStatefulWidget {
-  const SignInScreen({super.key});
+class RegisterScreen extends ConsumerStatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  ConsumerState<SignInScreen> createState() => _SignInScreenState();
+  ConsumerState<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _SignInScreenState extends ConsumerState<SignInScreen> {
+class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
 
@@ -25,8 +25,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   @override
   void initState() {
     super.initState();
-    email.text = "felix@gmail.com";
-    password.text = "test";
+    email.text = "test@gmail.com";
+    password.text = "test123...";
   }
 
   @override
@@ -36,10 +36,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     super.dispose();
   }
 
-  Future<void> _login() async {
+  Future<void> _register() async {
     final controller = ref.read(authStateProvider.notifier);
 
-    await controller.login(
+    await controller.register(
       email: email.text,
       password: password.text,
     );
@@ -49,17 +49,17 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   Widget build(BuildContext context) {
     ref.listen(
       authStateProvider,
-      (_, next) => next.showSnackBarOnError(context),
+          (_, next) => next.showSnackBarOnError(context),
     );
 
     final state = ref.watch(authStateProvider);
 
     return Scaffold(
-      body: _buildSignInBody(state),
+      body: _buildRegisterInBody(state),
     );
   }
 
-  Widget _buildSignInBody(AsyncValue<User> state) {
+  Widget _buildRegisterInBody(AsyncValue<User> state) {
     return Container(
       decoration: _buildBackgroundDecoration(),
       child: SafeArea(
@@ -85,9 +85,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 obscureText: true,
               ),
               gapH16,
-              _buildRegisterRoute(),
+              _buildSignInRoute(),
               gapH16,
-              _buildSignInButton(state),
+              _buildRegisterButton(state),
             ],
           ),
         ),
@@ -95,18 +95,20 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     );
   }
 
-  GestureDetector _buildRegisterRoute() {
+  GestureDetector _buildSignInRoute(){
     return GestureDetector(
-        onTap: () => context.goNamed(Routes.register.name),
+        onTap: () => context.goNamed(
+          Routes.signIn.name,
+        ),
         child: RichText(
             text: const TextSpan(
-          text: "Click here to ",
-          children: <TextSpan>[
-            TextSpan(
-                text: 'Register',
-                style: TextStyle(fontWeight: FontWeight.bold)),
-          ],
-        )));
+              text: "Click here to ",
+              children: <TextSpan>[
+                TextSpan(text: 'Login', style: TextStyle(fontWeight: FontWeight.bold)),
+              ],
+            )
+        )
+    );
   }
 
   BoxDecoration _buildBackgroundDecoration() {
@@ -119,15 +121,15 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     );
   }
 
-  Widget _buildSignInButton(AsyncValue<User> state) {
+  Widget _buildRegisterButton(AsyncValue<User> state) {
     return Row(
       children: [
         Expanded(
           child: PrimaryButton(
             isLoading: state.isLoading,
-            onPressed: state.isLoading ? null : () => _login(),
-            icon: Icons.login,
-            text: 'Login',
+            onPressed: state.isLoading ? null : () => _register(),
+            icon: Icons.app_registration,
+            text: 'Register',
             color: Colors.green.shade400,
           ),
         ),
