@@ -19,10 +19,12 @@ class RemoteGroupRepository extends GroupRepository {
   @override
   Future<List<Group>> getGroupsByUser(String userId) => client.get(
         uri: api.getGroupsByUser(userId),
-        builder: (data) => data
-            .map((groupData) => Group.fromMap(groupData))
-            .toList()
-            .cast<Group>(),
+        builder: (data) => data?.isNotEmpty == true
+            ? data
+                .map((groupData) => Group.fromMap(groupData))
+                .toList()
+                .cast<Group>()
+            : [],
       );
 
   @override
