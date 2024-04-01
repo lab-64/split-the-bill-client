@@ -5,25 +5,35 @@ import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/infrastructure/session.dart';
 
 class ProfileImage extends ConsumerWidget {
-  const ProfileImage({super.key, required this.user, this.size = Sizes.p24});
+  const ProfileImage({
+    super.key,
+    required this.user,
+    this.size = Sizes.p24,
+    this.onPressed,
+  });
+
   final User user;
   final double size;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final session = ref.watch(sessionProvider);
     final String imagePath = user.getImagePath();
 
-    return CircleAvatar(
-      radius: size,
+    return GestureDetector(
+      onTap: onPressed,
       child: CircleAvatar(
-        radius: size - 1,
-        backgroundImage: imagePath.isNotEmpty
-            ? NetworkImage(
-                imagePath,
-                headers: Map<String, String>.from(session.headers),
-              ) as ImageProvider<Object>
-            : const AssetImage('assets/avatar.jpg'),
+        radius: size,
+        child: CircleAvatar(
+          radius: size - 1,
+          backgroundImage: imagePath.isNotEmpty
+              ? NetworkImage(
+                  imagePath,
+                  headers: Map<String, String>.from(session.headers),
+                ) as ImageProvider<Object>
+              : const AssetImage('assets/avatar.jpg'),
+        ),
       ),
     );
   }

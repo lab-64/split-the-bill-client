@@ -27,22 +27,30 @@ class Navbar extends ConsumerWidget {
         destinations: [
           NavigationDestination(
             icon: Icon(Icons.home,
-                color: index == 0 ? Colors.blue.shade400 : Colors.white),
+                color: index == NavbarRoutes.home.index
+                    ? Colors.blue.shade400
+                    : Colors.white),
             label: 'Home',
           ),
           NavigationDestination(
             icon: Icon(Icons.groups,
-                color: index == 1 ? Colors.blue.shade400 : Colors.white),
+                color: index == NavbarRoutes.groups.index
+                    ? Colors.blue.shade400
+                    : Colors.white),
             label: 'Groups',
           ),
           NavigationDestination(
             icon: Icon(Icons.receipt_long,
-                color: index == 2 ? Colors.blue.shade400 : Colors.white),
+                color: index == NavbarRoutes.bills.index
+                    ? Colors.blue.shade400
+                    : Colors.white),
             label: 'Bills',
           ),
           NavigationDestination(
             icon: Icon(Icons.settings,
-                color: index == 3 ? Colors.blue.shade400 : Colors.white),
+                color: index == NavbarRoutes.profile.index
+                    ? Colors.blue.shade400
+                    : Colors.white),
             label: 'Profile',
           ),
         ],
