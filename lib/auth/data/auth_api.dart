@@ -12,6 +12,10 @@ class AuthAPI {
     endpoint: "",
   );
 
+  Uri getLogout() => _buildUri(
+    endpoint: "/logout",
+  );
+
   Uri updateUser(String userId) => _buildUri(
         endpoint: "/$userId",
       );

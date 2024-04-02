@@ -10,6 +10,11 @@ import 'package:split_the_bill/routes.dart';
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
+  Future<void> _logout(WidgetRef ref) async {
+    final controller = ref.read(authStateProvider.notifier);
+    await controller.logout();
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authStateProvider).requireValue;
@@ -23,6 +28,15 @@ class ProfileScreen extends ConsumerWidget {
           onPressed: () => context.goNamed(
             Routes.homeEditProfile.name,
           ),
+        ),
+        IconButton(
+          icon: const Icon(Icons.logout),
+          onPressed: () {
+            _logout(ref);
+            context.goNamed(
+              Routes.signIn.name,
+            );
+          },
         ),
       ]),
       body: Padding(

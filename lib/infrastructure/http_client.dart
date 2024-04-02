@@ -45,6 +45,7 @@ class HttpClient {
     required Map<String, dynamic> body,
     required T Function(dynamic data) builder,
     bool isLogin = false,
+    bool isLogout = false,
   }) async {
     try {
       // Merge session headers with additional headers for an HTTP POST request.
@@ -60,6 +61,8 @@ class HttpClient {
       if (isLogin) session.updateCookie(response);
 
       final data = json.decode(response.body);
+
+      if (isLogout) throw UnauthenticatedException(data['message']);
 
       switch (response.statusCode) {
         case 200:
