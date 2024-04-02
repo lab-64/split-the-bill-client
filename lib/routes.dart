@@ -68,7 +68,7 @@ GoRouter goRouter(GoRouterRef ref) {
 
   return GoRouter(
     navigatorKey: routerKey,
-    debugLogDiagnostics: true,
+    debugLogDiagnostics: false,
     refreshListenable: isAuth,
     initialLocation: '/signIn',
     redirect: (context, state) {

@@ -10,6 +10,7 @@ part 'http_client.g.dart';
 
 class HttpClient {
   HttpClient({required this.client, required this.session});
+
   final http.Client client;
   final Session session;
 

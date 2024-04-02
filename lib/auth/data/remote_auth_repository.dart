@@ -35,7 +35,6 @@ class RemoteAuthRepository extends AuthRepository {
       uri: api.getRegister(),
       body: credentials,
       builder: (data) => User.fromMap(data),
-      isLogin: false,
     );
   }
 
@@ -46,4 +45,7 @@ class RemoteAuthRepository extends AuthRepository {
         builder: (data) => User.fromMap(data),
       );
 
+  @override
+  Future<void> logout() =>
+      client.post(uri: api.getLogout(), builder: (data) {}, body: {});
 }

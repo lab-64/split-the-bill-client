@@ -39,4 +39,14 @@ class AuthState extends _$AuthState {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() => _authRepository.update(user));
   }
+
+  Future<void> logout() async {
+    state = const AsyncLoading();
+    await _authRepository.logout();
+
+    if (!state.hasError) {
+      state = const AsyncData(
+          User(id: "", email: "", username: "", profileImgPath: ""));
+    }
+  }
 }
