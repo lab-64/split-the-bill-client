@@ -8,6 +8,10 @@ class AuthAPI {
         endpoint: "/login",
       );
 
+  Uri getRegister() => _buildUri(
+    endpoint: "",
+  );
+
   Uri updateUser(String userId) => _buildUri(
         endpoint: "/$userId",
       );

@@ -25,15 +25,25 @@ class RemoteAuthRepository extends AuthRepository {
   }
 
   @override
+  Future<User> register(String email, String password) async {
+    final credentials = {
+      'email': email,
+      'password': password,
+    };
+
+    return client.post(
+      uri: api.getRegister(),
+      body: credentials,
+      builder: (data) => User.fromMap(data),
+      isLogin: false,
+    );
+  }
+
+  @override
   Future<User> update(User user) => client.put(
         uri: api.updateUser(user.id),
         body: user.toMap(),
         builder: (data) => User.fromMap(data),
       );
 
-  @override
-  Future<void> register(String email, String password) {
-    // TODO: implement register
-    throw UnimplementedError();
-  }
 }
