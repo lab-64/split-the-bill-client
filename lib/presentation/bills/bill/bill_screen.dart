@@ -24,7 +24,7 @@ class BillScreen extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.all(Sizes.p8),
             child: IconButton(
-              icon: Icon(Icons.edit),
+              icon: const Icon(Icons.edit),
               onPressed: () {
                 showNotImplementedSnackBar(context);
                 /*

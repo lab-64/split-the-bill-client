@@ -42,14 +42,7 @@ class Group {
 
   @override
   String toString() {
-    return 'Group{' +
-        ' id: $id,' +
-        ' name: $name,' +
-        ' owner: $owner,' +
-        ' members: $members,' +
-        ' bills: $bills,' +
-        ' balance: $balance,' +
-        '}';
+    return 'Group{ id: $id, name: $name, owner: $owner, members: $members, bills: $bills, balance: $balance,}';
   }
 
   Group copyWith({
@@ -72,8 +65,8 @@ class Group {
 
   Map<String, dynamic> toMap() {
     return {
-      'name': this.name,
-      'ownerID': this.owner.id,
+      'name': name,
+      'ownerID': owner.id,
     };
   }
 
