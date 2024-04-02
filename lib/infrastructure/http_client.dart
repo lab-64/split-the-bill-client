@@ -10,6 +10,7 @@ part 'http_client.g.dart';
 
 class HttpClient {
   HttpClient({required this.client, required this.session});
+
   final http.Client client;
   final Session session;
 
@@ -45,7 +46,6 @@ class HttpClient {
     required Map<String, dynamic> body,
     required T Function(dynamic data) builder,
     bool isLogin = false,
-    bool isLogout = false,
   }) async {
     try {
       // Merge session headers with additional headers for an HTTP POST request.
@@ -61,8 +61,6 @@ class HttpClient {
       if (isLogin) session.updateCookie(response);
 
       final data = json.decode(response.body);
-
-      if (isLogout) throw UnauthenticatedException(data['message']);
 
       switch (response.statusCode) {
         case 200:

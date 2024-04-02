@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
+import 'package:split_the_bill/infrastructure/async_value_ui.dart';
 import 'package:split_the_bill/presentation/shared/components/input_text_field.dart';
 import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 import 'package:split_the_bill/routes.dart';
@@ -21,6 +22,11 @@ class ProfileScreen extends ConsumerWidget {
     final email = TextEditingController(text: user.email);
     final username = TextEditingController(text: user.username);
 
+    ref.listen(
+      authStateProvider,
+          (_, next) => next.showSnackBarOnError(context),
+    );
+
     return Scaffold(
       appBar: AppBar(title: const Text("Profile"), actions: [
         IconButton(
@@ -31,12 +37,7 @@ class ProfileScreen extends ConsumerWidget {
         ),
         IconButton(
           icon: const Icon(Icons.logout),
-          onPressed: () {
-            _logout(ref);
-            context.goNamed(
-              Routes.signIn.name,
-            );
-          },
+          onPressed: () => _logout(ref),
         ),
       ]),
       body: Padding(

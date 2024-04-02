@@ -13,7 +13,7 @@ abstract class AuthRepository {
 
   Future<User> update(User user);
 
-  Future<User> logout();
+  Future<void> logout();
 }
 
 @Riverpod(keepAlive: true)

@@ -46,9 +46,6 @@ class RemoteAuthRepository extends AuthRepository {
       );
 
   @override
-  Future<User> logout() => client.post(
-      uri: api.getLogout(),
-      builder: (data) => User.fromMap(data),
-      body: {},
-      isLogout: true);
+  Future<void> logout() =>
+      client.post(uri: api.getLogout(), builder: (data) {}, body: {});
 }
