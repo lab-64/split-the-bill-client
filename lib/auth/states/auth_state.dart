@@ -30,7 +30,6 @@ class AuthState extends _$AuthState {
     state =
         await AsyncValue.guard(() => _authRepository.register(email, password));
     if (!state.hasError) {
-      print("REGISTER LOGIN");
       state =
           await AsyncValue.guard(() => _authRepository.login(email, password));
     }

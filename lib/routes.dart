@@ -82,7 +82,7 @@ GoRouter goRouter(GoRouterRef ref) {
         return "/signIn";
       }
 
-      if (isLoggedIn && path == "/signIn") {
+      if (isLoggedIn && (path == "/signIn" || path == "/register")) {
         return "/home";
       }
 
