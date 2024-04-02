@@ -6,7 +6,6 @@ class BillsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ScrollController scrollController = ScrollController();
 
     return Scaffold(
       appBar: AppBar(

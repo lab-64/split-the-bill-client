@@ -35,7 +35,7 @@ class GroupScreen extends ConsumerWidget {
             ),
           ),
           appBar: AppBar(
-            title: Text(group.name ?? ""),
+            title: Text(group.name),
             bottom: const TabBar(
               tabs: [
                 Tab(
