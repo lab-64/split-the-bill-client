@@ -6,6 +6,7 @@ import 'package:split_the_bill/presentation/bills/new_bill/controllers.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/edit_bill.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
+import 'package:split_the_bill/router/routes.dart';
 
 class NewBillScreen extends ConsumerWidget {
   const NewBillScreen({super.key, required this.groupId, this.billId = '0'});
@@ -20,7 +21,8 @@ class NewBillScreen extends ConsumerWidget {
     return Scaffold(
       floatingActionButton: ActionButton(
         icon: Icons.save,
-        onPressed: () => _addBill(ref).then((_) => Navigator.of(context).pop()),
+        onPressed: () =>
+            _addBill(ref).then((_) => const HomeRoute().go(context)),
       ),
       appBar: AppBar(title: const Text("New Bill")),
       body: AsyncValueWidget(

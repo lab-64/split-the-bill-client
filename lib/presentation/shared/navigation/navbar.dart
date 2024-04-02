@@ -1,15 +1,53 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:split_the_bill/presentation/shared/navigation/controllers.dart';
-import 'package:split_the_bill/routes.dart';
+import 'package:split_the_bill/presentation/shared/components/action_button.dart';
+import 'package:split_the_bill/router/routes.dart';
 
-class Navbar extends ConsumerWidget {
-  const Navbar({super.key});
+class Navbar extends StatelessWidget {
+  const Navbar({super.key, required this.child});
+  final Widget child;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final index = ref.watch(navbarControllerProvider);
+  Widget build(BuildContext context) {
+    return Scaffold(
+      floatingActionButton: ActionButton(
+        icon: Icons.add,
+        onPressed: () => const NewBillGroupSelectionRoute().push(context),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: const BottomNavigationBar(),
+      body: child,
+    );
+  }
+}
+
+class BottomNavigationBar extends StatelessWidget {
+  const BottomNavigationBar({super.key});
+
+  int getSelectedIndex(BuildContext context) {
+    final String location = GoRouterState.of(context).uri.toString();
+
+    final String homeRoute = const HomeRoute().location;
+    final String groupsRoute = const GroupsRoute().location;
+    final String billsRoute = const BillsRoute().location;
+    final String profileRoute = const ProfileRoute().location;
+
+    if (location == homeRoute) {
+      return 0;
+    } else if (location == groupsRoute) {
+      return 1;
+    } else if (location == billsRoute) {
+      return 2;
+    } else if (location == profileRoute) {
+      return 3;
+    } else {
+      return 0;
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final int selectedIndex = getSelectedIndex(context);
 
     return BottomAppBar(
       color: Colors.blue.shade400,
@@ -17,53 +55,50 @@ class Navbar extends ConsumerWidget {
       elevation: 0,
       shape: const CircularNotchedRectangle(),
       child: NavigationBar(
-        onDestinationSelected: (index) =>
-            handleDestinationSelected(context, ref, index),
+        onDestinationSelected: (int index) {
+          switch (index) {
+            case 0:
+              const HomeRoute().go(context);
+            case 1:
+              const GroupsRoute().go(context);
+            case 2:
+              const BillsRoute().go(context);
+            case 3:
+              const ProfileRoute().go(context);
+          }
+        },
         labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-        selectedIndex: index,
+        selectedIndex: selectedIndex,
         backgroundColor: Colors.transparent,
         indicatorColor: Colors.white,
         elevation: 0,
         destinations: [
           NavigationDestination(
             icon: Icon(Icons.home,
-                color: index == NavbarRoutes.home.index
-                    ? Colors.blue.shade400
-                    : Colors.white),
+                color:
+                    selectedIndex == 0 ? Colors.blue.shade400 : Colors.white),
             label: 'Home',
           ),
           NavigationDestination(
             icon: Icon(Icons.groups,
-                color: index == NavbarRoutes.groups.index
-                    ? Colors.blue.shade400
-                    : Colors.white),
+                color:
+                    selectedIndex == 1 ? Colors.blue.shade400 : Colors.white),
             label: 'Groups',
           ),
           NavigationDestination(
             icon: Icon(Icons.receipt_long,
-                color: index == NavbarRoutes.bills.index
-                    ? Colors.blue.shade400
-                    : Colors.white),
+                color:
+                    selectedIndex == 2 ? Colors.blue.shade400 : Colors.white),
             label: 'Bills',
           ),
           NavigationDestination(
             icon: Icon(Icons.settings,
-                color: index == NavbarRoutes.profile.index
-                    ? Colors.blue.shade400
-                    : Colors.white),
+                color:
+                    selectedIndex == 3 ? Colors.blue.shade400 : Colors.white),
             label: 'Profile',
           ),
         ],
       ),
     );
-  }
-
-  void handleDestinationSelected(
-    BuildContext context,
-    WidgetRef ref,
-    int index,
-  ) {
-    ref.read(navbarControllerProvider.notifier).setIndex(index);
-    context.goNamed(NavbarRoutes.values[index].name);
   }
 }
