@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
+import 'package:split_the_bill/presentation/shared/components/ellipse_profile_name.dart';
 import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 
 class GroupMemberList extends StatefulWidget {
@@ -53,7 +54,11 @@ class _GroupMemberListState extends State<GroupMemberList> {
                 size: Sizes.p20,
               ),
               dense: true,
-              title: Text(widget.members[index].getDisplayName()),
+              title: EllipseProfileName(
+                name: widget.members[index].getDisplayName(),
+                size: Sizes.p64,
+                style: const TextStyle(color: Colors.grey),
+              ),
               value: _isSelectedList[index],
               onChanged: (bool? value) {
                 setState(() {

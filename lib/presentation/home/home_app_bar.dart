@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
+import 'package:split_the_bill/presentation/shared/components/ellipse_profile_name.dart';
 import 'package:split_the_bill/presentation/shared/navigation/controllers.dart';
 import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 import 'package:split_the_bill/presentation/shared/util/util.dart';
@@ -35,13 +36,13 @@ class HomeAppBar extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text('Welcome back!'),
-            Text(
-              user.getDisplayName(),
-              style: const TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            EllipseProfileName(
+                name: user.getDisplayName(),
+                size: Sizes.p64 * 3,
+                style: const TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                )),
           ],
         ),
       ],
