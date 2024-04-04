@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
-import 'package:split_the_bill/presentation/shared/navigation/controllers.dart';
 import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 import 'package:split_the_bill/presentation/shared/util/util.dart';
-import 'package:split_the_bill/routes.dart';
+import 'package:split_the_bill/router/routes.dart';
 
 class HomeAppBar extends ConsumerWidget {
   const HomeAppBar({super.key});
@@ -29,7 +27,9 @@ class HomeAppBar extends ConsumerWidget {
     return Row(
       children: [
         ProfileImage(
-            user: user, onPressed: () => _onProfileImagePressed(context, ref)),
+          user: user,
+          onPressed: () => const ProfileRoute().go(context),
+        ),
         gapW16,
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,15 +52,6 @@ class HomeAppBar extends ConsumerWidget {
     return IconButton(
       icon: const Icon(Icons.notifications_outlined),
       onPressed: () => showNotImplementedSnackBar(context),
-    );
-  }
-
-  void _onProfileImagePressed(BuildContext context, WidgetRef ref) {
-    ref
-        .read(navbarControllerProvider.notifier)
-        .setIndex(NavbarRoutes.profile.index);
-    context.goNamed(
-      NavbarRoutes.profile.name,
     );
   }
 }

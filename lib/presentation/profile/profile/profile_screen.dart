@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/infrastructure/async_value_ui.dart';
 import 'package:split_the_bill/presentation/shared/components/input_text_field.dart';
 import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
-import 'package:split_the_bill/routes.dart';
+import 'package:split_the_bill/router/routes.dart';
 
 class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
@@ -24,16 +23,14 @@ class ProfileScreen extends ConsumerWidget {
 
     ref.listen(
       authStateProvider,
-          (_, next) => next.showSnackBarOnError(context),
+      (_, next) => next.showSnackBarOnError(context),
     );
 
     return Scaffold(
       appBar: AppBar(title: const Text("Profile"), actions: [
         IconButton(
           icon: const Icon(Icons.edit),
-          onPressed: () => context.goNamed(
-            Routes.homeEditProfile.name,
-          ),
+          onPressed: () => const EditProfileRoute().go(context),
         ),
         IconButton(
           icon: const Icon(Icons.logout),

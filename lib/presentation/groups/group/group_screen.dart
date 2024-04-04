@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/group/states/group_state.dart';
 import 'package:split_the_bill/presentation/groups/group/group_members.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/bills/bills_list.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
-import 'package:split_the_bill/routes.dart';
+import 'package:split_the_bill/router/routes.dart';
 
 class GroupScreen extends ConsumerWidget {
   const GroupScreen({
@@ -29,10 +28,7 @@ class GroupScreen extends ConsumerWidget {
         data: (group) => Scaffold(
           floatingActionButton: ActionButton(
             icon: Icons.add,
-            onPressed: () => context.goNamed(
-              Routes.homeGroupNewBill.name,
-              pathParameters: {'groupId': group.id},
-            ),
+            onPressed: () => NewBillRoute(groupId: group.id).push(context),
           ),
           appBar: AppBar(
             title: Text(group.name),

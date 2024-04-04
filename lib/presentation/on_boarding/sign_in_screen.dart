@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/infrastructure/async_value_ui.dart';
 import 'package:split_the_bill/presentation/shared/components/input_text_field.dart';
 import 'package:split_the_bill/presentation/shared/components/primary_button.dart';
-
-import '../../routes.dart';
+import 'package:split_the_bill/router/routes.dart';
 
 class SignInScreen extends ConsumerStatefulWidget {
   const SignInScreen({super.key});
@@ -97,16 +95,18 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
 
   GestureDetector _buildRegisterRoute() {
     return GestureDetector(
-        onTap: () => context.goNamed(Routes.register.name),
-        child: RichText(
-            text: const TextSpan(
+      onTap: () => const RegisterRoute().go(context),
+      child: RichText(
+        text: const TextSpan(
           text: "Click here to ",
           children: <TextSpan>[
             TextSpan(
                 text: 'Register',
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ],
-        )));
+        ),
+      ),
+    );
   }
 
   BoxDecoration _buildBackgroundDecoration() {
