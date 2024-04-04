@@ -47,7 +47,7 @@ class Navbar extends ConsumerWidget {
             label: 'Bills',
           ),
           NavigationDestination(
-            icon: Icon(Icons.settings,
+            icon: Icon(Icons.person,
                 color: index == NavbarRoutes.profile.index
                     ? Colors.blue.shade400
                     : Colors.white),
