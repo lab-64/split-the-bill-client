@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/infrastructure/async_value_ui.dart';
 import 'package:split_the_bill/presentation/shared/components/input_text_field.dart';
 import 'package:split_the_bill/presentation/shared/components/primary_button.dart';
-
-import '../../routes.dart';
+import 'package:split_the_bill/router/routes.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
@@ -49,7 +47,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   Widget build(BuildContext context) {
     ref.listen(
       authStateProvider,
-          (_, next) => next.showSnackBarOnError(context),
+      (_, next) => next.showSnackBarOnError(context),
     );
 
     final state = ref.watch(authStateProvider);
@@ -95,19 +93,20 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     );
   }
 
-  GestureDetector _buildSignInRoute(){
+  GestureDetector _buildSignInRoute() {
     return GestureDetector(
-        onTap: () => context.goNamed(
-          Routes.signIn.name,
+      onTap: () => const LoginRoute().go(context),
+      child: RichText(
+        text: const TextSpan(
+          text: "Click here to ",
+          children: <TextSpan>[
+            TextSpan(
+              text: 'Login',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+          ],
         ),
-        child: RichText(
-            text: const TextSpan(
-              text: "Click here to ",
-              children: <TextSpan>[
-                TextSpan(text: 'Login', style: TextStyle(fontWeight: FontWeight.bold)),
-              ],
-            )
-        )
+      ),
     );
   }
 

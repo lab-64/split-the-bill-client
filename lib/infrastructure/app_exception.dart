@@ -25,8 +25,3 @@ class NotFoundException extends AppException {
 class UnknownException extends AppException {
   UnknownException(String message) : super('unknown-error', message);
 }
-
-/// item
- class ItemNotFoundException extends AppException {
-   ItemNotFoundException() : super('item-not-found', 'Item not found');
- }

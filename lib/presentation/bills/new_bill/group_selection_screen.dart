@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/group/group.dart';
 import 'package:split_the_bill/domain/group/states/groups_state.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/components/headline.dart';
 import 'package:split_the_bill/presentation/shared/groups/group_tile.dart';
-import 'package:split_the_bill/routes.dart';
+import 'package:split_the_bill/router/routes.dart';
 
 class GroupSelectionScreen extends ConsumerWidget {
   GroupSelectionScreen({super.key});
@@ -61,15 +60,8 @@ class GroupSelectionScreen extends ConsumerWidget {
   Widget _buildGroupTile(BuildContext context, Group group) {
     return GroupTile(
       group: group,
-      onTap: () => _onTap(context, group),
+      onTap: () => NewBillRoute(groupId: group.id).push(context),
       isDetailed: false,
-    );
-  }
-
-  void _onTap(BuildContext context, Group group) {
-    context.goNamed(
-      Routes.newBill.name,
-      pathParameters: {'groupId': group.id},
     );
   }
 }
