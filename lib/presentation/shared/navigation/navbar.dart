@@ -92,7 +92,7 @@ class BottomNavigationBar extends StatelessWidget {
             label: 'Bills',
           ),
           NavigationDestination(
-            icon: Icon(Icons.settings,
+            icon: Icon(Icons.person,
                 color:
                     selectedIndex == 3 ? Colors.blue.shade400 : Colors.white),
             label: 'Profile',
