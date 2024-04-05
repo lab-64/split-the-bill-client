@@ -6,6 +6,7 @@ import 'package:split_the_bill/presentation/bills/new_bill/controllers.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/edit_bill.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
+import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
 import 'package:split_the_bill/router/routes.dart';
 
 class NewBillScreen extends ConsumerWidget {
@@ -21,8 +22,9 @@ class NewBillScreen extends ConsumerWidget {
     return Scaffold(
       floatingActionButton: ActionButton(
         icon: Icons.save,
-        onPressed: () =>
-            _addBill(ref).then((_) => const HomeRoute().go(context)),
+        onPressed: () => _addBill(ref).then(
+          (_) => _onAddBillSuccess(ref, context),
+        ),
       ),
       appBar: AppBar(title: const Text("New Bill")),
       body: AsyncValueWidget(
@@ -38,7 +40,17 @@ class NewBillScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _addBill(WidgetRef ref) {
-    return ref.read(editBillControllerProvider.notifier).addBill(groupId);
+  Future<void> _addBill(WidgetRef ref) async {
+    return await ref.read(editBillControllerProvider.notifier).addBill(groupId);
+  }
+
+  void _onAddBillSuccess(WidgetRef ref, BuildContext context) {
+    final state = ref.watch(editBillControllerProvider);
+    showSuccessSnackBar(
+      context,
+      state,
+      'Bill created',
+      goTo: () => const HomeRoute().go(context),
+    );
   }
 }
