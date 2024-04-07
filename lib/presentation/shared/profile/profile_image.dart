@@ -10,11 +10,13 @@ class ProfileImage extends ConsumerWidget {
     required this.user,
     this.size = Sizes.p24,
     this.onPressed,
+    this.showOverlayIcon = false,
   });
 
   final User user;
   final double size;
   final VoidCallback? onPressed;
+  final bool showOverlayIcon;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,17 +25,29 @@ class ProfileImage extends ConsumerWidget {
 
     return GestureDetector(
       onTap: onPressed,
-      child: CircleAvatar(
-        radius: size,
-        child: CircleAvatar(
-          radius: size - 1,
-          backgroundImage: imagePath.isNotEmpty
-              ? NetworkImage(
-                  imagePath,
-                  headers: Map<String, String>.from(session.headers),
-                ) as ImageProvider<Object>
-              : const AssetImage('assets/avatar.jpg'),
-        ),
+      child: Stack(
+        children: [
+          CircleAvatar(
+            radius: size,
+            child: CircleAvatar(
+              radius: size - 1,
+              backgroundImage: imagePath.isNotEmpty
+                  ? NetworkImage(
+                      imagePath,
+                      headers: Map<String, String>.from(session.headers),
+                    ) as ImageProvider<Object>
+                  : const AssetImage('assets/avatar.jpg'),
+            ),
+          ),
+          if (showOverlayIcon)
+            Positioned.fill(
+              child: Icon(
+                Icons.camera_alt,
+                color: Colors.white,
+                size: size * 0.6,
+              ),
+            ),
+        ],
       ),
     );
   }

@@ -128,7 +128,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             onPressed: state.isLoading ? null : () => _login(),
             icon: Icons.login,
             text: 'Login',
-            color: Colors.green.shade400,
           ),
         ),
       ],
