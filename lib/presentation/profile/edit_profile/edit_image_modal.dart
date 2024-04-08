@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:split_the_bill/presentation/shared/util/util.dart';
+import 'package:image_picker/image_picker.dart';
 
 class EditImageModal extends StatelessWidget {
-  const EditImageModal({super.key});
+  const EditImageModal({
+    super.key,
+    required this.getImage,
+  });
+  final Function(ImageSource) getImage;
 
   @override
   Widget build(BuildContext context) {
@@ -11,12 +15,12 @@ class EditImageModal extends StatelessWidget {
         ListTile(
           leading: const Icon(Icons.camera_alt),
           title: const Text('Take a photo'),
-          onTap: () => showNotImplementedSnackBar(context),
+          onTap: () => getImage(ImageSource.camera),
         ),
         ListTile(
           leading: const Icon(Icons.image),
           title: const Text('Select image'),
-          onTap: () => showNotImplementedSnackBar(context),
+          onTap: () => getImage(ImageSource.gallery),
         ),
       ],
     );

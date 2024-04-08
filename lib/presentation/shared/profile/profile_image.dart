@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/infrastructure/session.dart';
@@ -11,12 +14,31 @@ class ProfileImage extends ConsumerWidget {
     this.size = Sizes.p24,
     this.onPressed,
     this.showOverlayIcon = false,
+    this.previewImage,
   });
 
   final User user;
   final double size;
   final VoidCallback? onPressed;
   final bool showOverlayIcon;
+  final XFile? previewImage;
+
+  ImageProvider<Object> getProfileImage(
+    XFile? previewImage,
+    String imagePath,
+    Map<String, String> headers,
+  ) {
+    if (previewImage != null) {
+      return FileImage(File(previewImage.path));
+    } else if (imagePath.isNotEmpty) {
+      return NetworkImage(
+        imagePath,
+        headers: headers,
+      );
+    } else {
+      return const AssetImage('assets/avatar.jpg');
+    }
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -31,12 +53,8 @@ class ProfileImage extends ConsumerWidget {
             radius: size,
             child: CircleAvatar(
               radius: size - 1,
-              backgroundImage: imagePath.isNotEmpty
-                  ? NetworkImage(
-                      imagePath,
-                      headers: Map<String, String>.from(session.headers),
-                    ) as ImageProvider<Object>
-                  : const AssetImage('assets/avatar.jpg'),
+              backgroundImage:
+                  getProfileImage(previewImage, imagePath, session.headers),
             ),
           ),
           if (showOverlayIcon)

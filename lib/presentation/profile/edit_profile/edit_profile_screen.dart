@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
@@ -19,27 +20,38 @@ class EditProfileScreen extends ConsumerStatefulWidget {
 }
 
 class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
-  TextEditingController username = TextEditingController();
-  TextEditingController email = TextEditingController();
-  late User user;
+  final TextEditingController _username = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final ImagePicker _picker = ImagePicker();
+  XFile? _image;
+
+  late User _user;
 
   @override
   void initState() {
-    user = ref.read(authStateProvider).requireValue;
-    username.text = user.username;
-    email.text = user.email;
+    _user = ref.read(authStateProvider).requireValue;
+    _username.text = _user.username;
+    _email.text = _user.email;
     super.initState();
   }
 
   @override
   void dispose() {
-    username.dispose();
+    _username.dispose();
     super.dispose();
   }
 
   Future<void> _update() async {
     final controller = ref.read(editProfileControllerProvider.notifier);
-    await controller.updateUser(username.text);
+    await controller.updateUser(_username.text);
+  }
+
+  Future _getImage(ImageSource source) async {
+    final XFile? image = await _picker.pickImage(source: source);
+
+    setState(() {
+      if (image != null) _image = image;
+    });
   }
 
   @override
@@ -55,27 +67,30 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
         child: Column(
           children: [
             ProfileImage(
-              user: user,
+              user: _user,
               size: Sizes.p64,
               showOverlayIcon: true,
               onPressed: () => showBottomModal(
                 context,
                 "Edit Profile Picture",
-                const EditImageModal(),
+                EditImageModal(
+                  getImage: _getImage,
+                ),
               ),
+              previewImage: _image,
             ),
             gapH24,
             InputTextField(
               labelText: "Email",
               prefixIcon: const Icon(Icons.email),
-              controller: email,
+              controller: _email,
               isDisabled: true,
             ),
             gapH16,
             InputTextField(
               labelText: "Username",
               prefixIcon: const Icon(Icons.person),
-              controller: username,
+              controller: _username,
             ),
           ],
         ),
