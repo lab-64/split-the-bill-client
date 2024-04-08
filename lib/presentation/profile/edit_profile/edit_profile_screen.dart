@@ -5,6 +5,7 @@ import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/presentation/profile/edit_profile/controllers.dart';
+import 'package:split_the_bill/presentation/profile/edit_profile/edit_image_modal.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
 import 'package:split_the_bill/presentation/shared/components/bottom_modal.dart';
 import 'package:split_the_bill/presentation/shared/components/input_text_field.dart';
@@ -57,7 +58,11 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
               user: user,
               size: Sizes.p64,
               showOverlayIcon: true,
-              onPressed: () => showBottomModal(context),
+              onPressed: () => showBottomModal(
+                context,
+                "Edit Profile Picture",
+                const EditImageModal(),
+              ),
             ),
             gapH24,
             InputTextField(

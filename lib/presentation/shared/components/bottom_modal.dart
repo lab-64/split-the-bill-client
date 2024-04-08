@@ -1,51 +1,35 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
-import 'package:split_the_bill/presentation/shared/components/primary_button.dart';
 
-Future<void> showBottomModal(BuildContext context) async {
+Future<void> showBottomModal(
+  BuildContext context,
+  String title,
+  Widget body,
+) async {
   return showModalBottomSheet<void>(
     context: context,
     builder: (BuildContext context) {
-      return SizedBox(
-        height: 300,
+      return SingleChildScrollView(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
+            Column(
               children: [
-                const Padding(
-                  padding: EdgeInsets.only(left: Sizes.p16),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: Sizes.p12),
                   child: Text(
-                    'Edit profile picture',
-                    style: TextStyle(fontSize: 18),
+                    title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
-                IconButton(
-                  icon: const Icon(Icons.close),
-                  onPressed: () => context.pop(),
+                const Divider(
+                  height: 0,
                 ),
               ],
             ),
-            const Divider(),
-            Row(
-              children: [
-                PrimaryButton(
-                  onPressed: () {
-                    // Handle select photo action
-                  },
-                  text: 'asd',
-                ),
-                PrimaryButton(
-                  onPressed: () {
-                    // Handle select photo action
-                  },
-                  text: 'asd',
-                ),
-              ],
-            ),
+            body,
           ],
         ),
       );
