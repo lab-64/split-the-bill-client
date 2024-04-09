@@ -1,3 +1,4 @@
+import 'package:image_picker/image_picker.dart';
 import 'package:split_the_bill/auth/data/auth_api.dart';
 import 'package:split_the_bill/auth/data/auth_repository.dart';
 import 'package:split_the_bill/auth/user.dart';
@@ -39,9 +40,10 @@ class RemoteAuthRepository extends AuthRepository {
   }
 
   @override
-  Future<User> update(User user) => client.put(
+  Future<User> update(User user, XFile? image) => client.putMultipart(
         uri: api.updateUser(user.id),
-        body: user.toMap(),
+        body: user.toMap().cast<String, String>(),
+        file: image,
         builder: (data) => User.fromMap(data),
       );
 

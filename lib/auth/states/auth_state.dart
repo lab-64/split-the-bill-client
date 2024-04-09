@@ -1,3 +1,4 @@
+import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/auth/data/auth_repository.dart';
 import 'package:split_the_bill/auth/user.dart';
@@ -35,9 +36,9 @@ class AuthState extends _$AuthState {
     }
   }
 
-  Future<void> updateUser(User user) async {
+  Future<void> updateUser(User user, XFile? image) async {
     state = const AsyncLoading();
-    state = await AsyncValue.guard(() => _authRepository.update(user));
+    state = await AsyncValue.guard(() => _authRepository.update(user, image));
   }
 
   Future<void> logout() async {

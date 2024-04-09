@@ -44,6 +44,11 @@ class ProfileImage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final session = ref.watch(sessionProvider);
     final String imagePath = user.getImagePath();
+    final ImageProvider<Object> image = getProfileImage(
+      previewImage,
+      imagePath,
+      session.headers,
+    );
 
     return GestureDetector(
       onTap: onPressed,
@@ -53,8 +58,7 @@ class ProfileImage extends ConsumerWidget {
             radius: size,
             child: CircleAvatar(
               radius: size - 1,
-              backgroundImage:
-                  getProfileImage(previewImage, imagePath, session.headers),
+              backgroundImage: image,
             ),
           ),
           if (showOverlayIcon)

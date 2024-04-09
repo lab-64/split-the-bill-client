@@ -43,7 +43,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
   Future<void> _update() async {
     final controller = ref.read(editProfileControllerProvider.notifier);
-    await controller.updateUser(_username.text);
+    await controller.updateUser(_username.text, _image);
   }
 
   Future _getImage(ImageSource source) async {
