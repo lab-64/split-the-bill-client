@@ -1,3 +1,4 @@
+import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/auth/user.dart';
@@ -67,5 +68,20 @@ class Items extends _$Items {
 
   void removeItem(int index) {
     state.removeAt(index);
+  }
+}
+
+@riverpod
+class BillRecognition extends _$BillRecognition {
+  @override
+  Future<String> build() {
+    return Future.value("");
+  }
+
+  void runBillRecognition(XFile? image) {
+    state = const AsyncLoading();
+
+    print("haahaha");
+    //state = [...state, item];
   }
 }

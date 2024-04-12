@@ -183,5 +183,22 @@ class _ItemsProviderElement
   @override
   String get billId => (origin as ItemsProvider).billId;
 }
+
+String _$billRecognitionHash() => r'768263eca1cc22bd9837bf2f47a4ccda4b0f7545';
+
+/// See also [BillRecognition].
+@ProviderFor(BillRecognition)
+final billRecognitionProvider =
+    AutoDisposeAsyncNotifierProvider<BillRecognition, String>.internal(
+  BillRecognition.new,
+  name: r'billRecognitionProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$billRecognitionHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$BillRecognition = AutoDisposeAsyncNotifier<String>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

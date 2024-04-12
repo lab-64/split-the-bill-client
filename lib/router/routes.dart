@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:split_the_bill/presentation/bills/bill/bill_screen.dart';
 import 'package:split_the_bill/presentation/bills/bills/bills_screen.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/group_selection_screen.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/new_bill_screen.dart';
+import 'package:split_the_bill/presentation/bills/new_bill/recognized_bill_screen.dart';
 import 'package:split_the_bill/presentation/groups/group/group_screen.dart';
 import 'package:split_the_bill/presentation/groups/groups/groups_screen.dart';
 import 'package:split_the_bill/presentation/groups/new_group/new_group_screen.dart';
@@ -154,7 +156,7 @@ class NewBillGroupSelectionRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return GroupSelectionScreen();
+    return const GroupSelectionScreen();
   }
 }
 
@@ -165,6 +167,16 @@ class NewBillRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return NewBillScreen(groupId: groupId);
+  }
+}
+
+class RecognizedBillRoute extends GoRouteData {
+  const RecognizedBillRoute(/*{required this.image}*/);
+  //final XFile? image;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const RecognizedBillScreen(/*image: image*/);
   }
 }
 
