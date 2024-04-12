@@ -34,6 +34,7 @@ part 'routes.g.dart';
         TypedGoRoute<NewBillGroupSelectionRoute>(
           path: 'new',
           routes: [
+            TypedGoRoute<RecognizedBillRoute>(path: 'recognized'),
             TypedGoRoute<NewBillRoute>(path: ':groupId'),
           ],
         ),
@@ -171,12 +172,11 @@ class NewBillRoute extends GoRouteData {
 }
 
 class RecognizedBillRoute extends GoRouteData {
-  const RecognizedBillRoute(/*{required this.image}*/);
-  //final XFile? image;
+  const RecognizedBillRoute();
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const RecognizedBillScreen(/*image: image*/);
+    return const RecognizedBillScreen();
   }
 }
 

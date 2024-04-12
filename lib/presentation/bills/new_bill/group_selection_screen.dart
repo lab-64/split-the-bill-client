@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/group/group.dart';
@@ -30,7 +29,11 @@ class _GroupSelectionScreenState extends ConsumerState<GroupSelectionScreen> {
     final XFile? image = await _picker.pickImage(source: source);
 
     setState(() {
-      if (image != null) _image = image;
+      if (image != null) {
+        _image = image;
+        ref.watch(billRecognitionProvider.notifier).runBillRecognition(_image);
+        const RecognizedBillRoute().push(context);
+      }
     });
   }
 
@@ -92,9 +95,6 @@ class _GroupSelectionScreenState extends ConsumerState<GroupSelectionScreen> {
           "Add New Bill",
           NewBillModal(
             getImage: _getImage,
-            onImageSelection: () => ref
-                .watch(billRecognitionProvider.notifier)
-                .runBillRecognition(_image),
             group: group,
           ),
         );

@@ -42,6 +42,10 @@ RouteBase get $navbarShellRoute => ShellRouteData.$route(
               factory: $NewBillGroupSelectionRouteExtension._fromState,
               routes: [
                 GoRouteData.$route(
+                  path: 'recognized',
+                  factory: $RecognizedBillRouteExtension._fromState,
+                ),
+                GoRouteData.$route(
                   path: ':groupId',
                   factory: $NewBillRouteExtension._fromState,
                 ),
@@ -164,6 +168,24 @@ extension $NewBillGroupSelectionRouteExtension on NewBillGroupSelectionRoute {
 
   String get location => GoRouteData.$location(
         '/bills/new',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $RecognizedBillRouteExtension on RecognizedBillRoute {
+  static RecognizedBillRoute _fromState(GoRouterState state) =>
+      const RecognizedBillRoute();
+
+  String get location => GoRouteData.$location(
+        '/bills/new/recognized',
       );
 
   void go(BuildContext context) => context.go(location);
