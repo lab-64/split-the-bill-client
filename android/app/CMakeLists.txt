@@ -41,17 +41,18 @@ endif()
 add_library(lib_opencv SHARED IMPORTED)
 set_target_properties(lib_opencv PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/../../cmake_libs/${ANDROID_ABI}/libopencv_java4.so)
 
-add_library(opencv_detection SHARED
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../lib/presentation/ffi/contour_detection.cpp
-)
+# Example on linkung opencv
+#add_library(opencv_detection SHARED
+#        ${CMAKE_CURRENT_SOURCE_DIR}/../../lib/presentation/ffi/contour_detection.cpp
+#)
 
-target_include_directories(opencv_detection PRIVATE
-        ${OPENCV_DESTINATION_DIR}
-)
+#target_include_directories(opencv_detection PRIVATE
+#        ${OPENCV_DESTINATION_DIR}
+#)
 
-target_link_libraries(opencv_detection PUBLIC lib_opencv)
+#target_link_libraries(opencv_detection PUBLIC lib_opencv)
 
 
-set(LIB_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../lib/presentation/ffi/monte_carlo_pi.c")
-
-add_library(monte_carlo_pi SHARED ${LIB_PATH})
+#set(LIB_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../../lib/presentation/ffi/monte_carlo_pi.c")
+#
+#add_library(monte_carlo_pi SHARED ${LIB_PATH})
