@@ -8,8 +8,6 @@ import 'package:split_the_bill/presentation/shared/components/ellipse_profile_na
 import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 import 'package:split_the_bill/router/routes.dart';
 
-import '../shared/components/ellipse_profile_name.dart';
-
 class HomeAppBar extends ConsumerWidget {
   const HomeAppBar({super.key});
 
@@ -39,12 +37,12 @@ class HomeAppBar extends ConsumerWidget {
           children: [
             const Text('Welcome back!'),
             EllipseProfileName(
-                name: user.getDisplayName(),
-                size: Sizes.p64 * 3,
-                style: const TextStyle(
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
-                ),
+              name: user.getDisplayName(),
+              size: Sizes.p64 * 3,
+              style: const TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),
