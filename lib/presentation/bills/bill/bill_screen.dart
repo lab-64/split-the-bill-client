@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/bill/states/bill_state.dart';
 import 'package:split_the_bill/presentation/bills/bill/items_list.dart';
-import 'package:split_the_bill/presentation/shared/util/util.dart';
+import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
 
 class BillScreen extends ConsumerWidget {
   const BillScreen({
