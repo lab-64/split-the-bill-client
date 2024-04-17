@@ -157,7 +157,7 @@ class NewBillGroupSelectionRoute extends GoRouteData {
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const GroupSelectionScreen();
+    return GroupSelectionScreen();
   }
 }
 
