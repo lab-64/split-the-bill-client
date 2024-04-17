@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/infrastructure/async_value_ui.dart';
 import 'package:split_the_bill/presentation/groups/new_group/controllers.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
 import 'package:split_the_bill/presentation/shared/components/input_text_field.dart';
+import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
 
 class NewGroupScreen extends StatefulWidget {
   const NewGroupScreen({super.key});
@@ -23,11 +23,15 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
     super.dispose();
   }
 
-  void _add(WidgetRef ref) {
-    ref
+  Future<void> _add(WidgetRef ref) async {
+    await ref
         .read(newGroupControllerProvider.notifier)
-        .addGroup(nameController.text)
-        .then((_) => context.pop());
+        .addGroup(nameController.text);
+  }
+
+  void _onAddSuccess(WidgetRef ref) {
+    final state = ref.watch(newGroupControllerProvider);
+    showSuccessSnackBar(context, state, 'Group created');
   }
 
   @override
@@ -37,11 +41,16 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
         title: const Text("New Group"),
       ),
       floatingActionButton: Consumer(builder: (context, ref, child) {
-        ref.listen(newGroupControllerProvider,
-            (_, next) => next.showSnackBarOnError(context));
+        ref.listen(
+          newGroupControllerProvider,
+          (_, next) => next.showSnackBarOnError(context),
+        );
+
         return ActionButton(
           icon: Icons.save,
-          onPressed: () => _add(ref),
+          onPressed: () => _add(ref).then(
+            (_) => _onAddSuccess(ref),
+          ),
         );
       }),
       body: Padding(
