@@ -36,6 +36,7 @@
 # Used packages
 - **http**: for making HTTP requests
 - **go_router**: declarative routing package
+- **go_router_builder**: code generation package for go_router
 - **flutter_riverpod**: state management & DI
 - **riverpod_annotation**: annotations for Riverpod code generation
 - **riverpod_generator**: code generation package for Riverpod
