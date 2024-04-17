@@ -54,6 +54,7 @@ class _EditBillState extends ConsumerState<EditBill> {
                           itemExpanded[index] = !itemExpanded[index];
                         });
                       },
+                      behavior: HitTestBehavior.translucent,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
