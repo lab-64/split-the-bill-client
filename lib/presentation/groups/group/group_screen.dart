@@ -9,6 +9,7 @@ import 'package:split_the_bill/presentation/shared/components/action_button.dart
 import 'package:split_the_bill/router/routes.dart';
 
 import '../../../domain/group/states/groups_state.dart';
+import '../../shared/components/snackbar.dart';
 
 class GroupScreen extends ConsumerWidget {
   const GroupScreen({
@@ -39,31 +40,55 @@ class GroupScreen extends ConsumerWidget {
           appBar: AppBar(
             title: Text(group.name),
             actions: [
-              IconButton(
-                  onPressed: () => showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                            title: const Text(
-                                "Are you sure, you want to delete this group?"),
-                            content: const Text(
-                                "This will delete the group for you and all group members!"),
-                            actions: <Widget>[
-                              TextButton(
-                                  onPressed: () {
-                                    _deleteGroup(ref);
-                                    const HomeRoute().go(context);
-                                    Navigator.pop(context);
-                                  },
-                                  child: const Text("Yes")),
-                              TextButton(
-                                  onPressed: () => Navigator.pop(context),
-                                  child: const Text("No")),
-                            ],
-                          )),
-                  icon: const Icon(
-                    Icons.delete,
-                    color: Colors.red,
-                  ))
+              PopupMenuButton(
+                  itemBuilder: (context) => [
+                        PopupMenuItem(
+                            onTap: () {
+                              showNotImplementedSnackBar(context);
+                            },
+                            child: const Row(
+                              children: [
+                                Icon(
+                                  Icons.edit,
+                                  color: Colors.blueAccent,
+                                ),
+                                gapW16,
+                                Text("Edit")
+                              ],
+                            )),
+                        PopupMenuItem(
+                            onTap: () => showDialog<String>(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                      title: const Text(
+                                          "Are you sure, you want to delete this group?"),
+                                      content: const Text(
+                                          "This will delete the group for you and all group members!"),
+                                      actions: <Widget>[
+                                        TextButton(
+                                            onPressed: () {
+                                              _deleteGroup(ref);
+                                              const HomeRoute().go(context);
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text("Yes")),
+                                        TextButton(
+                                            onPressed: () =>
+                                                Navigator.pop(context),
+                                            child: const Text("No")),
+                                      ],
+                                    )),
+                            child: const Row(
+                              children: [
+                                Icon(
+                                  Icons.delete,
+                                  color: Colors.red,
+                                ),
+                                gapW16,
+                                Text("Delete")
+                              ],
+                            ))
+                      ])
             ],
             bottom: const TabBar(
               tabs: [
