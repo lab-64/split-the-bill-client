@@ -11,7 +11,7 @@
 				}
 			],
 			"type" : "UNINITIALIZED",
-			"value" : "x86"
+			"value" : "arm64-v8a"
 		},
 		{
 			"name" : "ANDROID_NDK",
@@ -75,7 +75,7 @@
 				}
 			],
 			"type" : "UNINITIALIZED",
-			"value" : "x86"
+			"value" : "arm64-v8a"
 		},
 		{
 			"name" : "CMAKE_ANDROID_NDK",
@@ -163,7 +163,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "c:/Users/Marvi/Desktop/split_the_bill/split-the-bill-client/android/app/.cxx/Debug/og2l196m/x86"
+			"value" : "c:/Users/Marvi/Desktop/split_the_bill/split-the-bill-client/android/app/.cxx/Debug/og2l196m/arm64-v8a"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -236,22 +236,6 @@
 			],
 			"type" : "INTERNAL",
 			"value" : "C:/Users/Marvi/AppData/Local/Android/Sdk/cmake/3.18.1/bin/ctest.exe"
-		},
-		{
-			"name" : "CMAKE_CXX_COMPILER",
-			"properties" : 
-			[
-				{
-					"name" : "ADVANCED",
-					"value" : "1"
-				},
-				{
-					"name" : "HELPSTRING",
-					"value" : "(This variable does not exist and should not be used)"
-				}
-			],
-			"type" : "UNINITIALIZED",
-			"value" : ""
 		},
 		{
 			"name" : "CMAKE_CXX_COMPILER_AR",
@@ -380,22 +364,6 @@
 			],
 			"type" : "STRING",
 			"value" : "-latomic -lm"
-		},
-		{
-			"name" : "CMAKE_C_COMPILER",
-			"properties" : 
-			[
-				{
-					"name" : "ADVANCED",
-					"value" : "1"
-				},
-				{
-					"name" : "HELPSTRING",
-					"value" : "(This variable does not exist and should not be used)"
-				}
-			],
-			"type" : "UNINITIALIZED",
-			"value" : ""
 		},
 		{
 			"name" : "CMAKE_C_COMPILER_AR",
@@ -739,7 +707,7 @@
 				}
 			],
 			"type" : "UNINITIALIZED",
-			"value" : "C:\\Users\\Marvi\\Desktop\\split_the_bill\\split-the-bill-client\\build\\app\\intermediates\\cxx\\Debug\\og2l196m\\obj\\x86"
+			"value" : "C:\\Users\\Marvi\\Desktop\\split_the_bill\\split-the-bill-client\\build\\app\\intermediates\\cxx\\Debug\\og2l196m\\obj\\arm64-v8a"
 		},
 		{
 			"name" : "CMAKE_LINKER",
@@ -1011,7 +979,7 @@
 				}
 			],
 			"type" : "UNINITIALIZED",
-			"value" : "C:\\Users\\Marvi\\Desktop\\split_the_bill\\split-the-bill-client\\build\\app\\intermediates\\cxx\\Debug\\og2l196m\\obj\\x86"
+			"value" : "C:\\Users\\Marvi\\Desktop\\split_the_bill\\split-the-bill-client\\build\\app\\intermediates\\cxx\\Debug\\og2l196m\\obj\\arm64-v8a"
 		},
 		{
 			"name" : "CMAKE_SHARED_LINKER_FLAGS",
@@ -1251,11 +1219,11 @@
 			[
 				{
 					"name" : "HELPSTRING",
-					"value" : "The CMake toolchain file"
+					"value" : "No help, variable specified on the command line."
 				}
 			],
-			"type" : "FILEPATH",
-			"value" : "C:/Users/Marvi/AppData/Local/Android/Sdk/ndk/23.1.7779620/build/cmake/android.toolchain.cmake"
+			"type" : "UNINITIALIZED",
+			"value" : "C:\\Users\\Marvi\\AppData\\Local\\Android\\sdk\\ndk\\23.1.7779620\\build\\cmake\\android.toolchain.cmake"
 		},
 		{
 			"name" : "CMAKE_VERBOSE_MAKEFILE",
@@ -1283,7 +1251,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "C:/Users/Marvi/Desktop/split_the_bill/split-the-bill-client/android/app/.cxx/Debug/og2l196m/x86"
+			"value" : "C:/Users/Marvi/Desktop/split_the_bill/split-the-bill-client/android/app/.cxx/Debug/og2l196m/arm64-v8a"
 		},
 		{
 			"name" : "SplitTheBill_SOURCE_DIR",
