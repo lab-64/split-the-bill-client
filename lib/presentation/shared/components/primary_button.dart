@@ -7,7 +7,6 @@ class PrimaryButton extends StatelessWidget {
     required this.onPressed,
     this.icon,
     required this.text,
-    required this.color,
     this.isLoading = false,
   });
 
@@ -15,7 +14,6 @@ class PrimaryButton extends StatelessWidget {
   final IconData? icon;
   final String text;
   final bool isLoading;
-  final Color color;
 
   @override
   Widget build(BuildContext context) {
