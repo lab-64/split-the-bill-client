@@ -129,7 +129,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             onPressed: state.isLoading ? null : () => _register(),
             icon: Icons.app_registration,
             text: 'Register',
-            color: Colors.green.shade400,
           ),
         ),
       ],

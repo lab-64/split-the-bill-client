@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/infrastructure/app_exception.dart';
 import 'package:split_the_bill/infrastructure/session.dart';
@@ -94,6 +95,45 @@ class HttpClient {
       );
 
       final data = json.decode(response.body);
+
+      switch (response.statusCode) {
+        case 200:
+          return builder(data['data']);
+        case 201:
+          return builder(data['data']);
+        case 401:
+          throw UnauthenticatedException(data['message']);
+        default:
+          throw UnknownException(data['message']);
+      }
+    } on SocketException catch (_) {
+      throw NoInternetConnectionException();
+    }
+  }
+
+  Future<T> putMultipart<T>({
+    required Uri uri,
+    required Map<String, String> body,
+    required XFile? file,
+    required T Function(dynamic data) builder,
+  }) async {
+    try {
+      // Merge session headers with additional headers for an HTTP POST request.
+      final mergedHeaders = Map<String, String>.from(session.headers);
+      mergedHeaders['Content-Type'] = 'multipart/form-data';
+
+      final request = http.MultipartRequest('PUT', uri);
+      request.headers.addAll(mergedHeaders);
+      request.fields.addAll(body);
+
+      if (file != null) {
+        request.files.add(
+          await http.MultipartFile.fromPath('image', file.path),
+        );
+      }
+
+      final response = await request.send();
+      final data = jsonDecode(await response.stream.bytesToString());
 
       switch (response.statusCode) {
         case 200:
