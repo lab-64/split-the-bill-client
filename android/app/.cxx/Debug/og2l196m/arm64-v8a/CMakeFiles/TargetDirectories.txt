@@ -1,0 +1,2 @@
+C:/Users/Marvi/Desktop/split_the_bill/split-the-bill-client/android/app/.cxx/Debug/og2l196m/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/Marvi/Desktop/split_the_bill/split-the-bill-client/android/app/.cxx/Debug/og2l196m/arm64-v8a/CMakeFiles/rebuild_cache.dir

@@ -40,4 +40,11 @@ class BillsState extends _$BillsState {
     ref.invalidate(groupsStateProvider);
     ref.invalidate(billStateProvider(updatedBill.id));
   }
+
+  Future<void> delete(Bill bill) async {
+    await _billRepository.delete(bill.id);
+
+    ref.invalidate(groupStateProvider(bill.groupId));
+    ref.invalidate(groupsStateProvider);
+  }
 }

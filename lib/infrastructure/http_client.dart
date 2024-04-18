@@ -110,9 +110,8 @@ class HttpClient {
     }
   }
 
-  Future<T> delete<T>({
+  Future<void> delete<T>({
     required Uri uri,
-    required T Function(dynamic data) builder,
   }) async {
     try {
       // Merge session headers with additional headers for an HTTP POST request.
@@ -128,7 +127,7 @@ class HttpClient {
 
       switch (response.statusCode) {
         case 200:
-          return builder(data['data']);
+          return;
         case 401:
           throw UnauthenticatedException(data['message']);
         case 404:
