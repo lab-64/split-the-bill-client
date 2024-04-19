@@ -17,6 +17,10 @@ class GroupAPI {
         parametersBuilder: () => {"userId": userId},
       );
 
+  Uri deleteGroup(String groupId) => _buildUri(
+        endpoint: "/$groupId",
+      );
+
   Uri _buildUri({
     required String endpoint,
     Map<String, dynamic> Function()? parametersBuilder,

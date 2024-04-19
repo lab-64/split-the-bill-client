@@ -33,4 +33,9 @@ class RemoteGroupRepository extends GroupRepository {
         body: group.toMap(),
         builder: (data) => Group.fromMap(data),
       );
+
+  @override
+  Future<void> delete(String groupId) => client.delete(
+        uri: api.deleteGroup(groupId),
+      );
 }

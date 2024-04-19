@@ -26,4 +26,10 @@ class GroupsState extends _$GroupsState {
     final previousState = await future;
     state = AsyncData([...previousState, newGroup]);
   }
+
+  Future<void> delete(String groupId) async {
+    await _groupRepository.delete(groupId);
+
+    ref.invalidateSelf();
+  }
 }
