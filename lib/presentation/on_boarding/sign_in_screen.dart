@@ -4,7 +4,7 @@ import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/infrastructure/async_value_ui.dart';
-import 'package:split_the_bill/presentation/shared/components/input_text_field.dart';
+import 'package:split_the_bill/presentation/shared/components/input_text_form_field.dart';
 import 'package:split_the_bill/presentation/shared/components/primary_button.dart';
 import 'package:split_the_bill/router/routes.dart';
 
@@ -18,6 +18,7 @@ class SignInScreen extends ConsumerStatefulWidget {
 class _SignInScreenState extends ConsumerState<SignInScreen> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  final _signInFormKey = GlobalKey<FormState>();
 
   // TODO: Used for testing, set only on debug mode
   @override
@@ -34,13 +35,31 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     super.dispose();
   }
 
-  Future<void> _login() async {
-    final controller = ref.read(authStateProvider.notifier);
+  String? _validateEmail(String? value) {
+    if (value!.isEmpty) {
+      return "Email is required";
+    } else if (!RegExp(r'^[\w-\.]+@[a-zA-Z]+\.[a-zA-Z]{2,}$').hasMatch(value)) {
+      return "Enter a valid Email";
+    }
+    return null;
+  }
 
-    await controller.login(
-      email: email.text,
-      password: password.text,
-    );
+  String? _validatePassword(String? value) {
+    if (value!.isEmpty) {
+      return "Password is required";
+    }
+    return null;
+  }
+
+  Future<void> _login() async {
+    if (_signInFormKey.currentState!.validate()) {
+      final controller = ref.read(authStateProvider.notifier);
+
+      await controller.login(
+        email: email.text,
+        password: password.text,
+      );
+    }
   }
 
   @override
@@ -68,24 +87,33 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
             children: [
               Image.asset('assets/logo.png'),
               gapH64,
-              InputTextField(
-                labelText: 'Email*',
-                prefixIcon: const Icon(Icons.alternate_email),
-                controller: email,
-                isLoading: state.isLoading,
-              ),
-              gapH16,
-              InputTextField(
-                labelText: 'Password*',
-                prefixIcon: const Icon(Icons.lock),
-                controller: password,
-                isLoading: state.isLoading,
-                obscureText: true,
-              ),
-              gapH16,
-              _buildRegisterRoute(),
-              gapH16,
-              _buildSignInButton(state),
+              Form(
+                  key: _signInFormKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      InputTextFormField(
+                        labelText: 'Email*',
+                        prefixIcon: const Icon(Icons.alternate_email),
+                        controller: email,
+                        isLoading: state.isLoading,
+                        validator: (value) => _validateEmail(value),
+                      ),
+                      gapH16,
+                      InputTextFormField(
+                        labelText: 'Password*',
+                        prefixIcon: const Icon(Icons.lock),
+                        controller: password,
+                        isLoading: state.isLoading,
+                        obscureText: true,
+                        validator: (value) => _validatePassword(value),
+                      ),
+                      gapH16,
+                      _buildRegisterRoute(),
+                      gapH16,
+                      _buildSignInButton(state),
+                    ],
+                  )),
             ],
           ),
         ),

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/auth/user.dart';
@@ -5,6 +6,7 @@ import 'package:split_the_bill/domain/bill/bill.dart';
 import 'package:split_the_bill/domain/bill/item.dart';
 import 'package:split_the_bill/domain/bill/states/bill_state.dart';
 import 'package:split_the_bill/domain/bill/states/bills_state.dart';
+import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
 
 part 'controllers.g.dart';
 
@@ -13,7 +15,7 @@ class EditBillController extends _$EditBillController {
   @override
   FutureOr<void> build() async {}
 
-  Future<void> addBill(String groupId) async {
+  Future<void> addBill(String groupId, BuildContext context) async {
     state = const AsyncLoading();
     final user = ref.watch(authStateProvider).requireValue;
     final items = ref.read(itemsProvider('0'));
@@ -28,8 +30,12 @@ class EditBillController extends _$EditBillController {
       balance: {},
     );
 
-    final billsState = ref.read(billsStateProvider.notifier);
-    state = await AsyncValue.guard(() => billsState.create(bill));
+    if (bill.name.isEmpty) {
+      showErrorSnackBar(context, state, "Please give the first item a name");
+    } else {
+      final billsState = ref.read(billsStateProvider.notifier);
+      state = await AsyncValue.guard(() => billsState.create(bill));
+    }
   }
 
   Future<void> editBill(Bill bill, List<Item> items) async {

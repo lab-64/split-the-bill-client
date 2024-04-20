@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-//TODO delete if not necessary anymore
-class InputTextField extends StatelessWidget {
-  const InputTextField({
+class InputTextFormField extends StatelessWidget {
+  const InputTextFormField({
     super.key,
     required this.labelText,
     required this.prefixIcon,
     required this.controller,
+    this.validator,
     this.onChanged,
     this.keyboardType,
     this.inputFormatters,
@@ -25,11 +25,13 @@ class InputTextField extends StatelessWidget {
   final bool isLoading;
   final bool isDisabled;
   final bool obscureText;
+  final String? Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       controller: controller,
+      validator: validator,
       onChanged: onChanged,
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,

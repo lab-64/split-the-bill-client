@@ -11,6 +11,7 @@ import 'package:split_the_bill/router/routes.dart';
 
 class NewBillScreen extends ConsumerWidget {
   const NewBillScreen({super.key, required this.groupId, this.billId = '0'});
+
   final String groupId;
   final String billId;
 
@@ -22,7 +23,7 @@ class NewBillScreen extends ConsumerWidget {
     return Scaffold(
       floatingActionButton: ActionButton(
         icon: Icons.save,
-        onPressed: () => _addBill(ref).then(
+        onPressed: () => _addBill(ref, context).then(
           (_) => _onAddBillSuccess(ref, context),
         ),
       ),
@@ -40,8 +41,10 @@ class NewBillScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _addBill(WidgetRef ref) async {
-    return await ref.read(editBillControllerProvider.notifier).addBill(groupId);
+  Future<void> _addBill(WidgetRef ref, BuildContext context) async {
+    return await ref
+        .read(editBillControllerProvider.notifier)
+        .addBill(groupId, context);
   }
 
   void _onAddBillSuccess(WidgetRef ref, BuildContext context) {
