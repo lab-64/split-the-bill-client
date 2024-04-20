@@ -4,8 +4,10 @@ import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/bill/states/bill_state.dart';
 import 'package:split_the_bill/domain/bill/states/bills_state.dart';
 import 'package:split_the_bill/presentation/bills/bill/items_list.dart';
+import 'package:split_the_bill/presentation/shared/components/show_confirmation_dialog.dart';
 import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
 
+import '../../../domain/bill/bill.dart';
 import '../../../router/routes.dart';
 
 class BillScreen extends ConsumerWidget {
@@ -16,8 +18,7 @@ class BillScreen extends ConsumerWidget {
 
   final String billId;
 
-  void _deleteBill(WidgetRef ref) async {
-    final bill = await ref.watch(billStateProvider(billId).future);
+  void _deleteBill(WidgetRef ref, Bill bill) async {
     ref.read(billsStateProvider.notifier).delete(bill);
   }
 
@@ -64,26 +65,15 @@ class BillScreen extends ConsumerWidget {
                     Text("Delete"),
                   ],
                 ),
-                onTap: () => showDialog<String>(
+                onTap: () => showConfirmationDialog(
                     context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                          title: const Text(
-                              "Are you sure, you want to delete this bill?"),
-                          content: const Text(
-                              "This will delete the bill for you and all group members!"),
-                          actions: <Widget>[
-                            TextButton(
-                                onPressed: () {
-                                  _deleteBill(ref);
-                                  const HomeRoute().go(context);
-                                  Navigator.pop(context);
-                                },
-                                child: const Text("Yes")),
-                            TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: const Text("No"))
-                          ],
-                        )),
+                    title: "Are you sure, you want to delete this bill?",
+                    content:
+                        "This will delete the bill for you and all group members!",
+                    onConfirm: () {
+                      _deleteBill(ref, bill.requireValue);
+                      const HomeRoute().go(context);
+                    }),
               ),
             ],
             position: PopupMenuPosition.under,
