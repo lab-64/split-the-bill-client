@@ -46,9 +46,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   }
 
   String? _validatePassword(String? value) {
-    //TODO implement actual password validation here
     if (value!.isEmpty) {
       return "Password is required";
+    } else if (value.length < 6) {
+      return "Password needs to be a minimum of 6 characters long";
     }
     return null;
   }
