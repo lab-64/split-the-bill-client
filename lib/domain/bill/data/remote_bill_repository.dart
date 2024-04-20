@@ -34,4 +34,8 @@ class RemoteBillRepository extends BillRepository {
         body: bill.toMap(),
         builder: (data) => Bill.fromMap(data),
       );
+
+  @override
+  Future<void> delete(String billId) =>
+      client.delete(uri: api.deleteBill(billId));
 }

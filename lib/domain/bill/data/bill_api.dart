@@ -16,6 +16,10 @@ class BillAPI {
         endpoint: "/$billId",
       );
 
+  Uri deleteBill(String billId) => _buildUri(
+        endpoint: "/$billId",
+      );
+
   Uri _buildUri({
     required String endpoint,
     Map<String, dynamic> Function()? parametersBuilder,

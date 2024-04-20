@@ -149,6 +149,32 @@ class HttpClient {
       throw NoInternetConnectionException();
     }
   }
+
+  Future<void> delete<T>({
+    required Uri uri,
+  }) async {
+    try {
+      final response = await client.delete(
+        uri,
+        headers: session.headers,
+      );
+
+      final data = json.decode(response.body);
+
+      switch (response.statusCode) {
+        case 200:
+          return;
+        case 401:
+          throw UnauthenticatedException(data['message']);
+        case 404:
+          throw NotFoundException((data['message']));
+        default:
+          throw UnknownException((data['message']));
+      }
+    } on SocketException catch (_) {
+      throw NoInternetConnectionException();
+    }
+  }
 }
 
 @Riverpod(keepAlive: true)
