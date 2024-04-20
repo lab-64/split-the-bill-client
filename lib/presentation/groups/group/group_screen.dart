@@ -6,6 +6,7 @@ import 'package:split_the_bill/presentation/groups/group/group_members.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/bills/bills_list.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
+import 'package:split_the_bill/presentation/shared/components/show_confirmation_dialog.dart';
 import 'package:split_the_bill/router/routes.dart';
 
 import '../../../domain/group/states/groups_state.dart';
@@ -67,26 +68,15 @@ class GroupScreen extends ConsumerWidget {
                         Text("Delete"),
                       ],
                     ),
-                    onTap: () => showDialog<String>(
+                    onTap: () => showConfirmationDialog(
                         context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                              title: const Text(
-                                  "Are you sure, you want to delete this group?"),
-                              content: const Text(
-                                  "This will delete the group for you and all group members!"),
-                              actions: <Widget>[
-                                TextButton(
-                                    onPressed: () {
-                                      _deleteGroup(ref);
-                                      const HomeRoute().go(context);
-                                      Navigator.pop(context);
-                                    },
-                                    child: const Text("Yes")),
-                                TextButton(
-                                    onPressed: () => Navigator.pop(context),
-                                    child: const Text("No"))
-                              ],
-                            )),
+                        title: "Are you sure, you want to delete this group?",
+                        content:
+                            "This will delete the group for you and all group members!",
+                        onConfirm: () {
+                          _deleteGroup(ref);
+                          const HomeRoute().go(context);
+                        }),
                   ),
                 ],
                 position: PopupMenuPosition.under,
