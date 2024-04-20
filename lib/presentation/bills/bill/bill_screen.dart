@@ -6,6 +6,7 @@ import 'package:split_the_bill/domain/bill/states/bills_state.dart';
 import 'package:split_the_bill/presentation/bills/bill/items_list.dart';
 import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
 
+import '../../../domain/bill/bill.dart';
 import '../../../router/routes.dart';
 
 class BillScreen extends ConsumerWidget {
@@ -16,8 +17,7 @@ class BillScreen extends ConsumerWidget {
 
   final String billId;
 
-  void _deleteBill(WidgetRef ref) async {
-    final bill = await ref.watch(billStateProvider(billId).future);
+  void _deleteBill(WidgetRef ref, Bill bill) async {
     ref.read(billsStateProvider.notifier).delete(bill);
   }
 
@@ -74,7 +74,7 @@ class BillScreen extends ConsumerWidget {
                           actions: <Widget>[
                             TextButton(
                                 onPressed: () {
-                                  _deleteBill(ref);
+                                  _deleteBill(ref, bill.requireValue);
                                   const HomeRoute().go(context);
                                   Navigator.pop(context);
                                 },
