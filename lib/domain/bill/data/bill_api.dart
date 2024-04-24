@@ -20,6 +20,15 @@ class BillAPI {
         endpoint: "/$billId",
       );
 
+  Uri getBillByUser(String userId, bool isUnseen, bool isOwner) => _buildUri(
+        endpoint: "/",
+        parametersBuilder: () => {
+          "userId": userId,
+          "isUnseen": isUnseen.toString(),
+          "isOwner": isOwner.toString()
+        },
+      );
+
   Uri _buildUri({
     required String endpoint,
     Map<String, dynamic> Function()? parametersBuilder,

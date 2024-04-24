@@ -10,11 +10,16 @@ class RemoteBillRepository extends BillRepository {
   final HttpClient client;
 
   @override
-  Future<Bill> edit(Bill bill) => client.put(
-        uri: api.updateBill(bill.id),
-        body: bill.toMap(),
-        builder: (data) => Bill.fromMap(data),
-      );
+  Future<Bill> edit(Bill bill, bool isViewed) {
+    var billMapping = bill.toMap();
+    billMapping.addAll({'isViewed': isViewed});
+
+    return client.put(
+      uri: api.updateBill(bill.id),
+      body: billMapping,
+      builder: (data) => Bill.fromMap(data),
+    );
+  }
 
   @override
   Future<Bill> getBill(String billId) => client.get(
@@ -38,4 +43,17 @@ class RemoteBillRepository extends BillRepository {
   @override
   Future<void> delete(String billId) =>
       client.delete(uri: api.deleteBill(billId));
+
+  @override
+  Future<List<Bill>> getNotSeenBillsByUser(String userId,
+          {bool isUnseen = true, bool isOwner = false}) =>
+      client.get(
+          uri: api.getBillByUser(userId, isUnseen, isOwner),
+          builder: (data) {
+            List<Bill> bills = [];
+            for (final bill in data) {
+              bills.add(Bill.fromMap(bill));
+            }
+            return bills;
+          });
 }

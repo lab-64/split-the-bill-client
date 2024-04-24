@@ -3,10 +3,12 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
-import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
-import 'package:split_the_bill/presentation/shared/components/ellipse_profile_name.dart';
+import 'package:split_the_bill/domain/bill/states/bills_state.dart';
+import 'package:split_the_bill/presentation/shared/components/ellipse_text.dart';
 import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 import 'package:split_the_bill/router/routes.dart';
+
+import '../../domain/bill/bill.dart';
 
 class HomeAppBar extends ConsumerWidget {
   const HomeAppBar({super.key});
@@ -19,7 +21,7 @@ class HomeAppBar extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _buildUserInfo(context, ref, user),
-        _buildActionIcons(context),
+        _buildActionIcons(context, ref),
       ],
     );
   }
@@ -36,8 +38,8 @@ class HomeAppBar extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text('Welcome back!'),
-            EllipseProfileName(
-              name: user.getDisplayName(),
+            EllipseText(
+              text: user.getDisplayName(),
               size: Sizes.p64 * 3,
               style: const TextStyle(
                 fontSize: 18.0,
@@ -50,10 +52,27 @@ class HomeAppBar extends ConsumerWidget {
     );
   }
 
-  Widget _buildActionIcons(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.notifications_outlined),
-      onPressed: () => showNotImplementedSnackBar(context),
-    );
+  Widget _buildActionIcons(BuildContext context, WidgetRef ref) {
+    Future<List<Bill>> bills =
+        ref.read(billsStateProvider.notifier).getNotSeenBillsByUser();
+    //TODO probably change to AsyncValueWidget
+    //TODO change if other notifications are implemented
+    return FutureBuilder(
+        future: bills,
+        builder: (context, AsyncSnapshot<List<Bill>> snapshot) {
+          if (snapshot.hasData) {
+            return PopupMenuButton(
+                icon: const Icon(Icons.notifications),
+                position: PopupMenuPosition.under,
+                itemBuilder: (context) => snapshot.data!
+                    .map((bill) => PopupMenuItem(
+                          child: Text("${bill.name} was added!"),
+                          onTap: () =>
+                              UnseenBillRoute(billId: bill.id).push(context),
+                        ))
+                    .toList());
+          }
+          return const Icon(Icons.notifications_none);
+        });
   }
 }

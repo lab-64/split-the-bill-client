@@ -22,6 +22,11 @@ class BillsState extends _$BillsState {
     return await _billRepository.getBillsByUser(userId);
   }
 
+  Future<List<Bill>> getNotSeenBillsByUser() async {
+    final user = ref.watch(authStateProvider).requireValue;
+    return await _billRepository.getNotSeenBillsByUser(user.id);
+  }
+
   Future<void> create(Bill bill) async {
     final newBill = await _billRepository.create(bill);
     final previousState = await future;
@@ -31,8 +36,8 @@ class BillsState extends _$BillsState {
     ref.invalidate(groupsStateProvider);
   }
 
-  Future<void> edit(Bill bill) async {
-    final updatedBill = await _billRepository.edit(bill);
+  Future<void> edit(Bill bill, {bool isViewed = false}) async {
+    final updatedBill = await _billRepository.edit(bill, isViewed);
     final previousState = await future;
     state = AsyncData([...previousState, updatedBill]);
 
@@ -41,7 +46,7 @@ class BillsState extends _$BillsState {
     ref.invalidate(billStateProvider(updatedBill.id));
   }
 
-  Future<void> delete(Bill bill) async{
+  Future<void> delete(Bill bill) async {
     await _billRepository.delete(bill.id);
 
     ref.invalidate(groupStateProvider(bill.groupId));
