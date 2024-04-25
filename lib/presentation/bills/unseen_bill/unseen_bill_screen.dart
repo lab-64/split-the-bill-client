@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/domain/bill/states/bill_state.dart';
 import 'package:split_the_bill/presentation/bills/unseen_bill/bill_contribution.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
+import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
+import 'package:split_the_bill/presentation/shared/error_message_widget.dart';
 import 'package:split_the_bill/router/routes.dart';
 
 import '../../../auth/states/auth_state.dart';
@@ -49,16 +51,23 @@ class _UnseenBillScreenState extends ConsumerState<UnseenBillScreen> {
 
     if (contributionMapping.length == bill.items.length) {
       for (var item in bill.items) {
-        if (contributionMapping[item]!) {
+        //not contributed, but part of contributors
+        if (!contributionMapping[item]! && item.contributors.contains(user)) {
           item.contributors.remove(user);
-        } else {
-          if (!item.contributors.contains(user)) {
+          ref.read(billStateProvider(bill.id).notifier).editItem(item);
+        }
+        //contributed, but not part of contributors
+        else {
+          if (contributionMapping[item]! && !item.contributors.contains(user)) {
             item.contributors.add(user);
+            ref.read(billStateProvider(bill.id).notifier).editItem(item);
           }
         }
       }
       ref.read(billsStateProvider.notifier).edit(bill, isViewed: true);
       const HomeRoute().go(context);
+    } else {
+      showErrorSnackBar(context, "Please view all items before saving!");
     }
   }
 

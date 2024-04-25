@@ -1,6 +1,7 @@
 import 'package:split_the_bill/domain/bill/bill.dart';
 import 'package:split_the_bill/domain/bill/data/bill_api.dart';
 import 'package:split_the_bill/domain/bill/data/bill_repository.dart';
+import 'package:split_the_bill/domain/bill/item.dart';
 import 'package:split_the_bill/infrastructure/http_client.dart';
 
 class RemoteBillRepository extends BillRepository {
@@ -28,12 +29,6 @@ class RemoteBillRepository extends BillRepository {
       );
 
   @override
-  Future<List<Bill>> getBillsByUser(String userId) {
-    // TODO: implement getBillsByUser (endpoint in backend missing right now)
-    return Future.value([]);
-  }
-
-  @override
   Future<Bill> create(Bill bill) => client.post(
         uri: api.createBill(),
         body: bill.toMap(),
@@ -45,8 +40,8 @@ class RemoteBillRepository extends BillRepository {
       client.delete(uri: api.deleteBill(billId));
 
   @override
-  Future<List<Bill>> getNotSeenBillsByUser(String userId,
-          {bool isUnseen = true, bool isOwner = false}) =>
+  Future<List<Bill>> getBillsByUser(String userId,
+          {bool isUnseen = false, bool isOwner = false}) =>
       client.get(
           uri: api.getBillByUser(userId, isUnseen, isOwner),
           builder: (data) {
@@ -56,4 +51,14 @@ class RemoteBillRepository extends BillRepository {
             }
             return bills;
           });
+
+  @override
+  Future<Item> editItem(Item item) {
+    var itemMapping = item.toMap();
+    itemMapping.addAll({'billId': item.billId});
+    return client.put(
+        uri: api.editItem(item.id),
+        body: itemMapping,
+        builder: (data) => Item.fromMap(data));
+  }
 }

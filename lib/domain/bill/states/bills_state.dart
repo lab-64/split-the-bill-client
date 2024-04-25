@@ -24,7 +24,7 @@ class BillsState extends _$BillsState {
 
   Future<List<Bill>> getNotSeenBillsByUser() async {
     final user = ref.watch(authStateProvider).requireValue;
-    return await _billRepository.getNotSeenBillsByUser(user.id);
+    return await _billRepository.getBillsByUser(user.id, isUnseen: true);
   }
 
   Future<void> create(Bill bill) async {

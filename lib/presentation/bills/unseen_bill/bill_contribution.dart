@@ -115,7 +115,7 @@ class _BillContributionState extends ConsumerState<BillContribution> {
                             const ItemContributionDecoration(
                                 borderColor: Colors.white,
                                 child: Padding(
-                                  padding: EdgeInsets.all(8.0),
+                                  padding: EdgeInsets.all(16.0),
                                   child: Text("All items have been seen"),
                                 ))
                         ],
