@@ -4,6 +4,8 @@ import 'package:split_the_bill/presentation/bills/bill/bill_screen.dart';
 import 'package:split_the_bill/presentation/bills/bills/bills_screen.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/group_selection_screen.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/new_bill_screen.dart';
+import 'package:split_the_bill/presentation/camera/camera_screen.dart';
+import 'package:split_the_bill/presentation/camera/image_cropping/img_crop_screen.dart';
 import 'package:split_the_bill/presentation/groups/group/group_screen.dart';
 import 'package:split_the_bill/presentation/groups/groups/groups_screen.dart';
 import 'package:split_the_bill/presentation/groups/new_group/new_group_screen.dart';
@@ -44,6 +46,12 @@ part 'routes.g.dart';
         TypedGoRoute<EditProfileRoute>(path: 'edit'),
       ],
     ),
+    TypedGoRoute<CameraRoute>(
+      path: '/camera'
+    ),
+    TypedGoRoute<ImageCropRoute>(
+      path: '/crop'
+    )
   ],
 )
 class NavbarShellRoute extends ShellRouteData {
@@ -97,6 +105,28 @@ class HomeRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const HomeScreen();
+  }
+}
+
+// CAMERA
+class CameraRoute extends GoRouteData {
+
+  const CameraRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const CameraScreen();
+  }
+}
+
+class ImageCropRoute extends GoRouteData {
+  final String imgFile;
+
+  const ImageCropRoute(this.imgFile);
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return ImageCropScreen(imgFile: imgFile);
   }
 }
 
