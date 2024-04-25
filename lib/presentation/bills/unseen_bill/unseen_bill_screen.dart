@@ -4,7 +4,6 @@ import 'package:split_the_bill/domain/bill/states/bill_state.dart';
 import 'package:split_the_bill/presentation/bills/unseen_bill/bill_contribution.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
-import 'package:split_the_bill/presentation/shared/error_message_widget.dart';
 import 'package:split_the_bill/router/routes.dart';
 
 import '../../../auth/states/auth_state.dart';

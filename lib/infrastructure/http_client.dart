@@ -52,8 +52,6 @@ class HttpClient {
       // Merge session headers with additional headers for an HTTP POST request.
       final mergedHeaders = Map<String, String>.from(session.headers);
       mergedHeaders['Content-Type'] = 'application/json';
-      print("BODY");
-      print(body);
 
       final response = await client.post(
         uri,
