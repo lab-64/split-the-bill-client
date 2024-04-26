@@ -25,8 +25,7 @@ class BillAPI {
     Map<String, dynamic> Function()? parametersBuilder,
   }) {
     return Uri(
-      scheme: "http",
-      port: 8080,
+      scheme: "https",
       host: _baseUrl,
       path: "$_apiPath$endpoint",
       queryParameters: parametersBuilder?.call(),
