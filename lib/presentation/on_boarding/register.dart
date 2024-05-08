@@ -7,6 +7,7 @@ import 'package:split_the_bill/infrastructure/async_value_ui.dart';
 import 'package:split_the_bill/presentation/shared/components/primary_button.dart';
 import 'package:split_the_bill/router/routes.dart';
 
+import '../shared/auth_validation.dart';
 import '../shared/components/input_text_form_field.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
@@ -34,24 +35,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     email.dispose();
     password.dispose();
     super.dispose();
-  }
-
-  String? _validateEmail(String? value) {
-    if (value!.isEmpty) {
-      return "Email is required";
-    } else if (!RegExp(r'^[\w-\.]+@[a-zA-Z]+\.[a-zA-Z]{2,}$').hasMatch(value)) {
-      return "Enter a valid Email";
-    }
-    return null;
-  }
-
-  String? _validatePassword(String? value) {
-    if (value!.isEmpty) {
-      return "Password is required";
-    } else if (value.length < 6) {
-      return "Password needs to be a minimum of 6 characters long";
-    }
-    return null;
   }
 
   Future<void> _register() async {
@@ -100,7 +83,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         prefixIcon: const Icon(Icons.alternate_email),
                         controller: email,
                         isLoading: state.isLoading,
-                        validator: (value) => _validateEmail(value),
+                        validator: (value) =>  validateEmail(value),
                       ),
                       gapH16,
                       InputTextFormField(
@@ -109,7 +92,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         controller: password,
                         isLoading: state.isLoading,
                         obscureText: true,
-                        validator: (value) => _validatePassword(value),
+                        validator: (value) => validatePassword(value),
                       ),
                       gapH16,
                       _buildSignInRoute(),

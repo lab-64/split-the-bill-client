@@ -8,6 +8,8 @@ import 'package:split_the_bill/presentation/shared/components/input_text_form_fi
 import 'package:split_the_bill/presentation/shared/components/primary_button.dart';
 import 'package:split_the_bill/router/routes.dart';
 
+import '../shared/auth_validation.dart';
+
 class SignInScreen extends ConsumerStatefulWidget {
   const SignInScreen({super.key});
 
@@ -33,22 +35,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
     email.dispose();
     password.dispose();
     super.dispose();
-  }
-
-  String? _validateEmail(String? value) {
-    if (value!.isEmpty) {
-      return "Email is required";
-    } else if (!RegExp(r'^[\w-\.]+@[a-zA-Z]+\.[a-zA-Z]{2,}$').hasMatch(value)) {
-      return "Enter a valid Email";
-    }
-    return null;
-  }
-
-  String? _validatePassword(String? value) {
-    if (value!.isEmpty) {
-      return "Password is required";
-    }
-    return null;
   }
 
   Future<void> _login() async {
@@ -97,7 +83,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                         prefixIcon: const Icon(Icons.alternate_email),
                         controller: email,
                         isLoading: state.isLoading,
-                        validator: (value) => _validateEmail(value),
+                        validator: (value) => validateEmail(value),
                       ),
                       gapH16,
                       InputTextFormField(
@@ -106,7 +92,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                         controller: password,
                         isLoading: state.isLoading,
                         obscureText: true,
-                        validator: (value) => _validatePassword(value),
+                        validator: (value) => validatePassword(value),
                       ),
                       gapH16,
                       _buildRegisterRoute(),

@@ -31,16 +31,3 @@ void showSuccessSnackBar(
     }
   }
 }
-
-void showErrorSnackBar(
-  BuildContext context,
-  AsyncValue<void> state,
-  String text,
-) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      backgroundColor: Colors.red,
-      content: Text(text),
-    ),
-  );
-}

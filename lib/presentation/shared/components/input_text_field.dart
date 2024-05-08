@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-//TODO delete if not necessary anymore
 class InputTextField extends StatelessWidget {
   const InputTextField({
     super.key,

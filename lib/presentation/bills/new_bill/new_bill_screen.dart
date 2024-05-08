@@ -44,7 +44,7 @@ class NewBillScreen extends ConsumerWidget {
   Future<void> _addBill(WidgetRef ref, BuildContext context) async {
     return await ref
         .read(editBillControllerProvider.notifier)
-        .addBill(groupId, context);
+        .addBill(groupId);
   }
 
   void _onAddBillSuccess(WidgetRef ref, BuildContext context) {
