@@ -40,17 +40,17 @@ class RemoteBillRepository extends BillRepository {
       client.delete(uri: api.deleteBill(billId));
 
   @override
-  Future<List<Bill>> getBillsByUser(String userId,
-          {bool isUnseen = false, bool isOwner = false}) =>
+  Future<List<Bill>> getBillsByUser(
+    String userId, {
+    bool isUnseen = false,
+    bool isOwner = false,
+  }) =>
       client.get(
-          uri: api.getBillByUser(userId, isUnseen, isOwner),
-          builder: (data) {
-            List<Bill> bills = [];
-            for (final bill in data) {
-              bills.add(Bill.fromMap(bill));
-            }
-            return bills;
-          });
+        uri: api.getBillByUser(userId, isUnseen, isOwner),
+        builder: (data) => data?.isNotEmpty == true
+            ? data.map((bills) => Bill.fromMap(bills)).toList().cast<Bill>()
+            : [],
+      );
 
   @override
   Future<Item> editItem(Item item) {

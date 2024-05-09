@@ -22,7 +22,7 @@ class BillsList extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final bills = groupId != null
         ? ref.watch(groupBillsControllerProvider(groupId!))
-        : ref.watch(billsStateProvider);
+        : ref.watch(billsStateProvider());
 
     return AsyncValueSliverWidget(
       value: bills,

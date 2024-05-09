@@ -29,20 +29,22 @@ class _UnseenBillScreenState extends ConsumerState<UnseenBillScreen> {
     final bill = ref.watch(billStateProvider(widget.billId));
 
     return AsyncValueWidget(
-        value: bill,
-        data: (bill) => Scaffold(
-            appBar: AppBar(
-              title: const Text("Please select contribution"),
-              actions: [
-                IconButton(
-                    icon: const Icon(Icons.save),
-                    onPressed: () => _saveBill(ref, bill))
-              ],
-            ),
-            body: BillContribution(
-              bill: bill,
-              changeContributionMapping: _changeContributionMapping,
-            )));
+      value: bill,
+      data: (bill) => Scaffold(
+        appBar: AppBar(
+          title: const Text("Please select contribution"),
+          actions: [
+            IconButton(
+                icon: const Icon(Icons.save),
+                onPressed: () => _saveBill(ref, bill))
+          ],
+        ),
+        body: BillContribution(
+          bill: bill,
+          changeContributionMapping: _changeContributionMapping,
+        ),
+      ),
+    );
   }
 
   void _saveBill(WidgetRef ref, Bill bill) {
@@ -63,7 +65,7 @@ class _UnseenBillScreenState extends ConsumerState<UnseenBillScreen> {
           }
         }
       }
-      ref.read(billsStateProvider.notifier).edit(bill, isViewed: true);
+      ref.read(billsStateProvider().notifier).edit(bill, isViewed: true);
       const HomeRoute().go(context);
     } else {
       showErrorSnackBar(context, "Please view all items before saving!");
