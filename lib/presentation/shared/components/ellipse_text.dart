@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class EllipseProfileName extends StatelessWidget {
-  const EllipseProfileName(
-      {super.key, required this.name, required this.size, required this.style});
+class EllipseText extends StatelessWidget {
+  const EllipseText(
+      {super.key, required this.text, required this.size, required this.style});
 
-  final String name;
+  final String text;
   final double size;
   final TextStyle style;
 
@@ -12,7 +12,7 @@ class EllipseProfileName extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: size,
-      child: Text(name,
+      child: Text(text,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
           softWrap: false,

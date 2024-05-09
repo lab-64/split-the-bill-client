@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/auth/user.dart';
@@ -8,11 +9,13 @@ import 'package:split_the_bill/domain/group/group.dart';
 import 'package:split_the_bill/infrastructure/async_value_ui.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/controllers.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/edit_item.dart';
+import 'package:split_the_bill/presentation/shared/components/ellipse_headline.dart';
 import 'package:split_the_bill/presentation/shared/components/headline.dart';
 import 'package:split_the_bill/presentation/shared/components/primary_button.dart';
 
 class EditBill extends ConsumerStatefulWidget {
   const EditBill({super.key, required this.bill, required this.group});
+
   final Bill bill;
   final Group group;
 
@@ -58,23 +61,29 @@ class _EditBillState extends ConsumerState<EditBill> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Headline(
+                          EllipseHeadline(
+                            size: Sizes.p64 * 3,
                               title: items[index].name.isNotEmpty
                                   ? items[index].name
                                   : 'Item ${index + 1}'),
-                          Row(
-                            children: [
-                              if (items.length > 1)
-                                IconButton(
-                                  icon: const Icon(Icons.delete),
-                                  onPressed: () => _removeItem(index),
+                          IntrinsicHeight(
+                            child: Row(
+                              children: [
+                                Headline(title: '€ ${items[index].price}'),
+                                gapW8,
+                                const VerticalDivider(),
+                                if (items.length > 1)
+                                  IconButton(
+                                    icon: const Icon(Icons.delete),
+                                    onPressed: () => _removeItem(index),
+                                  ),
+                                Icon(
+                                  itemExpanded[index]
+                                      ? Icons.arrow_drop_up
+                                      : Icons.arrow_drop_down,
                                 ),
-                              Icon(
-                                itemExpanded[index]
-                                    ? Icons.arrow_drop_up
-                                    : Icons.arrow_drop_down,
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
                         ],
                       ),

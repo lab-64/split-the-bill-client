@@ -4,7 +4,7 @@ import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
-import 'package:split_the_bill/presentation/shared/components/ellipse_profile_name.dart';
+import 'package:split_the_bill/presentation/shared/components/ellipse_text.dart';
 import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 import 'package:split_the_bill/router/routes.dart';
 
@@ -36,8 +36,8 @@ class HomeAppBar extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text('Welcome back!'),
-            EllipseProfileName(
-              name: user.getDisplayName(),
+            EllipseText(
+              text: user.getDisplayName(),
               size: Sizes.p64 * 3,
               style: const TextStyle(
                 fontSize: 18.0,
