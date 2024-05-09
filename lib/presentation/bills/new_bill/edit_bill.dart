@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/auth/user.dart';
@@ -13,6 +12,9 @@ import 'package:split_the_bill/presentation/shared/components/ellipse_headline.d
 import 'package:split_the_bill/presentation/shared/components/headline.dart';
 import 'package:split_the_bill/presentation/shared/components/primary_button.dart';
 
+import '../../shared/components/input_text_field.dart';
+import 'edit_bill_header.dart';
+
 class EditBill extends ConsumerStatefulWidget {
   const EditBill({super.key, required this.bill, required this.group});
 
@@ -26,12 +28,17 @@ class EditBill extends ConsumerStatefulWidget {
 class _EditBillState extends ConsumerState<EditBill> {
   late List<Item> items;
   late List<bool> itemExpanded;
+  late TextEditingController _nameController;
+  late TextEditingController _dateController;
 
   @override
   void initState() {
     super.initState();
     items = ref.read(itemsProvider(widget.bill.id));
     itemExpanded = List.generate(items.length, (index) => true);
+
+    _nameController = TextEditingController();
+    _dateController = TextEditingController(text: DateTime.now().toString());
   }
 
   @override
@@ -44,6 +51,17 @@ class _EditBillState extends ConsumerState<EditBill> {
       padding: const EdgeInsets.all(Sizes.p24),
       child: Column(
         children: [
+          EditBillHeader(
+            ref: ref,
+            dateController: _dateController,
+            nameController: _nameController,
+          ),
+          gapH8,
+          const Divider(
+            thickness: 6,
+            color: Colors.black38,
+          ),
+          gapH16,
           Expanded(
             child: ListView.builder(
               itemCount: items.length,
@@ -62,7 +80,7 @@ class _EditBillState extends ConsumerState<EditBill> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           EllipseHeadline(
-                            size: Sizes.p64 * 3,
+                              size: Sizes.p64 * 2.5,
                               title: items[index].name.isNotEmpty
                                   ? items[index].name
                                   : 'Item ${index + 1}'),
@@ -88,7 +106,10 @@ class _EditBillState extends ConsumerState<EditBill> {
                         ],
                       ),
                     ),
-                    const Divider(),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 8.0, right: 8.0),
+                      child: Divider(),
+                    ),
                     gapH8,
                     if (itemExpanded[index]) ...[
                       EditItem(

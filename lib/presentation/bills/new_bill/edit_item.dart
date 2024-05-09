@@ -58,7 +58,7 @@ class _EditItemState extends State<EditItem> {
                     controller: nameController,
                     onChanged: (name) => widget.onChanged(
                         name, priceController.text, contributors),
-                    labelText: 'Name*',
+                    labelText: 'Item*',
                     prefixIcon: const Icon(Icons.description),
                   )),
             ),

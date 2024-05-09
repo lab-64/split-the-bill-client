@@ -10,8 +10,14 @@ part 'controllers.g.dart';
 
 @Riverpod(keepAlive: true)
 class EditBillController extends _$EditBillController {
+  late String name;
+  late DateTime date;
+
   @override
-  FutureOr<void> build() async {}
+  FutureOr<void> build() async {
+    name = '';
+    date = DateTime.now();
+  }
 
   Future<void> addBill(String groupId) async {
     state = const AsyncLoading();
@@ -20,10 +26,10 @@ class EditBillController extends _$EditBillController {
 
     final bill = Bill(
       id: '',
-      name: items.first.name,
+      name: name == ''? items.first.name : name,
       groupId: groupId,
       owner: user,
-      date: DateTime.now(),
+      date: date,
       items: items,
       balance: {},
     );
