@@ -12,7 +12,6 @@ import 'package:split_the_bill/presentation/shared/components/ellipse_headline.d
 import 'package:split_the_bill/presentation/shared/components/headline.dart';
 import 'package:split_the_bill/presentation/shared/components/primary_button.dart';
 
-import '../../shared/components/input_text_field.dart';
 import 'edit_bill_header.dart';
 
 class EditBill extends ConsumerStatefulWidget {
