@@ -4,7 +4,6 @@ import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/infrastructure/async_value_ui.dart';
 import 'package:split_the_bill/presentation/groups/new_group/controllers.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
-import 'package:split_the_bill/presentation/shared/components/input_text_field.dart';
 import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
 
 import '../../shared/components/input_text_form_field.dart';
