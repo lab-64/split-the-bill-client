@@ -26,7 +26,8 @@ class GroupAPI {
     Map<String, dynamic> Function()? parametersBuilder,
   }) {
     return Uri(
-      scheme: "https",
+      scheme: "http",
+      port: 8080,
       host: _baseUrl,
       path: "$_apiPath$endpoint",
       queryParameters: parametersBuilder?.call(),

@@ -24,7 +24,8 @@ class AuthAPI {
     required String endpoint,
   }) {
     return Uri(
-      scheme: "https",
+      scheme: "http",
+      port: 8080,
       host: _baseUrl,
       path: "$_apiPath$endpoint",
     );

@@ -7,6 +7,8 @@ import 'package:split_the_bill/presentation/shared/components/action_button.dart
 import 'package:split_the_bill/presentation/shared/components/input_text_field.dart';
 import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
 
+import '../../shared/components/input_text_form_field.dart';
+
 class NewGroupScreen extends StatefulWidget {
   const NewGroupScreen({super.key});
 
@@ -16,6 +18,7 @@ class NewGroupScreen extends StatefulWidget {
 
 class _NewGroupScreenState extends State<NewGroupScreen> {
   TextEditingController nameController = TextEditingController();
+  final _newGroupFormKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -34,6 +37,13 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
     showSuccessSnackBar(context, state, 'Group created');
   }
 
+  String? _validateGroupName(String? value) {
+    if (value!.isEmpty) {
+      return "Please enter a group name";
+    }
+    return null;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,22 +57,28 @@ class _NewGroupScreenState extends State<NewGroupScreen> {
         );
 
         return ActionButton(
-          icon: Icons.save,
-          onPressed: () => _add(ref).then(
-            (_) => _onAddSuccess(ref),
-          ),
-        );
+            icon: Icons.save,
+            onPressed: () {
+              if (_newGroupFormKey.currentState!.validate()) {
+                _add(ref).then(
+                  (_) => _onAddSuccess(ref),
+                );
+              }
+            });
       }),
       body: Padding(
         padding: const EdgeInsets.all(Sizes.p24),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            InputTextField(
-              labelText: 'Name*',
-              prefixIcon: const Icon(Icons.description),
-              controller: nameController,
-            ),
+            Form(
+                key: _newGroupFormKey,
+                child: InputTextFormField(
+                  labelText: 'Name*',
+                  prefixIcon: const Icon(Icons.description),
+                  controller: nameController,
+                  validator: (value) => _validateGroupName(value),
+                )),
             gapH48,
           ],
         ),
