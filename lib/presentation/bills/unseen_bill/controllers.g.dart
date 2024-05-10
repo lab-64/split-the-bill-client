@@ -7,21 +7,169 @@ part of 'controllers.dart';
 // **************************************************************************
 
 String _$itemsContributionsHash() =>
-    r'538c3aa005e4c25b631e1fc5b76d13cedf899053';
+    r'4723dcef906c906dc5ba3838959e94bf11930dfe';
+
+/// Copied from Dart SDK
+class _SystemHash {
+  _SystemHash._();
+
+  static int combine(int hash, int value) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + value);
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x0007ffff & hash) << 10));
+    return hash ^ (hash >> 6);
+  }
+
+  static int finish(int hash) {
+    // ignore: parameter_assignments
+    hash = 0x1fffffff & (hash + ((0x03ffffff & hash) << 3));
+    // ignore: parameter_assignments
+    hash = hash ^ (hash >> 11);
+    return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
+  }
+}
+
+abstract class _$ItemsContributions
+    extends BuildlessAutoDisposeNotifier<List<Item>> {
+  late final Bill bill;
+
+  List<Item> build(
+    Bill bill,
+  );
+}
 
 /// See also [ItemsContributions].
 @ProviderFor(ItemsContributions)
-final itemsContributionsProvider =
-    AutoDisposeNotifierProvider<ItemsContributions, List<Item>>.internal(
-  ItemsContributions.new,
-  name: r'itemsContributionsProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$itemsContributionsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+const itemsContributionsProvider = ItemsContributionsFamily();
 
-typedef _$ItemsContributions = AutoDisposeNotifier<List<Item>>;
+/// See also [ItemsContributions].
+class ItemsContributionsFamily extends Family<List<Item>> {
+  /// See also [ItemsContributions].
+  const ItemsContributionsFamily();
+
+  /// See also [ItemsContributions].
+  ItemsContributionsProvider call(
+    Bill bill,
+  ) {
+    return ItemsContributionsProvider(
+      bill,
+    );
+  }
+
+  @override
+  ItemsContributionsProvider getProviderOverride(
+    covariant ItemsContributionsProvider provider,
+  ) {
+    return call(
+      provider.bill,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'itemsContributionsProvider';
+}
+
+/// See also [ItemsContributions].
+class ItemsContributionsProvider
+    extends AutoDisposeNotifierProviderImpl<ItemsContributions, List<Item>> {
+  /// See also [ItemsContributions].
+  ItemsContributionsProvider(
+    Bill bill,
+  ) : this._internal(
+          () => ItemsContributions()..bill = bill,
+          from: itemsContributionsProvider,
+          name: r'itemsContributionsProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$itemsContributionsHash,
+          dependencies: ItemsContributionsFamily._dependencies,
+          allTransitiveDependencies:
+              ItemsContributionsFamily._allTransitiveDependencies,
+          bill: bill,
+        );
+
+  ItemsContributionsProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.bill,
+  }) : super.internal();
+
+  final Bill bill;
+
+  @override
+  List<Item> runNotifierBuild(
+    covariant ItemsContributions notifier,
+  ) {
+    return notifier.build(
+      bill,
+    );
+  }
+
+  @override
+  Override overrideWith(ItemsContributions Function() create) {
+    return ProviderOverride(
+      origin: this,
+      override: ItemsContributionsProvider._internal(
+        () => create()..bill = bill,
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        bill: bill,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeNotifierProviderElement<ItemsContributions, List<Item>>
+      createElement() {
+    return _ItemsContributionsProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is ItemsContributionsProvider && other.bill == bill;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, bill.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin ItemsContributionsRef on AutoDisposeNotifierProviderRef<List<Item>> {
+  /// The parameter `bill` of this provider.
+  Bill get bill;
+}
+
+class _ItemsContributionsProviderElement
+    extends AutoDisposeNotifierProviderElement<ItemsContributions, List<Item>>
+    with ItemsContributionsRef {
+  _ItemsContributionsProviderElement(super.provider);
+
+  @override
+  Bill get bill => (origin as ItemsContributionsProvider).bill;
+}
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

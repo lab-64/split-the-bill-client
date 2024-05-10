@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/bill/bill.dart';
 import 'package:split_the_bill/domain/bill/item.dart';
@@ -22,19 +21,20 @@ class BillContribution extends ConsumerStatefulWidget {
 }
 
 class _BillContributionState extends ConsumerState<BillContribution> {
-  late List<Item> items;
   late List<bool> expandedItems;
   final ScrollController _controller = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    items = List.from(widget.bill.items);
-    expandedItems = List.generate(items.length, (index) => index == 0);
+    expandedItems =
+        List.generate(widget.bill.items.length, (index) => index == 0);
   }
 
   @override
   Widget build(BuildContext context) {
+    final items = ref.watch(itemsContributionsProvider(widget.bill));
+
     return Padding(
       padding: const EdgeInsets.all(Sizes.p24),
       child: Column(
@@ -100,47 +100,22 @@ class _BillContributionState extends ConsumerState<BillContribution> {
 
   // Check if the current user is contributing to the given item
   bool _isUserContributingToItem(Item item) {
-    final user = ref.watch(authStateProvider).requireValue;
-
-    // Check if any contributor of the item matches the current user
-    return items.any(
-      (e) => e.id == item.id && e.contributors.any((e) => e.id == user.id),
-    );
+    return ref
+        .read(itemsContributionsProvider(widget.bill).notifier)
+        .isUserContributingToItem(item);
   }
 
   // Update contribution status for the current user on the specified item
   void _updateContributionStatus(bool isContributing, int index) async {
-    // Get the current user and the item to update
-    final user = ref.watch(authStateProvider).requireValue;
-    final item = items[index];
-
     setState(() {
       expandedItems =
           List.generate(expandedItems.length, (i) => i == index + 1);
-
-      // Update item's contributors based on the contribution status
-      if (isContributing) {
-        if (!item.contributors.any((e) => e.id == user.id)) {
-          // Add user to contributors if not already present
-          items[index] = item.copyWith(contributors: [
-            ...item.contributors,
-            user,
-          ]);
-        }
-      } else {
-        // Remove user from contributors
-        items[index] = item.copyWith(
-          contributors: [
-            ...item.contributors.where((e) => e.id != user.id),
-          ],
-        );
-      }
     });
 
     // Notify the provider about the updated item contribution
     ref
-        .read(itemsContributionsProvider.notifier)
-        .setItemContribution(items[index]);
+        .read(itemsContributionsProvider(widget.bill).notifier)
+        .setItemContribution(index, isContributing);
   }
 }
 
