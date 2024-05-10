@@ -28,7 +28,9 @@ class ProfileImage extends ConsumerWidget {
     String imagePath,
     Map<String, String> headers,
   ) {
-    if (previewImage != null) {
+    return const AssetImage('assets/avatar.jpg');
+
+    /*if (previewImage != null) {
       return FileImage(File(previewImage.path));
     } else if (imagePath.isNotEmpty) {
       return NetworkImage(
@@ -37,7 +39,7 @@ class ProfileImage extends ConsumerWidget {
       );
     } else {
       return const AssetImage('assets/avatar.jpg');
-    }
+    }*/
   }
 
   @override

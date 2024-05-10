@@ -15,7 +15,7 @@ class GroupState extends _$GroupState {
   }
 
   @override
-  Future<Group> build(String groupId) {
-    return _getGroup(groupId);
+  Future<Group> build(String groupId) async {
+    return await _getGroup(groupId);
   }
 }

@@ -40,7 +40,8 @@ class RemoteAuthRepository extends AuthRepository {
   }
 
   @override
-  Future<User> update(User user, XFile? image) => client.putMultipart(
+  Future<User> update(User user, XFile? image) async =>
+      await client.putMultipart(
         uri: api.updateUser(user.id),
         body: user.toMap().cast<String, String>(),
         file: image,
@@ -48,6 +49,6 @@ class RemoteAuthRepository extends AuthRepository {
       );
 
   @override
-  Future<void> logout() =>
-      client.post(uri: api.getLogout(), builder: (data) {}, body: {});
+  Future<void> logout() async =>
+      await client.post(uri: api.getLogout(), builder: (data) {}, body: {});
 }
