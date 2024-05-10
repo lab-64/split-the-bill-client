@@ -23,7 +23,7 @@ class NewBillScreen extends ConsumerWidget {
     return Scaffold(
       floatingActionButton: ActionButton(
         icon: Icons.save,
-        onPressed: () => _addBill(ref, context).then(
+        onPressed: () => _addBill(ref).then(
           (_) => _onAddBillSuccess(ref, context),
         ),
       ),
@@ -41,10 +41,8 @@ class NewBillScreen extends ConsumerWidget {
     );
   }
 
-  Future<void> _addBill(WidgetRef ref, BuildContext context) async {
-    return await ref
-        .read(editBillControllerProvider.notifier)
-        .addBill(groupId);
+  Future<void> _addBill(WidgetRef ref) async {
+    return await ref.read(editBillControllerProvider.notifier).addBill(groupId);
   }
 
   void _onAddBillSuccess(WidgetRef ref, BuildContext context) {

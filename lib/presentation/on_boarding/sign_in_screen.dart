@@ -26,8 +26,8 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   @override
   void initState() {
     super.initState();
-    email.text = "felix123@gmail.com";
-    password.text = "test123...";
+    email.text = "felix@gmail.com";
+    password.text = "test";
   }
 
   @override
