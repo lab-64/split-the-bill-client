@@ -13,13 +13,13 @@ class BillsState extends _$BillsState {
   BillRepository get _billRepository => ref.read(billRepositoryProvider);
 
   @override
-  Future<List<Bill>> build() {
+  Future<List<Bill>> build({bool isUnseen = false}) {
     final user = ref.watch(authStateProvider).requireValue;
-    return _getBillsByUser(user.id);
+    return _getBillsByUser(user.id, isUnseen);
   }
 
-  Future<List<Bill>> _getBillsByUser(String userId) async {
-    return await _billRepository.getBillsByUser(userId);
+  Future<List<Bill>> _getBillsByUser(String userId, bool isUnseen) async {
+    return await _billRepository.getBillsByUser(userId, isUnseen: isUnseen);
   }
 
   Future<void> create(Bill bill) async {
@@ -41,7 +41,7 @@ class BillsState extends _$BillsState {
     ref.invalidate(billStateProvider(updatedBill.id));
   }
 
-  Future<void> delete(Bill bill) async{
+  Future<void> delete(Bill bill) async {
     await _billRepository.delete(bill.id);
 
     ref.invalidate(groupStateProvider(bill.groupId));
