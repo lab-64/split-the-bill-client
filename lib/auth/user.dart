@@ -12,7 +12,7 @@ class User {
 
   String getImagePath() {
     if (profileImgPath.isNotEmpty) {
-      return '${Constants.baseScheme}${Constants.baseApiUrl}:${Constants.basePort}$profileImgPath';
+      return '${Constants.baseScheme}://${Constants.baseApiUrl}:${Constants.basePort}$profileImgPath';
     } else {
       return '';
     }
