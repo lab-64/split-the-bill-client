@@ -11,8 +11,6 @@ import 'package:split_the_bill/presentation/shared/components/ellipse_text.dart'
 import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 import 'package:split_the_bill/router/routes.dart';
 
-import '../../domain/bill/bill.dart';
-
 class HomeAppBar extends ConsumerWidget {
   const HomeAppBar({super.key});
 

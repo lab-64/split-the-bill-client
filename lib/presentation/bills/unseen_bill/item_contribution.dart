@@ -7,12 +7,12 @@ import '../../shared/profile/profile_image.dart';
 class ItemContribution extends StatelessWidget {
   const ItemContribution({
     super.key,
-    required this.changeContribution,
+    required this.updateContribution,
     required this.item,
     required this.index,
   });
 
-  final Function changeContribution;
+  final Function updateContribution;
   final Item item;
   final int index;
 
@@ -77,11 +77,11 @@ class ItemContribution extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               IconButton(
-                onPressed: () => changeContribution(true, index),
+                onPressed: () => updateContribution(true, index),
                 icon: const Icon(Icons.check, color: Colors.green),
               ),
               IconButton(
-                onPressed: () => changeContribution(false, index),
+                onPressed: () => updateContribution(false, index),
                 icon: const Icon(Icons.close, color: Colors.red),
               ),
             ],

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
+import 'package:split_the_bill/constants/app_sizes.dart';
+import 'package:split_the_bill/domain/bill/bill.dart';
+import 'package:split_the_bill/domain/bill/item.dart';
 import 'package:split_the_bill/presentation/bills/unseen_bill/controllers.dart';
 import 'package:split_the_bill/presentation/bills/unseen_bill/item_contribution.dart';
 import 'package:split_the_bill/presentation/shared/components/ellipse_text.dart';
-
-import '../../../constants/app_sizes.dart';
-import '../../../domain/bill/bill.dart';
-import '../../../domain/bill/item.dart';
 
 class BillContribution extends ConsumerStatefulWidget {
   const BillContribution({
@@ -68,7 +67,7 @@ class _BillContributionState extends ConsumerState<BillContribution> {
                               fontSize: 18.0,
                             ),
                           ),
-                          trailing: _isContributing(items[index])
+                          trailing: _isUserContributingToItem(items[index])
                               ? const Icon(
                                   Icons.check,
                                   color: Colors.green,
@@ -81,7 +80,7 @@ class _BillContributionState extends ConsumerState<BillContribution> {
                         if (expandedItems[index]) ...[
                           const Divider(),
                           ItemContribution(
-                            changeContribution: _setContribution,
+                            updateContribution: _updateContributionStatus,
                             item: items[index],
                             index: index,
                           )
@@ -99,15 +98,19 @@ class _BillContributionState extends ConsumerState<BillContribution> {
     );
   }
 
-  bool _isContributing(Item item) {
+  // Check if the current user is contributing to the given item
+  bool _isUserContributingToItem(Item item) {
     final user = ref.watch(authStateProvider).requireValue;
 
+    // Check if any contributor of the item matches the current user
     return items.any(
       (e) => e.id == item.id && e.contributors.any((e) => e.id == user.id),
     );
   }
 
-  void _setContribution(bool isContributing, int index) async {
+  // Update contribution status for the current user on the specified item
+  void _updateContributionStatus(bool isContributing, int index) async {
+    // Get the current user and the item to update
     final user = ref.watch(authStateProvider).requireValue;
     final item = items[index];
 
@@ -115,20 +118,26 @@ class _BillContributionState extends ConsumerState<BillContribution> {
       expandedItems =
           List.generate(expandedItems.length, (i) => i == index + 1);
 
+      // Update item's contributors based on the contribution status
       if (isContributing) {
         if (!item.contributors.any((e) => e.id == user.id)) {
+          // Add user to contributors if not already present
           items[index] = item.copyWith(contributors: [
             ...item.contributors,
             user,
           ]);
         }
       } else {
-        items[index] = item.copyWith(contributors: [
-          ...item.contributors.where((e) => e.id != user.id),
-        ]);
+        // Remove user from contributors
+        items[index] = item.copyWith(
+          contributors: [
+            ...item.contributors.where((e) => e.id != user.id),
+          ],
+        );
       }
     });
 
+    // Notify the provider about the updated item contribution
     ref
         .read(itemsContributionsProvider.notifier)
         .setItemContribution(items[index]);
