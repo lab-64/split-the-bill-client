@@ -37,6 +37,14 @@ class _PriceTextFieldState extends State<PriceTextField> {
         value = value.substring(0, index) +
             value.substring(index + 1, value.length);
 
+        //push numbers to the right if a number is deleted
+        if (value.length < 3) {
+          var first  = value.substring(0,1);
+          var second = value.substring(1,2);
+          widget.controller.text = '0.$first$second';
+          return;
+        }
+
         //remove leading zeros
         while (value[0] == '0') {
           value = value.substring(1);
