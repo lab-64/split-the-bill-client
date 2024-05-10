@@ -30,7 +30,8 @@ class EditBillController extends _$EditBillController {
     );
 
     if (bill.name.isEmpty) {
-      state = AsyncError("Please give the first item a name", StackTrace.current);
+      state =
+          AsyncError("Please give the first item a name", StackTrace.current);
     } else {
       final billsState = ref.read(billsStateProvider().notifier);
       state = await AsyncValue.guard(() => billsState.create(bill));
