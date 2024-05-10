@@ -19,6 +19,7 @@ class _PriceTextFieldState extends State<PriceTextField> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      enableInteractiveSelection: false,
       decoration: InputDecoration(
         labelText: widget.labelText,
         prefixIcon: widget.prefixIcon,
