@@ -31,8 +31,8 @@ class BillsState extends _$BillsState {
     ref.invalidate(groupsStateProvider);
   }
 
-  Future<void> edit(Bill bill, {bool isViewed = false}) async {
-    final updatedBill = await _billRepository.edit(bill, isViewed);
+  Future<void> edit(Bill bill) async {
+    final updatedBill = await _billRepository.edit(bill);
     final previousState = await future;
     state = AsyncData([...previousState, updatedBill]);
 

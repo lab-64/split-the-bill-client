@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
-import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/bill/states/bills_state.dart';
 import 'package:split_the_bill/presentation/groups/group/controllers.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/bills/bill_tile.dart';
+import 'package:split_the_bill/presentation/shared/components/date_label.dart';
 import 'package:split_the_bill/router/routes.dart';
 
 class BillsList extends ConsumerWidget {
@@ -45,26 +44,6 @@ class BillsList extends ConsumerWidget {
               ],
             ),
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class DateLabel extends StatelessWidget {
-  final DateTime date;
-
-  const DateLabel({super.key, required this.date});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: Sizes.p4),
-      child: Text(
-        DateFormat('dd. MMMM').format(date), // Customize the date format
-        style: TextStyle(
-          fontSize: 14.0,
-          color: Colors.grey.shade700,
         ),
       ),
     );

@@ -5,18 +5,18 @@ class ActionButton extends StatelessWidget {
     super.key,
     required this.icon,
     required this.onPressed,
-    this.isLoading = true,
+    this.disabled = false,
   });
 
   final IconData icon;
   final VoidCallback onPressed;
-  final bool isLoading;
+  final bool disabled;
 
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () => onPressed(),
-      backgroundColor: Colors.blue.shade400,
+      backgroundColor: disabled ? Colors.grey : Colors.blue.shade400,
       shape: const CircleBorder(),
       child: Icon(
         icon,

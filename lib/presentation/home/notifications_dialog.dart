@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/bill/states/bills_state.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
+import 'package:split_the_bill/presentation/shared/components/date_label.dart';
 import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 import 'package:split_the_bill/router/routes.dart';
 
@@ -24,7 +25,7 @@ class NotificationsDialog extends ConsumerWidget {
         return Column(
           children: [
             const Text(
-              "Tap on the bill to set your contribution",
+              "Tap to confirm your contributions",
               style: TextStyle(),
             ),
             const Divider(),
@@ -37,7 +38,7 @@ class NotificationsDialog extends ConsumerWidget {
                     size: Sizes.p16,
                   ),
                   title: Text(bills[index].name),
-                  subtitle: const Text("New bill"),
+                  subtitle: DateLabel(date: bills[index].date),
                   trailing: const Icon(Icons.arrow_forward),
                   onTap: () {
                     Navigator.of(context).pop();

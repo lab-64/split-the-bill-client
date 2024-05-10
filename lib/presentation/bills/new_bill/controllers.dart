@@ -26,6 +26,7 @@ class EditBillController extends _$EditBillController {
       date: DateTime.now(),
       items: items,
       balance: {},
+      isViewed: true,
     );
 
     final billsState = ref.read(billsStateProvider().notifier);
