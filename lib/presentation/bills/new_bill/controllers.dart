@@ -28,8 +28,12 @@ class EditBillController extends _$EditBillController {
       balance: {},
     );
 
-    final billsState = ref.read(billsStateProvider.notifier);
-    state = await AsyncValue.guard(() => billsState.create(bill));
+    if (bill.name.isEmpty) {
+      state = AsyncError("Please give the first item a name", StackTrace.current);
+    } else {
+      final billsState = ref.read(billsStateProvider.notifier);
+      state = await AsyncValue.guard(() => billsState.create(bill));
+    }
   }
 
   Future<void> editBill(Bill bill, List<Item> items) async {
