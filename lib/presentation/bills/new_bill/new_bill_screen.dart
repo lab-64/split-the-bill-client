@@ -11,6 +11,7 @@ import 'package:split_the_bill/router/routes.dart';
 
 class NewBillScreen extends ConsumerWidget {
   const NewBillScreen({super.key, required this.groupId, this.billId = '0'});
+
   final String groupId;
   final String billId;
 
