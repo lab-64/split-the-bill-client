@@ -19,7 +19,7 @@ class BillScreen extends ConsumerWidget {
   final String billId;
 
   void _deleteBill(WidgetRef ref, Bill bill) async {
-    ref.read(billsStateProvider.notifier).delete(bill);
+    ref.read(billsStateProvider().notifier).delete(bill);
   }
 
   @override

@@ -4,22 +4,18 @@ import '../../../constants/app_sizes.dart';
 import '../../../domain/bill/item.dart';
 import '../../shared/profile/profile_image.dart';
 
-class ItemContribution extends StatefulWidget {
-  const ItemContribution(
-      {super.key,
-      required this.changeContribution,
-      required this.item,
-      required this.index});
+class ItemContribution extends StatelessWidget {
+  const ItemContribution({
+    super.key,
+    required this.updateContribution,
+    required this.item,
+    required this.index,
+  });
 
-  final Function changeContribution;
+  final Function updateContribution;
   final Item item;
   final int index;
 
-  @override
-  State<ItemContribution> createState() => _ItemContributionState();
-}
-
-class _ItemContributionState extends State<ItemContribution> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -35,13 +31,14 @@ class _ItemContributionState extends State<ItemContribution> {
               gapW32,
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       const Text("Name: "),
                       gapW16,
-                      Text(widget.item.name),
+                      Text(item.name),
                     ],
                   ),
                   Row(
@@ -49,7 +46,7 @@ class _ItemContributionState extends State<ItemContribution> {
                     children: [
                       const Text("Price: "),
                       gapW16,
-                      Text("${widget.item.price}€"),
+                      Text("${item.price}€"),
                     ],
                   ),
                   Row(
@@ -58,16 +55,17 @@ class _ItemContributionState extends State<ItemContribution> {
                       const Text("Contributors:"),
                       gapW8,
                       Row(
-                          children: widget.item.contributors.map(
-                        (user) {
-                          return Row(
-                            children: [
-                              ProfileImage(user: user, size: Sizes.p12),
-                              gapW4,
-                            ],
-                          );
-                        },
-                      ).toList()),
+                        children: item.contributors.map(
+                          (user) {
+                            return Row(
+                              children: [
+                                ProfileImage(user: user, size: Sizes.p12),
+                                gapW4,
+                              ],
+                            );
+                          },
+                        ).toList(),
+                      ),
                     ],
                   )
                 ],
@@ -79,11 +77,11 @@ class _ItemContributionState extends State<ItemContribution> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               IconButton(
-                onPressed: () => widget.changeContribution(true, widget.index),
+                onPressed: () => updateContribution(true, index),
                 icon: const Icon(Icons.check, color: Colors.green),
               ),
               IconButton(
-                onPressed: () => widget.changeContribution(false, widget.index),
+                onPressed: () => updateContribution(false, index),
                 icon: const Icon(Icons.close, color: Colors.red),
               ),
             ],

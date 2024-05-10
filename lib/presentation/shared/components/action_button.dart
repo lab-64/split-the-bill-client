@@ -5,12 +5,10 @@ class ActionButton extends StatelessWidget {
     super.key,
     required this.icon,
     required this.onPressed,
-    this.isLoading = true,
   });
 
   final IconData icon;
   final VoidCallback onPressed;
-  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {

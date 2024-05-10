@@ -9,7 +9,6 @@ import '../item.dart';
 part 'bill_repository.g.dart';
 
 abstract class BillRepository {
-
   Future<List<Bill>> getBillsByUser(String userId,
       {bool isUnseen = false, bool isOwner = false});
 
@@ -17,7 +16,7 @@ abstract class BillRepository {
 
   Future<Bill> create(Bill bill);
 
-  Future<Bill> edit(Bill bill, bool isViewed);
+  Future<Bill> edit(Bill bill);
 
   Future<void> delete(String billId);
 
