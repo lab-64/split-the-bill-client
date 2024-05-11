@@ -10,7 +10,6 @@ import 'package:split_the_bill/presentation/shared/components/show_confirmation_
 import 'package:split_the_bill/router/routes.dart';
 
 import '../../../domain/group/states/groups_state.dart';
-import '../../shared/components/snackbar.dart';
 
 class GroupScreen extends ConsumerWidget {
   const GroupScreen({
@@ -44,9 +43,8 @@ class GroupScreen extends ConsumerWidget {
               PopupMenuButton(
                 itemBuilder: (context) => [
                   PopupMenuItem(
-                      onTap: () {
-                        showNotImplementedSnackBar(context);
-                      },
+                      onTap: () =>
+                          EditGroupRoute(groupId: groupId).push(context),
                       child: const Row(
                         children: [
                           Icon(
