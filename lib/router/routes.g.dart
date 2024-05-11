@@ -111,7 +111,7 @@ extension $GroupsRouteExtension on GroupsRoute {
 
 extension $EditGroupRouteExtension on EditGroupRoute {
   static EditGroupRoute _fromState(GoRouterState state) => EditGroupRoute(
-        groupId: state.pathParameters['groupId']! ?? '0',
+        groupId: state.pathParameters['groupId']!,
       );
 
   String get location => GoRouteData.$location(

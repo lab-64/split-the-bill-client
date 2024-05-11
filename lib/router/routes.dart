@@ -124,7 +124,7 @@ class GroupRoute extends GoRouteData {
 }
 
 class EditGroupRoute extends GoRouteData {
-  const EditGroupRoute({this.groupId = '0'});
+  const EditGroupRoute({required this.groupId});
   final String groupId;
 
   @override
