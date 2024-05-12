@@ -12,6 +12,8 @@ abstract class GroupRepository {
   Future<List<Group>> getGroupsByUser(String userId);
 
   Future<Group> create(Group group);
+
+  Future<void> delete(String groupId);
 }
 
 @Riverpod(keepAlive: true)

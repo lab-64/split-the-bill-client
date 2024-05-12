@@ -3,6 +3,8 @@ import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 
+import '../../shared/components/ellipse_text.dart';
+
 class GroupMembers extends StatelessWidget {
   const GroupMembers({
     super.key,
@@ -50,9 +52,10 @@ class MemberItemWidget extends StatelessWidget {
           size: Sizes.p32,
         ),
         gapH8,
-        Text(
-          user.getDisplayName(),
-          textAlign: TextAlign.center,
+        EllipseText(
+          text: user.getDisplayName(),
+          size: Sizes.p64,
+          style: const TextStyle(color: Colors.grey),
         ),
       ],
     );

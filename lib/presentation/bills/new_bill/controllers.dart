@@ -32,17 +32,23 @@ class EditBillController extends _$EditBillController {
       date: DateTime.now(),
       items: items,
       balance: {},
+      isViewed: true,
     );
 
-    final billsState = ref.read(billsStateProvider.notifier);
-    state = await AsyncValue.guard(() => billsState.create(bill));
+    if (bill.name.isEmpty) {
+      state =
+          AsyncError("Please give the first item a name", StackTrace.current);
+    } else {
+      final billsState = ref.read(billsStateProvider().notifier);
+      state = await AsyncValue.guard(() => billsState.create(bill));
+    }
   }
 
   Future<void> editBill(Bill bill, List<Item> items) async {
     state = const AsyncLoading();
     Bill updatedBill = bill.copyWith(items: items);
 
-    final billsState = ref.read(billsStateProvider.notifier);
+    final billsState = ref.read(billsStateProvider().notifier);
     state = await AsyncValue.guard(() => billsState.edit(updatedBill));
   }
 }

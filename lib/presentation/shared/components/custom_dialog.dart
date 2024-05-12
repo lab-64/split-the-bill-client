@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 
-void showCustomDialog(BuildContext context, Widget body) {
+void showCustomDialog({
+  required BuildContext context,
+  required String title,
+  required Widget content,
+}) {
   showDialog<void>(
     context: context,
     barrierDismissible: false,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: const Center(child: Text('Check Items')),
+        title: Center(
+          child: Text(title),
+        ),
         content: SingleChildScrollView(
           child: ListBody(
             children: <Widget>[
-              body,
+              content,
             ],
           ),
         ),

@@ -10,6 +10,7 @@ import 'package:split_the_bill/presentation/bills/new_bill/items_check_dialog.da
 import 'package:split_the_bill/presentation/bills/new_bill/scan_bill_modal.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
+import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
 import 'package:split_the_bill/presentation/shared/components/bottom_modal.dart';
 import 'package:split_the_bill/presentation/shared/components/custom_dialog.dart';
 import 'package:split_the_bill/router/routes.dart';
@@ -37,8 +38,9 @@ class _NewBillScreenState extends ConsumerState<NewBillScreen> {
         Navigator.of(context).pop();
 
         showCustomDialog(
-          context,
-          const ItemsCheckDialog(),
+          context: context,
+          content: const ItemsCheckDialog(),
+          title: 'Check Items',
         );
       }
     });
@@ -52,8 +54,9 @@ class _NewBillScreenState extends ConsumerState<NewBillScreen> {
     return Scaffold(
       floatingActionButton: ActionButton(
         icon: Icons.save,
-        onPressed: () =>
-            _addBill(ref).then((_) => const HomeRoute().go(context)),
+        onPressed: () => _addBill(ref).then(
+          (_) => _onAddBillSuccess(ref, context),
+        ),
       ),
       appBar: AppBar(
         title: const Text("New Bill"),
@@ -86,9 +89,19 @@ class _NewBillScreenState extends ConsumerState<NewBillScreen> {
     );
   }
 
-  Future<void> _addBill(WidgetRef ref) {
+  Future<void> _addBill(WidgetRef ref) async {
     return ref
         .read(editBillControllerProvider.notifier)
         .addBill(widget.groupId);
+  }
+
+  void _onAddBillSuccess(WidgetRef ref, BuildContext context) {
+    final state = ref.watch(editBillControllerProvider);
+    showSuccessSnackBar(
+      context,
+      state,
+      'Bill created',
+      goTo: () => const HomeRoute().go(context),
+    );
   }
 }

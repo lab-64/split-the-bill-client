@@ -67,6 +67,10 @@ RouteBase get $navbarShellRoute => ShellRouteData.$route(
             ),
           ],
         ),
+        GoRouteData.$route(
+          path: '/unseenBills:billId',
+          factory: $UnseenBillRouteExtension._fromState,
+        ),
       ],
     );
 
@@ -259,6 +263,25 @@ extension $EditProfileRouteExtension on EditProfileRoute {
 
   String get location => GoRouteData.$location(
         '/profile/edit',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $UnseenBillRouteExtension on UnseenBillRoute {
+  static UnseenBillRoute _fromState(GoRouterState state) => UnseenBillRoute(
+        billId: state.pathParameters['billId']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/unseenBills${Uri.encodeComponent(billId)}',
       );
 
   void go(BuildContext context) => context.go(location);

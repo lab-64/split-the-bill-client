@@ -4,16 +4,23 @@ import 'package:split_the_bill/domain/bill/data/bill_api.dart';
 import 'package:split_the_bill/domain/bill/data/remote_bill_repository.dart';
 import 'package:split_the_bill/infrastructure/http_client.dart';
 
+import '../item.dart';
+
 part 'bill_repository.g.dart';
 
 abstract class BillRepository {
-  Future<List<Bill>> getBillsByUser(String userId);
+  Future<List<Bill>> getBillsByUser(String userId,
+      {bool isUnseen = false, bool isOwner = false});
 
   Future<Bill> getBill(String billId);
 
   Future<Bill> create(Bill bill);
 
   Future<Bill> edit(Bill bill);
+
+  Future<void> delete(String billId);
+
+  Future<Item> editItem(Item item);
 }
 
 @Riverpod(keepAlive: true)

@@ -4,9 +4,11 @@ import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/infrastructure/async_value_ui.dart';
-import 'package:split_the_bill/presentation/shared/components/input_text_field.dart';
 import 'package:split_the_bill/presentation/shared/components/primary_button.dart';
 import 'package:split_the_bill/router/routes.dart';
+
+import '../shared/auth_validation.dart';
+import '../shared/components/input_text_form_field.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
@@ -18,6 +20,7 @@ class RegisterScreen extends ConsumerStatefulWidget {
 class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  final _registerFormKey = GlobalKey<FormState>();
 
   // TODO: Used for testing, set only on debug mode
   @override
@@ -35,12 +38,14 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   }
 
   Future<void> _register() async {
-    final controller = ref.read(authStateProvider.notifier);
+    if (_registerFormKey.currentState!.validate()) {
+      final controller = ref.read(authStateProvider.notifier);
 
-    await controller.register(
-      email: email.text,
-      password: password.text,
-    );
+      await controller.register(
+        email: email.text,
+        password: password.text,
+      );
+    }
   }
 
   @override
@@ -68,24 +73,33 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             children: [
               Image.asset('assets/logo.png'),
               gapH64,
-              InputTextField(
-                labelText: 'Email*',
-                prefixIcon: const Icon(Icons.alternate_email),
-                controller: email,
-                isLoading: state.isLoading,
-              ),
-              gapH16,
-              InputTextField(
-                labelText: 'Password*',
-                prefixIcon: const Icon(Icons.lock),
-                controller: password,
-                isLoading: state.isLoading,
-                obscureText: true,
-              ),
-              gapH16,
-              _buildSignInRoute(),
-              gapH16,
-              _buildRegisterButton(state),
+              Form(
+                  key: _registerFormKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      InputTextFormField(
+                        labelText: 'Email*',
+                        prefixIcon: const Icon(Icons.alternate_email),
+                        controller: email,
+                        isLoading: state.isLoading,
+                        validator: (value) =>  validateEmail(value),
+                      ),
+                      gapH16,
+                      InputTextFormField(
+                        labelText: 'Password*',
+                        prefixIcon: const Icon(Icons.lock),
+                        controller: password,
+                        isLoading: state.isLoading,
+                        obscureText: true,
+                        validator: (value) => validatePassword(value),
+                      ),
+                      gapH16,
+                      _buildSignInRoute(),
+                      gapH16,
+                      _buildRegisterButton(state),
+                    ],
+                  )),
             ],
           ),
         ),

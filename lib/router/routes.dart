@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:split_the_bill/presentation/bills/bill/bill_screen.dart';
 import 'package:split_the_bill/presentation/bills/bills/bills_screen.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/group_selection_screen.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/new_bill_screen.dart';
-import 'package:split_the_bill/presentation/bills/new_bill/recognized_bill_screen.dart';
+import 'package:split_the_bill/presentation/bills/unseen_bill/unseen_bill_screen.dart';
 import 'package:split_the_bill/presentation/groups/group/group_screen.dart';
 import 'package:split_the_bill/presentation/groups/groups/groups_screen.dart';
 import 'package:split_the_bill/presentation/groups/new_group/new_group_screen.dart';
@@ -34,7 +33,6 @@ part 'routes.g.dart';
         TypedGoRoute<NewBillGroupSelectionRoute>(
           path: 'new',
           routes: [
-            TypedGoRoute<RecognizedBillRoute>(path: 'recognized'),
             TypedGoRoute<NewBillRoute>(path: ':groupId'),
           ],
         ),
@@ -47,6 +45,7 @@ part 'routes.g.dart';
         TypedGoRoute<EditProfileRoute>(path: 'edit'),
       ],
     ),
+    TypedGoRoute<UnseenBillRoute>(path: '/unseenBills:billId')
   ],
 )
 class NavbarShellRoute extends ShellRouteData {
@@ -171,12 +170,15 @@ class NewBillRoute extends GoRouteData {
   }
 }
 
-class RecognizedBillRoute extends GoRouteData {
-  const RecognizedBillRoute();
+/// UNSEEN BILLS
+class UnseenBillRoute extends GoRouteData {
+  const UnseenBillRoute({required this.billId});
+
+  final String billId;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const RecognizedBillScreen();
+    return UnseenBillScreen(billId: billId);
   }
 }
 
