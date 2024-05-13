@@ -14,9 +14,10 @@ class ScanBillModal extends StatelessWidget {
     return Column(
       children: [
         ListTile(
-            leading: const Icon(Icons.camera_alt),
-            title: const Text('Take a photo'),
-            onTap: () => getImage(ImageSource.camera)),
+          leading: const Icon(Icons.camera_alt),
+          title: const Text('Take a photo'),
+          onTap: () => getImage(ImageSource.camera),
+        ),
         ListTile(
           leading: const Icon(Icons.image),
           title: const Text('Select image'),

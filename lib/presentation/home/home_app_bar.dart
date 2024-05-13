@@ -6,8 +6,8 @@ import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/bill/states/bills_state.dart';
 import 'package:split_the_bill/presentation/home/notifications_dialog.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
-import 'package:split_the_bill/presentation/shared/components/custom_dialog.dart';
 import 'package:split_the_bill/presentation/shared/components/ellipse_text.dart';
+import 'package:split_the_bill/presentation/shared/components/show_custom_dialog.dart';
 import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 import 'package:split_the_bill/router/routes.dart';
 

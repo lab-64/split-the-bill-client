@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:ui' as ui;
+
 import 'package:flutter/cupertino.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
@@ -77,6 +78,21 @@ class Items extends _$Items {
     );
   }
 
+  void setItemsFromSuggestion(BillSuggestion billSuggestion) {
+    final names = billSuggestion.nameList;
+    final prices = billSuggestion.priceList;
+
+    List<Item> items = List.generate(
+      names.length,
+      (index) => Item.getDefault().copyWith(
+        name: names[index],
+        price: prices[index],
+      ),
+    ).where((item) => item.name.isNotEmpty || item.price != 0).toList();
+
+    state = items;
+  }
+
   void removeItem(int index) {
     state.removeAt(index);
   }
@@ -86,10 +102,10 @@ class Items extends _$Items {
 class BillRecognition extends _$BillRecognition {
   @override
   Future<BillSuggestion> build() {
-    return Future.value(const BillSuggestion(itemList: [], priceList: []));
+    return Future.value(const BillSuggestion(nameList: [], priceList: []));
   }
 
-  void runBillRecognition(XFile? image) async {
+  Future<void> runBillRecognition(XFile? image) async {
     state = const AsyncLoading();
 
     if (image == null) {
@@ -110,7 +126,7 @@ class BillRecognition extends _$BillRecognition {
     int imageWidth = img.width;
 
     // block lists
-    List<String> itemList = [];
+    List<String> nameList = [];
     List<double> priceList = [];
 
     RegExp priceExp = RegExp(r"\b\d+(?:,\s?\d+)?(?:\.\d+)?\b");
@@ -119,7 +135,7 @@ class BillRecognition extends _$BillRecognition {
       int blockX = recognizedText.blocks[i].cornerPoints[0].x;
       if (blockX < imageWidth / 2) {
         for (TextLine line in recognizedText.blocks[i].lines) {
-          itemList.add(line.text);
+          nameList.add(line.text);
         }
       } else {
         // price case
@@ -128,7 +144,7 @@ class BillRecognition extends _$BillRecognition {
           if (priceExp.hasMatch(line.text)) {
             // Remove letters from the string
             String cleanedString =
-                line.text.replaceAll(RegExp(r'[^0-9,.]'), '');
+                line.text.replaceAll(RegExp(r'[^0-9,.-]'), '');
             // Replacing the comma with a dot and removing spaces
             String numberString =
                 cleanedString.replaceAll(',', '.').replaceAll(' ', '');
@@ -144,6 +160,20 @@ class BillRecognition extends _$BillRecognition {
       }
     }
 
-    state = AsyncData(BillSuggestion(itemList: itemList, priceList: priceList));
+    // fill the shorter list with empty strings or zeros
+    _fillLists(nameList, priceList);
+    state = AsyncData(BillSuggestion(nameList: nameList, priceList: priceList));
+  }
+
+  void _fillLists(List<String> itemList, List<double> priceList) {
+    int lengthDifference = itemList.length - priceList.length;
+
+    if (lengthDifference > 0) {
+      // itemList is longer, fill priceList with zeros
+      priceList.addAll(List<double>.filled(lengthDifference, 0));
+    } else if (lengthDifference < 0) {
+      // priceList is longer, fill itemList with empty strings
+      itemList.addAll(List<String>.filled(-lengthDifference, ''));
+    }
   }
 }

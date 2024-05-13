@@ -35,6 +35,13 @@ class _EditBillState extends ConsumerState<EditBill> {
   Widget build(BuildContext context) {
     ref.listen(editBillControllerProvider,
         (_, next) => next.showSnackBarOnError(context));
+
+    // Reinitialize itemExpanded when items change
+    ref.listen(
+        itemsProvider(widget.bill.id),
+        (_, next) =>
+            itemExpanded = List.generate(next.length, (index) => false));
+
     items = ref.watch(itemsProvider(widget.bill.id));
 
     return Padding(

@@ -10,9 +10,8 @@ import 'package:split_the_bill/presentation/bills/new_bill/items_check_dialog.da
 import 'package:split_the_bill/presentation/bills/new_bill/scan_bill_modal.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
-import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
 import 'package:split_the_bill/presentation/shared/components/bottom_modal.dart';
-import 'package:split_the_bill/presentation/shared/components/custom_dialog.dart';
+import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
 import 'package:split_the_bill/router/routes.dart';
 
 class NewBillScreen extends ConsumerStatefulWidget {
@@ -26,30 +25,29 @@ class NewBillScreen extends ConsumerStatefulWidget {
 
 class _NewBillScreenState extends ConsumerState<NewBillScreen> {
   final ImagePicker _picker = ImagePicker();
-  XFile? _image;
 
   Future _getImage(ImageSource source) async {
     final XFile? image = await _picker.pickImage(source: source);
 
-    setState(() {
-      if (image != null) {
-        _image = image;
-        ref.watch(billRecognitionProvider.notifier).runBillRecognition(_image);
-        Navigator.of(context).pop();
-
-        showCustomDialog(
-          context: context,
-          content: const ItemsCheckDialog(),
-          title: 'Check Items',
-        );
-      }
-    });
+    if (image != null) {
+      await ref
+          .read(billRecognitionProvider.notifier)
+          .runBillRecognition(image);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final bill = ref.watch(billStateProvider(widget.billId));
     final group = ref.watch(groupStateProvider(widget.groupId));
+
+    /// Show the items check dialog when the bill recognition starts
+    ref.listen(
+      billRecognitionProvider,
+      (prev, next) => !prev!.isLoading
+          ? showItemsCheckDialog(context, widget.billId)
+          : null,
+    );
 
     return Scaffold(
       floatingActionButton: ActionButton(
