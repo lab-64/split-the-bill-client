@@ -35,6 +35,14 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
   }
 
   void _confirm(BuildContext context, WidgetRef ref) {
+    final billSuggestion = _history[_currentIndex];
+
+    // TODO: show a snackbar or dont allow to remove all elements
+    if (billSuggestion.nameList.every((element) => element.isEmpty) &&
+        billSuggestion.priceList.every((element) => element == 0)) {
+      return;
+    }
+
     ref
         .read(itemsProvider(widget.billId).notifier)
         .setItemsFromSuggestion(_history[_currentIndex]);
