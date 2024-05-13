@@ -60,6 +60,7 @@ class _EditItemState extends State<EditItem> {
                         name, priceController.text, contributors),
                     labelText: 'Item*',
                     prefixIcon: const Icon(Icons.description),
+                    fillColor: const Color(0xFFEFEFEF),
                   )),
             ),
             Expanded(
@@ -71,6 +72,7 @@ class _EditItemState extends State<EditItem> {
                         nameController.text, price, contributors),
                     labelText: 'Price*',
                     prefixIcon: const Icon(Icons.attach_money),
+                    fillColor: const Color(0xFFEFEFEF),
                     keyboardType: TextInputType.number,
                     inputFormatters: <TextInputFormatter>[
                       FilteringTextInputFormatter.allow(

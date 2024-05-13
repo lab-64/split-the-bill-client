@@ -15,6 +15,7 @@ class InputTextField extends StatelessWidget {
     this.isDisabled = false,
     this.obscureText = false,
     this.readOnly = false,
+    this.fillColor = Colors.white
   });
 
   final String labelText;
@@ -28,6 +29,7 @@ class InputTextField extends StatelessWidget {
   final bool isDisabled;
   final bool obscureText;
   final bool readOnly;
+  final Color fillColor;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +49,7 @@ class InputTextField extends StatelessWidget {
           borderRadius: BorderRadius.circular(8.0),
           borderSide: BorderSide.none,
         ),
-        fillColor: Colors.white,
+        fillColor: fillColor,
         filled: true,
       ),
     );

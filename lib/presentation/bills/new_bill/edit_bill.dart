@@ -55,86 +55,92 @@ class _EditBillState extends ConsumerState<EditBill> {
             dateController: _dateController,
             nameController: _nameController,
           ),
-          gapH8,
-          const Divider(
-            thickness: 6,
-            color: Colors.black38,
-          ),
           gapH16,
           Expanded(
-            child: ListView.builder(
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          itemExpanded[index] = !itemExpanded[index];
-                        });
-                      },
-                      behavior: HitTestBehavior.translucent,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          EllipseHeadline(
-                              size: Sizes.p64 * 2.5,
-                              title: items[index].name.isNotEmpty
-                                  ? items[index].name
-                                  : 'Item ${index + 1}'),
-                          IntrinsicHeight(
-                            child: Row(
-                              children: [
-                                Headline(title: '€ ${items[index].price}'),
-                                gapW8,
-                                const VerticalDivider(),
-                                if (items.length > 1)
-                                  IconButton(
-                                    icon: const Icon(Icons.delete),
-                                    onPressed: () => _removeItem(index),
-                                  ),
-                                Icon(
-                                  itemExpanded[index]
-                                      ? Icons.arrow_drop_up
-                                      : Icons.arrow_drop_down,
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.all(
+                  Radius.circular(12.0),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: ListView.builder(
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              itemExpanded[index] = !itemExpanded[index];
+                            });
+                          },
+                          behavior: HitTestBehavior.translucent,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              EllipseHeadline(
+                                  size: Sizes.p64 * 2.5,
+                                  title: items[index].name.isNotEmpty
+                                      ? items[index].name
+                                      : 'Item ${index + 1}'),
+                              IntrinsicHeight(
+                                child: Row(
+                                  children: [
+                                    Headline(title: '€ ${items[index].price}'),
+                                    gapW8,
+                                    const VerticalDivider(),
+                                    if (items.length > 1)
+                                      IconButton(
+                                        icon: const Icon(Icons.delete),
+                                        onPressed: () => _removeItem(index),
+                                      ),
+                                    Icon(
+                                      itemExpanded[index]
+                                          ? Icons.arrow_drop_up
+                                          : Icons.arrow_drop_down,
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 8.0, right: 8.0),
-                      child: Divider(),
-                    ),
-                    gapH8,
-                    if (itemExpanded[index]) ...[
-                      EditItem(
-                        item: items[index],
-                        group: widget.group,
-                        onChanged: (name, price, contributors) =>
-                            _updateItem(index, name, price, contributors),
-                      ),
-                      gapH12,
-                    ],
-                    if (index == items.length - 1)
-                      Column(
-                        children: [
-                          gapH8,
-                          SizedBox(
-                            width: double.infinity,
-                            child: PrimaryButton(
-                              onPressed: _addItem,
-                              text: "+1 Item",
-                            ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(left: 8.0, right: 8.0),
+                          child: Divider(),
+                        ),
+                        gapH8,
+                        if (itemExpanded[index]) ...[
+                          EditItem(
+                            item: items[index],
+                            group: widget.group,
+                            onChanged: (name, price, contributors) =>
+                                _updateItem(index, name, price, contributors),
                           ),
+                          gapH12,
                         ],
-                      ),
-                  ],
-                );
-              },
+                        if (index == items.length - 1)
+                          Column(
+                            children: [
+                              gapH8,
+                              SizedBox(
+                                width: double.infinity,
+                                child: PrimaryButton(
+                                  onPressed: _addItem,
+                                  text: "+1 Item",
+                                ),
+                              ),
+                            ],
+                          ),
+                      ],
+                    );
+                  },
+                ),
+              ),
             ),
           ),
         ],
