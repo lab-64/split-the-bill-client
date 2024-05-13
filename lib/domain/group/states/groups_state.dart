@@ -37,5 +37,8 @@ class GroupsState extends _$GroupsState {
   Future<void> delete(String groupId) async {
     await _groupRepository.delete(groupId);
     ref.invalidateSelf();
+
+    // Wait for the ref to be computed
+    await future;
   }
 }
