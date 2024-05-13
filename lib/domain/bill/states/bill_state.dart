@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/domain/bill/bill.dart';
 import 'package:split_the_bill/domain/bill/data/bill_repository.dart';
 
@@ -18,6 +19,11 @@ class BillState extends _$BillState {
 
   Future<void> editItem(Item item) async {
     await _billRepository.editItem(item);
+  }
+
+  bool isBillOwner() {
+    return ref.read(authStateProvider).requireValue.id ==
+        state.requireValue.owner.id;
   }
 
   @override
