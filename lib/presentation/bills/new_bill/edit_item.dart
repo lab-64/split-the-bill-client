@@ -70,6 +70,8 @@ class _EditItemState extends State<EditItem> {
                   padding: const EdgeInsets.only(left: Sizes.p8),
                   child: PriceTextField(
                     controller: priceController,
+                    onChanged: (price) => widget.onChanged(
+                        nameController.text, price, contributors),
                     labelText: "Price*",
                     prefixIcon: const Icon(Icons.attach_money),
                   )),

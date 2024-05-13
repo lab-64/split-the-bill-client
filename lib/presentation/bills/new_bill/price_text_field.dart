@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class PriceTextField extends StatefulWidget {
-  const PriceTextField(
-      {super.key,
-      required this.controller,
-      required this.labelText,
-      required this.prefixIcon});
+  const PriceTextField({
+    super.key,
+    required this.controller,
+    required this.labelText,
+    required this.prefixIcon,
+    required this.onChanged,
+  });
 
   final TextEditingController controller;
   final String labelText;
   final Icon prefixIcon;
+  final Function(String) onChanged;
 
   @override
   State<PriceTextField> createState() => _PriceTextFieldState();
@@ -31,6 +35,9 @@ class _PriceTextFieldState extends State<PriceTextField> {
         filled: true,
       ),
       keyboardType: TextInputType.number,
+      inputFormatters: [
+        FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+      ],
       controller: widget.controller,
       onChanged: (value) {
         //replace ','
@@ -40,8 +47,8 @@ class _PriceTextFieldState extends State<PriceTextField> {
 
         //push numbers to the right if a number is deleted
         if (value.length < 3) {
-          var first  = value.substring(0,1);
-          var second = value.substring(1,2);
+          var first = value.substring(0, 1);
+          var second = value.substring(1, 2);
           widget.controller.text = '0.$first$second';
           return;
         }
@@ -62,6 +69,8 @@ class _PriceTextFieldState extends State<PriceTextField> {
                 '${value.substring(0, value.length - 2)}.${value.substring(value.length - 2)}';
           }
         });
+
+        widget.onChanged(widget.controller.text);
       },
     );
   }
