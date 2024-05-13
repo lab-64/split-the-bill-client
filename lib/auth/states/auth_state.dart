@@ -2,6 +2,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/auth/data/auth_repository.dart';
 import 'package:split_the_bill/auth/user.dart';
+import 'package:split_the_bill/infrastructure/shared_preferences.dart';
 
 part 'auth_state.g.dart';
 
@@ -11,6 +12,7 @@ class AuthState extends _$AuthState {
 
   @override
   FutureOr<User> build() {
+    print(ref.read(sharedUtilityProvider).getAuthCookie());
     return const User(id: "", email: "", username: "", profileImgPath: "");
   }
 
