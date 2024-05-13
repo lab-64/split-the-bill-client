@@ -4,7 +4,7 @@ import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
-import 'package:split_the_bill/presentation/shared/components/ellipse_text.dart';
+import 'package:split_the_bill/presentation/shared/components/ellipse_profile_name.dart';
 import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 import 'package:split_the_bill/router/routes.dart';
 
@@ -19,7 +19,7 @@ class HomeAppBar extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _buildUserInfo(context, ref, user),
-        _buildActionIcons(context),
+        _buildActionIcons(context, ref),
       ],
     );
   }
@@ -50,10 +50,50 @@ class HomeAppBar extends ConsumerWidget {
     );
   }
 
-  Widget _buildActionIcons(BuildContext context) {
-    return IconButton(
-      icon: const Icon(Icons.notifications_outlined),
-      onPressed: () => showNotImplementedSnackBar(context),
+  Widget _buildActionIcons(BuildContext context, WidgetRef ref) {
+    final bills = ref.watch(billsStateProvider(isUnseen: true));
+
+    return Stack(
+      children: [
+        IconButton(
+          icon: const Icon(Icons.notifications_outlined),
+          onPressed: () => showCustomDialog(
+            context: context,
+            title: 'Notifications',
+            content: const NotificationsDialog(),
+          ),
+        ),
+        AsyncValueWidget(
+          value: bills,
+          data: (bills) {
+            if (bills.isEmpty) {
+              return const SizedBox();
+            }
+            return Positioned(
+              right: 0,
+              top: 0,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                  borderRadius: BorderRadius.circular(Sizes.p8),
+                ),
+                constraints: const BoxConstraints(
+                  minWidth: Sizes.p16,
+                  minHeight: Sizes.p16,
+                ),
+                child: Text(
+                  '${bills.length}',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 12,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            );
+          },
+        )
+      ],
     );
   }
 }

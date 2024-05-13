@@ -65,11 +65,17 @@ class Item {
   }
 
   Map<String, dynamic> toMap() {
-    return {
+    Map<String, dynamic> map = {
       'name': name,
       'price': price,
       'contributorIDs': contributors.map((user) => user.id).toList(),
     };
+
+    if (billId.isNotEmpty) {
+      map['billId'] = billId;
+    }
+
+    return map;
   }
 
   factory Item.fromMap(Map<String, dynamic> map) {
