@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:split_the_bill/constants/app_sizes.dart';
 import 'package:split_the_bill/domain/bill/states/bill_state.dart';
 import 'package:split_the_bill/domain/group/states/group_state.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/controllers.dart';
@@ -11,6 +12,7 @@ import 'package:split_the_bill/router/routes.dart';
 
 class NewBillScreen extends ConsumerWidget {
   const NewBillScreen({super.key, required this.groupId, this.billId = '0'});
+
   final String groupId;
   final String billId;
 
@@ -20,13 +22,30 @@ class NewBillScreen extends ConsumerWidget {
     final group = ref.watch(groupStateProvider(groupId));
 
     return Scaffold(
-      floatingActionButton: ActionButton(
-        icon: Icons.save,
-        onPressed: () => _addBill(ref).then(
-          (_) => _onAddBillSuccess(ref, context),
-        ),
+      appBar: AppBar(
+        title: const Text("New Bill"),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+                onPressed: () =>
+                    _addBill(ref).then((_) => _onAddBillSuccess(ref, context)),
+                child: const Row(
+                  children: [
+                    Icon(
+                      Icons.save,
+                      color: Colors.blue,
+                    ),
+                    gapW8,
+                    Text(
+                      "Save",
+                      style: TextStyle(fontSize: 18.0, color: Colors.blue),
+                    )
+                  ],
+                )),
+          )
+        ],
       ),
-      appBar: AppBar(title: const Text("New Bill")),
       body: AsyncValueWidget(
         value: group,
         data: (group) => AsyncValueWidget(
