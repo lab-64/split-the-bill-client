@@ -6,7 +6,7 @@ part of 'group_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$groupStateHash() => r'cfb30ddce72568b4d9c900b750052d7b1fd3d1c7';
+String _$groupStateHash() => r'e993d3ca721de3064a6805ecb88555fd1837adb2';
 
 /// Copied from Dart SDK
 class _SystemHash {
