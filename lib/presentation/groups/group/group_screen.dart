@@ -54,7 +54,10 @@ class GroupScreen extends ConsumerWidget {
         data: (group) => Scaffold(
           floatingActionButton: ActionButton(
             icon: Icons.add,
-            onPressed: () => NewBillRoute(groupId: group.id).push(context),
+            onPressed: () => EditBillRoute(
+              groupId: group.id,
+              billId: '0',
+            ).push(context),
           ),
           appBar: AppBar(
             title: Text(group.name),

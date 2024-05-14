@@ -7,6 +7,7 @@ import 'package:split_the_bill/infrastructure/async_value_ui.dart';
 import 'package:split_the_bill/presentation/bills/bill/items_list.dart';
 import 'package:split_the_bill/presentation/shared/components/show_confirmation_dialog.dart';
 import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
+import 'package:split_the_bill/router/routes.dart';
 
 class BillScreen extends ConsumerWidget {
   const BillScreen({
@@ -50,16 +51,10 @@ class BillScreen extends ConsumerWidget {
           PopupMenuButton(
             itemBuilder: (context) => [
               PopupMenuItem(
-                onTap: () {
-                  showNotImplementedSnackBar(context);
-                  /*context.goNamed(
-                            Routes.editBill.name,
-                            pathParameters: {
-                              //'id': groupId,
-                              'id': billId,
-                            },
-                          );*/
-                },
+                onTap: () => EditBillRoute(
+                  groupId: bill.requireValue.groupId,
+                  billId: billId,
+                ).push(context),
                 child: const Row(
                   children: [
                     Icon(

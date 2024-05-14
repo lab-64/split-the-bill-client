@@ -59,9 +59,17 @@ class EditBillController extends _$EditBillController {
     state = await AsyncValue.guard(() => billsState.create(bill));
   }
 
-  Future<void> editBill(Bill bill, List<Item> items) async {
+  Future<void> editBill(String billId) async {
     state = const AsyncLoading();
-    Bill updatedBill = bill.copyWith(items: items);
+
+    final bill = ref.read(billStateProvider(billId));
+    final items = ref.read(itemsProvider(billId));
+
+    Bill updatedBill = bill.requireValue.copyWith(
+      name: _name,
+      date: _date,
+      items: items,
+    );
 
     final billsState = ref.read(billsStateProvider().notifier);
     state = await AsyncValue.guard(() => billsState.edit(updatedBill));

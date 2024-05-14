@@ -36,8 +36,8 @@ class _EditBillState extends ConsumerState<EditBill> {
     items = ref.read(itemsProvider(widget.bill.id));
     itemExpanded = List.generate(items.length, (index) => true);
 
-    _nameController = TextEditingController();
-    _dateController = TextEditingController(text: DateTime.now().toString());
+    _nameController = TextEditingController(text: widget.bill.name);
+    _dateController = TextEditingController(text: widget.bill.date.toString());
   }
 
   @override
@@ -47,9 +47,9 @@ class _EditBillState extends ConsumerState<EditBill> {
 
     // Reinitialize itemExpanded when items change
     ref.listen(
-        itemsProvider(widget.bill.id),
-        (_, next) =>
-            itemExpanded = List.generate(next.length, (index) => false));
+      itemsProvider(widget.bill.id),
+      (_, next) => itemExpanded = List.generate(next.length, (index) => false),
+    );
 
     items = ref.watch(itemsProvider(widget.bill.id));
 

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/presentation/bills/bill/bill_screen.dart';
 import 'package:split_the_bill/presentation/bills/bills/bills_screen.dart';
+import 'package:split_the_bill/presentation/bills/new_bill/edit_bill_screen.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/group_selection_screen.dart';
-import 'package:split_the_bill/presentation/bills/new_bill/new_bill_screen.dart';
 import 'package:split_the_bill/presentation/bills/unseen_bill/unseen_bill_screen.dart';
 import 'package:split_the_bill/presentation/groups/edit_group/edit_group_screen.dart';
 import 'package:split_the_bill/presentation/groups/group/group_screen.dart';
@@ -33,7 +33,7 @@ part 'routes.g.dart';
         TypedGoRoute<NewBillGroupSelectionRoute>(
           path: 'new',
           routes: [
-            TypedGoRoute<NewBillRoute>(path: ':groupId'),
+            TypedGoRoute<EditBillRoute>(path: ':groupId'),
           ],
         ),
         TypedGoRoute<BillRoute>(path: ':billId'),
@@ -161,13 +161,17 @@ class NewBillGroupSelectionRoute extends GoRouteData {
   }
 }
 
-class NewBillRoute extends GoRouteData {
-  const NewBillRoute({required this.groupId});
+class EditBillRoute extends GoRouteData {
+  const EditBillRoute({required this.groupId, required this.billId});
   final String groupId;
+  final String billId;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return NewBillScreen(groupId: groupId);
+    return EditBillScreen(
+      groupId: groupId,
+      billId: billId,
+    );
   }
 }
 

@@ -43,7 +43,7 @@ RouteBase get $navbarShellRoute => ShellRouteData.$route(
               routes: [
                 GoRouteData.$route(
                   path: ':groupId',
-                  factory: $NewBillRouteExtension._fromState,
+                  factory: $EditBillRouteExtension._fromState,
                 ),
               ],
             ),
@@ -182,13 +182,17 @@ extension $NewBillGroupSelectionRouteExtension on NewBillGroupSelectionRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $NewBillRouteExtension on NewBillRoute {
-  static NewBillRoute _fromState(GoRouterState state) => NewBillRoute(
+extension $EditBillRouteExtension on EditBillRoute {
+  static EditBillRoute _fromState(GoRouterState state) => EditBillRoute(
         groupId: state.pathParameters['groupId']!,
+        billId: state.uri.queryParameters['bill-id']!,
       );
 
   String get location => GoRouteData.$location(
         '/bills/new/${Uri.encodeComponent(groupId)}',
+        queryParams: {
+          'bill-id': billId,
+        },
       );
 
   void go(BuildContext context) => context.go(location);
