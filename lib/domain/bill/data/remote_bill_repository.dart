@@ -1,7 +1,6 @@
 import 'package:split_the_bill/domain/bill/bill.dart';
 import 'package:split_the_bill/domain/bill/data/bill_api.dart';
 import 'package:split_the_bill/domain/bill/data/bill_repository.dart';
-import 'package:split_the_bill/domain/bill/item.dart';
 import 'package:split_the_bill/infrastructure/http_client.dart';
 
 class RemoteBillRepository extends BillRepository {
@@ -48,13 +47,4 @@ class RemoteBillRepository extends BillRepository {
             ? data.map((bills) => Bill.fromMap(bills)).toList().cast<Bill>()
             : [],
       );
-
-  @override
-  Future<Item> editItem(Item item) {
-    return client.put(
-      uri: api.editItem(item.id),
-      body: item.toMap(),
-      builder: (data) => Item.fromMap(data),
-    );
-  }
 }
