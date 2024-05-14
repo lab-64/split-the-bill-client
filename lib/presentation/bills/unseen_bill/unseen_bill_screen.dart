@@ -39,17 +39,9 @@ class UnseenBillScreen extends ConsumerWidget {
   }
 
   Future<void> _saveBill(Bill bill, WidgetRef ref, BuildContext context) async {
-    // TODO:
-    // When backend is adjusted, we will only call "editBill" once with all items
-    // instead of calling "editItem" for each item
-
     final items = ref.watch(itemsContributionsProvider(bill));
+    bill = bill.copyWith(isViewed: true, items: items);
 
-    for (var item in items) {
-      await ref.read(billStateProvider(billId).notifier).editItem(item);
-    }
-
-    bill = bill.copyWith(isViewed: true);
     await ref.read(billsStateProvider().notifier).edit(bill);
     ref.invalidate(billsStateProvider(isUnseen: true));
   }

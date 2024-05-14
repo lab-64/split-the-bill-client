@@ -5,8 +5,6 @@ import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/domain/bill/bill.dart';
 import 'package:split_the_bill/domain/bill/data/bill_repository.dart';
 
-import '../item.dart';
-
 part 'bill_state.g.dart';
 
 @riverpod
@@ -15,10 +13,6 @@ class BillState extends _$BillState {
 
   Future<Bill> _getBill(String billId) async {
     return await _billRepository.getBill(billId);
-  }
-
-  Future<void> editItem(Item item) async {
-    await _billRepository.editItem(item);
   }
 
   bool isBillOwner() {
