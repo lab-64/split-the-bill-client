@@ -8,12 +8,14 @@ class PriceTextField extends StatefulWidget {
     required this.labelText,
     required this.prefixIcon,
     required this.onChanged,
+    this.fillColor = Colors.white,
   });
 
   final TextEditingController controller;
   final String labelText;
   final Icon prefixIcon;
   final Function(String) onChanged;
+  final Color fillColor;
 
   @override
   State<PriceTextField> createState() => _PriceTextFieldState();
@@ -31,7 +33,7 @@ class _PriceTextFieldState extends State<PriceTextField> {
           borderRadius: BorderRadius.circular(8.0),
           borderSide: BorderSide.none,
         ),
-        fillColor: Colors.white,
+        fillColor: widget.fillColor,
         filled: true,
       ),
       keyboardType: TextInputType.number,

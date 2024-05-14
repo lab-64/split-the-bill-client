@@ -56,27 +56,29 @@ class _EditItemState extends State<EditItem> {
           children: [
             Expanded(
               child: Padding(
-                  padding: const EdgeInsets.only(right: Sizes.p8),
-                  child: InputTextField(
-                    controller: nameController,
-                    onChanged: (name) => widget.onChanged(
-                        name, priceController.text, contributors),
-                    labelText: 'Item*',
-                    prefixIcon: const Icon(Icons.description),
-                    fillColor: const Color(0xFFEFEFEF),
-                  )),
+                padding: const EdgeInsets.only(right: Sizes.p8),
+                child: InputTextField(
+                  controller: nameController,
+                  onChanged: (name) => widget.onChanged(
+                      name, priceController.text, contributors),
+                  labelText: 'Item*',
+                  prefixIcon: const Icon(Icons.description),
+                  fillColor: const Color(0xFFEFEFEF),
+                ),
+              ),
             ),
             Expanded(
               child: Padding(
-                  padding: const EdgeInsets.only(left: Sizes.p8),
-                  child: PriceTextField(
-                    controller: priceController,
-                    onChanged: (price) => widget.onChanged(
-                        nameController.text, price, contributors),
-                    labelText: "Price*",
-                    prefixIcon: const Icon(Icons.attach_money),
-                    fillColor: const Color(0xFFEFEFEF),
-                  )),
+                padding: const EdgeInsets.only(left: Sizes.p8),
+                child: PriceTextField(
+                  controller: priceController,
+                  onChanged: (price) => widget.onChanged(
+                      nameController.text, price, contributors),
+                  labelText: "Price*",
+                  prefixIcon: const Icon(Icons.attach_money),
+                  fillColor: const Color(0xFFEFEFEF),
+                ),
+              ),
             ),
           ],
         ),
