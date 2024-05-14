@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/auth/user.dart';
-import 'package:split_the_bill/constants/app_sizes.dart';
+import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/bill/bill.dart';
 import 'package:split_the_bill/domain/bill/item.dart';
 import 'package:split_the_bill/domain/group/group.dart';
@@ -51,7 +51,6 @@ class _EditBillState extends ConsumerState<EditBill> {
       child: Column(
         children: [
           EditBillHeader(
-            ref: ref,
             dateController: _dateController,
             nameController: _nameController,
           ),

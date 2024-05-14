@@ -4,20 +4,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../shared/components/input_text_field.dart';
 import 'controllers.dart';
 
-class EditBillHeader extends StatelessWidget {
+class EditBillHeader extends ConsumerWidget {
   final TextEditingController dateController;
   final TextEditingController nameController;
-  final WidgetRef ref;
 
   const EditBillHeader({
     super.key,
     required this.dateController,
     required this.nameController,
-    required this.ref,
   });
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Row(
       children: [
         Expanded(
@@ -25,10 +23,10 @@ class EditBillHeader extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: InputTextField(
               controller: nameController,
-              labelText: 'Name*',
+              labelText: 'Name',
               prefixIcon: const Icon(Icons.description),
               onChanged: (name) =>
-                  ref.read(editBillControllerProvider.notifier).name = name,
+                  ref.read(editBillControllerProvider.notifier).setName(name),
             ),
           ),
         ),
@@ -38,12 +36,9 @@ class EditBillHeader extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: InputTextField(
               controller: dateController,
-              labelText: 'Date*',
+              labelText: 'Date',
               prefixIcon: const Icon(Icons.date_range),
-              onTap: () => _selectDate(context),
-              onChanged: (date) => ref
-                  .read(editBillControllerProvider.notifier)
-                  .date = DateTime.parse(date),
+              onTap: () => _selectDate(context, ref),
               readOnly: true,
             ),
           ),
@@ -52,7 +47,7 @@ class EditBillHeader extends StatelessWidget {
     );
   }
 
-  Future<void> _selectDate(BuildContext context) async {
+  Future<void> _selectDate(BuildContext context, WidgetRef ref) async {
     showDatePicker(
         context: context,
         initialDate: DateTime.now(),
@@ -74,6 +69,7 @@ class EditBillHeader extends StatelessWidget {
         }).then((selectedDate) {
       if (selectedDate != null) {
         dateController.text = selectedDate.toString();
+        ref.read(editBillControllerProvider.notifier).setDate(selectedDate);
       }
     });
   }

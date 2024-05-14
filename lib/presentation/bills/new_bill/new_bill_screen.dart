@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:split_the_bill/constants/app_sizes.dart';
+import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/bill/states/bill_state.dart';
 import 'package:split_the_bill/domain/group/states/group_state.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/controllers.dart';
@@ -27,7 +27,8 @@ class NewBillScreen extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
-                onPressed: () => _addBill(ref, context),
+                onPressed: () => _addBill(ref, context)
+                    .then((_) => _onAddBillSuccess(ref, context)),
                 child: const Row(
                   children: [
                     Icon(
@@ -58,17 +59,7 @@ class NewBillScreen extends ConsumerWidget {
   }
 
   Future<void> _addBill(WidgetRef ref, BuildContext context) async {
-    final items = ref.read(itemsProvider(billId));
-    for (var item in items) {
-      if(item.name == "" || item.price == 0.0){
-        showErrorSnackBar(context, "Please give all items a name and a price other than 0.0€!");
-        return;
-      }
-    }
-    return await ref
-        .read(editBillControllerProvider.notifier)
-        .addBill(groupId)
-        .then((_) => _onAddBillSuccess(ref, context));
+    return await ref.read(editBillControllerProvider.notifier).addBill(groupId);
   }
 
   void _onAddBillSuccess(WidgetRef ref, BuildContext context) {

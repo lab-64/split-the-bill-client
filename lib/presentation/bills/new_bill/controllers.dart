@@ -10,14 +10,18 @@ part 'controllers.g.dart';
 
 @Riverpod(keepAlive: true)
 class EditBillController extends _$EditBillController {
-  late String name;
-  late DateTime date;
+  late String _name;
+  late DateTime _date;
 
   @override
   FutureOr<void> build() async {
-    name = '';
-    date = DateTime.now();
+    _name = '';
+    _date = DateTime.now();
   }
+
+  void setName(String name) => _name = name;
+
+  void setDate(DateTime date) => _date = date;
 
   Future<void> addBill(String groupId) async {
     state = const AsyncLoading();
@@ -26,22 +30,26 @@ class EditBillController extends _$EditBillController {
 
     final bill = Bill(
       id: '',
-      name: name == ''? items.first.name : name,
+      name: _name == '' ? items.first.name : _name,
       groupId: groupId,
       owner: user,
-      date: date,
+      date: _date,
       items: items,
       balance: {},
       isViewed: true,
     );
 
-    if (bill.name.isEmpty) {
-      state =
-          AsyncError("Please give the first item a name", StackTrace.current);
-    } else {
-      final billsState = ref.read(billsStateProvider().notifier);
-      state = await AsyncValue.guard(() => billsState.create(bill));
+    for (var item in bill.items) {
+      if (item.name == "" || item.price == 0.0) {
+        state = AsyncError(
+            "Please give all items a name and a price other than 0.0€!",
+            StackTrace.current);
+        return;
+      }
     }
+
+    final billsState = ref.read(billsStateProvider().notifier);
+    state = await AsyncValue.guard(() => billsState.create(bill));
   }
 
   Future<void> editBill(Bill bill, List<Item> items) async {

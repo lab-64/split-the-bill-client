@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:split_the_bill/constants/app_sizes.dart';
+import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/bill/item.dart';
 import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 

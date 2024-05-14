@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:split_the_bill/constants/app_sizes.dart';
+import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/presentation/home/home_app_bar.dart';
 import 'package:split_the_bill/presentation/home/home_balance_card.dart';
 import 'package:split_the_bill/presentation/shared/components/headline.dart';

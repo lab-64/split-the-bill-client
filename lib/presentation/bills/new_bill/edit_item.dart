@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:split_the_bill/auth/user.dart';
-import 'package:split_the_bill/constants/app_sizes.dart';
+import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/bill/item.dart';
 import 'package:split_the_bill/domain/group/group.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/group_member_list.dart';
@@ -63,7 +63,7 @@ class _EditItemState extends State<EditItem> {
                       name, priceController.text, contributors),
                   labelText: 'Item*',
                   prefixIcon: const Icon(Icons.description),
-                  fillColor: const Color(0xFFEFEFEF),
+                  fillColor: backgroundGrey,
                 ),
               ),
             ),
@@ -76,7 +76,7 @@ class _EditItemState extends State<EditItem> {
                       nameController.text, price, contributors),
                   labelText: "Price*",
                   prefixIcon: const Icon(Icons.attach_money),
-                  fillColor: const Color(0xFFEFEFEF),
+                  fillColor: backgroundGrey,
                 ),
               ),
             ),
