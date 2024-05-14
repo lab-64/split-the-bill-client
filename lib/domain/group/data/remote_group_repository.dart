@@ -35,6 +35,15 @@ class RemoteGroupRepository extends GroupRepository {
       );
 
   @override
+  Future<Group> edit(Group group) {
+    return client.put(
+      uri: api.editGroup(group.id),
+      body: group.toMap(),
+      builder: (data) => Group.fromMap(data),
+    );
+  }
+
+  @override
   Future<void> delete(String groupId) => client.delete(
         uri: api.deleteGroup(groupId),
       );

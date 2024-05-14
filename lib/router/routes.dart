@@ -5,9 +5,9 @@ import 'package:split_the_bill/presentation/bills/bills/bills_screen.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/group_selection_screen.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/new_bill_screen.dart';
 import 'package:split_the_bill/presentation/bills/unseen_bill/unseen_bill_screen.dart';
+import 'package:split_the_bill/presentation/groups/edit_group/edit_group_screen.dart';
 import 'package:split_the_bill/presentation/groups/group/group_screen.dart';
 import 'package:split_the_bill/presentation/groups/groups/groups_screen.dart';
-import 'package:split_the_bill/presentation/groups/new_group/new_group_screen.dart';
 import 'package:split_the_bill/presentation/home/home_screen.dart';
 import 'package:split_the_bill/presentation/on_boarding/register.dart';
 import 'package:split_the_bill/presentation/on_boarding/sign_in_screen.dart';
@@ -23,7 +23,7 @@ part 'routes.g.dart';
     TypedGoRoute<GroupsRoute>(
       path: '/groups',
       routes: [
-        TypedGoRoute<NewGroupRoute>(path: 'new'),
+        TypedGoRoute<EditGroupRoute>(path: 'edit/:groupId'),
         TypedGoRoute<GroupRoute>(path: ':groupId'),
       ],
     ),
@@ -123,12 +123,13 @@ class GroupRoute extends GoRouteData {
   }
 }
 
-class NewGroupRoute extends GoRouteData {
-  const NewGroupRoute();
+class EditGroupRoute extends GoRouteData {
+  const EditGroupRoute({required this.groupId});
+  final String groupId;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return const NewGroupScreen();
+    return EditGroupScreen(groupId: groupId);
   }
 }
 

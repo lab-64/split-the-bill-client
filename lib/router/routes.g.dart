@@ -24,8 +24,8 @@ RouteBase get $navbarShellRoute => ShellRouteData.$route(
           factory: $GroupsRouteExtension._fromState,
           routes: [
             GoRouteData.$route(
-              path: 'new',
-              factory: $NewGroupRouteExtension._fromState,
+              path: 'edit/:groupId',
+              factory: $EditGroupRouteExtension._fromState,
             ),
             GoRouteData.$route(
               path: ':groupId',
@@ -109,11 +109,13 @@ extension $GroupsRouteExtension on GroupsRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $NewGroupRouteExtension on NewGroupRoute {
-  static NewGroupRoute _fromState(GoRouterState state) => const NewGroupRoute();
+extension $EditGroupRouteExtension on EditGroupRoute {
+  static EditGroupRoute _fromState(GoRouterState state) => EditGroupRoute(
+        groupId: state.pathParameters['groupId']!,
+      );
 
   String get location => GoRouteData.$location(
-        '/groups/new',
+        '/groups/edit/${Uri.encodeComponent(groupId)}',
       );
 
   void go(BuildContext context) => context.go(location);
