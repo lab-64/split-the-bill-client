@@ -114,7 +114,6 @@ class GroupsRoute extends GoRouteData {
 
 class GroupRoute extends GoRouteData {
   const GroupRoute({required this.groupId});
-
   final String groupId;
 
   @override
@@ -145,7 +144,6 @@ class BillsRoute extends GoRouteData {
 
 class BillRoute extends GoRouteData {
   const BillRoute({required this.billId});
-
   final String billId;
 
   @override
@@ -165,12 +163,23 @@ class NewBillGroupSelectionRoute extends GoRouteData {
 
 class NewBillRoute extends GoRouteData {
   const NewBillRoute({required this.groupId});
-
   final String groupId;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return NewBillScreen(groupId: groupId);
+  }
+}
+
+/// UNSEEN BILLS
+class UnseenBillRoute extends GoRouteData {
+  const UnseenBillRoute({required this.billId});
+
+  final String billId;
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return UnseenBillScreen(billId: billId);
   }
 }
 
@@ -190,17 +199,5 @@ class EditProfileRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const EditProfileScreen();
-  }
-}
-
-/// UNSEEN BILLS
-class UnseenBillRoute extends GoRouteData {
-  const UnseenBillRoute({required this.billId});
-
-  final String billId;
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return UnseenBillScreen(billId: billId);
   }
 }
