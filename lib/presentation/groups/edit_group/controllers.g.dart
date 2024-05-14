@@ -6,22 +6,22 @@ part of 'controllers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$newGroupControllerHash() =>
-    r'b5f9b22b1d0293f5f81bda3ceefd7bca905e0848';
+String _$editGroupControllerHash() =>
+    r'590ba0509e96f48181c484c2da43b1eafb9752fa';
 
-/// See also [NewGroupController].
-@ProviderFor(NewGroupController)
-final newGroupControllerProvider =
-    AsyncNotifierProvider<NewGroupController, void>.internal(
-  NewGroupController.new,
-  name: r'newGroupControllerProvider',
+/// See also [EditGroupController].
+@ProviderFor(EditGroupController)
+final editGroupControllerProvider =
+    AsyncNotifierProvider<EditGroupController, void>.internal(
+  EditGroupController.new,
+  name: r'editGroupControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
       ? null
-      : _$newGroupControllerHash,
+      : _$editGroupControllerHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$NewGroupController = AsyncNotifier<void>;
+typedef _$EditGroupController = AsyncNotifier<void>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

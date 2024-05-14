@@ -63,9 +63,8 @@ class GroupScreen extends ConsumerWidget {
                 PopupMenuButton(
                   itemBuilder: (context) => [
                     PopupMenuItem(
-                      onTap: () {
-                        showNotImplementedSnackBar(context);
-                      },
+                      onTap: () =>
+                          EditGroupRoute(groupId: groupId).push(context),
                       child: const Row(
                         children: [
                           Icon(
