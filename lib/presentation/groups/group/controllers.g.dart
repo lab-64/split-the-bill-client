@@ -7,7 +7,7 @@ part of 'controllers.dart';
 // **************************************************************************
 
 String _$groupBillsControllerHash() =>
-    r'9a701b00519a9d66e2a9008292b619893f67edb1';
+    r'c0fff0a5b749ad193b377558afa44b439c485249';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -31,7 +31,7 @@ class _SystemHash {
 }
 
 abstract class _$GroupBillsController
-    extends BuildlessAsyncNotifier<List<Bill>> {
+    extends BuildlessAutoDisposeAsyncNotifier<List<Bill>> {
   late final String groupId;
 
   FutureOr<List<Bill>> build(
@@ -82,8 +82,8 @@ class GroupBillsControllerFamily extends Family<AsyncValue<List<Bill>>> {
 }
 
 /// See also [GroupBillsController].
-class GroupBillsControllerProvider
-    extends AsyncNotifierProviderImpl<GroupBillsController, List<Bill>> {
+class GroupBillsControllerProvider extends AutoDisposeAsyncNotifierProviderImpl<
+    GroupBillsController, List<Bill>> {
   /// See also [GroupBillsController].
   GroupBillsControllerProvider(
     String groupId,
@@ -139,7 +139,7 @@ class GroupBillsControllerProvider
   }
 
   @override
-  AsyncNotifierProviderElement<GroupBillsController, List<Bill>>
+  AutoDisposeAsyncNotifierProviderElement<GroupBillsController, List<Bill>>
       createElement() {
     return _GroupBillsControllerProviderElement(this);
   }
@@ -158,14 +158,15 @@ class GroupBillsControllerProvider
   }
 }
 
-mixin GroupBillsControllerRef on AsyncNotifierProviderRef<List<Bill>> {
+mixin GroupBillsControllerRef
+    on AutoDisposeAsyncNotifierProviderRef<List<Bill>> {
   /// The parameter `groupId` of this provider.
   String get groupId;
 }
 
 class _GroupBillsControllerProviderElement
-    extends AsyncNotifierProviderElement<GroupBillsController, List<Bill>>
-    with GroupBillsControllerRef {
+    extends AutoDisposeAsyncNotifierProviderElement<GroupBillsController,
+        List<Bill>> with GroupBillsControllerRef {
   _GroupBillsControllerProviderElement(super.provider);
 
   @override
