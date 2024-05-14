@@ -6,7 +6,7 @@ part of 'groups_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$groupsStateHash() => r'669bc5f3204a36edcd7f025273a69f9e18139b2f';
+String _$groupsStateHash() => r'cb66a56a0505b37f18aa6148498d3a3417731e07';
 
 /// See also [GroupsState].
 @ProviderFor(GroupsState)

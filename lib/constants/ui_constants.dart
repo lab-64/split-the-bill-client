@@ -34,3 +34,6 @@ const gapH24 = SizedBox(height: Sizes.p24);
 const gapH32 = SizedBox(height: Sizes.p32);
 const gapH48 = SizedBox(height: Sizes.p48);
 const gapH64 = SizedBox(height: Sizes.p64);
+
+/// Colors
+const backgroundGrey = Color(0xFFEFEFEF);

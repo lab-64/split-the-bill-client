@@ -7,7 +7,7 @@ part of 'controllers.dart';
 // **************************************************************************
 
 String _$editBillControllerHash() =>
-    r'51136516f8e64cd9efa9bbda6ccc8c81be9a0444';
+    r'e6182916e2769ee2b1aaa0c8757f6e7727ebeb51';
 
 /// See also [EditBillController].
 @ProviderFor(EditBillController)
@@ -23,7 +23,7 @@ final editBillControllerProvider =
 );
 
 typedef _$EditBillController = AsyncNotifier<void>;
-String _$itemsHash() => r'631059c561a772ade5663d18bc7f1a738add4037';
+String _$itemsHash() => r'4ab865c471ac5db65e4ae063a91e238907b9aaf0';
 
 /// Copied from Dart SDK
 class _SystemHash {

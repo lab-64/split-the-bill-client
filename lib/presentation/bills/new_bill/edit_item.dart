@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:split_the_bill/auth/user.dart';
-import 'package:split_the_bill/constants/app_sizes.dart';
+import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/bill/item.dart';
 import 'package:split_the_bill/domain/group/group.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/group_member_list.dart';
@@ -56,25 +56,29 @@ class _EditItemState extends State<EditItem> {
           children: [
             Expanded(
               child: Padding(
-                  padding: const EdgeInsets.only(right: Sizes.p8),
-                  child: InputTextField(
-                    controller: nameController,
-                    onChanged: (name) => widget.onChanged(
-                        name, priceController.text, contributors),
-                    labelText: 'Name*',
-                    prefixIcon: const Icon(Icons.description),
-                  )),
+                padding: const EdgeInsets.only(right: Sizes.p8),
+                child: InputTextField(
+                  controller: nameController,
+                  onChanged: (name) => widget.onChanged(
+                      name, priceController.text, contributors),
+                  labelText: 'Item*',
+                  prefixIcon: const Icon(Icons.description),
+                  fillColor: backgroundGrey,
+                ),
+              ),
             ),
             Expanded(
               child: Padding(
-                  padding: const EdgeInsets.only(left: Sizes.p8),
-                  child: PriceTextField(
-                    controller: priceController,
-                    onChanged: (price) => widget.onChanged(
-                        nameController.text, price, contributors),
-                    labelText: "Price*",
-                    prefixIcon: const Icon(Icons.attach_money),
-                  )),
+                padding: const EdgeInsets.only(left: Sizes.p8),
+                child: PriceTextField(
+                  controller: priceController,
+                  onChanged: (price) => widget.onChanged(
+                      nameController.text, price, contributors),
+                  labelText: "Price*",
+                  prefixIcon: const Icon(Icons.attach_money),
+                  fillColor: backgroundGrey,
+                ),
+              ),
             ),
           ],
         ),

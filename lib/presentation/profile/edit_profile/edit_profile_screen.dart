@@ -4,7 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/auth/user.dart';
-import 'package:split_the_bill/constants/app_sizes.dart';
+import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/presentation/profile/edit_profile/controllers.dart';
 import 'package:split_the_bill/presentation/profile/edit_profile/edit_image_modal.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
