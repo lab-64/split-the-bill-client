@@ -36,4 +36,8 @@ class GroupAPI {
       queryParameters: parametersBuilder?.call(),
     );
   }
+
+  static String buildInvitationSuffix(String groupId) {
+    return '$_apiPath/invitation/$groupId/accept';
+  }
 }
