@@ -7,6 +7,10 @@ class GroupAPI {
         endpoint: "/",
       );
 
+  Uri editGroup(String groupId) => _buildUri(
+        endpoint: "/$groupId",
+      );
+
   Uri getGroup(String groupId) => _buildUri(
         endpoint: "/$groupId",
       );

@@ -7,7 +7,7 @@ part of 'controllers.dart';
 // **************************************************************************
 
 String _$editBillControllerHash() =>
-    r'51136516f8e64cd9efa9bbda6ccc8c81be9a0444';
+    r'e6182916e2769ee2b1aaa0c8757f6e7727ebeb51';
 
 /// See also [EditBillController].
 @ProviderFor(EditBillController)
@@ -23,7 +23,7 @@ final editBillControllerProvider =
 );
 
 typedef _$EditBillController = AsyncNotifier<void>;
-String _$itemsHash() => r'a5356a215354c66012beb7137801597b149c2ae8';
+String _$itemsHash() => r'4ab865c471ac5db65e4ae063a91e238907b9aaf0';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -183,5 +183,22 @@ class _ItemsProviderElement
   @override
   String get billId => (origin as ItemsProvider).billId;
 }
+
+String _$billRecognitionHash() => r'691abd520ab310e35f38668c3fd91c570500fe34';
+
+/// See also [BillRecognition].
+@ProviderFor(BillRecognition)
+final billRecognitionProvider =
+    AutoDisposeAsyncNotifierProvider<BillRecognition, BillSuggestion>.internal(
+  BillRecognition.new,
+  name: r'billRecognitionProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$billRecognitionHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$BillRecognition = AutoDisposeAsyncNotifier<BillSuggestion>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

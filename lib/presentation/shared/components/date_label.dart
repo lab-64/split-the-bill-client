@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:split_the_bill/constants/app_sizes.dart';
+import 'package:split_the_bill/constants/ui_constants.dart';
 
 class DateLabel extends StatelessWidget {
   final DateTime date;

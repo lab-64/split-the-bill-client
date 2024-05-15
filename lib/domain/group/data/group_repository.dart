@@ -13,6 +13,8 @@ abstract class GroupRepository {
 
   Future<Group> create(Group group);
 
+  Future<Group> edit(Group group);
+
   Future<void> delete(String groupId);
 }
 
