@@ -49,87 +49,91 @@ class GroupScreen extends ConsumerWidget {
 
     return DefaultTabController(
       length: 2,
-      child: AsyncValueWidget(
-        value: group,
-        data: (group) => Scaffold(
-          floatingActionButton: ActionButton(
-            icon: Icons.add,
-            onPressed: () => NewBillRoute(groupId: group.id).push(context),
-          ),
-          appBar: AppBar(
-            title: Text(group.name),
-            actions: [
-              if (_isGroupOwner(ref))
-                PopupMenuButton(
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      onTap: () =>
-                          EditGroupRoute(groupId: groupId).push(context),
-                      child: const Row(
-                        children: [
-                          Icon(
-                            Icons.edit,
-                            color: Colors.blueAccent,
-                          ),
-                          gapW16,
-                          Text("Edit")
-                        ],
-                      ),
-                    ),
-                    PopupMenuItem(
-                      child: const Row(
-                        children: [
-                          Icon(
-                            Icons.delete,
-                            color: Colors.red,
-                          ),
-                          gapW16,
-                          Text("Delete"),
-                        ],
-                      ),
-                      onTap: () => showConfirmationDialog(
-                        context: context,
-                        title: "Are you sure, you want to delete this group?",
-                        content:
-                            "This will delete the group for you and all group members!",
-                        onConfirm: () => _deleteGroup(ref).then(
-                          (_) => _onSuccess(context, ref, false),
+      child: Scaffold(
+        floatingActionButton: ActionButton(
+          icon: Icons.add,
+          onPressed: () => NewBillRoute(groupId: groupId).push(context),
+        ),
+        appBar: AppBar(
+          title: Text(group.requireValue.name),
+          actions: [
+            if (_isGroupOwner(ref))
+              PopupMenuButton(
+                itemBuilder: (context) => [
+                  PopupMenuItem(
+                    onTap: () => EditGroupRoute(groupId: groupId).push(context),
+                    child: const Row(
+                      children: [
+                        Icon(
+                          Icons.edit,
+                          color: Colors.blueAccent,
                         ),
+                        gapW16,
+                        Text("Edit")
+                      ],
+                    ),
+                  ),
+                  PopupMenuItem(
+                    child: const Row(
+                      children: [
+                        Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
+                        gapW16,
+                        Text("Delete"),
+                      ],
+                    ),
+                    onTap: () => showConfirmationDialog(
+                      context: context,
+                      title: "Are you sure, you want to delete this group?",
+                      content:
+                          "This will delete the group for you and all group members!",
+                      onConfirm: () => _deleteGroup(ref).then(
+                        (_) => _onSuccess(context, ref, false),
                       ),
                     ),
-                  ],
-                  position: PopupMenuPosition.under,
-                )
-            ],
-            bottom: const TabBar(
-              tabs: [
-                Tab(
-                  icon: Icon(Icons.receipt_long),
-                ),
-                Tab(
-                  icon: Icon(Icons.people),
-                ),
-                /* TODO: Implement GroupHistory in backend
+                  ),
+                ],
+                position: PopupMenuPosition.under,
+              )
+          ],
+          bottom: const TabBar(
+            tabs: [
+              Tab(
+                icon: Icon(Icons.receipt_long),
+              ),
+              Tab(
+                icon: Icon(Icons.people),
+              ),
+              /* TODO: Implement GroupHistory in backend
                 Tab(
                   icon: Icon(Icons.history),
                 ),
                 */
-              ],
-            ),
+            ],
           ),
-          body: TabBarView(
+        ),
+        body: AsyncValueWidget(
+          value: group,
+          data: (group) => TabBarView(
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: Sizes.p24),
-                child: CustomScrollView(
-                  slivers: [
-                    const SliverToBoxAdapter(child: gapH16),
-                    BillsList(
-                      scrollController: scrollController,
-                      groupId: groupId,
-                      showGroup: false,
-                    ),
-                  ],
+                child: RefreshIndicator(
+                  onRefresh: () =>
+                      ref.refresh(groupStateProvider(groupId).future),
+                  child: CustomScrollView(
+                    slivers: [
+                      const SliverToBoxAdapter(child: gapH16),
+                      SliverToBoxAdapter(
+                        child: BillsList(
+                          scrollController: scrollController,
+                          bills: group.bills,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               GroupMembers(members: group.members),

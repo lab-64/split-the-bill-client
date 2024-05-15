@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
+import 'package:split_the_bill/domain/group/states/groups_state.dart';
 import 'package:split_the_bill/presentation/shared/groups/groups_list.dart';
 import 'package:split_the_bill/router/routes.dart';
 
-class GroupsScreen extends StatelessWidget {
+class GroupsScreen extends ConsumerWidget {
   const GroupsScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final ScrollController scrollController = ScrollController();
 
     return Scaffold(
@@ -22,11 +24,14 @@ class GroupsScreen extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Sizes.p24),
-        child: CustomScrollView(
-          slivers: [
-            const SliverToBoxAdapter(child: gapH16),
-            GroupsList(scrollController: scrollController),
-          ],
+        child: RefreshIndicator(
+          onRefresh: () => ref.refresh(groupsStateProvider.future),
+          child: CustomScrollView(
+            slivers: [
+              const SliverToBoxAdapter(child: gapH16),
+              GroupsList(scrollController: scrollController),
+            ],
+          ),
         ),
       ),
     );
