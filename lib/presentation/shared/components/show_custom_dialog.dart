@@ -7,7 +7,6 @@ void showCustomDialog({
 }) {
   showDialog<void>(
     context: context,
-    barrierDismissible: false,
     builder: (BuildContext context) {
       return AlertDialog(
         title: Center(

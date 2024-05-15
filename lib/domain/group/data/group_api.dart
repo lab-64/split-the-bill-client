@@ -24,6 +24,10 @@ class GroupAPI {
         endpoint: "/$groupId",
       );
 
+  Uri acceptInvitation(String invitationId) => _buildUri(
+        endpoint: "/invitation/$invitationId/accept",
+      );
+
   Uri _buildUri({
     required String endpoint,
     Map<String, dynamic> Function()? parametersBuilder,
@@ -35,9 +39,5 @@ class GroupAPI {
       path: "$_apiPath$endpoint",
       queryParameters: parametersBuilder?.call(),
     );
-  }
-
-  static String buildInvitationSuffix(String groupId) {
-    return '$_apiPath/invitation/$groupId/accept';
   }
 }

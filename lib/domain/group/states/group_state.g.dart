@@ -6,7 +6,7 @@ part of 'group_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$groupStateHash() => r'e993d3ca721de3064a6805ecb88555fd1837adb2';
+String _$groupStateHash() => r'6eb0fc277872e6cc67f9ad9b2c99c2425980238d';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,7 +29,7 @@ class _SystemHash {
   }
 }
 
-abstract class _$GroupState extends BuildlessAsyncNotifier<Group> {
+abstract class _$GroupState extends BuildlessAutoDisposeAsyncNotifier<Group> {
   late final String groupId;
 
   FutureOr<Group> build(
@@ -80,7 +80,8 @@ class GroupStateFamily extends Family<AsyncValue<Group>> {
 }
 
 /// See also [GroupState].
-class GroupStateProvider extends AsyncNotifierProviderImpl<GroupState, Group> {
+class GroupStateProvider
+    extends AutoDisposeAsyncNotifierProviderImpl<GroupState, Group> {
   /// See also [GroupState].
   GroupStateProvider(
     String groupId,
@@ -136,7 +137,7 @@ class GroupStateProvider extends AsyncNotifierProviderImpl<GroupState, Group> {
   }
 
   @override
-  AsyncNotifierProviderElement<GroupState, Group> createElement() {
+  AutoDisposeAsyncNotifierProviderElement<GroupState, Group> createElement() {
     return _GroupStateProviderElement(this);
   }
 
@@ -154,13 +155,14 @@ class GroupStateProvider extends AsyncNotifierProviderImpl<GroupState, Group> {
   }
 }
 
-mixin GroupStateRef on AsyncNotifierProviderRef<Group> {
+mixin GroupStateRef on AutoDisposeAsyncNotifierProviderRef<Group> {
   /// The parameter `groupId` of this provider.
   String get groupId;
 }
 
 class _GroupStateProviderElement
-    extends AsyncNotifierProviderElement<GroupState, Group> with GroupStateRef {
+    extends AutoDisposeAsyncNotifierProviderElement<GroupState, Group>
+    with GroupStateRef {
   _GroupStateProviderElement(super.provider);
 
   @override

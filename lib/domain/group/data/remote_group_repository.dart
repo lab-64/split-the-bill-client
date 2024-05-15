@@ -47,4 +47,13 @@ class RemoteGroupRepository extends GroupRepository {
   Future<void> delete(String groupId) => client.delete(
         uri: api.deleteGroup(groupId),
       );
+
+  @override
+  Future<void> acceptInvitation(String invitationId) {
+    return client.post(
+      uri: api.acceptInvitation(invitationId),
+      body: {},
+      builder: (_) {},
+    );
+  }
 }

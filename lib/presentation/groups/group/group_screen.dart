@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:split_the_bill/constants/constants.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
-import 'package:split_the_bill/domain/group/data/group_api.dart';
 import 'package:split_the_bill/domain/group/states/group_state.dart';
 import 'package:split_the_bill/domain/group/states/groups_state.dart';
 import 'package:split_the_bill/infrastructure/async_value_ui.dart';
@@ -40,7 +38,7 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
   void _shareInvitation(BuildContext context) {
     Share.share(
       "Join my group on Split The Bill! "
-      "\n${Constants.baseScheme}://${Constants.baseApiUrl}:${Constants.basePort}${GroupAPI.buildInvitationSuffix(widget.groupId)}",
+      "\nInvitation ID: ${widget.groupId}",
     );
   }
 

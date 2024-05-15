@@ -41,4 +41,12 @@ class GroupsState extends _$GroupsState {
     // Wait for the ref to be computed
     await future;
   }
+
+  Future<void> acceptInvitation(String invitationId) async {
+    await _groupRepository.acceptInvitation(invitationId);
+    ref.invalidateSelf();
+
+    // Wait for the ref to be computed
+    await future;
+  }
 }

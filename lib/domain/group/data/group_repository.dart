@@ -16,6 +16,8 @@ abstract class GroupRepository {
   Future<Group> edit(Group group);
 
   Future<void> delete(String groupId);
+
+  Future<void> acceptInvitation(String invitationId);
 }
 
 @Riverpod(keepAlive: true)
