@@ -35,10 +35,10 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
     DefaultTabController.of(context).addListener(handleTabChange);
   }
 
-  void _shareInvitation(BuildContext context) {
+  void _shareInvitation(BuildContext context, String invitationID) {
     Share.share(
       "Join my group on Split The Bill! "
-      "\nInvitation ID: ${widget.groupId}",
+      "\nInvitation ID: $invitationID",
     );
   }
 
@@ -81,7 +81,7 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
               icon: _currentIndex == 0 ? Icons.add : Icons.person_add,
               onPressed: () => _currentIndex == 0
                   ? NewBillRoute(groupId: group.id).push(context)
-                  : _shareInvitation(context),
+                  : _shareInvitation(context, group.invitationID),
             ),
             appBar: AppBar(
               title: Text(group.name),
