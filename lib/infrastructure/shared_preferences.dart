@@ -3,7 +3,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 part 'shared_preferences.g.dart';
 
-const String sharedAuthCookie = 'authCookie';
+const String _authCookieKey = 'AUTH_COOKIE';
+const String _userKey = 'USER';
+const String _currentPage = 'CURRENT_PAGE';
 
 @Riverpod(keepAlive: true)
 SharedPreferences sharedPreferences(SharedPreferencesRef ref) {
@@ -24,10 +26,26 @@ class SharedUtility {
   final SharedPreferences sharedPreferences;
 
   String getAuthCookie() {
-    return sharedPreferences.getString(sharedAuthCookie) ?? '';
+    return sharedPreferences.getString(_authCookieKey) ?? '';
   }
 
   void setAuthCookie(String authCookie) {
-    sharedPreferences.setString(sharedAuthCookie, authCookie);
+    sharedPreferences.setString(_authCookieKey, authCookie);
+  }
+
+  String getUser() {
+    return sharedPreferences.getString(_userKey) ?? '';
+  }
+
+  void setUser(String user) {
+    sharedPreferences.setString(_userKey, user);
+  }
+
+  String getCurrentPage() {
+    return sharedPreferences.getString(_userKey) ?? '';
+  }
+
+  void setCurrentPage(String user) {
+    sharedPreferences.setString(_userKey, user);
   }
 }

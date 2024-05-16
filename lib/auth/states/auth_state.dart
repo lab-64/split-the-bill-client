@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/auth/data/auth_repository.dart';
@@ -10,9 +12,20 @@ part 'auth_state.g.dart';
 class AuthState extends _$AuthState {
   AuthRepository get _authRepository => ref.read(authRepositoryProvider);
 
+  // isLoggedIn = user set
+  // isAuth = cookie from last response = cookie in storage
+  // Session has to be deleted, i can read from shared preferences instead
+
+  bool get isAuth => state.requireValue.id.isNotEmpty;
+
   @override
   FutureOr<User> build() {
-    print(ref.read(sharedUtilityProvider).getAuthCookie());
+    final String userString = ref.read(sharedUtilityProvider).getUser();
+    print("BUILD: $userString");
+
+    if (userString.isNotEmpty) {
+      return User.fromMap(json.decode(userString));
+    }
     return const User(id: "", email: "", username: "", profileImgPath: "");
   }
 
@@ -21,6 +34,17 @@ class AuthState extends _$AuthState {
     required String password,
   }) async {
     state = const AsyncLoading();
+
+    _authRepository.login(email, password).then((user) {
+      // that'S ok i guess
+      final String userString = json.encode(user.toMap());
+      ref.read(sharedUtilityProvider).setUser(userString);
+
+      state = AsyncData(user);
+    }).catchError((error) {
+      state = AsyncError(error, StackTrace.current);
+    });
+
     state =
         await AsyncValue.guard(() => _authRepository.login(email, password));
   }

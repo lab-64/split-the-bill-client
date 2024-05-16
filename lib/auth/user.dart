@@ -76,6 +76,7 @@ class User {
       'id': id,
       'email': email,
       'username': username,
+      'profileImgPath': profileImgPath,
     };
   }
 
