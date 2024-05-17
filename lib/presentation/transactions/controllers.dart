@@ -5,7 +5,7 @@ import '../../domain/group/group_transaction.dart';
 
 part 'controllers.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class TransactionsController extends _$TransactionsController {
   @override
   Future<List<GroupTransaction>> build() async {

@@ -7,11 +7,11 @@ part of 'controllers.dart';
 // **************************************************************************
 
 String _$transactionsControllerHash() =>
-    r'86ea64fd762ec8304a6335089f6633ce845705f3';
+    r'63f54cfc718b4351626393919242f98b40c80976';
 
 /// See also [TransactionsController].
 @ProviderFor(TransactionsController)
-final transactionsControllerProvider = AsyncNotifierProvider<
+final transactionsControllerProvider = AutoDisposeAsyncNotifierProvider<
     TransactionsController, List<GroupTransaction>>.internal(
   TransactionsController.new,
   name: r'transactionsControllerProvider',
@@ -22,6 +22,7 @@ final transactionsControllerProvider = AsyncNotifierProvider<
   allTransitiveDependencies: null,
 );
 
-typedef _$TransactionsController = AsyncNotifier<List<GroupTransaction>>;
+typedef _$TransactionsController
+    = AutoDisposeAsyncNotifier<List<GroupTransaction>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

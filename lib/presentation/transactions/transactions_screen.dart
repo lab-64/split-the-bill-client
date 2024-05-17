@@ -4,13 +4,13 @@ import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/transactions/controllers.dart';
 import 'package:split_the_bill/presentation/transactions/transactions_list.dart';
 
-
 class TransactionScreen extends ConsumerWidget {
   const TransactionScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final transactions = ref.watch(transactionsControllerProvider);
+    final ScrollController scrollController = ScrollController();
 
     return Scaffold(
       appBar: AppBar(
@@ -22,8 +22,8 @@ class TransactionScreen extends ConsumerWidget {
             child: AsyncValueWidget(
                 value: transactions,
                 data: (transactions) => TransactionsList(
-                      transactions: transactions,
-                    )),
+                    transactions: transactions,
+                    scrollController: scrollController)),
           ),
         ],
       ),

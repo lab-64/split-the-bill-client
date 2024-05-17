@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/domain/group/transaction.dart';
 import 'package:split_the_bill/presentation/shared/components/ellipse_text.dart';
 import 'package:split_the_bill/presentation/shared/extensions/currency_formatter.dart';
-import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
+import 'package:split_the_bill/presentation/shared/components/rounded_box.dart';
 
 import '../../auth/states/auth_state.dart';
 import '../../auth/user.dart';
@@ -26,26 +25,17 @@ class TransactionItem extends ConsumerWidget {
         : transaction.creditor == user
             ? 1
             : 2;
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Container(
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.all(
-            Radius.circular(12.0),
-          ),
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ListTile(
-            leading: _buildLeadingIcon(userType),
-            title: _buildTransactionTitle(transaction.creditor),
-            subtitle: _buildTransactionSubTitle(transaction.debtor),
-            trailing: _buildTrailingAmount(transaction.amount, userType),
-          ),
-        ),
-      ),
-    );
+    return RoundedBox(
+        firstPadding:
+            const EdgeInsets.only(left: 24, right: 24, top: 4, bottom: 4),
+        secondPadding: const EdgeInsets.all(8.0),
+        backgroundColor: Colors.white,
+        child: ListTile(
+          leading: _buildLeadingIcon(userType),
+          title: _buildTransactionTitle(transaction.creditor),
+          subtitle: _buildTransactionSubTitle(transaction.debtor),
+          trailing: _buildTrailingAmount(transaction.amount, userType),
+        ));
   }
 }
 

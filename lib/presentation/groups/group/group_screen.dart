@@ -37,7 +37,11 @@ class GroupScreen extends ConsumerWidget {
     showSuccessSnackBar(
       context,
       state,
-      useCase == 0 ? 'Group updated' : useCase == 1? 'Group reset' : 'Group deleted',
+      useCase == 0
+          ? 'Group updated'
+          : useCase == 1
+              ? 'Group reset'
+              : 'Group deleted',
     );
   }
 
@@ -80,27 +84,29 @@ class GroupScreen extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    PopupMenuItem(
-                      child: const Row(
-                        children: [
-                          Icon(
-                            Icons.autorenew,
-                            color: Colors.orange,
-                          ),
-                          gapW16,
-                          Text("Reset"),
-                        ],
-                      ),
-                      onTap: () => showConfirmationDialog(
-                        context: context,
-                        title: "Are you sure, you want to Reset this group?",
-                        content:
-                            "This will delete all bills for you and all group members!",
-                        onConfirm: () => _resetGroup(ref).then(
-                          (_) => _onSuccess(context, ref, 1),
+                    if (group.bills.isNotEmpty) ...[
+                      PopupMenuItem(
+                        child: const Row(
+                          children: [
+                            Icon(
+                              Icons.autorenew,
+                              color: Colors.orange,
+                            ),
+                            gapW16,
+                            Text("Reset"),
+                          ],
                         ),
-                      ),
-                    ),
+                        onTap: () => showConfirmationDialog(
+                          context: context,
+                          title: "Are you sure, you want to Reset this group?",
+                          content:
+                              "This will delete all bills for you and all group members!",
+                          onConfirm: () => _resetGroup(ref).then(
+                            (_) => _onSuccess(context, ref, 1),
+                          ),
+                        ),
+                      )
+                    ],
                     PopupMenuItem(
                       child: const Row(
                         children: [
