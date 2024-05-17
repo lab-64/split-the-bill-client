@@ -1,6 +1,8 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
+import 'package:split_the_bill/presentation/shared/navigation/expandable_action_button.dart';
 import 'package:split_the_bill/router/routes.dart';
 
 class Navbar extends StatelessWidget {
@@ -10,9 +12,10 @@ class Navbar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: ActionButton(
-        icon: Icons.add,
-        onPressed: () => const NewBillGroupSelectionRoute().push(context),
+      floatingActionButton:
+          ActionButton(
+            icon: Icons.photo_camera,
+            onPressed: () => const CameraRoute().push(context),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: const BottomNavigationBar(),

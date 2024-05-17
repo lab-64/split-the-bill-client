@@ -7,12 +7,10 @@ class CroppingPivot extends StatefulWidget {
     super.key,
     required this.size,
     required this.onDragCallback,
-    required this.onFinishedDragCallback
   });
 
   final double size;
   final Function onDragCallback;
-  final Function onFinishedDragCallback;
 
   @override
   State<StatefulWidget> createState() {
@@ -36,8 +34,8 @@ class _CroppingPivotState extends State<CroppingPivot> {
     return GestureDetector(
       onPanStart: _dragStart,
       onPanUpdate: _dragging,
-      onPanEnd: (_) => _dragEnd(),
-      onPanCancel: _dragEnd,
+      onPanEnd: _dragEnd,
+      onPanCancel: _dragCancel,
       child: Container(
         width: currentSize,
         height: currentSize,
@@ -63,13 +61,17 @@ class _CroppingPivotState extends State<CroppingPivot> {
     }
   }
 
-  void _dragEnd() {
+  void _dragCancel() {
     setState(() {
       activeDrag = false;
       currentSize = widget.size;
     });
 
-    widget.onFinishedDragCallback();
+    // widget.onFinishedDragCallback();
+  }
+
+  void _dragEnd(DragEndDetails details) {
+    _dragCancel();
   }
 
 }

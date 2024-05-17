@@ -1,5 +1,6 @@
 
-import 'dart:developer';
+import 'dart:developer' as dev;
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -8,15 +9,15 @@ import 'package:split_the_bill/presentation/camera/image_cropping/crop_painter.d
 import 'package:split_the_bill/presentation/camera/image_cropping/crop_pivot.dart';
 
 class CroppingRectangle extends StatefulWidget {
-  const CroppingRectangle({
+  CroppingRectangle({
     required this.imgRenderSize,
     required this.imgTrueSize,
-    this.detectedEdges,
+    required this.detectedEdges,
   });
 
   final Size imgRenderSize;
   final Size imgTrueSize;
-  final DetectedRectangle? detectedEdges;
+  DetectedRectangle detectedEdges;
 
   @override
   State<StatefulWidget> createState() {
@@ -40,40 +41,54 @@ class _CroppingRectangleState extends State<CroppingRectangle> {
     left = 0;
     top = 0;
 
-    if (widget.detectedEdges == null) {
-      detectedEdges = DetectedRectangle(
-          topLeft: const Offset(150, 150),
-          topRight: Offset(widget.imgRenderSize.width - 150, 150),
-          bottomLeft: Offset(150, widget.imgRenderSize.height- 150),
-          bottommRight: Offset(widget.imgRenderSize.width - 150, widget.imgRenderSize.height - 150)
-      );
-    }
-    else {
-      detectedEdges = widget.detectedEdges!;
-    }
+    // Offset scalingFactor = Offset(
+    //   widget.imgRenderSize.width / widget.imgTrueSize.width,
+    //   widget.imgRenderSize.height / widget.imgTrueSize.height,
+    // );
+
+    double scalingFactor = min(widget.imgRenderSize.width / widget.imgTrueSize.width,
+      widget.imgRenderSize.height / widget.imgTrueSize.height);
+    dev.log("Scaling Factor: ${scalingFactor}");
+
+    imgRenderWidth = widget.imgTrueSize.width * scalingFactor;
+    left = ((widget.imgRenderSize.width - imgRenderWidth) / 2);
+    imgRenderHeight = widget.imgTrueSize.height * scalingFactor;
+    top = ((widget.imgRenderSize.height - imgRenderHeight) / 2);
+    dev.log("imgRenderWidth: $imgRenderWidth, imgRenderHeight: $imgRenderHeight");
+    dev.log("left: $left, top: $top");
+
+
+    detectedEdges = DetectedRectangle(
+        topLeft: const Offset(0.2, 0.2),
+        topRight: const Offset(0.8, 0.2),
+        bottomLeft: const Offset(0.2, 0.8),
+        bottomRight: const Offset(0.8, 0.8)
+    );
+
 
     pivotPositions = [
       Offset(
-          left + detectedEdges.topLeft.dx,
-          top + detectedEdges.topLeft.dy
+          left + detectedEdges.topLeft.dx * imgRenderWidth,
+          top + detectedEdges.topLeft.dy * imgRenderHeight
       ),
       Offset(
-        left + detectedEdges.topRight.dx,
-        top + detectedEdges.topRight.dy,
+        left + detectedEdges.topRight.dx * imgRenderWidth,
+        top + detectedEdges.topRight.dy * imgRenderHeight,
       ),
       Offset(
-          left + detectedEdges.bottommRight.dx,
-          top + detectedEdges.bottommRight.dy
+          left + detectedEdges.bottomRight.dx * imgRenderWidth,
+          top + detectedEdges.bottomRight.dy * imgRenderHeight
       ),
       Offset(
-          left + detectedEdges.bottomLeft.dx,
-          top + detectedEdges.bottomLeft.dy
+          left + detectedEdges.bottomLeft.dx * imgRenderWidth,
+          top + detectedEdges.bottomLeft.dy * imgRenderHeight
       ),
       Offset(
-          left + detectedEdges.topLeft.dx,
-          top + detectedEdges.topLeft.dy
+          left + detectedEdges.topLeft.dx * imgRenderWidth,
+          top + detectedEdges.topLeft.dy * imgRenderHeight
       ),
     ];
+    dev.log("${pivotPositions[0]}");
 
     super.initState();
   }
@@ -81,25 +96,52 @@ class _CroppingRectangleState extends State<CroppingRectangle> {
   @override
   Widget build(BuildContext context) {
     return Stack(
-      children: [
-        _drawDraggablePivots(),
-        CustomPaint(
-          painter: CroppingPainter(
-            pivots: pivotPositions,
-            color: Colors.blue.shade400,
-          ),
-        ),
-      ],
+          alignment: Alignment.topRight,
+          fit: StackFit.expand,
+          children: [
+            CustomPaint(
+              painter: CroppingPainter(
+                pivots: pivotPositions,
+                color: Colors.blue.shade400,
+              ),
+            ),
+            _drawDraggablePivots(),
+          ],
     );
   }
 
   Widget _drawDraggablePivots() {
-    log("${pivotPositions[0]}");
+    pivotPositions = [
+      Offset(
+          left + detectedEdges.topLeft.dx * imgRenderWidth,
+          top + detectedEdges.topLeft.dy * imgRenderHeight
+      ),
+      Offset(
+        left + detectedEdges.topRight.dx * imgRenderWidth,
+        top + detectedEdges.topRight.dy * imgRenderHeight,
+      ),
+      Offset(
+          left + detectedEdges.bottomRight.dx * imgRenderWidth,
+          top + detectedEdges.bottomRight.dy * imgRenderHeight
+      ),
+      Offset(
+          left + detectedEdges.bottomLeft.dx * imgRenderWidth,
+          top + detectedEdges.bottomLeft.dy * imgRenderHeight
+      ),
+      Offset(
+          left + detectedEdges.topLeft.dx * imgRenderWidth,
+          top + detectedEdges.topLeft.dy * imgRenderHeight
+      ),
+    ];
 
-    return Container(
-      width: widget.imgRenderSize.width,
-      height: widget.imgRenderSize.height,
-      child: Stack(
+    widget.detectedEdges = detectedEdges;
+
+    dev.log("${pivotPositions[0]}");
+
+    return SizedBox(
+        width: widget.imgRenderSize.width,
+        height: widget.imgRenderSize.height,
+        child: Stack(
         children: [
           Positioned(
             left: pivotPositions[0].dx - (pivotSize / 2),
@@ -107,14 +149,10 @@ class _CroppingRectangleState extends State<CroppingRectangle> {
             child: CroppingPivot(
               size: pivotSize,
               onDragCallback: (position) {
-                log("${position}");
                 setState(() {
-                  pivotPositions[0] += position;
-                  pivotPositions[4] += position;
+                  Offset newPos = _applyPositionScaling(position);
+                  detectedEdges.topLeft = _clampPos(detectedEdges.topLeft + newPos);
                 });
-              },
-              onFinishedDragCallback: (_) {
-                setState(() {});
               },
             ),
           ),
@@ -125,11 +163,9 @@ class _CroppingRectangleState extends State<CroppingRectangle> {
               size: pivotSize,
               onDragCallback: (position) {
                 setState(() {
-                  pivotPositions[1] += position;
+                  Offset newPos = _applyPositionScaling(position);
+                  detectedEdges.topRight = _clampPos(detectedEdges.topRight + newPos);
                 });
-              },
-              onFinishedDragCallback: (_) {
-                setState(() {});
               },
             ),
           ),
@@ -140,11 +176,9 @@ class _CroppingRectangleState extends State<CroppingRectangle> {
               size: pivotSize,
               onDragCallback: (position) {
                 setState(() {
-                  pivotPositions[2] += position;
+                  Offset newPos = _applyPositionScaling(position);
+                  detectedEdges.bottomRight = _clampPos(detectedEdges.bottomRight + newPos);
                 });
-              },
-              onFinishedDragCallback: (_) {
-                setState(() {});
               },
             ),
           ),
@@ -155,19 +189,33 @@ class _CroppingRectangleState extends State<CroppingRectangle> {
               size: pivotSize,
               onDragCallback: (position) {
                 setState(() {
-                  pivotPositions[3] += position;
+                  Offset newPos = _applyPositionScaling(position);
+                  detectedEdges.bottomLeft = _clampPos(detectedEdges.bottomLeft + newPos);
                 });
-              },
-              onFinishedDragCallback: (_) {
-                setState(() {});
               },
             ),
           ),
       ],
-      )
+
+    ));
+  }
+
+  Offset _applyPositionScaling(Offset pos) {
+    return Offset(
+      pos.dx / imgRenderWidth,
+      pos.dy / imgRenderHeight
     );
   }
 
+  Offset _clampPos(Offset pos) {
+    double x = pos.dx * imgRenderWidth;
+    double y = pos.dy * imgRenderHeight;
+
+    return Offset(
+      x.clamp(0.0, imgRenderWidth) / imgRenderWidth,
+      y.clamp(0.0, imgRenderHeight) / imgRenderHeight
+    );
+  }
 
 
 }
