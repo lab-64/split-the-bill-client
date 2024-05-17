@@ -4,9 +4,9 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/domain/group/data/group_repository.dart';
 import 'package:split_the_bill/domain/group/group.dart';
-import 'package:split_the_bill/domain/group/states/dummy_transaction_data.dart';
 import 'package:split_the_bill/domain/group/states/group_state.dart';
 
+import '../../../presentation/transactions/controllers.dart';
 import '../group_transaction.dart';
 
 part 'groups_state.g.dart';
@@ -45,19 +45,17 @@ class GroupsState extends _$GroupsState {
     await future;
   }
 
-  Future<List<GroupTransaction>> getAllTransactions() async {
-    return Future.delayed(
-        const Duration(seconds: 1), () => DummyTransactionData().data);
+  Future<void> reset(String groupId) async {
+    await _groupRepository.reset(groupId);
+    ref.invalidateSelf();
+    ref.invalidate(transactionsControllerProvider);
+
+    // Wait for the ref to be computed
+    await future;
   }
-}
 
-@Riverpod(keepAlive: true)
-class TransactionsSate extends _$TransactionsSate {
-
-  @override
-  Future<List<GroupTransaction>> build() {
-    return Future.delayed(const Duration(seconds: 1), () {
-      return DummyTransactionData().data;
-    });
+  Future<List<GroupTransaction>> getAllTransactions() async {
+    final user = ref.watch(authStateProvider).requireValue;
+    return _groupRepository.getAllTransactions(user.id);
   }
 }

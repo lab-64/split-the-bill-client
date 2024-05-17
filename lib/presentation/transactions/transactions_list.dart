@@ -104,8 +104,8 @@ class _TransactionListState extends ConsumerState<TransactionsList> {
                 ),
               ),
             const Divider(),
-            if (transactionsExpanded[i]) ...[
-              TransactionItem(transaction: transactions[i].transactions[0])
+            if (transactionsExpanded[i] && transactions[i].transactions.isNotEmpty) ...[
+              TransactionItem(transaction: transactions[i].transactions[0])//TODO map all items
             ],
           ]
         ],

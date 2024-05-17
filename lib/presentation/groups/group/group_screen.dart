@@ -24,16 +24,20 @@ class GroupScreen extends ConsumerWidget {
     await ref.read(groupsStateProvider.notifier).delete(groupId);
   }
 
+  Future<void> _resetGroup(WidgetRef ref) async {
+    await ref.read(groupsStateProvider.notifier).reset(groupId);
+  }
+
   bool _isGroupOwner(WidgetRef ref) {
     return ref.read(groupStateProvider(groupId).notifier).isGroupOwner();
   }
 
-  void _onSuccess(BuildContext context, WidgetRef ref, bool isEdit) {
+  void _onSuccess(BuildContext context, WidgetRef ref, int useCase) {
     final state = ref.watch(groupsStateProvider);
     showSuccessSnackBar(
       context,
       state,
-      isEdit ? 'Group updated' : 'Group deleted',
+      useCase == 0 ? 'Group updated' : useCase == 1? 'Group reset' : 'Group deleted',
     );
   }
 
@@ -80,6 +84,27 @@ class GroupScreen extends ConsumerWidget {
                       child: const Row(
                         children: [
                           Icon(
+                            Icons.autorenew,
+                            color: Colors.orange,
+                          ),
+                          gapW16,
+                          Text("Reset"),
+                        ],
+                      ),
+                      onTap: () => showConfirmationDialog(
+                        context: context,
+                        title: "Are you sure, you want to Reset this group?",
+                        content:
+                            "This will delete all bills for you and all group members!",
+                        onConfirm: () => _resetGroup(ref).then(
+                          (_) => _onSuccess(context, ref, 1),
+                        ),
+                      ),
+                    ),
+                    PopupMenuItem(
+                      child: const Row(
+                        children: [
+                          Icon(
                             Icons.delete,
                             color: Colors.red,
                           ),
@@ -93,7 +118,7 @@ class GroupScreen extends ConsumerWidget {
                         content:
                             "This will delete the group for you and all group members!",
                         onConfirm: () => _deleteGroup(ref).then(
-                          (_) => _onSuccess(context, ref, false),
+                          (_) => _onSuccess(context, ref, 2),
                         ),
                       ),
                     ),
