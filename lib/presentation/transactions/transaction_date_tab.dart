@@ -65,7 +65,7 @@ class TransactionDateTab extends StatelessWidget {
       'February',
       'March',
       'April',
-      'Mai',
+      'May',
       'June',
       'Juli',
       'August',
