@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
-import 'package:split_the_bill/infrastructure/session.dart';
 
 class ProfileImage extends ConsumerWidget {
   const ProfileImage({
@@ -42,12 +41,13 @@ class ProfileImage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final session = ref.watch(sessionProvider);
     final String imagePath = user.getImagePath();
     final ImageProvider<Object> image = getProfileImage(
       previewImage,
       imagePath,
-      session.headers,
+      {
+        'cookie': user.sessionCookie,
+      },
     );
 
     return GestureDetector(

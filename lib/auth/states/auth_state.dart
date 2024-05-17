@@ -8,25 +8,28 @@ import 'package:split_the_bill/infrastructure/shared_preferences.dart';
 
 part 'auth_state.g.dart';
 
+// unanathicated recognition provider
+
 @Riverpod(keepAlive: true)
 class AuthState extends _$AuthState {
   AuthRepository get _authRepository => ref.read(authRepositoryProvider);
 
-  // isLoggedIn = user set
-  // isAuth = cookie from last response = cookie in storage
-  // Session has to be deleted, i can read from shared preferences instead
-
-  bool get isAuth => state.requireValue.id.isNotEmpty;
-
   @override
-  FutureOr<User> build() {
+  Future<User> build() {
+    /// Get user from shared preferences
     final String userString = ref.read(sharedUtilityProvider).getUser();
-    print("BUILD: $userString");
 
     if (userString.isNotEmpty) {
-      return User.fromMap(json.decode(userString));
+      return Future.value(User.fromMap(json.decode(userString)));
     }
-    return const User(id: "", email: "", username: "", profileImgPath: "");
+
+    return Future.value(const User(
+      id: "",
+      email: "",
+      username: "",
+      profileImgPath: "",
+      sessionCookie: "",
+    ));
   }
 
   Future<void> login({
@@ -36,17 +39,15 @@ class AuthState extends _$AuthState {
     state = const AsyncLoading();
 
     _authRepository.login(email, password).then((user) {
-      // that'S ok i guess
+      /// Save user to shared preferences
       final String userString = json.encode(user.toMap());
       ref.read(sharedUtilityProvider).setUser(userString);
+      ref.read(sharedUtilityProvider).setAuthCookie(user.sessionCookie);
 
       state = AsyncData(user);
     }).catchError((error) {
       state = AsyncError(error, StackTrace.current);
     });
-
-    state =
-        await AsyncValue.guard(() => _authRepository.login(email, password));
   }
 
   Future<void> register({
@@ -57,12 +58,12 @@ class AuthState extends _$AuthState {
     state =
         await AsyncValue.guard(() => _authRepository.register(email, password));
     if (!state.hasError) {
-      state =
-          await AsyncValue.guard(() => _authRepository.login(email, password));
+      login(email: email, password: password);
     }
   }
 
   Future<void> updateUser(User user, XFile? image) async {
+    // TODO: take current cookie
     state = const AsyncLoading();
     state = await AsyncValue.guard(() => _authRepository.update(user, image));
   }
@@ -73,7 +74,14 @@ class AuthState extends _$AuthState {
 
     if (!state.hasError) {
       state = const AsyncData(
-          User(id: "", email: "", username: "", profileImgPath: ""));
+        User(
+          id: "",
+          email: "",
+          username: "",
+          profileImgPath: "",
+          sessionCookie: "",
+        ),
+      );
     }
   }
 }
