@@ -1,22 +1,23 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/infrastructure/app_exception.dart';
-import 'package:split_the_bill/infrastructure/shared_preferences.dart';
 
 part 'http_client.g.dart';
 
 class HttpClient {
   HttpClient({
+    required this.ref,
     required this.client,
-    required this.sharedUtility,
   });
 
+  final Ref ref;
   final http.Client client;
-  final SharedUtility sharedUtility;
 
   Future<T> get<T>({
     required Uri uri,
@@ -25,9 +26,7 @@ class HttpClient {
     try {
       final response = await client.get(
         uri,
-        headers: {
-          'cookie': sharedUtility.getAuthCookie(),
-        },
+        headers: _getHeaders(),
       );
 
       final data = json.decode(response.body);
@@ -36,6 +35,7 @@ class HttpClient {
         case 200:
           return builder(data['data']);
         case 401:
+          _manualLogout();
           throw UnauthenticatedException(data['message']);
         case 404:
           throw NotFoundException((data['message']));
@@ -55,9 +55,7 @@ class HttpClient {
   }) async {
     try {
       // Merge session headers with additional headers for an HTTP POST request.
-      final mergedHeaders = {
-        'cookie': sharedUtility.getAuthCookie(),
-      };
+      final mergedHeaders = _getHeaders();
       mergedHeaders['Content-Type'] = 'application/json';
 
       final response = await client.post(
@@ -76,10 +74,10 @@ class HttpClient {
           }
 
           return builder(data['data']);
-
         case 201:
           return builder(data['data']);
         case 401:
+          _manualLogout();
           throw UnauthenticatedException(data['message']);
         default:
           throw UnknownException(data['message']);
@@ -96,9 +94,7 @@ class HttpClient {
   }) async {
     try {
       // Merge session headers with additional headers for an HTTP POST request.
-      final mergedHeaders = {
-        'cookie': sharedUtility.getAuthCookie(),
-      };
+      final mergedHeaders = _getHeaders();
       mergedHeaders['Content-Type'] = 'application/json';
 
       final response = await client.put(
@@ -115,6 +111,7 @@ class HttpClient {
         case 201:
           return builder(data['data']);
         case 401:
+          _manualLogout();
           throw UnauthenticatedException(data['message']);
         default:
           throw UnknownException(data['message']);
@@ -132,9 +129,7 @@ class HttpClient {
   }) async {
     try {
       // Merge session headers with additional headers for an HTTP POST request.
-      final mergedHeaders = {
-        'cookie': sharedUtility.getAuthCookie(),
-      };
+      final mergedHeaders = _getHeaders();
       mergedHeaders['Content-Type'] = 'multipart/form-data';
 
       final request = http.MultipartRequest('PUT', uri);
@@ -156,6 +151,7 @@ class HttpClient {
         case 201:
           return builder(data['data']);
         case 401:
+          _manualLogout();
           throw UnauthenticatedException(data['message']);
         default:
           throw UnknownException(data['message']);
@@ -171,9 +167,7 @@ class HttpClient {
     try {
       final response = await client.delete(
         uri,
-        headers: {
-          'cookie': sharedUtility.getAuthCookie(),
-        },
+        headers: _getHeaders(),
       );
 
       final data = json.decode(response.body);
@@ -182,6 +176,7 @@ class HttpClient {
         case 200:
           return;
         case 401:
+          _manualLogout();
           throw UnauthenticatedException(data['message']);
         case 404:
           throw NotFoundException((data['message']));
@@ -191,6 +186,16 @@ class HttpClient {
     } on SocketException catch (_) {
       throw NoInternetConnectionException();
     }
+  }
+
+  void _manualLogout() {
+    ref.read(authStateProvider.notifier).manualLogout();
+  }
+
+  Map<String, String> _getHeaders() {
+    return {
+      'cookie': ref.read(authStateProvider).requireValue.sessionCookie,
+    };
   }
 
   String _extractSessionCookie(http.Response response) {
@@ -212,7 +217,7 @@ class HttpClient {
 @Riverpod(keepAlive: true)
 HttpClient httpClient(HttpClientRef ref) {
   return HttpClient(
+    ref: ref,
     client: http.Client(),
-    sharedUtility: ref.read(sharedUtilityProvider),
   );
 }

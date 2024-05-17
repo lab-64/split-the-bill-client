@@ -8,7 +8,13 @@ import 'package:split_the_bill/infrastructure/shared_preferences.dart';
 
 part 'auth_state.g.dart';
 
-// unanathicated recognition provider
+const _signedOutUser = User(
+  id: "",
+  email: "",
+  username: "",
+  profileImgPath: "",
+  sessionCookie: "",
+);
 
 @Riverpod(keepAlive: true)
 class AuthState extends _$AuthState {
@@ -23,13 +29,7 @@ class AuthState extends _$AuthState {
       return Future.value(User.fromMap(json.decode(userString)));
     }
 
-    return Future.value(const User(
-      id: "",
-      email: "",
-      username: "",
-      profileImgPath: "",
-      sessionCookie: "",
-    ));
+    return Future.value(_signedOutUser);
   }
 
   Future<void> login({
@@ -42,7 +42,6 @@ class AuthState extends _$AuthState {
       /// Save user to shared preferences
       final String userString = json.encode(user.toMap());
       ref.read(sharedUtilityProvider).setUser(userString);
-      ref.read(sharedUtilityProvider).setAuthCookie(user.sessionCookie);
 
       state = AsyncData(user);
     }).catchError((error) {
@@ -63,9 +62,16 @@ class AuthState extends _$AuthState {
   }
 
   Future<void> updateUser(User user, XFile? image) async {
-    // TODO: take current cookie
     state = const AsyncLoading();
-    state = await AsyncValue.guard(() => _authRepository.update(user, image));
+
+    _authRepository.update(user, image).then((user) {
+      /// Set session cookie because it is not returned from the server when updating user
+      user = user.copyWith(sessionCookie: state.requireValue.sessionCookie);
+
+      state = AsyncData(user);
+    }).catchError((error) {
+      state = AsyncError(error, StackTrace.current);
+    });
   }
 
   Future<void> logout() async {
@@ -73,15 +79,11 @@ class AuthState extends _$AuthState {
     await _authRepository.logout();
 
     if (!state.hasError) {
-      state = const AsyncData(
-        User(
-          id: "",
-          email: "",
-          username: "",
-          profileImgPath: "",
-          sessionCookie: "",
-        ),
-      );
+      state = const AsyncData(_signedOutUser);
     }
+  }
+
+  Future<void> manualLogout() async {
+    state = const AsyncData(_signedOutUser);
   }
 }

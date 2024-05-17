@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
 
@@ -41,12 +42,14 @@ class ProfileImage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final authUser = ref.watch(authStateProvider);
+
     final String imagePath = user.getImagePath();
     final ImageProvider<Object> image = getProfileImage(
       previewImage,
       imagePath,
       {
-        'cookie': user.sessionCookie,
+        'cookie': authUser.requireValue.sessionCookie,
       },
     );
 
