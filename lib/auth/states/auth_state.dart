@@ -79,11 +79,13 @@ class AuthState extends _$AuthState {
     await _authRepository.logout();
 
     if (!state.hasError) {
+      ref.read(sharedUtilityProvider).removeUser();
       state = const AsyncData(_signedOutUser);
     }
   }
 
   Future<void> manualLogout() async {
+    ref.read(sharedUtilityProvider).removeUser();
     state = const AsyncData(_signedOutUser);
   }
 }

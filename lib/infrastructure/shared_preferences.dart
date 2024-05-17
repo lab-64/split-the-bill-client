@@ -30,4 +30,8 @@ class SharedUtility {
   void setUser(String user) {
     sharedPreferences.setString(_userKey, user);
   }
+
+  void removeUser() {
+    sharedPreferences.remove(_userKey);
+  }
 }
