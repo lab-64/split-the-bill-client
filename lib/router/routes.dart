@@ -14,12 +14,15 @@ import 'package:split_the_bill/presentation/on_boarding/sign_in_screen.dart';
 import 'package:split_the_bill/presentation/profile/edit_profile/edit_profile_screen.dart';
 import 'package:split_the_bill/presentation/profile/profile/profile_screen.dart';
 import 'package:split_the_bill/presentation/shared/navigation/navbar.dart';
+import 'package:split_the_bill/presentation/transactions/transactions_screen.dart';
 
 part 'routes.g.dart';
 
 @TypedShellRoute<NavbarShellRoute>(
   routes: [
-    TypedGoRoute<HomeRoute>(path: '/'),
+    TypedGoRoute<HomeRoute>(
+      path: '/',
+    ),
     TypedGoRoute<GroupsRoute>(
       path: '/groups',
       routes: [
@@ -45,7 +48,12 @@ part 'routes.g.dart';
         TypedGoRoute<EditProfileRoute>(path: 'edit'),
       ],
     ),
-    TypedGoRoute<UnseenBillRoute>(path: '/unseenBills:billId')
+    TypedGoRoute<UnseenBillRoute>(
+      path: '/unseenBills:billId',
+    ),
+    TypedGoRoute<TransactionRoute>(
+      path: '/transactions',
+    )
   ],
 )
 class NavbarShellRoute extends ShellRouteData {
@@ -59,7 +67,7 @@ class NavbarShellRoute extends ShellRouteData {
   ) {
     final isMainRoute = state.uri.path == const HomeRoute().location ||
         state.uri.path == const GroupsRoute().location ||
-        state.uri.path == const BillsRoute().location ||
+        state.uri.path == const TransactionRoute().location ||
         state.uri.path == const ProfileRoute().location;
 
     if (isMainRoute) {
@@ -114,6 +122,7 @@ class GroupsRoute extends GoRouteData {
 
 class GroupRoute extends GoRouteData {
   const GroupRoute({required this.groupId});
+
   final String groupId;
 
   @override
@@ -124,6 +133,7 @@ class GroupRoute extends GoRouteData {
 
 class EditGroupRoute extends GoRouteData {
   const EditGroupRoute({required this.groupId});
+
   final String groupId;
 
   @override
@@ -144,6 +154,7 @@ class BillsRoute extends GoRouteData {
 
 class BillRoute extends GoRouteData {
   const BillRoute({required this.billId});
+
   final String billId;
 
   @override
@@ -163,6 +174,7 @@ class NewBillGroupSelectionRoute extends GoRouteData {
 
 class NewBillRoute extends GoRouteData {
   const NewBillRoute({required this.groupId});
+
   final String groupId;
 
   @override
@@ -199,5 +211,15 @@ class EditProfileRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const EditProfileScreen();
+  }
+}
+
+/// TRANSACTIONS
+class TransactionRoute extends GoRouteData {
+  const TransactionRoute();
+
+  @override
+  Widget build(BuildContext context, GoRouterState state) {
+    return const TransactionScreen();
   }
 }
