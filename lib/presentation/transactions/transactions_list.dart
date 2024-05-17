@@ -47,13 +47,22 @@ class _TransactionListState extends ConsumerState<TransactionsList> {
     final now = DateTime.now();
     final today = DateTime(now.year, now.month, now.day);
     final dateToCheck = DateTime(date.year, date.month, date.day);
+    final weekDays = [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday'
+    ];
     if (dateToCheck == today) {
-      return "Today";
+      return "Today | ${weekDays[date.weekday - 1]}";
     }
     if (date == today.subtract(const Duration(days: 1))) {
-      return "Yesterday";
+      return "Yesterday | ${weekDays[date.weekday - 1]}";
     } else {
-      return '${date.day}.${date.month}.${date.year}';
+      return '${date.day}.${date.month}.${date.year}|${weekDays[date.weekday - 1]}';
     }
   }
 
@@ -72,9 +81,7 @@ class _TransactionListState extends ConsumerState<TransactionsList> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(32.0),
-      child: ListView(
+    return ListView(
         shrinkWrap: true,
         children: [
           for (int i = 0; i < transactions.length; i++) ...[
@@ -93,23 +100,31 @@ class _TransactionListState extends ConsumerState<TransactionsList> {
                     transactionsExpanded[i] = !transactionsExpanded[i];
                   });
                 },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(_parseDate(transactions[i].date)),
-                    Icon(transactionsExpanded[i]
-                        ? Icons.arrow_drop_up
-                        : Icons.arrow_drop_down),
-                  ],
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(_parseDate(transactions[i].date)),
+                      Icon(transactionsExpanded[i]
+                          ? Icons.arrow_drop_up
+                          : Icons.arrow_drop_down),
+                    ],
+                  ),
                 ),
               ),
-            const Divider(),
-            if (transactionsExpanded[i] && transactions[i].transactions.isNotEmpty) ...[
-              TransactionItem(transaction: transactions[i].transactions[0])//TODO map all items
+            if (transactionsExpanded[i] &&
+                transactions[i].transactions.isNotEmpty) ...[
+              ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: transactions[i].transactions.length,
+                  itemBuilder: (context, index) {
+                    final transaction = transactions[i].transactions[index];
+                    return TransactionItem(transaction: transaction);
+                  })
             ],
           ]
         ],
-      ),
-    );
+      );
   }
 }
