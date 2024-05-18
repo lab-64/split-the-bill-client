@@ -13,11 +13,13 @@ class CroppingRectangle extends StatefulWidget {
     required this.imgRenderSize,
     required this.imgTrueSize,
     required this.detectedEdges,
+    required this.updateSelectionCallback
   });
 
   final Size imgRenderSize;
   final Size imgTrueSize;
-  DetectedRectangle detectedEdges;
+  final Function updateSelectionCallback;
+  final DetectedRectangle detectedEdges;
 
   @override
   State<StatefulWidget> createState() {
@@ -134,9 +136,8 @@ class _CroppingRectangleState extends State<CroppingRectangle> {
       ),
     ];
 
-    widget.detectedEdges = detectedEdges;
-
     dev.log("${pivotPositions[0]}");
+    _updateCropSelection();
 
     return SizedBox(
         width: widget.imgRenderSize.width,
@@ -152,6 +153,7 @@ class _CroppingRectangleState extends State<CroppingRectangle> {
                 setState(() {
                   Offset newPos = _applyPositionScaling(position);
                   detectedEdges.topLeft = _clampPos(detectedEdges.topLeft + newPos);
+                  dev.log("${detectedEdges.topLeft.dx}");
                 });
               },
             ),
@@ -215,6 +217,10 @@ class _CroppingRectangleState extends State<CroppingRectangle> {
       x.clamp(0.0, imgRenderWidth) / imgRenderWidth,
       y.clamp(0.0, imgRenderHeight) / imgRenderHeight
     );
+  }
+
+  void _updateCropSelection() {
+    widget.updateSelectionCallback(detectedEdges);
   }
 
 

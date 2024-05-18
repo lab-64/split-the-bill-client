@@ -2,7 +2,6 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
-import 'package:split_the_bill/presentation/shared/navigation/expandable_action_button.dart';
 import 'package:split_the_bill/router/routes.dart';
 
 class Navbar extends StatelessWidget {

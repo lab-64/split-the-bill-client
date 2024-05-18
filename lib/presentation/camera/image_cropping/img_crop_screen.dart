@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:ui' as ui;
 
@@ -6,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:split_the_bill/infrastructure/edge_detection/edge_detection_result.dart';
+import 'package:split_the_bill/infrastructure/image_processing/image_cropping.dart';
 import 'package:split_the_bill/infrastructure/image_processing/image_utils.dart';
 import 'package:split_the_bill/presentation/camera/image_cropping/crop_rectangle.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
@@ -24,6 +26,7 @@ class ImageCropScreen extends StatefulWidget {
 class _ImageCropScreenState extends State<ImageCropScreen> {
   GlobalKey imageKey = GlobalKey();
   late File currentImageFile;
+
 
   @override
   void initState() {
@@ -69,6 +72,7 @@ class _ImageCropScreenState extends State<ImageCropScreen> {
                     imgRenderSize: Size(box.size.width, box.size.height),
                     imgTrueSize: Size(img.width.toDouble(), img.height.toDouble()),
                     detectedEdges: cropPath,
+                    updateSelectionCallback: _updateCropSelection,
                   );
                 }
 
@@ -80,8 +84,11 @@ class _ImageCropScreenState extends State<ImageCropScreen> {
       floatingActionButton: ActionButton(
         icon: Icons.crop,
         onPressed: () async {
-          ui.Image croppedImg = await ImageUtils.cropImageFromFile(widget.imgFile, cropPath);
-          Navigator.push(context, MaterialPageRoute(builder: (_) => ImageScreen(image: croppedImg)));
+          // ui.Image originalImg = await ImageUtils.createImageFromFile(currentImageFile.path);
+          Image img = Image.file(File(widget.imgFile));
+          Uint8List croppedBytes = await ImageCropping.perspectiveImageCropping(widget.imgFile, cropPath);
+          img = Image.memory(croppedBytes);
+          Navigator.push(context, MaterialPageRoute(builder: (_) => ImageScreen(image: img)));
         },
       ),
     );
@@ -91,6 +98,11 @@ class _ImageCropScreenState extends State<ImageCropScreen> {
   void dispose() {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
     super.dispose();
+  }
+
+  void _updateCropSelection(DetectedRectangle currentSelection) {
+    cropPath = currentSelection;
+    log("Moarvvvvv ${cropPath.topLeft.dx}");
   }
 
 }

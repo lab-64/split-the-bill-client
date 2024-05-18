@@ -65,21 +65,22 @@ class ImageUtils {
 class ImageScreen extends StatelessWidget {
   const ImageScreen({super.key, required this.image});
 
-  final ui.Image image;
+  final Image image;
 
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: FutureBuilder(
-        future: image.toByteData(),
-        builder: (BuildContext context, AsyncSnapshot<ByteData?> snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            Uint8List bytes = snapshot.data!.buffer.asUint8List();
-            return Image.memory(bytes);
-          }
-          return const CircularProgressIndicator();
-      },
-      )
+      // child: FutureBuilder(
+      //   future: image.toByteData(),
+      //   builder: (BuildContext context, AsyncSnapshot<ByteData?> snapshot) {
+      //     if (snapshot.connectionState == ConnectionState.done) {
+      //       Uint8List bytes = snapshot.data!.buffer.asUint8List();
+      //       return Image.memory(bytes);
+      //     }
+      //     return const CircularProgressIndicator();
+      // },
+      // )
+      child: image,
     );
   }
 

@@ -64,7 +64,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
     _controller = CameraController(
       cameras.first,
-      ResolutionPreset.medium,
+      ResolutionPreset.high,
       enableAudio: false,
     );
 
