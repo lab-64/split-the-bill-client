@@ -6,6 +6,9 @@ import 'package:split_the_bill/domain/group/data/group_repository.dart';
 import 'package:split_the_bill/domain/group/group.dart';
 import 'package:split_the_bill/domain/group/states/group_state.dart';
 
+import 'groups_transaction_state.dart';
+
+
 part 'groups_state.g.dart';
 
 @Riverpod(keepAlive: true)
@@ -37,6 +40,15 @@ class GroupsState extends _$GroupsState {
   Future<void> delete(String groupId) async {
     await _groupRepository.delete(groupId);
     ref.invalidateSelf();
+
+    // Wait for the ref to be computed
+    await future;
+  }
+
+  Future<void> reset(String groupId) async {
+    await _groupRepository.reset(groupId);
+    ref.invalidateSelf();
+    ref.invalidate(groupsTransactionStateProvider);
 
     // Wait for the ref to be computed
     await future;
