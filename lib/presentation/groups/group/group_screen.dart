@@ -47,7 +47,7 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
   }
 
   Future<void> _resetGroup(WidgetRef ref) async {
-    await ref.read(groupsStateProvider.notifier).reset(groupId);
+    await ref.read(groupsStateProvider.notifier).reset(widget.groupId);
   }
 
   bool _isGroupOwner(WidgetRef ref) {
@@ -107,6 +107,30 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
                           ],
                         ),
                       ),
+                      if (group.bills.isNotEmpty) ...[
+                        PopupMenuItem(
+                          child: const Row(
+                            children: [
+                              Icon(
+                                Icons.autorenew,
+                                color: Colors.orange,
+                              ),
+                              gapW16,
+                              Text("Reset"),
+                            ],
+                          ),
+                          onTap: () => showConfirmationDialog(
+                            context: context,
+                            title:
+                                "Are you sure, you want to Reset this group?",
+                            content:
+                                "This will delete all bills for you and all group members!",
+                            onConfirm: () => _resetGroup(ref).then(
+                              (_) => _onSuccess(context, ref, 'Group reset'),
+                            ),
+                          ),
+                        )
+                      ],
                       PopupMenuItem(
                         child: const Row(
                           children: [
@@ -124,7 +148,7 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
                           content:
                               "This will delete the group for you and all group members!",
                           onConfirm: () => _deleteGroup(ref).then(
-                            (_) => _onSuccess(context, ref, false),
+                            (_) => _onSuccess(context, ref, "Group deleted"),
                           ),
                         ),
                       ),
