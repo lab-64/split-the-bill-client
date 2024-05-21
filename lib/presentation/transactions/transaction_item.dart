@@ -9,6 +9,8 @@ import '../../auth/states/auth_state.dart';
 import '../../auth/user.dart';
 import '../../constants/ui_constants.dart';
 
+enum UserType { debtor, creditor, other }
+
 class TransactionItem extends ConsumerWidget {
   const TransactionItem({
     super.key,
@@ -20,84 +22,140 @@ class TransactionItem extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     var user = ref.read(authStateProvider).requireValue;
-    int userType = transaction.debtor == user
-        ? 0
-        : transaction.creditor == user
-            ? 1
-            : 2;
+    UserType userType;
+    if (transaction.debtor == user) {
+      userType = UserType.debtor;
+    } else if (transaction.creditor == user) {
+      userType = UserType.creditor;
+    } else {
+      userType = UserType.other;
+    }
     return RoundedBox(
         firstPadding:
             const EdgeInsets.only(left: 24, right: 24, top: 4, bottom: 4),
         secondPadding: const EdgeInsets.all(8.0),
         backgroundColor: Colors.white,
         child: ListTile(
-          leading: _buildLeadingIcon(userType),
-          title: _buildTransactionTitle(transaction.creditor),
-          subtitle: _buildTransactionSubTitle(transaction.debtor),
-          trailing: _buildTrailingAmount(transaction.amount, userType),
+          leading: TransactionItemLeadingIcon(userType: userType),
+          title: TransactionItemTitle(creditor: transaction.creditor),
+          subtitle: TransactionItemSubTitle(debtor: transaction.debtor),
+          trailing: TransactionItemTrailingAmount(
+              amount: transaction.amount, userType: userType),
         ));
   }
 }
 
-Widget _buildLeadingIcon(int userType) {
-  return Container(
-    width: 40.0,
-    height: 40.0,
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      gradient: LinearGradient(
-        colors: userType == 0
-            ? [Colors.red.shade300, Colors.red.shade700]
-            : userType == 1
-                ? [Colors.green.shade300, Colors.green.shade700]
-                : [Colors.grey.shade300, Colors.grey.shade700],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
+class TransactionItemTrailingAmount extends StatelessWidget {
+  const TransactionItemTrailingAmount({
+    super.key,
+    required this.amount,
+    required this.userType,
+  });
+
+  final double amount;
+  final UserType userType;
+
+  @override
+  Widget build(BuildContext context) {
+    Color color;
+    switch (userType) {
+      case UserType.creditor:
+        color = Colors.green;
+        break;
+      case UserType.debtor:
+        color = Colors.red;
+        break;
+      default:
+        color = Colors.grey;
+    }
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          amount.toCurrencyString(),
+          style: TextStyle(fontSize: 16.0, color: color),
+        ),
+      ],
+    );
+  }
+}
+
+class TransactionItemSubTitle extends StatelessWidget {
+  const TransactionItemSubTitle({
+    super.key,
+    required this.debtor,
+  });
+
+  final User debtor;
+
+  @override
+  Widget build(BuildContext context) {
+    return EllipseText(
+      text: "From: ${debtor.getDisplayName()}",
+      size: Sizes.p64 * 2,
+      style: const TextStyle(
+        fontSize: 14.0,
       ),
-    ),
-    child: const Icon(
-      Icons.attach_money,
-      color: Colors.white,
-    ),
-  );
+    );
+  }
 }
 
-Widget _buildTransactionTitle(User creditor) {
-  return EllipseText(
-    text:
-        "To: ${creditor.username.isEmpty ? creditor.email : creditor.username}",
-    size: Sizes.p64 * 2,
-    style: const TextStyle(
-      fontSize: 16.0,
-    ),
-  );
+class TransactionItemTitle extends StatelessWidget {
+  const TransactionItemTitle({
+    super.key,
+    required this.creditor,
+  });
+
+  final User creditor;
+
+  @override
+  Widget build(BuildContext context) {
+    return EllipseText(
+      text: "To: ${creditor.getDisplayName()}",
+      size: Sizes.p64 * 2,
+      style: const TextStyle(
+        fontSize: 16.0,
+      ),
+    );
+  }
 }
 
-Widget _buildTransactionSubTitle(User debtor) {
-  return EllipseText(
-    text: "From: ${debtor.username.isEmpty ? debtor.email : debtor.username}",
-    size: Sizes.p64 * 2,
-    style: const TextStyle(
-      fontSize: 14.0,
-    ),
-  );
-}
+class TransactionItemLeadingIcon extends StatelessWidget {
+  const TransactionItemLeadingIcon({
+    super.key,
+    required this.userType,
+  });
 
-Widget _buildTrailingAmount(double balance, int userType) {
-  return Row(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      Text(
-        balance.toCurrencyString(),
-        style: TextStyle(
-          fontSize: 16.0,
-          color: userType == 0
-              ? Colors.red
-              : userType == 1
-                  ? Colors.green
-                  : Colors.grey,
+  final UserType userType;
+
+  @override
+  Widget build(BuildContext context) {
+    List<Color> colors;
+    switch (userType) {
+      case UserType.creditor:
+        colors = [Colors.green.shade300, Colors.green.shade700];
+        break;
+      case UserType.debtor:
+        colors = [Colors.red.shade300, Colors.red.shade700];
+        break;
+      default:
+        colors = [Colors.grey.shade300, Colors.grey.shade700];
+    }
+    return Container(
+      width: 40.0,
+      height: 40.0,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: LinearGradient(
+          colors: colors,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
         ),
       ),
-    ],
-  );
+      child: const Icon(
+        Icons.attach_money,
+        color: Colors.white,
+      ),
+    );
+  }
 }

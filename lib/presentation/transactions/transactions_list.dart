@@ -26,7 +26,7 @@ class _TransactionListState extends ConsumerState<TransactionsList> {
   @override
   void initState() {
     super.initState();
-    transactions = _sortTransactions(widget.transactions);
+    transactions = widget.transactions;
     transactionsExpanded = List.generate(
         transactions.length,
         (index) => transactions[index] == transactions.last ||
@@ -50,8 +50,8 @@ class _TransactionListState extends ConsumerState<TransactionsList> {
           //first for that date
           if (i == 0 || transactions[i].date.isAfter(transactions[i - 1].date))
             TransactionDateTab(
-              i: i,
-              invertTransactionExpanded: invertTransactionExpanded,
+              index: i,
+              onTap: invertTransactionExpanded,
               transaction: transactions[i],
               transactionExpanded: transactionsExpanded[i],
             ),
@@ -77,30 +77,5 @@ class _TransactionListState extends ConsumerState<TransactionsList> {
     setState(() {
       transactionsExpanded[i] = !transactionsExpanded[i];
     });
-  }
-
-  List<GroupTransaction> _sortTransactions(
-      List<GroupTransaction> transactions) {
-    List<String> groups = transactions.map((e) => e.groupName).toList();
-    groups = [
-      ...{...groups}
-    ];
-    List<List<GroupTransaction>> sortedByGroup = [];
-
-    for (var group in groups) {
-      sortedByGroup.add(
-          transactions.where((element) => element.groupName == group).toList());
-    }
-
-    sortedByGroup
-        .map((list) => list.sort((a, b) => a.date.compareTo(b.date)))
-        .toList();
-
-    List<GroupTransaction> sortedGroupTransactions = [];
-    for (var element in sortedByGroup) {
-      sortedGroupTransactions.addAll(element);
-    }
-
-    return sortedGroupTransactions;
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/presentation/bills/bill/bill_screen.dart';
-import 'package:split_the_bill/presentation/bills/bills/bills_screen.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/group_selection_screen.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/new_bill_screen.dart';
 import 'package:split_the_bill/presentation/bills/unseen_bill/unseen_bill_screen.dart';
@@ -145,11 +144,6 @@ class EditGroupRoute extends GoRouteData {
 /// BILL
 class BillsRoute extends GoRouteData {
   const BillsRoute();
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const BillsScreen();
-  }
 }
 
 class BillRoute extends GoRouteData {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:split_the_bill/presentation/shared/components/rounded_box.dart';
 
 import '../../constants/ui_constants.dart';
@@ -7,14 +8,14 @@ import '../../domain/group/group_transaction.dart';
 class TransactionDateTab extends StatelessWidget {
   const TransactionDateTab({
     super.key,
-    required this.i,
-    required this.invertTransactionExpanded,
+    required this.index,
+    required this.onTap,
     required this.transaction,
     required this.transactionExpanded,
   });
 
-  final int i;
-  final Function invertTransactionExpanded;
+  final int index;
+  final Function onTap;
   final GroupTransaction transaction;
   final bool transactionExpanded;
 
@@ -22,10 +23,13 @@ class TransactionDateTab extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
-      onTap: () => invertTransactionExpanded(i),
+      onTap: () => onTap(index),
       child: RoundedBox(
-          firstPadding:
-              const EdgeInsets.only(top: 4, bottom: 4, left: 16, right: 16),
+          firstPadding: const EdgeInsets.only(
+              top: Sizes.p4,
+              bottom: Sizes.p4,
+              left: Sizes.p16,
+              right: Sizes.p16),
           secondPadding: const EdgeInsets.all(8.0),
           backgroundColor: Colors.white,
           child: Row(
@@ -57,31 +61,13 @@ class TransactionDateTab extends StatelessWidget {
   }
 
   String _parseDate(DateTime date) {
-    final now = DateTime.now();
-    final today = DateTime(now.year, now.month, now.day);
-    final dateToCheck = DateTime(date.year, date.month, date.day);
-    final months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'Juli',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December'
-    ];
-    if (dateToCheck == today) {
+    if (date.difference(DateTime.now()).inDays == 0) {
       return "Today";
     }
-    //TODO better way to find yesterday, this way it has to be 24 hrs ago
-    if (date == today.subtract(const Duration(days: 1))) {
+    if (date.difference(DateTime.now()).inDays == 0) {
       return "Yesterday";
     } else {
-      return '${months[date.month - 1]} ${date.day}, ${date.year}';
+      return DateFormat.yMMMd('en_US').format(date);
     }
   }
 }

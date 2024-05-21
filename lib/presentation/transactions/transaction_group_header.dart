@@ -20,34 +20,51 @@ class TransactionGroupHeader extends StatelessWidget {
         secondPadding: const EdgeInsets.all(8.0),
         backgroundColor: Colors.black12,
         child: ListTile(
-          leading: _buildLeadingIcon(),
-          title: _buildTransactionGroupTitle(transaction),
+          leading: const TransactionGroupLeadingIcon(),
+          title: TransactionGroupTitle(transaction: transaction),
         ));
   }
 }
 
-Widget _buildTransactionGroupTitle(GroupTransaction transaction) {
-  return EllipseText(
-      text: transaction.groupName,
-      size: Sizes.p64 * 3,
-      style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold));
+class TransactionGroupLeadingIcon extends StatelessWidget {
+  const TransactionGroupLeadingIcon({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 40.0,
+      height: 40.0,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        gradient: LinearGradient(
+          colors: [Colors.purple.shade300, Colors.purple.shade700],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+      ),
+      child: const Icon(
+        Icons.home,
+        color: Colors.white,
+      ),
+    );
+  }
 }
 
-Widget _buildLeadingIcon() {
-  return Container(
-    width: 40.0,
-    height: 40.0,
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      gradient: LinearGradient(
-        colors: [Colors.purple.shade300, Colors.purple.shade700],
-        begin: Alignment.topLeft,
-        end: Alignment.bottomRight,
-      ),
-    ),
-    child: const Icon(
-      Icons.home,
-      color: Colors.white,
-    ),
-  );
+class TransactionGroupTitle extends StatelessWidget {
+  const TransactionGroupTitle({
+    super.key,
+    required this.transaction,
+  });
+
+  final GroupTransaction transaction;
+
+  @override
+  Widget build(BuildContext context) {
+    return EllipseText(
+        text: transaction.groupName,
+        size: Sizes.p64 * 3,
+        style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold));
+  }
 }

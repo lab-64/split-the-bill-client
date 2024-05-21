@@ -6,8 +6,8 @@ import 'package:split_the_bill/domain/group/data/group_repository.dart';
 import 'package:split_the_bill/domain/group/group.dart';
 import 'package:split_the_bill/domain/group/states/group_state.dart';
 
-import '../../../presentation/transactions/controllers.dart';
-import '../group_transaction.dart';
+import 'groups_transaction_state.dart';
+
 
 part 'groups_state.g.dart';
 
@@ -48,14 +48,9 @@ class GroupsState extends _$GroupsState {
   Future<void> reset(String groupId) async {
     await _groupRepository.reset(groupId);
     ref.invalidateSelf();
-    ref.invalidate(transactionsControllerProvider);
+    ref.invalidate(groupsTransactionStateProvider);
 
     // Wait for the ref to be computed
     await future;
-  }
-
-  Future<List<GroupTransaction>> getAllTransactions() async {
-    final user = ref.watch(authStateProvider).requireValue;
-    return _groupRepository.getAllTransactions(user.id);
   }
 }

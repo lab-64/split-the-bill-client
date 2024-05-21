@@ -32,16 +32,12 @@ class GroupScreen extends ConsumerWidget {
     return ref.read(groupStateProvider(groupId).notifier).isGroupOwner();
   }
 
-  void _onSuccess(BuildContext context, WidgetRef ref, int useCase) {
+  void _onSuccess(BuildContext context, WidgetRef ref, String message) {
     final state = ref.watch(groupsStateProvider);
     showSuccessSnackBar(
       context,
       state,
-      useCase == 0
-          ? 'Group updated'
-          : useCase == 1
-              ? 'Group reset'
-              : 'Group deleted',
+      message,
     );
   }
 
@@ -102,7 +98,7 @@ class GroupScreen extends ConsumerWidget {
                           content:
                               "This will delete all bills for you and all group members!",
                           onConfirm: () => _resetGroup(ref).then(
-                            (_) => _onSuccess(context, ref, 1),
+                            (_) => _onSuccess(context, ref, 'Group reset'),
                           ),
                         ),
                       )
@@ -124,7 +120,7 @@ class GroupScreen extends ConsumerWidget {
                         content:
                             "This will delete the group for you and all group members!",
                         onConfirm: () => _deleteGroup(ref).then(
-                          (_) => _onSuccess(context, ref, 2),
+                          (_) => _onSuccess(context, ref, 'Group deleted'),
                         ),
                       ),
                     ),
