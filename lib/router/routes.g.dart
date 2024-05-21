@@ -67,6 +67,10 @@ RouteBase get $navbarShellRoute => ShellRouteData.$route(
           path: '/unseenBills:billId',
           factory: $UnseenBillRouteExtension._fromState,
         ),
+        GoRouteData.$route(
+          path: '/transactions',
+          factory: $TransactionRouteExtension._fromState,
+        ),
       ],
     );
 
@@ -262,6 +266,24 @@ extension $UnseenBillRouteExtension on UnseenBillRoute {
 
   String get location => GoRouteData.$location(
         '/unseenBills${Uri.encodeComponent(billId)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $TransactionRouteExtension on TransactionRoute {
+  static TransactionRoute _fromState(GoRouterState state) =>
+      const TransactionRoute();
+
+  String get location => GoRouteData.$location(
+        '/transactions',
       );
 
   void go(BuildContext context) => context.go(location);
