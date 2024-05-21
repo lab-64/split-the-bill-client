@@ -30,7 +30,7 @@ class TransactionDateTab extends StatelessWidget {
               bottom: Sizes.p4,
               left: Sizes.p16,
               right: Sizes.p16),
-          secondPadding: const EdgeInsets.all(8.0),
+          secondPadding: const EdgeInsets.all(Sizes.p8),
           backgroundColor: Colors.white,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,

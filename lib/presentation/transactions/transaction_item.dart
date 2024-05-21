@@ -31,9 +31,9 @@ class TransactionItem extends ConsumerWidget {
       userType = UserType.other;
     }
     return RoundedBox(
-        firstPadding:
-            const EdgeInsets.only(left: 24, right: 24, top: 4, bottom: 4),
-        secondPadding: const EdgeInsets.all(8.0),
+        firstPadding: const EdgeInsets.only(
+            left: Sizes.p24, right: Sizes.p24, top: Sizes.p4, bottom: Sizes.p4),
+        secondPadding: const EdgeInsets.all(Sizes.p8),
         backgroundColor: Colors.white,
         child: ListTile(
           leading: TransactionItemLeadingIcon(userType: userType),
@@ -73,7 +73,7 @@ class TransactionItemTrailingAmount extends StatelessWidget {
       children: [
         Text(
           amount.toCurrencyString(),
-          style: TextStyle(fontSize: 16.0, color: color),
+          style: TextStyle(fontSize: Sizes.p16, color: color),
         ),
       ],
     );
@@ -94,7 +94,7 @@ class TransactionItemSubTitle extends StatelessWidget {
       text: "From: ${debtor.getDisplayName()}",
       size: Sizes.p64 * 2,
       style: const TextStyle(
-        fontSize: 14.0,
+        fontSize: Sizes.p14,
       ),
     );
   }
@@ -114,7 +114,7 @@ class TransactionItemTitle extends StatelessWidget {
       text: "To: ${creditor.getDisplayName()}",
       size: Sizes.p64 * 2,
       style: const TextStyle(
-        fontSize: 16.0,
+        fontSize: Sizes.p16,
       ),
     );
   }
@@ -142,8 +142,8 @@ class TransactionItemLeadingIcon extends StatelessWidget {
         colors = [Colors.grey.shade300, Colors.grey.shade700];
     }
     return Container(
-      width: 40.0,
-      height: 40.0,
+      width: Sizes.p40,
+      height: Sizes.p40,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: LinearGradient(

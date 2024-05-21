@@ -16,8 +16,8 @@ class TransactionGroupHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RoundedBox(
-        firstPadding: const EdgeInsets.all(8.0),
-        secondPadding: const EdgeInsets.all(8.0),
+        firstPadding: const EdgeInsets.all(Sizes.p8),
+        secondPadding: const EdgeInsets.all(Sizes.p8),
         backgroundColor: Colors.black12,
         child: ListTile(
           leading: const TransactionGroupLeadingIcon(),
@@ -34,8 +34,8 @@ class TransactionGroupLeadingIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 40.0,
-      height: 40.0,
+      width: Sizes.p40,
+      height: Sizes.p40,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: LinearGradient(
@@ -65,6 +65,6 @@ class TransactionGroupTitle extends StatelessWidget {
     return EllipseText(
         text: transaction.groupName,
         size: Sizes.p64 * 3,
-        style: const TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold));
+        style: const TextStyle(fontSize: Sizes.p16, fontWeight: FontWeight.bold));
   }
 }
