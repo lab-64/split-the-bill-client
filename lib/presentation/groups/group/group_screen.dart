@@ -46,16 +46,20 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
     await ref.read(groupsStateProvider.notifier).delete(widget.groupId);
   }
 
+  Future<void> _resetGroup(WidgetRef ref) async {
+    await ref.read(groupsStateProvider.notifier).reset(groupId);
+  }
+
   bool _isGroupOwner(WidgetRef ref) {
     return ref.read(groupStateProvider(widget.groupId).notifier).isGroupOwner();
   }
 
-  void _onSuccess(BuildContext context, WidgetRef ref, bool isEdit) {
+  void _onSuccess(BuildContext context, WidgetRef ref, String message) {
     final state = ref.watch(groupsStateProvider);
     showSuccessSnackBar(
       context,
       state,
-      isEdit ? 'Group updated' : 'Group deleted',
+      message,
     );
   }
 

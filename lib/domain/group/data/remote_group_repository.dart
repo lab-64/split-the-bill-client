@@ -1,5 +1,6 @@
 import 'package:split_the_bill/domain/group/data/group_api.dart';
 import 'package:split_the_bill/domain/group/data/group_repository.dart';
+import 'package:split_the_bill/domain/group/group_transaction.dart';
 import 'package:split_the_bill/infrastructure/http_client.dart';
 
 import '../group.dart';
@@ -56,4 +57,23 @@ class RemoteGroupRepository extends GroupRepository {
       builder: (_) {},
     );
   }
+
+  @override
+  Future<void> reset(String groupId) => client.post(
+        uri: api.resetGroup(groupId),
+        body: {},
+        builder: (data) => data,
+      );
+
+  @override
+  Future<List<GroupTransaction>> getAllTransactions(String userId) =>
+      client.get(
+        uri: api.getAllTransactions(userId),
+        builder: (data) => data?.isNotEmpty == true
+            ? data
+                .map((groupData) => GroupTransaction.fromMap(groupData))
+                .toList()
+                .cast<GroupTransaction>()
+            : [],
+      );
 }

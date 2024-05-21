@@ -24,6 +24,15 @@ class GroupAPI {
         endpoint: "/$groupId",
       );
 
+  Uri resetGroup(String groupId) => _buildUri(
+        endpoint: "/$groupId/transaction",
+      );
+
+  Uri getAllTransactions(String userId) => _buildUri(
+        endpoint: "/transaction",
+    parametersBuilder: () => {"userId": userId}
+      );
+
   Uri acceptInvitation(String invitationId) => _buildUri(
         endpoint: "/invitation/$invitationId/accept",
       );
