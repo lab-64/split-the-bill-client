@@ -46,18 +46,14 @@ class _EditItemState extends State<EditItem> {
 
   String _parsePrice(double price) {
     String priceString = price.toString();
-    if (priceString == "0.0") {
-      return "0.00";
-    } else {
-      int indexOfDecimalPoint = priceString.indexOf('.');
-      if (priceString
-              .substring(indexOfDecimalPoint + 1, priceString.length)
-              .length <
-          2) {
-        return "${priceString}0";
-      }
-      return priceString;
+    int indexOfDecimalPoint = priceString.indexOf('.');
+    if (priceString
+            .substring(indexOfDecimalPoint + 1, priceString.length)
+            .length <
+        2) {
+      return "${priceString}0";
     }
+    return priceString;
   }
 
   @override
