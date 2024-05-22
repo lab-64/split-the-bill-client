@@ -39,6 +39,10 @@ class PriceTextField extends StatelessWidget {
       onChanged: (value) {
         //replace ','
         var index = value.indexOf('.');
+        if (value.endsWith('.')) {
+          controller.text = value.substring(0, value.length - 1);
+          return;
+        }
         value = value.substring(0, index) +
             value.substring(index + 1, value.length);
 

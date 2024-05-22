@@ -29,14 +29,14 @@ class BottomNavigationBar extends StatelessWidget {
 
     final String homeRoute = const HomeRoute().location;
     final String groupsRoute = const GroupsRoute().location;
-    final String billsRoute = const BillsRoute().location;
+    final String transactionRoute = const TransactionRoute().location;
     final String profileRoute = const ProfileRoute().location;
 
     if (location == homeRoute) {
       return 0;
     } else if (location == groupsRoute) {
       return 1;
-    } else if (location == billsRoute) {
+    } else if (location == transactionRoute) {
       return 2;
     } else if (location == profileRoute) {
       return 3;
@@ -62,7 +62,7 @@ class BottomNavigationBar extends StatelessWidget {
             case 1:
               const GroupsRoute().go(context);
             case 2:
-              const BillsRoute().go(context);
+              const TransactionRoute().go(context);
             case 3:
               const ProfileRoute().go(context);
           }
@@ -86,10 +86,10 @@ class BottomNavigationBar extends StatelessWidget {
             label: 'Groups',
           ),
           NavigationDestination(
-            icon: Icon(Icons.receipt_long,
+            icon: Icon(Icons.currency_exchange,
                 color:
                     selectedIndex == 2 ? Colors.blue.shade400 : Colors.white),
-            label: 'Bills',
+            label: 'Transactions',
           ),
           NavigationDestination(
             icon: Icon(Icons.person,
