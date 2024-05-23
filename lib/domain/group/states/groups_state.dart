@@ -10,14 +10,14 @@ import 'groups_transaction_state.dart';
 
 part 'groups_state.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class GroupsState extends _$GroupsState {
   GroupRepository get _groupRepository => ref.read(groupRepositoryProvider);
 
   @override
-  Future<List<Group>> build() {
+  Future<List<Group>> build() async {
     final user = ref.watch(authStateProvider).requireValue;
-    return _getGroupsByUser(user.id);
+    return await _getGroupsByUser(user.id);
   }
 
   Future<List<Group>> _getGroupsByUser(String userId) async {
