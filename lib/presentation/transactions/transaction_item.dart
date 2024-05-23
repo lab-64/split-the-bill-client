@@ -23,9 +23,9 @@ class TransactionItem extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var user = ref.read(authStateProvider).requireValue;
     UserType userType;
-    if (transaction.debtor == user) {
+    if (transaction.debtor.id == user.id) {
       userType = UserType.debtor;
-    } else if (transaction.creditor == user) {
+    } else if (transaction.creditor.id == user.id) {
       userType = UserType.creditor;
     } else {
       userType = UserType.other;
