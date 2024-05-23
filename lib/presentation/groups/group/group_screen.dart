@@ -36,10 +36,7 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
   }
 
   void _shareInvitation(BuildContext context, String invitationID) {
-    Share.share(
-      "Join my group on Split The Bill! "
-      "\nInvitation ID: $invitationID",
-    );
+    Share.share(invitationID);
   }
 
   Future<void> _deleteGroup(WidgetRef ref) async {
