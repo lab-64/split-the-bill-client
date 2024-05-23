@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/group/states/group_state.dart';
 import 'package:split_the_bill/domain/group/states/groups_state.dart';
@@ -12,24 +13,42 @@ import 'package:split_the_bill/presentation/shared/components/show_confirmation_
 import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
 import 'package:split_the_bill/router/routes.dart';
 
-class GroupScreen extends ConsumerWidget {
-  const GroupScreen({
-    super.key,
-    required this.groupId,
-  });
+class GroupScreen extends ConsumerStatefulWidget {
+  const GroupScreen({super.key, required this.groupId});
 
   final String groupId;
 
+  @override
+  ConsumerState<ConsumerStatefulWidget> createState() => _GroupScreenState();
+}
+
+class _GroupScreenState extends ConsumerState<GroupScreen> {
+  int _currentIndex = 0;
+
+  void _updateCurrentIndex(BuildContext context) {
+    void handleTabChange() {
+      setState(() {
+        _currentIndex = DefaultTabController.of(context).index;
+      });
+    }
+
+    DefaultTabController.of(context).addListener(handleTabChange);
+  }
+
+  void _shareInvitation(BuildContext context, String invitationID) {
+    Share.share(invitationID);
+  }
+
   Future<void> _deleteGroup(WidgetRef ref) async {
-    await ref.read(groupsStateProvider.notifier).delete(groupId);
+    await ref.read(groupsStateProvider.notifier).delete(widget.groupId);
   }
 
   Future<void> _resetGroup(WidgetRef ref) async {
-    await ref.read(groupsStateProvider.notifier).reset(groupId);
+    await ref.read(groupsStateProvider.notifier).reset(widget.groupId);
   }
 
   bool _isGroupOwner(WidgetRef ref) {
-    return ref.read(groupStateProvider(groupId).notifier).isGroupOwner();
+    return ref.read(groupStateProvider(widget.groupId).notifier).isGroupOwner();
   }
 
   void _onSuccess(BuildContext context, WidgetRef ref, String message) {
@@ -42,9 +61,9 @@ class GroupScreen extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final ScrollController scrollController = ScrollController();
-    final group = ref.watch(groupStateProvider(groupId));
+    final group = ref.watch(groupStateProvider(widget.groupId));
 
     ref.listen(
       groupsStateProvider,
@@ -55,118 +74,122 @@ class GroupScreen extends ConsumerWidget {
       length: 2,
       child: AsyncValueWidget(
         value: group,
-        data: (group) => Scaffold(
-          floatingActionButton: ActionButton(
-            icon: Icons.add,
-            onPressed: () => EditBillRoute(
-              groupId: group.id,
-              billId: '0',
-            ).push(context),
-          ),
-          appBar: AppBar(
-            title: Text(group.name),
-            actions: [
-              if (_isGroupOwner(ref))
-                PopupMenuButton(
-                  itemBuilder: (context) => [
-                    PopupMenuItem(
-                      onTap: () =>
-                          EditGroupRoute(groupId: groupId).push(context),
-                      child: const Row(
-                        children: [
-                          Icon(
-                            Icons.edit,
-                            color: Colors.blueAccent,
-                          ),
-                          gapW16,
-                          Text("Edit")
-                        ],
+        data: (group) => Builder(builder: (context) {
+          _updateCurrentIndex(context);
+
+          return Scaffold(
+            floatingActionButton: ActionButton(
+              icon: _currentIndex == 0 ? Icons.add : Icons.person_add,
+              onPressed: () => _currentIndex == 0
+                  ? NewBillRoute(groupId: group.id).push(context)
+                  : _shareInvitation(context, group.invitationID),
+            ),
+            appBar: AppBar(
+              title: Text(group.name),
+              actions: [
+                if (_isGroupOwner(ref))
+                  PopupMenuButton(
+                    itemBuilder: (context) => [
+                      PopupMenuItem(
+                        onTap: () => EditGroupRoute(groupId: widget.groupId)
+                            .push(context),
+                        child: const Row(
+                          children: [
+                            Icon(
+                              Icons.edit,
+                              color: Colors.blueAccent,
+                            ),
+                            gapW16,
+                            Text("Edit")
+                          ],
+                        ),
                       ),
-                    ),
-                    if (group.bills.isNotEmpty) ...[
+                      if (group.bills.isNotEmpty) ...[
+                        PopupMenuItem(
+                          child: const Row(
+                            children: [
+                              Icon(
+                                Icons.autorenew,
+                                color: Colors.orange,
+                              ),
+                              gapW16,
+                              Text("Reset"),
+                            ],
+                          ),
+                          onTap: () => showConfirmationDialog(
+                            context: context,
+                            title:
+                                "Are you sure, you want to Reset this group?",
+                            content:
+                                "This will delete all bills for you and all group members!",
+                            onConfirm: () => _resetGroup(ref).then(
+                              (_) => _onSuccess(context, ref, 'Group reset'),
+                            ),
+                          ),
+                        )
+                      ],
                       PopupMenuItem(
                         child: const Row(
                           children: [
                             Icon(
-                              Icons.autorenew,
-                              color: Colors.orange,
+                              Icons.delete,
+                              color: Colors.red,
                             ),
                             gapW16,
-                            Text("Reset"),
+                            Text("Delete"),
                           ],
                         ),
                         onTap: () => showConfirmationDialog(
                           context: context,
-                          title: "Are you sure, you want to Reset this group?",
+                          title: "Are you sure, you want to delete this group?",
                           content:
-                              "This will delete all bills for you and all group members!",
-                          onConfirm: () => _resetGroup(ref).then(
-                            (_) => _onSuccess(context, ref, 'Group reset'),
+                              "This will delete the group for you and all group members!",
+                          onConfirm: () => _deleteGroup(ref).then(
+                            (_) => _onSuccess(context, ref, "Group deleted"),
                           ),
                         ),
-                      )
+                      ),
                     ],
-                    PopupMenuItem(
-                      child: const Row(
-                        children: [
-                          Icon(
-                            Icons.delete,
-                            color: Colors.red,
-                          ),
-                          gapW16,
-                          Text("Delete"),
-                        ],
+                    position: PopupMenuPosition.under,
+                  )
+              ],
+              bottom: const TabBar(
+                tabs: [
+                  Tab(
+                    icon: Icon(Icons.receipt_long),
+                  ),
+                  Tab(
+                    icon: Icon(Icons.people),
+                  ),
+                  /* TODO: Implement GroupHistory in backend
+                  Tab(
+                    icon: Icon(Icons.history),
+                  ),
+                  */
+                ],
+              ),
+            ),
+            body: TabBarView(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: Sizes.p24),
+                  child: CustomScrollView(
+                    slivers: [
+                      const SliverToBoxAdapter(child: gapH16),
+                      BillsList(
+                        scrollController: scrollController,
+                        groupId: widget.groupId,
+                        showGroup: false,
                       ),
-                      onTap: () => showConfirmationDialog(
-                        context: context,
-                        title: "Are you sure, you want to delete this group?",
-                        content:
-                            "This will delete the group for you and all group members!",
-                        onConfirm: () => _deleteGroup(ref).then(
-                          (_) => _onSuccess(context, ref, 'Group deleted'),
-                        ),
-                      ),
-                    ),
-                  ],
-                  position: PopupMenuPosition.under,
-                )
-            ],
-            bottom: const TabBar(
-              tabs: [
-                Tab(
-                  icon: Icon(Icons.receipt_long),
+                    ],
+                  ),
                 ),
-                Tab(
-                  icon: Icon(Icons.people),
-                ),
-                /* TODO: Implement GroupHistory in backend
-                Tab(
-                  icon: Icon(Icons.history),
-                ),
-                */
+                GroupMembers(members: group.members),
+                // const GroupHistory(),
               ],
             ),
-          ),
-          body: TabBarView(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: Sizes.p24),
-                child: CustomScrollView(
-                  slivers: [
-                    const SliverToBoxAdapter(child: gapH16),
-                    BillsList(
-                      scrollController: scrollController,
-                      groupId: groupId,
-                      showGroup: false,
-                    ),
-                  ],
-                ),
-              ),
-              GroupMembers(members: group.members),
-              // const GroupHistory(),
-            ],
-          ),
-        ),
+          );
+        }),
       ),
     );
   }

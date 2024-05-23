@@ -8,6 +8,7 @@ class Group {
   final List<User> members;
   final List<Bill> bills;
   final Map<String, double> balance;
+  final String invitationID;
 
 //<editor-fold desc="Data Methods">
   const Group({
@@ -17,6 +18,7 @@ class Group {
     this.members = const [],
     this.bills = const [],
     this.balance = const {},
+    this.invitationID = '',
   });
 
   @override
@@ -29,7 +31,8 @@ class Group {
           owner == other.owner &&
           members == other.members &&
           bills == other.bills &&
-          balance == other.balance);
+          balance == other.balance &&
+          invitationID == other.invitationID);
 
   @override
   int get hashCode =>
@@ -38,11 +41,12 @@ class Group {
       owner.hashCode ^
       members.hashCode ^
       bills.hashCode ^
-      balance.hashCode;
+      balance.hashCode ^
+      invitationID.hashCode;
 
   @override
   String toString() {
-    return 'Group{ id: $id, name: $name, owner: $owner, members: $members, bills: $bills, balance: $balance,}';
+    return 'Group{ id: $id, name: $name, owner: $owner, members: $members, bills: $bills, balance: $balance, invitationID: $invitationID}';
   }
 
   Group copyWith({
@@ -52,6 +56,7 @@ class Group {
     List<User>? members,
     List<Bill>? bills,
     Map<String, double>? balance,
+    String? invitationID,
   }) {
     return Group(
       id: id ?? this.id,
@@ -60,6 +65,7 @@ class Group {
       members: members ?? this.members,
       bills: bills ?? this.bills,
       balance: balance ?? this.balance,
+      invitationID: invitationID ?? this.invitationID,
     );
   }
 
@@ -83,6 +89,7 @@ class Group {
           .toList(),
       balance: (map['balance'] as Map<String, dynamic>? ?? {})
           .map((key, value) => MapEntry(key, value.toDouble())),
+      invitationID: map['invitationID'] as String,
     );
   }
 

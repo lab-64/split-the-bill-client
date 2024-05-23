@@ -5,6 +5,7 @@ class User {
   final String email;
   final String username;
   final String profileImgPath;
+  final String sessionCookie;
 
   String getDisplayName() {
     return username.isNotEmpty ? username : email;
@@ -24,6 +25,7 @@ class User {
     required this.email,
     required this.username,
     required this.profileImgPath,
+    required this.sessionCookie,
   });
 
   factory User.getDefault() {
@@ -32,6 +34,7 @@ class User {
       email: '',
       username: '',
       profileImgPath: '',
+      sessionCookie: '',
     );
   }
 
@@ -43,18 +46,20 @@ class User {
           id == other.id &&
           email == other.email &&
           username == other.username &&
-          profileImgPath == other.profileImgPath);
+          profileImgPath == other.profileImgPath &&
+          sessionCookie == other.sessionCookie);
 
   @override
   int get hashCode =>
       id.hashCode ^
       email.hashCode ^
       username.hashCode ^
-      profileImgPath.hashCode;
+      profileImgPath.hashCode ^
+      sessionCookie.hashCode;
 
   @override
   String toString() {
-    return 'User{ id: $id, email: $email,} username: $username,} profileImgPath: $profileImgPath,}';
+    return 'User{ id: $id, email: $email,} username: $username,} profileImgPath: $profileImgPath, sessionCookie: $sessionCookie}';
   }
 
   User copyWith({
@@ -62,12 +67,14 @@ class User {
     String? email,
     String? username,
     String? profileImgPath,
+    String? sessionCookie,
   }) {
     return User(
       id: id ?? this.id,
       email: email ?? this.email,
       username: username ?? this.username,
       profileImgPath: profileImgPath ?? this.profileImgPath,
+      sessionCookie: sessionCookie ?? this.sessionCookie,
     );
   }
 
@@ -76,6 +83,8 @@ class User {
       'id': id,
       'email': email,
       'username': username,
+      'profileImgPath': profileImgPath,
+      'sessionCookie': sessionCookie,
     };
   }
 
@@ -85,6 +94,7 @@ class User {
       email: map['email'] as String,
       username: map['username'] as String,
       profileImgPath: map['profileImgPath'] as String,
+      sessionCookie: map['sessionCookie'] as String? ?? '',
     );
   }
 

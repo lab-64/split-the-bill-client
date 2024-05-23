@@ -38,7 +38,8 @@ class EditBillHeader extends ConsumerWidget {
               controller: dateController,
               labelText: 'Date',
               prefixIcon: const Icon(Icons.date_range),
-              onTap: () => _selectDate(context, ref),
+              onTap: () => _selectDate(
+                  context, ref, DateTime.parse(dateController.text)),
               readOnly: true,
             ),
           ),
@@ -47,10 +48,11 @@ class EditBillHeader extends ConsumerWidget {
     );
   }
 
-  Future<void> _selectDate(BuildContext context, WidgetRef ref) async {
+  Future<void> _selectDate(
+      BuildContext context, WidgetRef ref, DateTime date) async {
     showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
+        initialDate: date,
         firstDate: DateTime(2019, 1),
         lastDate: DateTime.now(),
         builder: (context, picker) {
