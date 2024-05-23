@@ -10,6 +10,7 @@ class Bill {
   final DateTime date;
   final List<Item> items;
   final Map<String, double> balance;
+  final bool isViewed;
 
 //<editor-fold desc="Data Methods">
   const Bill({
@@ -20,6 +21,7 @@ class Bill {
     required this.date,
     required this.items,
     required this.balance,
+    required this.isViewed,
   });
 
   factory Bill.getDefault() {
@@ -33,6 +35,7 @@ class Bill {
         Item.getDefault(),
       ],
       balance: {},
+      isViewed: true,
     );
   }
 
@@ -47,7 +50,8 @@ class Bill {
           owner == other.owner &&
           date == other.date &&
           items == other.items &&
-          balance == other.balance;
+          balance == other.balance &&
+          isViewed == other.isViewed;
 
   @override
   int get hashCode =>
@@ -57,11 +61,12 @@ class Bill {
       owner.hashCode ^
       date.hashCode ^
       items.hashCode ^
-      balance.hashCode;
+      balance.hashCode ^
+      isViewed.hashCode;
 
   @override
   String toString() {
-    return 'Bill{id: $id, name: $name, groupId: $groupId, owner: $owner, date: $date, items: $items, balance: $balance}';
+    return 'Bill{id: $id, name: $name, groupId: $groupId, owner: $owner, date: $date, items: $items, balance: $balance, isViewed: $isViewed}';
   }
 
   Bill copyWith({
@@ -73,6 +78,7 @@ class Bill {
     double? price,
     List<Item>? items,
     Map<String, double>? balance,
+    bool? isViewed,
   }) {
     return Bill(
       id: id ?? this.id,
@@ -82,6 +88,7 @@ class Bill {
       date: date ?? this.date,
       items: items ?? this.items,
       balance: balance ?? this.balance,
+      isViewed: isViewed ?? this.isViewed,
     );
   }
 
@@ -93,6 +100,7 @@ class Bill {
       'ownerID': owner.id,
       'date': '${date.toIso8601String().split('.')[0]}Z',
       'items': items.map((item) => item.toMap()).toList(),
+      'isViewed': isViewed
     };
   }
 
@@ -108,6 +116,7 @@ class Bill {
           .toList(),
       balance: (map['balance'] as Map<String, dynamic>? ?? {})
           .map((key, value) => MapEntry(key, value.toDouble())),
+      isViewed: map['isViewed'] as bool? ?? true,
     );
   }
 //</editor-fold>

@@ -11,9 +11,8 @@ uint32_t perspectiveTransform(char* input, DetectedRectangle* cropPath, uint8_t*
 //    cv::Mat originalImg = cv::imdecode(inputBuf, cv::IMREAD_COLOR);
     cv::Mat originalImg = cv::imread(input, cv::IMREAD_COLOR);
     if (originalImg.empty()) {
-        return 42;
+        return 0;
     }
-    cv::cvtColor(originalImg, originalImg, cv::COLOR_RGBA2BGR);
     cv::Point2f src[4], dst[4];
     src[0].x = cropPath->topLeft[0] * originalImg.cols;
     src[0].y = cropPath->topLeft[1] * originalImg.rows;

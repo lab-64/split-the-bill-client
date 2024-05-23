@@ -24,8 +24,8 @@ RouteBase get $navbarShellRoute => ShellRouteData.$route(
           factory: $GroupsRouteExtension._fromState,
           routes: [
             GoRouteData.$route(
-              path: 'new',
-              factory: $NewGroupRouteExtension._fromState,
+              path: 'edit/:groupId',
+              factory: $EditGroupRouteExtension._fromState,
             ),
             GoRouteData.$route(
               path: ':groupId',
@@ -62,6 +62,22 @@ RouteBase get $navbarShellRoute => ShellRouteData.$route(
               factory: $EditProfileRouteExtension._fromState,
             ),
           ],
+        ),
+        GoRouteData.$route(
+          path: '/camera',
+          factory: $CameraRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: '/crop',
+          factory: $ImageCropRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: '/unseenBills:billId',
+          factory: $UnseenBillRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
+          path: '/transactions',
+          factory: $TransactionRouteExtension._fromState,
         ),
       ],
     );
@@ -105,11 +121,13 @@ extension $GroupsRouteExtension on GroupsRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $NewGroupRouteExtension on NewGroupRoute {
-  static NewGroupRoute _fromState(GoRouterState state) => const NewGroupRoute();
+extension $EditGroupRouteExtension on EditGroupRoute {
+  static EditGroupRoute _fromState(GoRouterState state) => EditGroupRoute(
+        groupId: state.pathParameters['groupId']!,
+      );
 
   String get location => GoRouteData.$location(
-        '/groups/new',
+        '/groups/edit/${Uri.encodeComponent(groupId)}',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -237,6 +255,82 @@ extension $EditProfileRouteExtension on EditProfileRoute {
 
   String get location => GoRouteData.$location(
         '/profile/edit',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $CameraRouteExtension on CameraRoute {
+  static CameraRoute _fromState(GoRouterState state) => const CameraRoute();
+
+  String get location => GoRouteData.$location(
+        '/camera',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $ImageCropRouteExtension on ImageCropRoute {
+  static ImageCropRoute _fromState(GoRouterState state) => ImageCropRoute(
+        state.uri.queryParameters['img-file']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/crop',
+        queryParams: {
+          'img-file': imgFile,
+        },
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $UnseenBillRouteExtension on UnseenBillRoute {
+  static UnseenBillRoute _fromState(GoRouterState state) => UnseenBillRoute(
+        billId: state.pathParameters['billId']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/unseenBills${Uri.encodeComponent(billId)}',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $TransactionRouteExtension on TransactionRoute {
+  static TransactionRoute _fromState(GoRouterState state) =>
+      const TransactionRoute();
+
+  String get location => GoRouteData.$location(
+        '/transactions',
       );
 
   void go(BuildContext context) => context.go(location);

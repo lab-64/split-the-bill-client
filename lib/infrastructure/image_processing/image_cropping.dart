@@ -19,13 +19,8 @@ class ImageCropping {
 
 
   static Future<Uint8List>  perspectiveImageCropping(String imgPath, DetectedRectangle cropPath) async {
-    log("=== Cropping Started ===");
     final perspectiveCropping = nativeImageCropping.lookupFunction<PerspectiveCroppingFunctionNative, PerspectiveCroppingFunction>("perspectiveTransform");
-    // final imgBytes = await inputImg.toByteData(format: ui.ImageByteFormat.rawRgba);
-    // final inputBytes = imgBytes!.buffer.asUint8List();
-    // log("Raw input img bytes: ${inputBytes.length}");
-    // Pointer<Uint8> inputBuffer = ffi.malloc.allocate(inputBytes.length);
-    // inputBuffer.asTypedList(inputBytes.length).setAll(0, inputBytes);
+
     Pointer<Pointer<Uint8>> outputBuffer = ffi.malloc.allocate(sizeOf<Pointer<Uint8>>());
     final imgPathNative = imgPath.toNativeUtf8();
 
@@ -40,17 +35,13 @@ class ImageCropping {
     nativeCropPath.bottomLeft[0] = cropPath.bottomLeft.dx;
     nativeCropPath.bottomLeft[1] = cropPath.bottomLeft.dy;
 
-    log("${cropPath.topLeft}");
-
-
     int outputSize = perspectiveCropping(imgPathNative, cropPathPtr, outputBuffer);
-    if (outputSize == 42) {
+    if (outputSize == 0) {
       log("decoded image was null");
       return Uint8List(0);
     }
     Uint8List projectedBytes = outputBuffer.value.asTypedList(outputSize);
-    // ui.Codec codec = await ui.instantiateImageCodec(projectedBytes);
-    // ui.Image projectedImage = (await codec.getNextFrame()).image;
+
     ffi.malloc.free(cropPathPtr);
     ffi.malloc.free(imgPathNative);
     ffi.malloc.free(outputBuffer.value);

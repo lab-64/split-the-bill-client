@@ -10,11 +10,13 @@ class RemoteBillRepository extends BillRepository {
   final HttpClient client;
 
   @override
-  Future<Bill> edit(Bill bill) => client.put(
-        uri: api.updateBill(bill.id),
-        body: bill.toMap(),
-        builder: (data) => Bill.fromMap(data),
-      );
+  Future<Bill> edit(Bill bill) {
+    return client.put(
+      uri: api.updateBill(bill.id),
+      body: bill.toMap(),
+      builder: (data) => Bill.fromMap(data),
+    );
+  }
 
   @override
   Future<Bill> getBill(String billId) => client.get(
@@ -23,15 +25,26 @@ class RemoteBillRepository extends BillRepository {
       );
 
   @override
-  Future<List<Bill>> getBillsByUser(String userId) {
-    // TODO: implement getBillsByUser (endpoint in backend missing right now)
-    return Future.value([]);
-  }
-
-  @override
   Future<Bill> create(Bill bill) => client.post(
         uri: api.createBill(),
         body: bill.toMap(),
         builder: (data) => Bill.fromMap(data),
+      );
+
+  @override
+  Future<void> delete(String billId) =>
+      client.delete(uri: api.deleteBill(billId));
+
+  @override
+  Future<List<Bill>> getBillsByUser(
+    String userId, {
+    bool isUnseen = false,
+    bool isOwner = false,
+  }) =>
+      client.get(
+        uri: api.getBillByUser(userId, isUnseen, isOwner),
+        builder: (data) => data?.isNotEmpty == true
+            ? data.map((bills) => Bill.fromMap(bills)).toList().cast<Bill>()
+            : [],
       );
 }

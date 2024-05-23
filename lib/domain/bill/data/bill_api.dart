@@ -1,7 +1,6 @@
 import 'package:split_the_bill/constants/constants.dart';
 
 class BillAPI {
-  static const String _baseUrl = Constants.baseApiUrl;
   static const String _apiPath = "/api/bill";
 
   Uri createBill() => _buildUri(
@@ -16,14 +15,31 @@ class BillAPI {
         endpoint: "/$billId",
       );
 
+  Uri deleteBill(String billId) => _buildUri(
+        endpoint: "/$billId",
+      );
+
+  Uri getBillByUser(String userId, bool isUnseen, bool isOwner) => _buildUri(
+        endpoint: "/",
+        parametersBuilder: () => {
+          "userId": userId,
+          "isUnseen": isUnseen.toString(),
+          "isOwner": isOwner.toString()
+        },
+      );
+
+  Uri editItem(String itemId) => _buildUri(
+        endpoint: "/item/$itemId",
+      );
+
   Uri _buildUri({
     required String endpoint,
     Map<String, dynamic> Function()? parametersBuilder,
   }) {
     return Uri(
-      scheme: "http",
-      port: 8080,
-      host: _baseUrl,
+      scheme: Constants.baseScheme,
+      port: Constants.basePort,
+      host: Constants.baseApiUrl,
       path: "$_apiPath$endpoint",
       queryParameters: parametersBuilder?.call(),
     );

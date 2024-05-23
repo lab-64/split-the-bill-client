@@ -43,11 +43,6 @@ class _CroppingRectangleState extends State<CroppingRectangle> {
     left = 0;
     top = 0;
 
-    // Offset scalingFactor = Offset(
-    //   widget.imgRenderSize.width / widget.imgTrueSize.width,
-    //   widget.imgRenderSize.height / widget.imgTrueSize.height,
-    // );
-
     double scalingFactor = min(widget.imgRenderSize.width / widget.imgTrueSize.width,
       widget.imgRenderSize.height / widget.imgTrueSize.height);
     dev.log("Scaling Factor: ${scalingFactor}");
@@ -90,7 +85,6 @@ class _CroppingRectangleState extends State<CroppingRectangle> {
           top + detectedEdges.topLeft.dy * imgRenderHeight
       ),
     ];
-    dev.log("${pivotPositions[0]}");
 
     super.initState();
   }
@@ -136,7 +130,6 @@ class _CroppingRectangleState extends State<CroppingRectangle> {
       ),
     ];
 
-    dev.log("${pivotPositions[0]}");
     _updateCropSelection();
 
     return SizedBox(
@@ -153,7 +146,6 @@ class _CroppingRectangleState extends State<CroppingRectangle> {
                 setState(() {
                   Offset newPos = _applyPositionScaling(position);
                   detectedEdges.topLeft = _clampPos(detectedEdges.topLeft + newPos);
-                  dev.log("${detectedEdges.topLeft.dx}");
                 });
               },
             ),

@@ -67,7 +67,6 @@ class _CroppingPivotState extends State<CroppingPivot> {
       currentSize = widget.size;
     });
 
-    // widget.onFinishedDragCallback();
   }
 
   void _dragEnd(DragEndDetails details) {

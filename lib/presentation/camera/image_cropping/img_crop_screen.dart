@@ -45,7 +45,6 @@ class _ImageCropScreenState extends State<ImageCropScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(title: const Text("Select the Bon"),),
       body: Center(
         child: Stack(
           fit: StackFit.expand,
@@ -84,10 +83,11 @@ class _ImageCropScreenState extends State<ImageCropScreen> {
       floatingActionButton: ActionButton(
         icon: Icons.crop,
         onPressed: () async {
-          // ui.Image originalImg = await ImageUtils.createImageFromFile(currentImageFile.path);
           Image img = Image.file(File(widget.imgFile));
           Uint8List croppedBytes = await ImageCropping.perspectiveImageCropping(widget.imgFile, cropPath);
           img = Image.memory(croppedBytes);
+          //@TODO
+          // Do sth. with the cropped image data
           Navigator.push(context, MaterialPageRoute(builder: (_) => ImageScreen(image: img)));
         },
       ),
@@ -102,7 +102,6 @@ class _ImageCropScreenState extends State<ImageCropScreen> {
 
   void _updateCropSelection(DetectedRectangle currentSelection) {
     cropPath = currentSelection;
-    log("Moarvvvvv ${cropPath.topLeft.dx}");
   }
 
 }

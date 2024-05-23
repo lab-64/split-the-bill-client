@@ -1,3 +1,4 @@
+import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/auth/data/auth_api.dart';
 import 'package:split_the_bill/auth/data/remote_auth_repository.dart';
@@ -11,7 +12,7 @@ abstract class AuthRepository {
 
   Future<User> register(String email, String password);
 
-  Future<User> update(User user);
+  Future<User> update(User user, XFile? image);
 
   Future<void> logout();
 }

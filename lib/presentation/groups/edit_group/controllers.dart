@@ -6,7 +6,7 @@ import 'package:split_the_bill/domain/group/states/groups_state.dart';
 part 'controllers.g.dart';
 
 @Riverpod(keepAlive: true)
-class NewGroupController extends _$NewGroupController {
+class EditGroupController extends _$EditGroupController {
   @override
   FutureOr<void> build() async {}
 
@@ -21,5 +21,12 @@ class NewGroupController extends _$NewGroupController {
 
     final groupsState = ref.read(groupsStateProvider.notifier);
     state = await AsyncValue.guard(() => groupsState.create(group));
+  }
+
+  Future<void> editGroup(Group group) async {
+    state = const AsyncLoading();
+
+    final groupsState = ref.read(groupsStateProvider.notifier);
+    state = await AsyncValue.guard(() => groupsState.edit(group));
   }
 }

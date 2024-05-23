@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:split_the_bill/constants/app_sizes.dart';
+import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/presentation/shared/groups/groups_list.dart';
 import 'package:split_the_bill/router/routes.dart';
 
@@ -16,7 +16,7 @@ class GroupsScreen extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
-            onPressed: () => const NewGroupRoute().go(context),
+            onPressed: () => const EditGroupRoute(groupId: '0').push(context),
           ),
         ],
       ),
