@@ -60,7 +60,7 @@ class GroupSelectionScreen extends ConsumerWidget {
   Widget _buildGroupTile(BuildContext context, Group group) {
     return GroupTile(
       group: group,
-      onTap: () => NewBillRoute(groupId: group.id).push(context),
+      onTap: () => EditBillRoute(groupId: group.id, billId: '0').push(context),
       isDetailed: false,
     );
   }

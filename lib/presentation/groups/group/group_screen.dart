@@ -81,7 +81,10 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
             floatingActionButton: ActionButton(
               icon: _currentIndex == 0 ? Icons.add : Icons.person_add,
               onPressed: () => _currentIndex == 0
-                  ? NewBillRoute(groupId: group.id).push(context)
+                  ? EditBillRoute(
+                      groupId: group.id,
+                      billId: '0',
+                    ).push(context)
                   : _shareInvitation(context, group.invitationID),
             ),
             appBar: AppBar(
