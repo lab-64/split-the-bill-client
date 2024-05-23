@@ -1,4 +1,6 @@
+import 'dart:developer';
 import 'dart:io';
+import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/cupertino.dart';
@@ -119,24 +121,37 @@ class BillRecognition extends _$BillRecognition {
     return Future.value(const BillSuggestion(nameList: [], priceList: []));
   }
 
-  Future<void> runBillRecognition(XFile? image) async {
+  Future<void> runBillRecognition(Uint8List image) async {
     state = const AsyncLoading();
 
-    if (image == null) {
-      state = AsyncError("No image selected", StackTrace.current);
+    if (image.isEmpty) {
+      state = AsyncError("Could not process image", StackTrace.current);
       return;
     }
 
-    File imageFile = File(image.path);
+    ui.Image img = await decodeImageFromList(image);
 
     final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
-    final InputImage inputImage = InputImage.fromFile(imageFile);
+    //final exif = await readExifFromBytes(image);
+
+    //log("Image metadata: ${exif.keys.toList()}");
+    final imageMetadata = InputImageMetadata(
+        size: Size(img.width.toDouble(), img.height.toDouble()),
+        rotation: InputImageRotation.rotation0deg,
+        format: InputImageFormat.bgra8888,
+        bytesPerRow: 4,
+    );
+
+    log("Image size ${imageMetadata.size}");
+    log("Image byte size ${image.length}");
+    final InputImage inputImage = InputImage.fromBytes(bytes: image, metadata: imageMetadata);
+    log("Success");
     final RecognizedText recognizedText =
         await textRecognizer.processImage(inputImage);
     textRecognizer.close();
 
     // get image properties
-    ui.Image img = await decodeImageFromList(imageFile.readAsBytesSync());
+
     int imageWidth = img.width;
 
     // block lists

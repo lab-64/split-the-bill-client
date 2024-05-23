@@ -6,27 +6,30 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:split_the_bill/domain/camera/crop_state.dart';
 import 'package:split_the_bill/infrastructure/edge_detection/edge_detection_result.dart';
 import 'package:split_the_bill/infrastructure/image_processing/image_cropping.dart';
 import 'package:split_the_bill/infrastructure/image_processing/image_utils.dart';
 import 'package:split_the_bill/presentation/camera/image_cropping/crop_rectangle.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
 
-class ImageCropScreen extends StatefulWidget {
+import '../../bills/new_bill/controllers.dart';
+
+class ImageCropScreen extends ConsumerStatefulWidget {
   const ImageCropScreen({super.key, required this.imgFile});
 
   final String imgFile;
 
   @override
-  State<StatefulWidget> createState() {
+  ConsumerState<ConsumerStatefulWidget> createState() {
     return _ImageCropScreenState();
   }
 }
 
-class _ImageCropScreenState extends State<ImageCropScreen> {
+class _ImageCropScreenState extends ConsumerState<ImageCropScreen> {
   GlobalKey imageKey = GlobalKey();
   late File currentImageFile;
-
 
   @override
   void initState() {
@@ -85,10 +88,14 @@ class _ImageCropScreenState extends State<ImageCropScreen> {
         onPressed: () async {
           Image img = Image.file(File(widget.imgFile));
           Uint8List croppedBytes = await ImageCropping.perspectiveImageCropping(widget.imgFile, cropPath);
-          img = Image.memory(croppedBytes);
+          //img = Image.memory(croppedBytes);
           //@TODO
+          ref.read(croppingStateProvider.notifier).setCroppedImage(croppedBytes);
+            await ref
+                .read(billRecognitionProvider.notifier)
+                .runBillRecognition(croppedBytes);
           // Do sth. with the cropped image data
-          Navigator.push(context, MaterialPageRoute(builder: (_) => ImageScreen(image: img)));
+          // Navigator.push(context, MaterialPageRoute(builder: (_) => ImageScreen(image: img)));
         },
       ),
     );

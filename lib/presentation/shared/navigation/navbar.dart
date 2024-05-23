@@ -13,8 +13,8 @@ class Navbar extends StatelessWidget {
     return Scaffold(
       floatingActionButton:
           ActionButton(
-            icon: Icons.photo_camera,
-            onPressed: () => const CameraRoute().push(context),
+            icon: Icons.add,
+            onPressed: () => const NewBillGroupSelectionRoute().push(context),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: const BottomNavigationBar(),

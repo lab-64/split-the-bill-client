@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/bill/states/bill_state.dart';
+import 'package:split_the_bill/domain/camera/crop_state.dart';
 import 'package:split_the_bill/domain/group/states/group_state.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/controllers.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/edit_bill.dart';
@@ -24,14 +25,22 @@ class NewBillScreen extends ConsumerStatefulWidget {
 
 class _NewBillScreenState extends ConsumerState<NewBillScreen> {
   final ImagePicker _picker = ImagePicker();
+  late XFile? image;
 
   Future _getImage(ImageSource source) async {
-    final XFile? image = await _picker.pickImage(source: source);
+    image = await _picker.pickImage(source: source);
 
+    // if (_image != null) {
+    //   //final imgCropRoute = ImageCropRoute(image.path).push();
+    //   await ref
+    //       .read(billRecognitionProvider.notifier)
+    //       .runBillRecognition(image);
+    // }
+  }
+
+  void _processImage(BuildContext context) {
     if (image != null) {
-      await ref
-          .read(billRecognitionProvider.notifier)
-          .runBillRecognition(image);
+      final imgCropRoute = ImageCropRoute(image!.path).push(context);
     }
   }
 
@@ -39,6 +48,7 @@ class _NewBillScreenState extends ConsumerState<NewBillScreen> {
   Widget build(BuildContext context) {
     final bill = ref.watch(billStateProvider(widget.billId));
     final group = ref.watch(groupStateProvider(widget.groupId));
+    final croppedImage = ref.watch(croppingStateProvider).isNotEmpty;
 
     /// Show the items check dialog when the bill recognition starts
     ref.listen(
@@ -62,7 +72,7 @@ class _NewBillScreenState extends ConsumerState<NewBillScreen> {
                 ScanBillModal(
                   getImage: _getImage,
                 ),
-              ),
+              ).whenComplete(() => ImageCropRoute(image!.path).push(context)),
             ),
           ),
           Padding(
