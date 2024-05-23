@@ -7,7 +7,7 @@ part of 'controllers.dart';
 // **************************************************************************
 
 String _$editBillControllerHash() =>
-    r'e6182916e2769ee2b1aaa0c8757f6e7727ebeb51';
+    r'c7b193fe5e693adc62c5eabb07613b678ca73c02';
 
 /// See also [EditBillController].
 @ProviderFor(EditBillController)
