@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/group/group_transaction.dart';
+import 'package:split_the_bill/domain/group/states/groups_transaction_state.dart';
 import 'package:split_the_bill/presentation/transactions/transaction_item.dart';
 
 import 'transaction_date_tab.dart';
@@ -26,7 +27,11 @@ class _TransactionListState extends ConsumerState<TransactionsList> {
   @override
   void initState() {
     super.initState();
-    transactions = widget.transactions;
+    _init(widget.transactions);
+  }
+
+  void _init(List<GroupTransaction> transactions) {
+    this.transactions = transactions;
     transactionsExpanded = List.generate(
         transactions.length,
         (index) => transactions[index] == transactions.last ||
@@ -38,6 +43,13 @@ class _TransactionListState extends ConsumerState<TransactionsList> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(
+      groupsTransactionStateProvider,
+      (_, next) {
+        _init(next.requireValue);
+      },
+    );
+
     return ListView(
       controller: widget.scrollController,
       shrinkWrap: true,
