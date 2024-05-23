@@ -32,10 +32,8 @@ class _EditItemState extends State<EditItem> {
   void initState() {
     super.initState();
     nameController = TextEditingController(text: widget.item.name);
-    priceController = TextEditingController(
-        text: widget.item.price.toString() == "0.0"
-            ? "0.00"
-            : widget.item.price.toString());
+    priceController =
+        TextEditingController(text: _parsePrice(widget.item.price));
     contributors = List.from(widget.item.contributors);
   }
 
@@ -44,6 +42,18 @@ class _EditItemState extends State<EditItem> {
     nameController.dispose();
     priceController.dispose();
     super.dispose();
+  }
+
+  String _parsePrice(double price) {
+    String priceString = price.toString();
+    int indexOfDecimalPoint = priceString.indexOf('.');
+    if (priceString
+            .substring(indexOfDecimalPoint + 1, priceString.length)
+            .length <
+        2) {
+      return "${priceString}0";
+    }
+    return priceString;
   }
 
   @override
