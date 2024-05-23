@@ -155,7 +155,9 @@ class _EditBillState extends ConsumerState<EditBill> {
   }
 
   void _addItem() {
-    ref.read(itemsProvider(widget.bill.id).notifier).addItem(Item.getDefault());
+    ref
+        .read(itemsProvider(widget.bill.id).notifier)
+        .addItem(Item.getDefault(), widget.bill.id);
 
     setState(() {
       itemExpanded.clear();

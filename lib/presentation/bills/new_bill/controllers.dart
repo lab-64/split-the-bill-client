@@ -83,7 +83,10 @@ class Items extends _$Items {
     return ref.read(billStateProvider(billId)).requireValue.items;
   }
 
-  void addItem(Item item) {
+  void addItem(Item item, String billId) {
+    if (billId != '0') {
+      item = item.copyWith(billId: billId);
+    }
     state = [...state, item];
   }
 
