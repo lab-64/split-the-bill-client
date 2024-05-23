@@ -176,15 +176,20 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: Sizes.p24),
-                  child: CustomScrollView(
-                    slivers: [
-                      const SliverToBoxAdapter(child: gapH16),
-                      BillsList(
-                        scrollController: scrollController,
-                        groupId: widget.groupId,
-                        showGroup: false,
-                      ),
-                    ],
+                  child: RefreshIndicator(
+                    onRefresh: () =>
+                        ref.refresh(groupStateProvider(group.id).future),
+                    child: CustomScrollView(
+                      slivers: [
+                        const SliverToBoxAdapter(child: gapH16),
+                        SliverToBoxAdapter(
+                          child: BillsList(
+                            scrollController: scrollController,
+                            bills: group.bills,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 GroupMembers(members: group.members),

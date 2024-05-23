@@ -16,16 +16,21 @@ class TransactionScreen extends ConsumerWidget {
       appBar: AppBar(
         title: const Text("Transactions"),
       ),
-      body: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: AsyncValueWidget(
-                value: transactions,
-                data: (transactions) => TransactionsList(
-                    transactions: transactions,
-                    scrollController: scrollController)),
+      body: AsyncValueWidget(
+        value: transactions,
+        data: (transactions) => RefreshIndicator(
+          onRefresh: () => ref.refresh(groupsTransactionStateProvider.future),
+          child: CustomScrollView(
+            slivers: [
+              SliverToBoxAdapter(
+                child: TransactionsList(
+                  transactions: transactions,
+                  scrollController: scrollController,
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

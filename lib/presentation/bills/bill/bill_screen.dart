@@ -95,13 +95,16 @@ class BillScreen extends ConsumerWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Sizes.p24),
-        child: CustomScrollView(
-          slivers: [
-            ItemsList(
-              scrollController: scrollController,
-              bill: bill,
-            ),
-          ],
+        child: RefreshIndicator(
+          onRefresh: () => ref.refresh(billStateProvider(billId).future),
+          child: CustomScrollView(
+            slivers: [
+              ItemsList(
+                scrollController: scrollController,
+                bill: bill,
+              ),
+            ],
+          ),
         ),
       ),
     );
