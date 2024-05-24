@@ -40,7 +40,7 @@ class ImageCropping {
       log("decoded image was null");
       return Uint8List(0);
     }
-    Uint8List projectedBytes = outputBuffer.value.asTypedList(outputSize);
+    Uint8List projectedBytes = Uint8List.fromList(outputBuffer.value.asTypedList(outputSize));
 
     ffi.malloc.free(cropPathPtr);
     ffi.malloc.free(imgPathNative);

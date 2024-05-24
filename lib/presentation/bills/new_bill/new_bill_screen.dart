@@ -29,19 +29,6 @@ class _NewBillScreenState extends ConsumerState<NewBillScreen> {
 
   Future _getImage(ImageSource source) async {
     image = await _picker.pickImage(source: source);
-
-    // if (_image != null) {
-    //   //final imgCropRoute = ImageCropRoute(image.path).push();
-    //   await ref
-    //       .read(billRecognitionProvider.notifier)
-    //       .runBillRecognition(image);
-    // }
-  }
-
-  void _processImage(BuildContext context) {
-    if (image != null) {
-      final imgCropRoute = ImageCropRoute(image!.path).push(context);
-    }
   }
 
   @override

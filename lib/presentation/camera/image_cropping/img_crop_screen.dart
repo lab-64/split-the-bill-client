@@ -86,14 +86,15 @@ class _ImageCropScreenState extends ConsumerState<ImageCropScreen> {
       floatingActionButton: ActionButton(
         icon: Icons.crop,
         onPressed: () async {
-          Image img = Image.file(File(widget.imgFile));
           Uint8List croppedBytes = await ImageCropping.perspectiveImageCropping(widget.imgFile, cropPath);
+          // Navigator.push(context, MaterialPageRoute(builder: (_) => ImageScreen(image: Image.memory(croppedBytes))));
+          // ui.Image uiImg = await ImageUtils.createImageFromBytes(croppedBytes);
           //img = Image.memory(croppedBytes);
           //@TODO
           ref.read(croppingStateProvider.notifier).setCroppedImage(croppedBytes);
-            await ref
-                .read(billRecognitionProvider.notifier)
-                .runBillRecognition(croppedBytes);
+          await ref
+              .read(billRecognitionProvider.notifier)
+              .runBillRecognition(croppedBytes);
           // Do sth. with the cropped image data
           // Navigator.push(context, MaterialPageRoute(builder: (_) => ImageScreen(image: img)));
         },
@@ -103,7 +104,7 @@ class _ImageCropScreenState extends ConsumerState<ImageCropScreen> {
   
   @override
   void dispose() {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
     super.dispose();
   }
 

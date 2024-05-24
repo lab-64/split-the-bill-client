@@ -7,12 +7,18 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:split_the_bill/infrastructure/edge_detection/edge_detection_result.dart';
+import 'package:split_the_bill/presentation/shared/components/action_button.dart';
 
 class ImageUtils {
 
   static Future<ui.Image> createImageFromFile(String path) async {
     Uint8List byteList = await File(path).readAsBytes();
     ui.Codec codec = await ui.instantiateImageCodec(byteList);
+    return (await codec.getNextFrame()).image;
+  }
+
+  static Future<ui.Image> createImageFromBytes(Uint8List bytes) async {
+    ui.Codec codec = await ui.instantiateImageCodec(bytes);
     return (await codec.getNextFrame()).image;
   }
 
@@ -69,7 +75,7 @@ class ImageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return Scaffold(
       // child: FutureBuilder(
       //   future: image.toByteData(),
       //   builder: (BuildContext context, AsyncSnapshot<ByteData?> snapshot) {
@@ -80,7 +86,10 @@ class ImageScreen extends StatelessWidget {
       //     return const CircularProgressIndicator();
       // },
       // )
-      child: image,
+      body: Center(
+        child: image,
+      ),
+      floatingActionButton: ActionButton(icon: Icons.check, onPressed: () => Navigator.pop(context),),
     );
   }
 

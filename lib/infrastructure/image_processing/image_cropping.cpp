@@ -43,7 +43,7 @@ uint32_t perspectiveTransform(char* input, DetectedRectangle* cropPath, uint8_t*
     cv::Mat projectedImg;
     cv::Mat perspectiveTransform = cv::getPerspectiveTransform(src, dst);
     cv::warpPerspective(originalImg, projectedImg, perspectiveTransform, cv::Size(maxWidth, maxHeight));
-    cv::cvtColor(projectedImg, projectedImg, cv::COLOR_RGBA2BGRA);
+//    cv::cvtColor(projectedImg, projectedImg, cv::COLOR_RGBA2BGRA);
     std::vector<uint8_t> outBuf;
     outBuf.resize(1000*1000);
     cv::imencode(".jpeg", projectedImg, outBuf);

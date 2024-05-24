@@ -6,6 +6,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/cupertino.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/auth/user.dart';
@@ -135,17 +136,20 @@ class BillRecognition extends _$BillRecognition {
     //final exif = await readExifFromBytes(image);
 
     //log("Image metadata: ${exif.keys.toList()}");
-    final imageMetadata = InputImageMetadata(
-        size: Size(img.width.toDouble(), img.height.toDouble()),
-        rotation: InputImageRotation.rotation0deg,
-        format: InputImageFormat.bgra8888,
-        bytesPerRow: 4,
-    );
-
-    log("Image size ${imageMetadata.size}");
-    log("Image byte size ${image.length}");
-    final InputImage inputImage = InputImage.fromBytes(bytes: image, metadata: imageMetadata);
-    log("Success");
+    // final imageMetadata = InputImageMetadata(
+    //     size: Size(img.width.toDouble(), img.height.toDouble()),
+    //     rotation: InputImageRotation.rotation0deg,
+    //     format: InputImageFormat.bgra8888,
+    //     bytesPerRow: 4,
+    // );
+    //
+    // log("Image size ${imageMetadata.size}");
+    // log("Image byte size ${image.length}");
+    final dir = await getTemporaryDirectory();
+    File imgFile = File("${dir.path}/cropped.jpeg");
+    imgFile.writeAsBytesSync(image, flush: true, mode: FileMode.writeOnly);
+    final InputImage inputImage = InputImage.fromFile(imgFile);
+    // log("Success");
     final RecognizedText recognizedText =
         await textRecognizer.processImage(inputImage);
     textRecognizer.close();
@@ -188,6 +192,8 @@ class BillRecognition extends _$BillRecognition {
         }
       }
     }
+    log("Detected Text: ${recognizedText.text}");
+
 
     // fill the shorter list with empty strings or zeros
     _fillLists(nameList, priceList);

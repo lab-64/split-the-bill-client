@@ -184,7 +184,7 @@ class _ItemsProviderElement
   String get billId => (origin as ItemsProvider).billId;
 }
 
-String _$billRecognitionHash() => r'c5b6dfddcbbe9998f22db6852c5efc1b4c02f902';
+String _$billRecognitionHash() => r'5d7ecf0926274974e5d67272655ab1c812b5fa5a';
 
 /// See also [BillRecognition].
 @ProviderFor(BillRecognition)
