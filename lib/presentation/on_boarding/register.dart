@@ -83,7 +83,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         prefixIcon: const Icon(Icons.alternate_email),
                         controller: email,
                         isLoading: state.isLoading,
-                        validator: (value) =>  validateEmail(value),
+                        validator: (value) => validateEmail(value),
                       ),
                       gapH16,
                       InputTextFormField(
@@ -142,6 +142,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             isLoading: state.isLoading,
             onPressed: state.isLoading ? null : () => _register(),
             icon: Icons.app_registration,
+            backgroundColor: Colors.green.shade400,
             text: 'Register',
           ),
         ),

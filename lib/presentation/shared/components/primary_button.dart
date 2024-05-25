@@ -5,14 +5,16 @@ class PrimaryButton extends StatelessWidget {
   const PrimaryButton({
     super.key,
     required this.onPressed,
-    this.icon,
+    required this.icon,
     required this.text,
+    required this.backgroundColor,
     this.isLoading = false,
   });
 
   final VoidCallback? onPressed;
-  final IconData? icon;
+  final IconData icon;
   final String text;
+  final Color backgroundColor;
   final bool isLoading;
 
   @override
@@ -20,35 +22,31 @@ class PrimaryButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.green.shade400,
-        textStyle: const TextStyle(color: Colors.white),
+        backgroundColor: backgroundColor,
+        foregroundColor: Colors.white,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(Sizes.p24),
         ),
-        minimumSize: const Size(0, Sizes.p48),
       ),
-      child: isLoading
-          ? const CircularProgressIndicator()
-          : Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (icon != null)
-                  Row(
-                    children: [
-                      Icon(icon, color: Colors.white),
-                      gapW12,
-                    ],
-                  ),
-                Text(
-                  text,
-                  style: const TextStyle(
-                    color: Colors.white,
-                    letterSpacing: 1.5,
-                    fontSize: 20,
-                  ),
-                ),
-              ],
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+              vertical: Sizes.p16,
+              horizontal: Sizes.p4,
             ),
+            child: Text(
+              text,
+              style: const TextStyle(
+                letterSpacing: 1,
+                fontSize: 18,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
