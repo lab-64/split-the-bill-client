@@ -20,13 +20,25 @@ class ItemsList extends StatelessWidget {
   final String userId;
 
   double _calculateBalance(Item item) {
-    if (item.contributors.map((user) => user.id).toList().contains(userId) &&
-        bill.requireValue.owner.id != userId) {
-      return (item.price / item.contributors.length) * -1;
-    } else if (bill.requireValue.owner.id == userId) {
-      return item.price;
+    final containsUser =
+        item.contributors.map((user) => user.id).toList().contains(userId);
+    final numOfContributors = item.contributors.length;
+    final isOwner = (bill.requireValue.owner.id == userId);
+    final noContributors = item.contributors.isEmpty;
+
+    if (isOwner) {
+      if (containsUser) {
+        return item.price * ((numOfContributors - 1) / numOfContributors);
+      } else if (noContributors) {
+        return 0.00;
+      } else {
+        return item.price;
+      }
+    } else if (containsUser) {
+      return (item.price / numOfContributors) * -1;
+    } else {
+      return 0.00;
     }
-    return 0.00;
   }
 
   @override

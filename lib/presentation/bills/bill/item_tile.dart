@@ -49,6 +49,8 @@ class ItemTile extends StatelessWidget {
               ],
             ),
             trailing: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
                   item.price.toCurrencyString(),
