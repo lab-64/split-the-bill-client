@@ -9,6 +9,8 @@ import 'package:split_the_bill/presentation/shared/components/show_confirmation_
 import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
 import 'package:split_the_bill/router/routes.dart';
 
+import '../../../auth/states/auth_state.dart';
+
 class BillScreen extends ConsumerWidget {
   const BillScreen({
     super.key,
@@ -38,6 +40,7 @@ class BillScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ScrollController scrollController = ScrollController();
     final bill = ref.watch(billStateProvider(billId));
+    final user = ref.read(authStateProvider).requireValue;
 
     ref.listen(
       billsStateProvider(),
@@ -100,6 +103,7 @@ class BillScreen extends ConsumerWidget {
           child: CustomScrollView(
             slivers: [
               ItemsList(
+                userId: user.id,
                 scrollController: scrollController,
                 bill: bill,
               ),
