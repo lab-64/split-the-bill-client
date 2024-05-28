@@ -8,7 +8,12 @@ part of 'shared_preferences.dart';
 
 String _$sharedPreferencesHash() => r'3a9f8412df34c1653d08100c9826aa2125b80f7f';
 
-/// See also [sharedPreferences].
+/// A Riverpod provider for SharedPreferences.
+/// It throws an [UnimplementedError] to indicate that it should be overridden in the main function
+/// with the actual instance of SharedPreferences. This is done to ensure that SharedPreferences
+/// is properly initialized before being used.
+///
+/// Copied from [sharedPreferences].
 @ProviderFor(sharedPreferences)
 final sharedPreferencesProvider = Provider<SharedPreferences>.internal(
   sharedPreferences,
@@ -23,7 +28,11 @@ final sharedPreferencesProvider = Provider<SharedPreferences>.internal(
 typedef SharedPreferencesRef = ProviderRef<SharedPreferences>;
 String _$sharedUtilityHash() => r'453626ef9b12d3b2633384a784097f87ceb60484';
 
-/// See also [sharedUtility].
+/// A Riverpod provider for SharedUtility.
+/// This provider depends on the [sharedPreferencesProvider] to get an instance of SharedPreferences.
+/// The [SharedUtility] class provides convenient methods to interact with SharedPreferences.
+///
+/// Copied from [sharedUtility].
 @ProviderFor(sharedUtility)
 final sharedUtilityProvider = Provider<SharedUtility>.internal(
   sharedUtility,
