@@ -6,14 +6,14 @@
 
 **2. Clone the repository**
 
-**3. Run `fluter pub get` in the root folder**
+**3. Run `flutter pub get` in the root folder**
 
 **4. Run `dart run build_runner watch -d` in the root folder** (needed for code generation, has to always run while development)
 
 **5. Hide nested (generated) files:**:
 - click Shift twice
 - type `File nesting` and click Enter
-- add `; .g.dart;` to Child File Suffix for `.dart` File Suffix
+- add `; .g.dart;` to Child File Suffix for `.dart` File Suffix C:\Users\Marvi\AppData\Local\Android\Sdk\platforms\android-34
 
 **6. Hide not needed log messages (for less noise in the terminal):**:
 - click Shift twice
