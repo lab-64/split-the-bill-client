@@ -1,4 +1,3 @@
-import 'package:split_the_bill/constants/constants.dart';
 
 class User {
   final String id;
