@@ -29,7 +29,7 @@ class HttpClient {
         headers: _getHeaders(),
       );
 
-      final data = json.decode(response.body);
+      final data = json.decode(utf8.decode(response.bodyBytes));
 
       switch (response.statusCode) {
         case 200:
@@ -64,7 +64,7 @@ class HttpClient {
         headers: mergedHeaders,
       );
 
-      final data = json.decode(response.body);
+      final data = json.decode(utf8.decode(response.bodyBytes));
 
       switch (response.statusCode) {
         case 200:
@@ -103,7 +103,7 @@ class HttpClient {
         headers: mergedHeaders,
       );
 
-      final data = json.decode(response.body);
+      final data = json.decode(utf8.decode(response.bodyBytes));
 
       switch (response.statusCode) {
         case 200:
@@ -170,7 +170,7 @@ class HttpClient {
         headers: _getHeaders(),
       );
 
-      final data = json.decode(response.body);
+      final data = json.decode(utf8.decode(response.bodyBytes));
 
       switch (response.statusCode) {
         case 200:
