@@ -22,16 +22,17 @@ class BillTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authStateProvider).requireValue;
     double balance = bill.balance[user.id] ?? 0;
+    double total = bill.items.fold(0, (prev, item) => prev + item.price);
 
     return Card(
       margin: const EdgeInsets.only(bottom: Sizes.p16),
       color: Colors.white,
       elevation: 0,
-      child: _buildListTile(balance, bill.owner),
+      child: _buildListTile(total, balance, bill.owner),
     );
   }
 
-  Widget _buildListTile(double balance, User owner) {
+  Widget _buildListTile(double total, double balance, User owner) {
     return ListTile(
       onTap: onTap,
       contentPadding: const EdgeInsets.symmetric(
@@ -41,7 +42,7 @@ class BillTile extends ConsumerWidget {
       leading: _buildLeadingIcon(balance),
       title: _buildBillName(),
       subtitle: _buildSubtitle(owner),
-      trailing: _buildTrailingAmount(balance),
+      trailing: _buildTrailingAmount(total, balance),
     );
   }
 
@@ -102,17 +103,33 @@ class BillTile extends ConsumerWidget {
     );
   }
 
-  Widget _buildTrailingAmount(double balance) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
+  Widget _buildTrailingAmount(double total, double balance) {
+    Color color;
+    if (balance > 0) {
+      color = Colors.green;
+    } else if (balance < 0) {
+      color = Colors.red;
+    } else {
+      color = Colors.black;
+    }
+
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.end,
       children: [
+        Text(
+          total.toCurrencyString(),
+          style: const TextStyle(
+            fontSize: 18.0,
+          ),
+        ),
         Text(
           balance.toCurrencyString(),
           style: TextStyle(
-            fontSize: 16.0,
-            color: balance >= 0 ? Colors.green : Colors.red,
+            fontSize: 14.0,
+            color: color,
           ),
-        ),
+        )
       ],
     );
   }

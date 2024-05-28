@@ -149,7 +149,9 @@ class _EditBillState extends ConsumerState<EditBill> {
                                 width: double.infinity,
                                 child: PrimaryButton(
                                   onPressed: _addItem,
-                                  text: "+1 Item",
+                                  icon: Icons.add,
+                                  text: "Item",
+                                  backgroundColor: Colors.green.shade400,
                                 ),
                               ),
                             ],
