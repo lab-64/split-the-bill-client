@@ -5,7 +5,7 @@ import 'package:split_the_bill/domain/bill/bill.dart';
 import 'package:split_the_bill/domain/bill/item.dart';
 import 'package:split_the_bill/presentation/bills/unseen_bill/controllers.dart';
 import 'package:split_the_bill/presentation/bills/unseen_bill/item_contribution.dart';
-import 'package:split_the_bill/presentation/shared/components/ellipse_text.dart';
+import 'package:split_the_bill/presentation/shared/components/fade_text.dart';
 
 class BillContribution extends ConsumerStatefulWidget {
   const BillContribution({
@@ -60,9 +60,8 @@ class _BillContributionState extends ConsumerState<BillContribution> {
                             Icons.inventory,
                             color: Colors.blue,
                           ),
-                          title: EllipseText(
+                          title: FadeText(
                             text: items[index].name,
-                            size: Sizes.p64,
                             style: const TextStyle(
                               fontSize: 18.0,
                             ),

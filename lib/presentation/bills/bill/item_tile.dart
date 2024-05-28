@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/bill/item.dart';
+import 'package:split_the_bill/presentation/shared/components/fade_text.dart';
 import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 
 class ItemTile extends StatelessWidget {
   const ItemTile({super.key, required this.item});
 
   final Item item;
-  final String balance = "You Own: 50.00 €";
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +15,7 @@ class ItemTile extends StatelessWidget {
       children: [
         Card(
           elevation: 0,
+          color: Colors.white,
           child: ListTile(
             onTap: () {},
             leading: const Icon(
@@ -23,8 +24,10 @@ class ItemTile extends StatelessWidget {
             ),
             title: Row(
               children: [
-                Text(
-                  item.name,
+                Expanded(
+                  child: FadeText(
+                    text: item.name,
+                  ),
                 ),
                 gapW8,
                 Row(

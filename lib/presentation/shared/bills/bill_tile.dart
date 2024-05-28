@@ -4,7 +4,7 @@ import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/bill/bill.dart';
-import 'package:split_the_bill/presentation/shared/components/ellipse_text.dart';
+import 'package:split_the_bill/presentation/shared/components/fade_text.dart';
 import 'package:split_the_bill/presentation/shared/extensions/currency_formatter.dart';
 import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 
@@ -12,12 +12,10 @@ class BillTile extends ConsumerWidget {
   const BillTile({
     super.key,
     required this.bill,
-    required this.showGroup,
     required this.onTap,
   });
 
   final Bill bill;
-  final bool showGroup;
   final VoidCallback? onTap;
 
   @override
@@ -27,6 +25,7 @@ class BillTile extends ConsumerWidget {
 
     return Card(
       margin: const EdgeInsets.only(bottom: Sizes.p16),
+      color: Colors.white,
       elevation: 0,
       child: _buildListTile(balance, bill.owner),
     );
@@ -68,8 +67,8 @@ class BillTile extends ConsumerWidget {
   }
 
   Widget _buildBillName() {
-    return Text(
-      bill.name,
+    return FadeText(
+      text: bill.name,
       style: const TextStyle(
         fontSize: 16.0,
       ),
@@ -81,10 +80,6 @@ class BillTile extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _buildOwnerRow(owner),
-        Visibility(
-          visible: showGroup,
-          child: _buildGroupRow(),
-        ),
       ],
     );
   }
@@ -97,40 +92,10 @@ class BillTile extends ConsumerWidget {
           size: Sizes.p12,
         ),
         const SizedBox(width: Sizes.p4),
-        EllipseText(
-          text: owner.getDisplayName(),
-          size: Sizes.p64 * 2,
-          style: const TextStyle(color: Colors.grey),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildGroupRow() {
-    return Row(
-      children: [
-        Container(
-          width: 16.0,
-          height: 16.0,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            gradient: LinearGradient(
-              colors: [Colors.purple.shade300, Colors.purple.shade700],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
-          child: const Icon(
-            Icons.home,
-            size: 10,
-            color: Colors.white,
-          ),
-        ),
-        const SizedBox(width: Sizes.p4),
-        const Text(
-          "Some Group", // TODO
-          style: TextStyle(
-            color: Colors.grey,
+        Expanded(
+          child: FadeText(
+            text: owner.getDisplayName(),
+            style: const TextStyle(color: Colors.grey),
           ),
         ),
       ],

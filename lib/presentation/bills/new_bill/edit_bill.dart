@@ -8,7 +8,7 @@ import 'package:split_the_bill/domain/group/group.dart';
 import 'package:split_the_bill/infrastructure/async_value_ui.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/controllers.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/edit_item.dart';
-import 'package:split_the_bill/presentation/shared/components/ellipse_headline.dart';
+import 'package:split_the_bill/presentation/shared/components/fade_text.dart';
 import 'package:split_the_bill/presentation/shared/components/headline.dart';
 import 'package:split_the_bill/presentation/shared/components/primary_button.dart';
 
@@ -88,11 +88,23 @@ class _EditBillState extends ConsumerState<EditBill> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              EllipseHeadline(
-                                  size: Sizes.p64 * 2.5,
-                                  title: items[index].name.isNotEmpty
-                                      ? items[index].name
-                                      : 'Item ${index + 1}'),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                    bottom: Sizes.p8,
+                                    right: Sizes.p16,
+                                  ),
+                                  child: FadeText(
+                                    text: items[index].name.isNotEmpty
+                                        ? items[index].name
+                                        : 'Item ${index + 1}',
+                                    style: const TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
                               IntrinsicHeight(
                                 child: Row(
                                   children: [
