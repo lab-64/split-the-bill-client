@@ -13,7 +13,7 @@
 **5. Hide nested (generated) files:**:
 - click Shift twice
 - type `File nesting` and click Enter
-- add `; .g.dart;` to Child File Suffix for `.dart` File Suffix C:\Users\Marvi\AppData\Local\Android\Sdk\platforms\android-34
+- add `; .g.dart;` to Child File Suffix for `.dart` File Suffix
 
 **6. Hide not needed log messages (for less noise in the terminal):**:
 - click Shift twice
