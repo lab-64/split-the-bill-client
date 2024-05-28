@@ -52,11 +52,9 @@ class MemberItemWidget extends StatelessWidget {
           user: user,
           size: Sizes.p24,
         ),
-        title: Expanded(
-          child: FadeText(
-            text: user.getDisplayName(),
-            style: const TextStyle(color: Colors.black, fontSize: 16),
-          ),
+        title: FadeText(
+          text: user.getDisplayName(),
+          style: const TextStyle(color: Colors.black, fontSize: 16),
         ),
       ),
     );
