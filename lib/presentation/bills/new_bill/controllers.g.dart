@@ -23,7 +23,7 @@ final editBillControllerProvider =
 );
 
 typedef _$EditBillController = AsyncNotifier<void>;
-String _$itemsHash() => r'4ab865c471ac5db65e4ae063a91e238907b9aaf0';
+String _$itemsHash() => r'c76b73c8f869e11eca9305614a0e90c517e16a05';
 
 /// Copied from Dart SDK
 class _SystemHash {
