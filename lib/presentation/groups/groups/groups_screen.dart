@@ -26,21 +26,27 @@ class GroupsScreen extends ConsumerWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                PrimaryButton(
-                  onPressed: () => showDialog<void>(
-                    context: context,
-                    builder: (BuildContext context) => const JoinGroupDialog(),
+                Expanded(
+                  child: PrimaryButton(
+                    onPressed: () => showDialog<void>(
+                      context: context,
+                      builder: (BuildContext context) =>
+                          const JoinGroupDialog(),
+                    ),
+                    icon: Icons.arrow_forward,
+                    backgroundColor: Colors.purple.shade300,
+                    text: "Join Group",
                   ),
-                  icon: Icons.arrow_forward,
-                  backgroundColor: Colors.purple.shade300,
-                  text: "Join Group",
                 ),
-                PrimaryButton(
-                  onPressed: () =>
-                      const EditGroupRoute(groupId: '0').push(context),
-                  icon: Icons.add,
-                  backgroundColor: Colors.green.shade300,
-                  text: "Add Group",
+                gapW8,
+                Expanded(
+                  child: PrimaryButton(
+                    onPressed: () =>
+                        const EditGroupRoute(groupId: '0').push(context),
+                    icon: Icons.add,
+                    backgroundColor: Colors.green.shade300,
+                    text: "Add Group",
+                  ),
                 ),
               ],
             ),

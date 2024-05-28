@@ -19,7 +19,7 @@ class PrimaryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return ElevatedButton.icon(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: backgroundColor,
@@ -28,24 +28,18 @@ class PrimaryButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(Sizes.p24),
         ),
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: Sizes.p16,
-              horizontal: Sizes.p4,
-            ),
-            child: Text(
-              text,
-              style: const TextStyle(
-                letterSpacing: 1,
-                fontSize: 18,
-              ),
-            ),
+      icon: Icon(icon),
+      label: Padding(
+        padding: const EdgeInsets.symmetric(
+          vertical: Sizes.p12,
+        ),
+        child: Text(
+          text,
+          style: const TextStyle(
+            letterSpacing: 1,
+            fontSize: 16,
           ),
-        ],
+        ),
       ),
     );
   }
