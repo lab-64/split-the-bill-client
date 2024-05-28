@@ -8,7 +8,7 @@ import '../group_transaction.dart';
 
 part 'groups_transaction_state.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class GroupsTransactionState extends _$GroupsTransactionState {
   GroupRepository get _groupRepository => ref.read(groupRepositoryProvider);
 
