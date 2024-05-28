@@ -6,7 +6,7 @@ import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/bill/states/bills_state.dart';
 import 'package:split_the_bill/presentation/home/notifications_dialog.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
-import 'package:split_the_bill/presentation/shared/components/ellipse_text.dart';
+import 'package:split_the_bill/presentation/shared/components/fade_text.dart';
 import 'package:split_the_bill/presentation/shared/components/show_custom_dialog.dart';
 import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 import 'package:split_the_bill/router/routes.dart';
@@ -28,28 +28,31 @@ class HomeAppBar extends ConsumerWidget {
   }
 
   Widget _buildUserInfo(BuildContext context, WidgetRef ref, User user) {
-    return Row(
-      children: [
-        ProfileImage(
-          user: user,
-          onPressed: () => const ProfileRoute().go(context),
-        ),
-        gapW16,
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('Welcome back!'),
-            EllipseText(
-              text: user.getDisplayName(),
-              size: Sizes.p64 * 3,
-              style: const TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
+    return Expanded(
+      child: Row(
+        children: [
+          ProfileImage(
+            user: user,
+            onPressed: () => const ProfileRoute().go(context),
+          ),
+          gapW16,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Welcome back!'),
+                FadeText(
+                  text: user.getDisplayName(),
+                  style: const TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
 

@@ -26,7 +26,6 @@ class BillsList extends StatelessWidget {
                 DateLabel(date: bills[i].date),
               BillTile(
                 bill: bills[i],
-                showGroup: false,
                 onTap: () => BillRoute(billId: bills[i].id).push(context),
               ),
             ],
