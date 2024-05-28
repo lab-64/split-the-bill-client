@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
-import 'package:split_the_bill/presentation/shared/components/ellipse_text.dart';
+import 'package:split_the_bill/presentation/shared/components/fade_text.dart';
 import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 
 class GroupMemberList extends StatefulWidget {
@@ -54,9 +54,8 @@ class _GroupMemberListState extends State<GroupMemberList> {
                 size: Sizes.p20,
               ),
               dense: true,
-              title: EllipseText(
+              title: FadeText(
                 text: widget.members[index].getDisplayName(),
-                size: Sizes.p64,
                 style: const TextStyle(color: Colors.grey),
               ),
               value: _isSelectedList[index],

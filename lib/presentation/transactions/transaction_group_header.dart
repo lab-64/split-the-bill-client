@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:split_the_bill/presentation/shared/components/fade_text.dart';
 import 'package:split_the_bill/presentation/shared/components/rounded_box.dart';
 
 import '../../constants/ui_constants.dart';
 import '../../domain/group/group_transaction.dart';
-import '../shared/components/ellipse_text.dart';
 
 class TransactionGroupHeader extends StatelessWidget {
   const TransactionGroupHeader({
@@ -16,13 +16,14 @@ class TransactionGroupHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return RoundedBox(
-        firstPadding: const EdgeInsets.all(Sizes.p8),
-        secondPadding: const EdgeInsets.all(Sizes.p8),
-        backgroundColor: Colors.black12,
-        child: ListTile(
-          leading: const TransactionGroupLeadingIcon(),
-          title: TransactionGroupTitle(transaction: transaction),
-        ));
+      firstPadding: const EdgeInsets.all(Sizes.p8),
+      secondPadding: const EdgeInsets.all(Sizes.p8),
+      backgroundColor: Colors.black12,
+      child: ListTile(
+        leading: const TransactionGroupLeadingIcon(),
+        title: TransactionGroupTitle(transaction: transaction),
+      ),
+    );
   }
 }
 
@@ -62,9 +63,12 @@ class TransactionGroupTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return EllipseText(
-        text: transaction.groupName,
-        size: Sizes.p64 * 3,
-        style: const TextStyle(fontSize: Sizes.p16, fontWeight: FontWeight.bold));
+    return FadeText(
+      text: transaction.groupName,
+      style: const TextStyle(
+        fontSize: Sizes.p16,
+        fontWeight: FontWeight.bold,
+      ),
+    );
   }
 }
