@@ -53,7 +53,7 @@ class BillScreen extends ConsumerWidget {
       value: bill,
       data: (bill) => Scaffold(
         appBar: AppBar(
-          title: Text(bill.name ?? ""),
+          title: Text(bill.name),
           actions: [
             IconButton(
               icon: const Icon(Icons.edit),
