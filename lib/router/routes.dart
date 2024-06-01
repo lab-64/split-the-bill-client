@@ -50,10 +50,10 @@ part 'routes.g.dart';
       ],
     ),
     TypedGoRoute<CameraRoute>(
-      path: '/camera'
+      path: '/camera',
     ),
     TypedGoRoute<ImageCropRoute>(
-      path: '/crop'
+      path: '/crop',
     ),
     TypedGoRoute<UnseenBillRoute>(
       path: '/unseenBills:billId',
@@ -119,7 +119,6 @@ class HomeRoute extends GoRouteData {
 
 // CAMERA
 class CameraRoute extends GoRouteData {
-
   const CameraRoute();
 
   @override
