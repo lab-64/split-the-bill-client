@@ -18,6 +18,8 @@ abstract class GroupRepository {
 
   Future<void> delete(String groupId);
 
+  Future<void> acceptInvitation(String invitationId);
+
   Future<void> reset(String groupId);
 
   Future<List<GroupTransaction>> getAllTransactions(String userId);

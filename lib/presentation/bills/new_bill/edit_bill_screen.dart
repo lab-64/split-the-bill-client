@@ -14,16 +14,16 @@ import 'package:split_the_bill/presentation/shared/components/bottom_modal.dart'
 import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
 import 'package:split_the_bill/router/routes.dart';
 
-class NewBillScreen extends ConsumerStatefulWidget {
-  const NewBillScreen({super.key, required this.groupId, this.billId = '0'});
+class EditBillScreen extends ConsumerStatefulWidget {
+  const EditBillScreen({super.key, required this.groupId, this.billId = '0'});
   final String groupId;
   final String billId;
 
   @override
-  ConsumerState<NewBillScreen> createState() => _NewBillScreenState();
+  ConsumerState<EditBillScreen> createState() => _NewBillScreenState();
 }
 
-class _NewBillScreenState extends ConsumerState<NewBillScreen> {
+class _NewBillScreenState extends ConsumerState<EditBillScreen> {
   final ImagePicker _picker = ImagePicker();
   late XFile? image;
 
@@ -47,7 +47,7 @@ class _NewBillScreenState extends ConsumerState<NewBillScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("New Bill"),
+        title: Text(widget.billId == '0' ? "New Bill" : "Edit Bill"),
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: Sizes.p8),
@@ -65,8 +65,8 @@ class _NewBillScreenState extends ConsumerState<NewBillScreen> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
-                onPressed: () => _addBill(ref)
-                    .then((_) => _onAddBillSuccess(ref, context)),
+                onPressed: () => _upsertBill(ref)
+                    .then((_) => _onUpsertBillSuccess(ref, context)),
                 child: const Row(
                   children: [
                     Icon(
@@ -96,18 +96,24 @@ class _NewBillScreenState extends ConsumerState<NewBillScreen> {
     );
   }
 
-  Future<void> _addBill(WidgetRef ref) async {
-    return ref
-        .read(editBillControllerProvider.notifier)
-        .addBill(widget.groupId);
+  Future<void> _upsertBill(WidgetRef ref) async {
+    if (widget.billId == '0') {
+      return ref
+          .read(editBillControllerProvider.notifier)
+          .addBill(widget.groupId);
+    } else {
+      return ref
+          .read(editBillControllerProvider.notifier)
+          .editBill(widget.billId);
+    }
   }
 
-  void _onAddBillSuccess(WidgetRef ref, BuildContext context) {
+  void _onUpsertBillSuccess(WidgetRef ref, BuildContext context) {
     final state = ref.watch(editBillControllerProvider);
     showSuccessSnackBar(
       context,
       state,
-      'Bill created',
+      widget.billId == '0' ? 'Bill created' : 'Bill updated',
       goTo: () => const HomeRoute().go(context),
     );
   }

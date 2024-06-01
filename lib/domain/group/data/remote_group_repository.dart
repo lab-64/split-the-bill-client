@@ -50,6 +50,15 @@ class RemoteGroupRepository extends GroupRepository {
       );
 
   @override
+  Future<void> acceptInvitation(String invitationId) {
+    return client.post(
+      uri: api.acceptInvitation(invitationId),
+      body: {},
+      builder: (_) {},
+    );
+  }
+
+  @override
   Future<void> reset(String groupId) => client.post(
         uri: api.resetGroup(groupId),
         body: {},

@@ -8,7 +8,7 @@ import 'package:split_the_bill/domain/group/states/groups_state.dart';
 
 part 'bills_state.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class BillsState extends _$BillsState {
   BillRepository get _billRepository => ref.read(billRepositoryProvider);
 

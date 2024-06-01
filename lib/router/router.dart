@@ -34,7 +34,7 @@ GoRouter goRouter(GoRouterRef ref) {
       final isLoggedIn = isAuth.value.requireValue;
       final path = state.uri.path;
 
-      if (!isLoggedIn) {
+      if (!isLoggedIn && path != const RegisterRoute().location) {
         return const LoginRoute().location;
       }
 

@@ -6,7 +6,7 @@ part of 'bills_state.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$billsStateHash() => r'caa4184772004875305d89d25ed61ad730d4c1eb';
+String _$billsStateHash() => r'32195d4b1fa5ac3fbbb66912fa48fbd14415d280';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -29,7 +29,8 @@ class _SystemHash {
   }
 }
 
-abstract class _$BillsState extends BuildlessAsyncNotifier<List<Bill>> {
+abstract class _$BillsState
+    extends BuildlessAutoDisposeAsyncNotifier<List<Bill>> {
   late final bool isUnseen;
 
   FutureOr<List<Bill>> build({
@@ -81,7 +82,7 @@ class BillsStateFamily extends Family<AsyncValue<List<Bill>>> {
 
 /// See also [BillsState].
 class BillsStateProvider
-    extends AsyncNotifierProviderImpl<BillsState, List<Bill>> {
+    extends AutoDisposeAsyncNotifierProviderImpl<BillsState, List<Bill>> {
   /// See also [BillsState].
   BillsStateProvider({
     bool isUnseen = false,
@@ -137,7 +138,8 @@ class BillsStateProvider
   }
 
   @override
-  AsyncNotifierProviderElement<BillsState, List<Bill>> createElement() {
+  AutoDisposeAsyncNotifierProviderElement<BillsState, List<Bill>>
+      createElement() {
     return _BillsStateProviderElement(this);
   }
 
@@ -155,13 +157,13 @@ class BillsStateProvider
   }
 }
 
-mixin BillsStateRef on AsyncNotifierProviderRef<List<Bill>> {
+mixin BillsStateRef on AutoDisposeAsyncNotifierProviderRef<List<Bill>> {
   /// The parameter `isUnseen` of this provider.
   bool get isUnseen;
 }
 
 class _BillsStateProviderElement
-    extends AsyncNotifierProviderElement<BillsState, List<Bill>>
+    extends AutoDisposeAsyncNotifierProviderElement<BillsState, List<Bill>>
     with BillsStateRef {
   _BillsStateProviderElement(super.provider);
 

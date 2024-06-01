@@ -7,6 +7,9 @@ import 'package:split_the_bill/infrastructure/async_value_ui.dart';
 import 'package:split_the_bill/presentation/bills/bill/items_list.dart';
 import 'package:split_the_bill/presentation/shared/components/show_confirmation_dialog.dart';
 import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
+import 'package:split_the_bill/router/routes.dart';
+
+import '../../../auth/states/auth_state.dart';
 
 class BillScreen extends ConsumerWidget {
   const BillScreen({
@@ -37,6 +40,7 @@ class BillScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ScrollController scrollController = ScrollController();
     final bill = ref.watch(billStateProvider(billId));
+    final user = ref.read(authStateProvider).requireValue;
 
     ref.listen(
       billsStateProvider(),
@@ -50,16 +54,10 @@ class BillScreen extends ConsumerWidget {
           PopupMenuButton(
             itemBuilder: (context) => [
               PopupMenuItem(
-                onTap: () {
-                  showNotImplementedSnackBar(context);
-                  /*context.goNamed(
-                            Routes.editBill.name,
-                            pathParameters: {
-                              //'id': groupId,
-                              'id': billId,
-                            },
-                          );*/
-                },
+                onTap: () => EditBillRoute(
+                  groupId: bill.requireValue.groupId,
+                  billId: billId,
+                ).push(context),
                 child: const Row(
                   children: [
                     Icon(
@@ -100,13 +98,17 @@ class BillScreen extends ConsumerWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: Sizes.p24),
-        child: CustomScrollView(
-          slivers: [
-            ItemsList(
-              scrollController: scrollController,
-              bill: bill,
-            ),
-          ],
+        child: RefreshIndicator(
+          onRefresh: () => ref.refresh(billStateProvider(billId).future),
+          child: CustomScrollView(
+            slivers: [
+              ItemsList(
+                userId: user.id,
+                scrollController: scrollController,
+                bill: bill,
+              ),
+            ],
+          ),
         ),
       ),
     );

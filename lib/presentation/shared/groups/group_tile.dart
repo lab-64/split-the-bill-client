@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/group/group.dart';
+import 'package:split_the_bill/presentation/shared/components/fade_text.dart';
 import 'package:split_the_bill/presentation/shared/extensions/currency_formatter.dart';
 import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 
@@ -33,8 +34,8 @@ class GroupTile extends ConsumerWidget {
           horizontal: Sizes.p16,
         ),
         leading: _buildGroupIcon(),
-        title: Text(
-          group.name,
+        title: FadeText(
+          text: group.name,
           style: const TextStyle(
             fontSize: 16.0,
           ),

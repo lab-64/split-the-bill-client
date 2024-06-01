@@ -1,51 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:split_the_bill/domain/bill/states/bills_state.dart';
-import 'package:split_the_bill/presentation/groups/group/controllers.dart';
-import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
+import 'package:split_the_bill/domain/bill/bill.dart';
 import 'package:split_the_bill/presentation/shared/bills/bill_tile.dart';
 import 'package:split_the_bill/presentation/shared/components/date_label.dart';
 import 'package:split_the_bill/router/routes.dart';
 
-class BillsList extends ConsumerWidget {
-  const BillsList(
-      {super.key,
-      required this.scrollController,
-      this.groupId,
-      this.showGroup = true});
+class BillsList extends StatelessWidget {
+  const BillsList({
+    super.key,
+    required this.scrollController,
+    required this.bills,
+  });
   final ScrollController scrollController;
-  final String? groupId;
-  final bool showGroup;
+  final List<Bill> bills;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final bills = groupId != null
-        ? ref.watch(groupBillsControllerProvider(groupId!))
-        : ref.watch(billsStateProvider());
-
-    return AsyncValueSliverWidget(
-      value: bills,
-      data: (bills) => SliverToBoxAdapter(
-        child: Column(
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        ListView(
+          controller: scrollController,
+          shrinkWrap: true,
           children: [
-            ListView(
-              controller: scrollController,
-              shrinkWrap: true,
-              children: [
-                for (int i = 0; i < bills.length; i++) ...[
-                  if (i == 0 || bills[i].date.day != bills[i - 1].date.day)
-                    DateLabel(date: bills[i].date),
-                  BillTile(
-                    bill: bills[i],
-                    showGroup: showGroup,
-                    onTap: () => BillRoute(billId: bills[i].id).push(context),
-                  ),
-                ],
-              ],
-            ),
+            for (int i = 0; i < bills.length; i++) ...[
+              if (i == 0 || bills[i].date.day != bills[i - 1].date.day)
+                DateLabel(date: bills[i].date),
+              BillTile(
+                bill: bills[i],
+                onTap: () => BillRoute(billId: bills[i].id).push(context),
+              ),
+            ],
           ],
         ),
-      ),
+      ],
     );
   }
 }

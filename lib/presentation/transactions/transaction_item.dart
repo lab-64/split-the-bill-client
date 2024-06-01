@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/domain/group/transaction.dart';
-import 'package:split_the_bill/presentation/shared/components/ellipse_text.dart';
-import 'package:split_the_bill/presentation/shared/extensions/currency_formatter.dart';
+import 'package:split_the_bill/presentation/shared/components/fade_text.dart';
 import 'package:split_the_bill/presentation/shared/components/rounded_box.dart';
+import 'package:split_the_bill/presentation/shared/extensions/currency_formatter.dart';
 
 import '../../auth/states/auth_state.dart';
 import '../../auth/user.dart';
@@ -23,9 +23,9 @@ class TransactionItem extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     var user = ref.read(authStateProvider).requireValue;
     UserType userType;
-    if (transaction.debtor == user) {
+    if (transaction.debtor.id == user.id) {
       userType = UserType.debtor;
-    } else if (transaction.creditor == user) {
+    } else if (transaction.creditor.id == user.id) {
       userType = UserType.creditor;
     } else {
       userType = UserType.other;
@@ -90,9 +90,8 @@ class TransactionItemSubTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return EllipseText(
+    return FadeText(
       text: "From: ${debtor.getDisplayName()}",
-      size: Sizes.p64 * 2,
       style: const TextStyle(
         fontSize: Sizes.p14,
       ),
@@ -110,9 +109,8 @@ class TransactionItemTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return EllipseText(
+    return FadeText(
       text: "To: ${creditor.getDisplayName()}",
-      size: Sizes.p64 * 2,
       style: const TextStyle(
         fontSize: Sizes.p16,
       ),

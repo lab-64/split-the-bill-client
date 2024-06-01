@@ -8,17 +8,16 @@ import 'package:split_the_bill/domain/group/states/group_state.dart';
 
 import 'groups_transaction_state.dart';
 
-
 part 'groups_state.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class GroupsState extends _$GroupsState {
   GroupRepository get _groupRepository => ref.read(groupRepositoryProvider);
 
   @override
-  Future<List<Group>> build() {
+  Future<List<Group>> build() async {
     final user = ref.watch(authStateProvider).requireValue;
-    return _getGroupsByUser(user.id);
+    return await _getGroupsByUser(user.id);
   }
 
   Future<List<Group>> _getGroupsByUser(String userId) async {
@@ -39,6 +38,14 @@ class GroupsState extends _$GroupsState {
 
   Future<void> delete(String groupId) async {
     await _groupRepository.delete(groupId);
+    ref.invalidateSelf();
+
+    // Wait for the ref to be computed
+    await future;
+  }
+
+  Future<void> acceptInvitation(String invitationId) async {
+    await _groupRepository.acceptInvitation(invitationId);
     ref.invalidateSelf();
 
     // Wait for the ref to be computed
