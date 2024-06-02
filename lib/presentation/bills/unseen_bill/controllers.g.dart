@@ -7,7 +7,7 @@ part of 'controllers.dart';
 // **************************************************************************
 
 String _$itemsContributionsHash() =>
-    r'4723dcef906c906dc5ba3838959e94bf11930dfe';
+    r'a29272ff4b28825119ce13fd5a6bf032bb8bae61';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -31,10 +31,10 @@ class _SystemHash {
 }
 
 abstract class _$ItemsContributions
-    extends BuildlessAutoDisposeNotifier<List<Item>> {
+    extends BuildlessAutoDisposeNotifier<Map<String, bool>> {
   late final Bill bill;
 
-  List<Item> build(
+  Map<String, bool> build(
     Bill bill,
   );
 }
@@ -44,7 +44,7 @@ abstract class _$ItemsContributions
 const itemsContributionsProvider = ItemsContributionsFamily();
 
 /// See also [ItemsContributions].
-class ItemsContributionsFamily extends Family<List<Item>> {
+class ItemsContributionsFamily extends Family<Map<String, bool>> {
   /// See also [ItemsContributions].
   const ItemsContributionsFamily();
 
@@ -82,8 +82,8 @@ class ItemsContributionsFamily extends Family<List<Item>> {
 }
 
 /// See also [ItemsContributions].
-class ItemsContributionsProvider
-    extends AutoDisposeNotifierProviderImpl<ItemsContributions, List<Item>> {
+class ItemsContributionsProvider extends AutoDisposeNotifierProviderImpl<
+    ItemsContributions, Map<String, bool>> {
   /// See also [ItemsContributions].
   ItemsContributionsProvider(
     Bill bill,
@@ -114,7 +114,7 @@ class ItemsContributionsProvider
   final Bill bill;
 
   @override
-  List<Item> runNotifierBuild(
+  Map<String, bool> runNotifierBuild(
     covariant ItemsContributions notifier,
   ) {
     return notifier.build(
@@ -139,7 +139,7 @@ class ItemsContributionsProvider
   }
 
   @override
-  AutoDisposeNotifierProviderElement<ItemsContributions, List<Item>>
+  AutoDisposeNotifierProviderElement<ItemsContributions, Map<String, bool>>
       createElement() {
     return _ItemsContributionsProviderElement(this);
   }
@@ -158,14 +158,15 @@ class ItemsContributionsProvider
   }
 }
 
-mixin ItemsContributionsRef on AutoDisposeNotifierProviderRef<List<Item>> {
+mixin ItemsContributionsRef
+    on AutoDisposeNotifierProviderRef<Map<String, bool>> {
   /// The parameter `bill` of this provider.
   Bill get bill;
 }
 
 class _ItemsContributionsProviderElement
-    extends AutoDisposeNotifierProviderElement<ItemsContributions, List<Item>>
-    with ItemsContributionsRef {
+    extends AutoDisposeNotifierProviderElement<ItemsContributions,
+        Map<String, bool>> with ItemsContributionsRef {
   _ItemsContributionsProviderElement(super.provider);
 
   @override

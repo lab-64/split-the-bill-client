@@ -44,6 +44,7 @@ class EditBillController extends _$EditBillController {
       items: items,
       balance: {},
       isViewed: true,
+      updatedAt: DateTime.now()
     );
 
     for (var item in bill.items) {
@@ -69,6 +70,7 @@ class EditBillController extends _$EditBillController {
       name: _name,
       date: _date,
       items: items,
+      updatedAt: DateTime.now()
     );
 
     final billsState = ref.read(billsStateProvider().notifier);

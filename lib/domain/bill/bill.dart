@@ -11,32 +11,33 @@ class Bill {
   final List<Item> items;
   final Map<String, double> balance;
   final bool isViewed;
+  final DateTime updatedAt;
 
 //<editor-fold desc="Data Methods">
-  const Bill({
-    required this.id,
-    required this.name,
-    required this.groupId,
-    required this.owner,
-    required this.date,
-    required this.items,
-    required this.balance,
-    required this.isViewed,
-  });
+  const Bill(
+      {required this.id,
+      required this.name,
+      required this.groupId,
+      required this.owner,
+      required this.date,
+      required this.items,
+      required this.balance,
+      required this.isViewed,
+      required this.updatedAt});
 
   factory Bill.getDefault() {
     return Bill(
-      id: '0',
-      name: '',
-      groupId: '',
-      owner: User.getDefault(),
-      date: DateTime.now(),
-      items: [
-        Item.getDefault(),
-      ],
-      balance: {},
-      isViewed: true,
-    );
+        id: '0',
+        name: '',
+        groupId: '',
+        owner: User.getDefault(),
+        date: DateTime.now(),
+        items: [
+          Item.getDefault(),
+        ],
+        balance: {},
+        isViewed: true,
+        updatedAt: DateTime.now());
   }
 
   @override
@@ -51,7 +52,8 @@ class Bill {
           date == other.date &&
           items == other.items &&
           balance == other.balance &&
-          isViewed == other.isViewed;
+          isViewed == other.isViewed &&
+          updatedAt == other.updatedAt;
 
   @override
   int get hashCode =>
@@ -62,11 +64,12 @@ class Bill {
       date.hashCode ^
       items.hashCode ^
       balance.hashCode ^
-      isViewed.hashCode;
+      isViewed.hashCode ^
+      updatedAt.hashCode;
 
   @override
   String toString() {
-    return 'Bill{id: $id, name: $name, groupId: $groupId, owner: $owner, date: $date, items: $items, balance: $balance, isViewed: $isViewed}';
+    return 'Bill{id: $id, name: $name, groupId: $groupId, owner: $owner, date: $date, items: $items, balance: $balance, isViewed: $isViewed, updatedAt: $updatedAt}';
   }
 
   Bill copyWith({
@@ -79,6 +82,7 @@ class Bill {
     List<Item>? items,
     Map<String, double>? balance,
     bool? isViewed,
+    DateTime? updatedAt
   }) {
     return Bill(
       id: id ?? this.id,
@@ -89,6 +93,7 @@ class Bill {
       items: items ?? this.items,
       balance: balance ?? this.balance,
       isViewed: isViewed ?? this.isViewed,
+      updatedAt: updatedAt ?? this.updatedAt
     );
   }
 
@@ -100,7 +105,8 @@ class Bill {
       'ownerID': owner.id,
       'date': '${date.toIso8601String().split('.')[0]}Z',
       'items': items.map((item) => item.toMap()).toList(),
-      'isViewed': isViewed
+      'isViewed': isViewed,
+      'updatedAt': '${updatedAt.toIso8601String().split('.')[0]}Z'
     };
   }
 
@@ -117,6 +123,7 @@ class Bill {
       balance: (map['balance'] as Map<String, dynamic>? ?? {})
           .map((key, value) => MapEntry(key, value.toDouble())),
       isViewed: map['isViewed'] as bool? ?? true,
+      updatedAt: DateTime.parse(map['updatedAt'])
     );
   }
 //</editor-fold>

@@ -11,6 +11,8 @@ class RemoteBillRepository extends BillRepository {
 
   @override
   Future<Bill> edit(Bill bill) {
+    print("UPDATED AT: ");
+    print(bill.updatedAt);
     return client.put(
       uri: api.updateBill(bill.id),
       body: bill.toMap(),
@@ -47,4 +49,12 @@ class RemoteBillRepository extends BillRepository {
             ? data.map((bills) => Bill.fromMap(bills)).toList().cast<Bill>()
             : [],
       );
+
+  @override
+  Future<void> updateContributions(
+          String billId, Map<String, bool> contributions) =>
+      client.put(
+          uri: api.updateContributions(billId),
+          body: contributions,
+          builder: (data) => []);
 }

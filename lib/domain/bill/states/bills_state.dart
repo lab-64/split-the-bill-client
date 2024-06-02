@@ -41,6 +41,10 @@ class BillsState extends _$BillsState {
     ref.invalidate(billStateProvider(updatedBill.id));
   }
 
+  Future<void> updateContributions(String billId, Map<String, bool> contributions)async {
+    await _billRepository.updateContributions(billId, contributions);
+  }
+
   Future<void> delete(String billId) async {
     Bill bill = state.requireValue.firstWhere((bill) => bill.id == billId);
     await _billRepository.delete(billId);

@@ -17,6 +17,8 @@ abstract class BillRepository {
   Future<Bill> edit(Bill bill);
 
   Future<void> delete(String billId);
+
+  Future<void> updateContributions(String billId, Map<String, bool> contributions);
 }
 
 @Riverpod(keepAlive: true)
