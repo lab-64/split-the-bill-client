@@ -21,6 +21,8 @@ class UnseenBillScreen extends ConsumerWidget {
     return AsyncValueWidget(
       value: bill,
       data: (bill) {
+        print("BILL in unsseen build");
+        print(bill.items);
         return Scaffold(
           appBar: AppBar(
             title: const Text("Please confirm contribution"),
@@ -40,11 +42,16 @@ class UnseenBillScreen extends ConsumerWidget {
   }
 
   Future<void> _saveBill(Bill bill, WidgetRef ref, BuildContext context) async {
-    final contributions = ref.watch(itemsContributionsProvider(bill));
+    final contributionsMap = ref.watch(itemsContributionsProvider(bill));
 
-    await ref
-        .read(billsStateProvider().notifier)
-        .updateContributions(billId, contributions);
+    await ref.read(billsStateProvider().notifier).updateContributions(
+        billId,
+        contributionsMap.entries
+            .map((contribution) => {
+                  'contributed': contribution.value,
+                  'itemID': contribution.key
+                })
+            .toList());
     ref.invalidate(billsStateProvider(isUnseen: true));
   }
 }

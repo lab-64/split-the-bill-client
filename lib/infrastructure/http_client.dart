@@ -99,17 +99,12 @@ class HttpClient {
       // Merge session headers with additional headers for an HTTP POST request.
       final mergedHeaders = _getHeaders();
       mergedHeaders['Content-Type'] = 'application/json';
-      print(uri);
-      print(mergedHeaders);
-      print(body);
 
       final response = await client.put(
         uri,
         body: json.encode(body),
         headers: mergedHeaders,
       );
-
-      print(response.body);
 
       final data = json.decode(utf8.decode(response.bodyBytes));
 
