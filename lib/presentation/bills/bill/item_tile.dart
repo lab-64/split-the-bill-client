@@ -27,7 +27,6 @@ class ItemTile extends StatelessWidget {
           elevation: 0,
           color: Colors.white,
           child: ListTile(
-            onTap: () {},
             leading: const Icon(
               Icons.inventory,
               color: Colors.blue,

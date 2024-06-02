@@ -45,15 +45,13 @@ class BillsState extends _$BillsState {
       String billId, Map<String, bool> contributions) async {
     final contributionsList = contributions.entries
         .map((contribution) =>
-            {'contributed': contribution.value, 'itemID': contribution.key})
+    {'contributed': contribution.value, 'itemID': contribution.key})
         .toList();
     await _billRepository.updateContributions(billId, contributionsList);
   }
 
-  Future<void> delete(String billId) async {
-    Bill bill = state.requireValue.firstWhere((bill) => bill.id == billId);
-    await _billRepository.delete(billId);
-
+  Future<void> delete(Bill bill) async {
+    await _billRepository.delete(bill.id);
     ref.invalidate(groupStateProvider(bill.groupId));
     ref.invalidate(groupsStateProvider);
 
