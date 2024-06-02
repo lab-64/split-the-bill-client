@@ -46,12 +46,7 @@ class UnseenBillScreen extends ConsumerWidget {
 
     await ref.read(billsStateProvider().notifier).updateContributions(
         billId,
-        contributionsMap.entries
-            .map((contribution) => {
-                  'contributed': contribution.value,
-                  'itemID': contribution.key
-                })
-            .toList());
+        contributionsMap);
     ref.invalidate(billsStateProvider(isUnseen: true));
   }
 }

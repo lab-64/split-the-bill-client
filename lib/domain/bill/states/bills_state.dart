@@ -41,8 +41,13 @@ class BillsState extends _$BillsState {
     ref.invalidate(billStateProvider(updatedBill.id));
   }
 
-  Future<void> updateContributions(String billId, List<Map<String, Object>> contributions)async {
-    await _billRepository.updateContributions(billId, contributions);
+  Future<void> updateContributions(
+      String billId, Map<String, bool> contributions) async {
+    final contributionsList = contributions.entries
+        .map((contribution) =>
+            {'contributed': contribution.value, 'itemID': contribution.key})
+        .toList();
+    await _billRepository.updateContributions(billId, contributionsList);
   }
 
   Future<void> delete(String billId) async {
