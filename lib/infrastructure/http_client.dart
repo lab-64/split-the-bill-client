@@ -24,13 +24,10 @@ class HttpClient {
     required T Function(dynamic data) builder,
   }) async {
     try {
-      //print(uri);
-      //print(_getHeaders());
       final response = await client.get(
         uri,
         headers: _getHeaders(),
       );
-      //print(response.body);
 
       final data = json.decode(utf8.decode(response.bodyBytes));
 
