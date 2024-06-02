@@ -21,8 +21,6 @@ class UnseenBillScreen extends ConsumerWidget {
     return AsyncValueWidget(
       value: bill,
       data: (bill) {
-        print("BILL in unsseen build");
-        print(bill.items);
         return Scaffold(
           appBar: AppBar(
             title: const Text("Please confirm contribution"),
