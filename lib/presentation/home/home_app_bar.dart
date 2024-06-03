@@ -18,11 +18,18 @@ class HomeAppBar extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authStateProvider).requireValue;
 
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Column(
       children: [
-        _buildUserInfo(context, ref, user),
-        _buildActionIcons(context, ref),
+        gapH48,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            gapW8,
+            _buildUserInfo(context, ref, user),
+            _buildActionIcons(context, ref),
+            gapW8
+          ],
+        ),
       ],
     );
   }
