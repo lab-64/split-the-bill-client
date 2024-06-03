@@ -7,11 +7,14 @@ import 'package:split_the_bill/domain/bill/states/bills_state.dart';
 import 'package:split_the_bill/infrastructure/async_value_ui.dart';
 import 'package:split_the_bill/presentation/bills/bill/items_list.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
+import 'package:split_the_bill/presentation/shared/components/primary_button.dart';
 import 'package:split_the_bill/presentation/shared/components/show_confirmation_dialog.dart';
 import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
 import 'package:split_the_bill/router/routes.dart';
 
 import '../../../auth/states/auth_state.dart';
+import '../../../domain/group/states/group_state.dart';
+import '../../../domain/group/states/groups_state.dart';
 
 class BillScreen extends ConsumerWidget {
   const BillScreen({
@@ -77,20 +80,39 @@ class BillScreen extends ConsumerWidget {
               ),
           ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: Sizes.p24),
-          child: RefreshIndicator(
-            onRefresh: () => ref.refresh(billStateProvider(billId).future),
-            child: CustomScrollView(
-              slivers: [
-                ItemsList(
-                  userId: user.id,
-                  scrollController: scrollController,
-                  bill: bill,
-                ),
-              ],
+        body: Column(
+          children: [
+            gapH16,
+            PrimaryButton(
+              onPressed: () =>
+                  UnseenBillRoute(billId: bill.id).push(context).then((value) {
+                ref.invalidate(billStateProvider);
+                ref.invalidate(groupStateProvider);
+                ref.invalidate(groupsStateProvider);
+              }),
+              icon: Icons.manage_accounts,
+              backgroundColor: Colors.green.shade300,
+              text: "Edit contributions",
             ),
-          ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: Sizes.p24),
+                child: RefreshIndicator(
+                  onRefresh: () =>
+                      ref.refresh(billStateProvider(billId).future),
+                  child: CustomScrollView(
+                    slivers: [
+                      ItemsList(
+                        userId: user.id,
+                        scrollController: scrollController,
+                        bill: bill,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
