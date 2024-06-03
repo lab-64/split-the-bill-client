@@ -22,13 +22,16 @@ class BillContribution extends ConsumerStatefulWidget {
 
 class _BillContributionState extends ConsumerState<BillContribution> {
   late List<bool> expandedItems;
+  int focusIndex = 0;
   final ScrollController _controller = ScrollController();
+  late List<GlobalKey> _keys;
 
   @override
   void initState() {
     super.initState();
     expandedItems =
         List.generate(widget.bill.items.length, (index) => index == 0);
+    _keys = List.generate(widget.bill.items.length, (index) => GlobalKey());
   }
 
   @override
@@ -46,15 +49,17 @@ class _BillContributionState extends ConsumerState<BillContribution> {
               itemBuilder: (context, index) {
                 if (index < items.length) {
                   return ItemContributionDecoration(
+                    key: _keys[index],
                     borderColor:
                         expandedItems[index] ? Colors.grey : Colors.white,
                     child: Column(
                       children: [
                         ListTile(
-                          onTap: () => {
+                          onTap: () {
+                            _scrollIntoView(index);
                             setState(() {
                               expandedItems[index] = !expandedItems[index];
-                            })
+                            });
                           },
                           leading: const Icon(
                             Icons.inventory,
@@ -107,6 +112,8 @@ class _BillContributionState extends ConsumerState<BillContribution> {
   // Update contribution status for the current user on the specified item
   void _updateContributionStatus(bool isContributing, int index) async {
     setState(() {
+      focusIndex = index;
+      _scrollToTop(index);
       expandedItems =
           List.generate(expandedItems.length, (i) => i == index + 1);
     });
@@ -115,6 +122,72 @@ class _BillContributionState extends ConsumerState<BillContribution> {
     ref
         .read(itemsContributionsProvider(widget.bill).notifier)
         .setItemContribution(index, isContributing);
+  }
+
+  void _scrollToTop(int index) {
+    // Ensure the target widget is visible
+    final RenderBox childRenderBox =
+        _keys[index].currentContext!.findRenderObject() as RenderBox;
+    final RenderBox parentRenderBox =
+        _controller.position.context.storageContext.findRenderObject()
+            as RenderBox;
+    final double childOffset =
+        childRenderBox.localToGlobal(Offset.zero, ancestor: parentRenderBox).dy;
+
+    _controller.animateTo(
+      _controller.offset + childOffset,
+      duration: const Duration(milliseconds: 200),
+      curve: Curves.easeInOut,
+    );
+  }
+
+  void _scrollIntoView(int index) {
+    setState(() {
+      focusIndex = index;
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final RenderBox childRenderBox =
+          _keys[index].currentContext!.findRenderObject() as RenderBox;
+      final RenderBox parentRenderBox =
+          _controller.position.context.storageContext.findRenderObject()
+              as RenderBox;
+      final double childTop = childRenderBox
+          .localToGlobal(Offset.zero, ancestor: parentRenderBox)
+          .dy;
+      final double childBottom = childRenderBox
+          .localToGlobal(Offset(0, childRenderBox.size.height),
+              ancestor: parentRenderBox)
+          .dy;
+      final double parentTop = parentRenderBox.localToGlobal(Offset.zero).dy;
+      final double parentBottom = parentRenderBox
+          .localToGlobal(Offset(0, parentRenderBox.size.height),
+              ancestor: parentRenderBox)
+          .dy;
+      final double deltaTop = childTop - parentTop;
+      final double deltaBottom = childBottom - parentBottom;
+
+      // Ensure child widget is fully visible within its parent's viewport
+      Scrollable.ensureVisible(
+        _keys[index].currentContext!,
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeInOut,
+      );
+
+      // Calculate additional scroll offset if child widget extends beyond parent's viewport
+      double additionalOffset = 0;
+      if (deltaTop < 0) {
+        additionalOffset = deltaTop;
+      } else if (deltaBottom > 0) {
+        additionalOffset = deltaBottom;
+      }
+
+      _controller.animateTo(
+        _controller.offset + additionalOffset,
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeInOut,
+      );
+    });
   }
 }
 
