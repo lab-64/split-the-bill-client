@@ -7,17 +7,33 @@ import 'package:split_the_bill/presentation/shared/components/date_label.dart';
 import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 import 'package:split_the_bill/router/routes.dart';
 
-class NotificationsDialog extends ConsumerWidget {
+import '../../auth/states/auth_state.dart';
+import '../../domain/bill/bill.dart';
+import '../bills/unseen_bill/controllers.dart';
+
+class NotificationsDialog extends ConsumerStatefulWidget {
   const NotificationsDialog({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<NotificationsDialog> createState() =>
+      _NotificationsDialogState();
+}
+
+class _NotificationsDialogState extends ConsumerState<NotificationsDialog> {
+  List<Bill> localBills = [];
+
+  @override
+  Widget build(BuildContext context) {
     final bills = ref.watch(billsStateProvider(isUnseen: true));
+    print("BUILD");
 
     return AsyncValueWidget(
       value: bills,
       data: (bills) {
-        if (bills.isEmpty) {
+        if (localBills.isEmpty) {
+          localBills = List.from(bills);
+        }
+        if (localBills.isEmpty) {
           return const Center(
             child: Text("Nothing new here :)"),
           );
@@ -31,19 +47,52 @@ class NotificationsDialog extends ConsumerWidget {
             const Divider(),
             Column(
               children: List.generate(
-                bills.length,
-                (index) => ListTile(
-                  leading: ProfileImage(
-                    user: bills[index].owner,
-                    size: Sizes.p16,
-                  ),
-                  title: Text(bills[index].name),
-                  subtitle: DateLabel(date: bills[index].date),
-                  trailing: const Icon(Icons.arrow_forward),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    UnseenBillRoute(billId: bills[index].id).push(context);
+                localBills.length,
+                (index) => Dismissible(
+                  key: Key(localBills[index].id),
+                  direction: DismissDirection.horizontal,
+                  onDismissed: (direction) async {
+                    setState(() {
+                      localBills.removeAt(index);
+                    });
+                    if (direction == DismissDirection.startToEnd) {
+                      await _populateContributions(localBills[index]);
+                    } else {
+                      await _depopulateContributions(localBills[index]);
+                    }
+                    ref.invalidate(billsStateProvider(isUnseen: true));
                   },
+                  background: Container(
+                    color: Colors.green,
+                    alignment: Alignment.centerLeft,
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: const Icon(
+                      Icons.add,
+                      color: Colors.white,
+                    ),
+                  ),
+                  secondaryBackground: Container(
+                    color: Colors.red,
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    child: const Icon(
+                      Icons.delete,
+                      color: Colors.white,
+                    ),
+                  ),
+                  child: ListTile(
+                    leading: ProfileImage(
+                      user: localBills[index].owner,
+                      size: Sizes.p16,
+                    ),
+                    title: Text(localBills[index].name),
+                    subtitle: DateLabel(date: localBills[index].date),
+                    trailing: const Icon(Icons.arrow_forward),
+                    onTap: () {
+                      Navigator.of(context).pop();
+                      UnseenBillRoute(billId: localBills[index].id).push(context);
+                    },
+                  ),
                 ),
               ).toList(),
             ),
@@ -51,5 +100,29 @@ class NotificationsDialog extends ConsumerWidget {
         );
       },
     );
+  }
+
+  Future<void> _depopulateContributions(Bill bill) async {
+    print("DISMISS");
+    final items = ref.watch(itemsContributionsProvider(bill));
+    print(items);
+    final user = ref.watch(authStateProvider).requireValue;
+    for (var item in items) {
+      item.contributors.removeWhere((userElement) => userElement.id == user.id);
+    }
+    print(items);
+    await ref.read(billsStateProvider().notifier).edit(bill);
+  }
+
+  Future<void> _populateContributions(Bill bill) async {
+    print("POPULATE");
+    final items = ref.watch(itemsContributionsProvider(bill));
+    print(items);
+    final user = ref.watch(authStateProvider).requireValue;
+    for (var item in items) {
+      item.contributors.add(user);
+    }
+    print(items);
+    await ref.read(billsStateProvider().notifier).edit(bill);
   }
 }
