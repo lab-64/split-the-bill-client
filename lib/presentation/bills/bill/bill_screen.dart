@@ -55,37 +55,51 @@ class BillScreen extends ConsumerWidget {
       data: (bill) => Scaffold(
         appBar: AppBar(
           title: Text(bill.name),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.edit),
-              onPressed: () => EditBillRoute(
-                groupId: bill.groupId,
-                billId: billId,
-              ).push(context),
-            ),
-            if (_isBillOwner(ref))
-              IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: () => showConfirmationDialog(
-                  context: context,
-                  title: "Are you sure, you want to delete this bill?",
-                  content:
-                      "This will delete the bill for you and all group members!",
-                  onConfirm: () => _deleteBill(ref, bill).then(
-                    (_) => _onSuccess(context, ref, false),
-                  ),
-                ),
-              ),
-          ],
         ),
         body: Column(
           children: [
             gapH16,
-            PrimaryButton(
-              onPressed: () => EditContributionsRoute(billId: bill.id).push(context),
-              icon: Icons.manage_accounts,
-              backgroundColor: Colors.green.shade300,
-              text: "Edit contributions",
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                PrimaryButton(
+                  onPressed: () =>
+                      EditContributionsRoute(billId: bill.id).push(context),
+                  icon: Icons.manage_accounts,
+                  backgroundColor: Colors.purple.shade300,
+                  text: "contributions",
+                ),
+                ElevatedButton(
+                  onPressed: () => EditBillRoute(
+                        groupId: bill.groupId,
+                        billId: billId,
+                      ).push(context),
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green.shade300),
+                  child: const Icon(
+                    Icons.edit,
+                    color: Colors.white,
+                  ),
+                ),
+                if (_isBillOwner(ref))
+                  ElevatedButton(
+                    onPressed: () => showConfirmationDialog(
+                      context: context,
+                      title: "Are you sure, you want to delete this bill?",
+                      content:
+                          "This will delete the bill for you and all group members!",
+                      onConfirm: () => _deleteBill(ref, bill).then(
+                        (_) => _onSuccess(context, ref, false),
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red.shade300),
+                    child: const Icon(
+                      Icons.delete,
+                      color: Colors.white,
+                    ),
+                  )
+              ],
             ),
             Expanded(
               child: Padding(
