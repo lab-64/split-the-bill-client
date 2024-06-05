@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/bill/bill.dart';
-import 'package:split_the_bill/presentation/bills/unseen_bill/controllers.dart';
-import 'package:split_the_bill/presentation/bills/unseen_bill/item_contribution.dart';
 import 'package:split_the_bill/presentation/shared/components/fade_text.dart';
+
+import 'controllers.dart';
+import 'item_contribution.dart';
 
 class BillContribution extends ConsumerStatefulWidget {
   const BillContribution({

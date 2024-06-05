@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/presentation/bills/bill/bill_screen.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/edit_bill_screen.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/group_selection_screen.dart';
-import 'package:split_the_bill/presentation/bills/unseen_bill/edit_contributions_screen.dart';
 import 'package:split_the_bill/presentation/groups/edit_group/edit_group_screen.dart';
 import 'package:split_the_bill/presentation/groups/group/group_screen.dart';
 import 'package:split_the_bill/presentation/groups/groups/groups_screen.dart';
@@ -14,6 +13,8 @@ import 'package:split_the_bill/presentation/profile/edit_profile/edit_profile_sc
 import 'package:split_the_bill/presentation/profile/profile/profile_screen.dart';
 import 'package:split_the_bill/presentation/shared/navigation/navbar.dart';
 import 'package:split_the_bill/presentation/transactions/transactions_screen.dart';
+
+import '../presentation/bills/edit_contributions/edit_contributions_screen.dart';
 
 part 'routes.g.dart';
 

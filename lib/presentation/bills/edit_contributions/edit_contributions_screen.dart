@@ -4,13 +4,13 @@ import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/domain/bill/bill.dart';
 import 'package:split_the_bill/domain/bill/states/bill_state.dart';
 import 'package:split_the_bill/domain/bill/states/bills_state.dart';
-import 'package:split_the_bill/presentation/bills/unseen_bill/bill_contribution.dart';
-import 'package:split_the_bill/presentation/bills/unseen_bill/controllers.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
 
 import '../../../domain/group/states/group_state.dart';
 import '../../../domain/group/states/groups_state.dart';
+import 'bill_contribution.dart';
+import 'controllers.dart';
 
 class EditContributionsScreen extends ConsumerWidget {
   const EditContributionsScreen({super.key, required this.billId});
