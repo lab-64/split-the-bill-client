@@ -3,7 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/presentation/bills/bill/bill_screen.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/edit_bill_screen.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/group_selection_screen.dart';
-import 'package:split_the_bill/presentation/bills/unseen_bill/unseen_bill_screen.dart';
+import 'package:split_the_bill/presentation/bills/unseen_bill/edit_contributions_screen.dart';
 import 'package:split_the_bill/presentation/groups/edit_group/edit_group_screen.dart';
 import 'package:split_the_bill/presentation/groups/group/group_screen.dart';
 import 'package:split_the_bill/presentation/groups/groups/groups_screen.dart';
@@ -47,7 +47,7 @@ part 'routes.g.dart';
         TypedGoRoute<EditProfileRoute>(path: 'edit'),
       ],
     ),
-    TypedGoRoute<UnseenBillRoute>(
+    TypedGoRoute<EditContributionsRoute>(
       path: '/unseenBills:billId',
     ),
     TypedGoRoute<TransactionRoute>(
@@ -181,14 +181,14 @@ class EditBillRoute extends GoRouteData {
 }
 
 /// UNSEEN BILLS
-class UnseenBillRoute extends GoRouteData {
-  const UnseenBillRoute({required this.billId});
+class EditContributionsRoute extends GoRouteData {
+  const EditContributionsRoute({required this.billId});
 
   final String billId;
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return UnseenBillScreen(billId: billId);
+    return EditContributionsScreen(billId: billId);
   }
 }
 

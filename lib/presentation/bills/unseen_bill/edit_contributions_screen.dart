@@ -9,8 +9,11 @@ import 'package:split_the_bill/presentation/bills/unseen_bill/controllers.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
 
-class UnseenBillScreen extends ConsumerWidget {
-  const UnseenBillScreen({super.key, required this.billId});
+import '../../../domain/group/states/group_state.dart';
+import '../../../domain/group/states/groups_state.dart';
+
+class EditContributionsScreen extends ConsumerWidget {
+  const EditContributionsScreen({super.key, required this.billId});
 
   final String billId;
 
@@ -46,5 +49,7 @@ class UnseenBillScreen extends ConsumerWidget {
         billId,
         contributionsMap);
     ref.invalidate(billsStateProvider(isUnseen: true));
+    ref.invalidate(groupStateProvider);
+    ref.invalidate(groupsStateProvider);
   }
 }

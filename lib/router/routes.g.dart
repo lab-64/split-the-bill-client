@@ -65,7 +65,7 @@ RouteBase get $navbarShellRoute => ShellRouteData.$route(
         ),
         GoRouteData.$route(
           path: '/unseenBills:billId',
-          factory: $UnseenBillRouteExtension._fromState,
+          factory: $EditContributionsRouteExtension._fromState,
         ),
         GoRouteData.$route(
           path: '/transactions',
@@ -263,8 +263,9 @@ extension $EditProfileRouteExtension on EditProfileRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-extension $UnseenBillRouteExtension on UnseenBillRoute {
-  static UnseenBillRoute _fromState(GoRouterState state) => UnseenBillRoute(
+extension $EditContributionsRouteExtension on EditContributionsRoute {
+  static EditContributionsRoute _fromState(GoRouterState state) =>
+      EditContributionsRoute(
         billId: state.pathParameters['billId']!,
       );
 

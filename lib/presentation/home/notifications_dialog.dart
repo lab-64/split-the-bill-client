@@ -42,7 +42,7 @@ class NotificationsDialog extends ConsumerWidget {
                   trailing: const Icon(Icons.arrow_forward),
                   onTap: () {
                     Navigator.of(context).pop();
-                    UnseenBillRoute(billId: bills[index].id).push(context);
+                    EditContributionsRoute(billId: bills[index].id).push(context);
                   },
                 ),
               ).toList(),

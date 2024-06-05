@@ -84,12 +84,7 @@ class BillScreen extends ConsumerWidget {
           children: [
             gapH16,
             PrimaryButton(
-              onPressed: () =>
-                  UnseenBillRoute(billId: bill.id).push(context).then((value) {
-                ref.invalidate(billStateProvider);
-                ref.invalidate(groupStateProvider);
-                ref.invalidate(groupsStateProvider);
-              }),
+              onPressed: () => EditContributionsRoute(billId: bill.id).push(context),
               icon: Icons.manage_accounts,
               backgroundColor: Colors.green.shade300,
               text: "Edit contributions",
