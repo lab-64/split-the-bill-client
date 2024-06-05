@@ -21,19 +21,23 @@ class NotificationsDialog extends ConsumerStatefulWidget {
 
 class _NotificationsDialogState extends ConsumerState<NotificationsDialog> {
   List<Bill> localBills = [];
+  List<Bill> bills = [];
+
+  @override
+  void initState() {
+    bills = ref.read(billsStateProvider(isUnseen: true)).requireValue;
+    localBills = List.from(bills);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final bills = ref.watch(billsStateProvider(isUnseen: true));
-    print("BUILD");
 
     return AsyncValueWidget(
       value: bills,
       data: (bills) {
-        if (localBills.isEmpty) {
-          localBills = List.from(bills);
-        }
-        if (localBills.isEmpty) {
+        if (bills.isEmpty) {
           return const Center(
             child: Text("Nothing new here :)"),
           );
@@ -49,18 +53,17 @@ class _NotificationsDialogState extends ConsumerState<NotificationsDialog> {
               children: List.generate(
                 localBills.length,
                 (index) => Dismissible(
-                  key: Key(localBills[index].id),
+                  key: UniqueKey(),
                   direction: DismissDirection.horizontal,
                   onDismissed: (direction) async {
                     setState(() {
                       localBills.removeAt(index);
                     });
                     if (direction == DismissDirection.startToEnd) {
-                      await _populateContributions(localBills[index]);
+                      await _populateContributions(bills[index]);
                     } else {
-                      await _depopulateContributions(localBills[index]);
+                      await _depopulateContributions(bills[index]);
                     }
-                    ref.invalidate(billsStateProvider(isUnseen: true));
                   },
                   background: Container(
                     color: Colors.green,
@@ -90,7 +93,8 @@ class _NotificationsDialogState extends ConsumerState<NotificationsDialog> {
                     trailing: const Icon(Icons.arrow_forward),
                     onTap: () {
                       Navigator.of(context).pop();
-                      UnseenBillRoute(billId: localBills[index].id).push(context);
+                      UnseenBillRoute(billId: localBills[index].id)
+                          .push(context);
                     },
                   ),
                 ),
@@ -103,26 +107,22 @@ class _NotificationsDialogState extends ConsumerState<NotificationsDialog> {
   }
 
   Future<void> _depopulateContributions(Bill bill) async {
-    print("DISMISS");
     final items = ref.watch(itemsContributionsProvider(bill));
-    print(items);
     final user = ref.watch(authStateProvider).requireValue;
     for (var item in items) {
       item.contributors.removeWhere((userElement) => userElement.id == user.id);
     }
-    print(items);
     await ref.read(billsStateProvider().notifier).edit(bill);
+    ref.invalidate(billsStateProvider(isUnseen: true));
   }
 
   Future<void> _populateContributions(Bill bill) async {
-    print("POPULATE");
     final items = ref.watch(itemsContributionsProvider(bill));
-    print(items);
     final user = ref.watch(authStateProvider).requireValue;
     for (var item in items) {
       item.contributors.add(user);
     }
-    print(items);
     await ref.read(billsStateProvider().notifier).edit(bill);
+    ref.invalidate(billsStateProvider(isUnseen: true));
   }
 }
