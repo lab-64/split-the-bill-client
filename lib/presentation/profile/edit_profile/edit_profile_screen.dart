@@ -10,7 +10,10 @@ import 'package:split_the_bill/presentation/profile/edit_profile/edit_image_moda
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
 import 'package:split_the_bill/presentation/shared/components/bottom_modal.dart';
 import 'package:split_the_bill/presentation/shared/components/input_text_field.dart';
+import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
 import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
+
+const maxFileSizeInBytes = 5 * 1048576; // 5MB
 
 class EditProfileScreen extends ConsumerStatefulWidget {
   const EditProfileScreen({super.key});
@@ -47,10 +50,25 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   }
 
   Future _getImage(ImageSource source) async {
-    final XFile? image = await _picker.pickImage(source: source, imageQuality: 25);
+    final XFile? image =
+    await _picker.pickImage(source: source, imageQuality: 25);
+
+    var imagePath = await image!.readAsBytes();
+
+    var fileSize = imagePath.length; // Get the file size in bytes
+    if (fileSize > maxFileSizeInBytes) {
+      if (mounted) {
+        showErrorSnackBar(
+          context,
+          "The image size is too large. Please select an image with a size less than 5MB.",
+        );
+      }
+      return;
+    }
+  }
 
     setState(() {
-      if (image != null) _image = image;
+      _image = image;
     });
   }
 
