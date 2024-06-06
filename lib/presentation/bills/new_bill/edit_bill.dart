@@ -43,6 +43,13 @@ class _EditBillState extends ConsumerState<EditBill> {
   }
 
   @override
+  void dispose() {
+    _nameController.dispose();
+    _dateController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     ref.listen(editBillControllerProvider,
         (_, next) => next.showSnackBarOnError(context));
