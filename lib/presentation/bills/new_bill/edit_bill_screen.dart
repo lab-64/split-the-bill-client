@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:loading_icon_button/loading_icon_button.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/bill/states/bill_state.dart';
 import 'package:split_the_bill/domain/group/states/group_state.dart';
@@ -15,6 +16,7 @@ import 'package:split_the_bill/router/routes.dart';
 
 class EditBillScreen extends ConsumerStatefulWidget {
   const EditBillScreen({super.key, required this.groupId, this.billId = '0'});
+
   final String groupId;
   final String billId;
 
@@ -24,6 +26,7 @@ class EditBillScreen extends ConsumerStatefulWidget {
 
 class _NewBillScreenState extends ConsumerState<EditBillScreen> {
   final ImagePicker _picker = ImagePicker();
+  final LoadingButtonController _btnController = LoadingButtonController();
 
   Future _getImage(ImageSource source) async {
     final XFile? image = await _picker.pickImage(source: source);
@@ -67,22 +70,25 @@ class _NewBillScreenState extends ConsumerState<EditBillScreen> {
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-                onPressed: () => _upsertBill(ref)
-                    .then((_) => _onUpsertBillSuccess(ref, context)),
-                child: const Row(
-                  children: [
-                    Icon(
-                      Icons.save,
-                      color: Colors.blue,
-                    ),
-                    gapW8,
-                    Text(
-                      "Save",
-                      style: TextStyle(fontSize: 18.0, color: Colors.blue),
-                    )
-                  ],
-                )),
+            child: LoadingButton(
+              width: Sizes.p64 * 2,
+              onPressed: () => _upsertBill(ref)
+                  .then((_) => _onUpsertBillSuccess(ref, context)),
+              controller: _btnController,
+              child: const Row(
+                children: [
+                  Icon(
+                    Icons.save,
+                    color: Colors.blue,
+                  ),
+                  gapW8,
+                  Text(
+                    "Save",
+                    style: TextStyle(fontSize: 18.0, color: Colors.blue),
+                  )
+                ],
+              ),
+            ),
           )
         ],
       ),
@@ -119,5 +125,7 @@ class _NewBillScreenState extends ConsumerState<EditBillScreen> {
       widget.billId == '0' ? 'Bill created' : 'Bill updated',
       goTo: () => const HomeRoute().go(context),
     );
+    //reset in case of error
+    _btnController.reset();
   }
 }
