@@ -19,17 +19,21 @@ class GroupMembers extends StatelessWidget {
         horizontal: Sizes.p24,
         vertical: Sizes.p16,
       ),
-      child: Wrap(
-        runSpacing: 8.0,
-        children: _buildMemberItems(),
-      ),
+      child: _buildMemberItems(),
     );
   }
 
-  List<Widget> _buildMemberItems() {
-    return members.map((user) {
-      return MemberItemWidget(user: user);
-    }).toList();
+  Widget _buildMemberItems() {
+    return CustomScrollView(
+      slivers: members.map((user) {
+        return SliverToBoxAdapter(child: Column(
+          children: [
+            MemberItemWidget(user: user),
+            gapH8
+          ],
+        ));
+      }).toList(),
+    );
   }
 }
 

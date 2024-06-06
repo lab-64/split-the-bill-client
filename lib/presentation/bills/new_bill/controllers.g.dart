@@ -7,12 +7,12 @@ part of 'controllers.dart';
 // **************************************************************************
 
 String _$editBillControllerHash() =>
-    r'c7b193fe5e693adc62c5eabb07613b678ca73c02';
+    r'53aed557fb8577eba9eca473a4c459194e1fd7af';
 
 /// See also [EditBillController].
 @ProviderFor(EditBillController)
 final editBillControllerProvider =
-    AsyncNotifierProvider<EditBillController, void>.internal(
+    AutoDisposeAsyncNotifierProvider<EditBillController, void>.internal(
   EditBillController.new,
   name: r'editBillControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,7 +22,7 @@ final editBillControllerProvider =
   allTransitiveDependencies: null,
 );
 
-typedef _$EditBillController = AsyncNotifier<void>;
+typedef _$EditBillController = AutoDisposeAsyncNotifier<void>;
 String _$itemsHash() => r'c76b73c8f869e11eca9305614a0e90c517e16a05';
 
 /// Copied from Dart SDK
