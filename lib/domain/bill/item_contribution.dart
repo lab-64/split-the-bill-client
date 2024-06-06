@@ -36,8 +36,8 @@ class ItemContribution {
 
   Map<String, dynamic> toMap() {
     return {
-      'contributed': this.contributed,
-      'itemID': this.itemID,
+      'contributed': contributed,
+      'itemID': itemID,
     };
   }
 
