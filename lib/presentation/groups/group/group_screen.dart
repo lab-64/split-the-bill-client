@@ -164,11 +164,6 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
                   Tab(
                     icon: Icon(Icons.people),
                   ),
-                  /* TODO: Implement GroupHistory in backend
-                  Tab(
-                    icon: Icon(Icons.history),
-                  ),
-                  */
                 ],
               ),
             ),
