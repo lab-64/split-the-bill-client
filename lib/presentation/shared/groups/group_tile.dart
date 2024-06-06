@@ -1,13 +1,11 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/group/group.dart';
+import 'package:split_the_bill/presentation/shared/components/avatar_list.dart';
 import 'package:split_the_bill/presentation/shared/components/fade_text.dart';
 import 'package:split_the_bill/presentation/shared/extensions/currency_formatter.dart';
-import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 
 class GroupTile extends ConsumerWidget {
   const GroupTile({
@@ -42,7 +40,7 @@ class GroupTile extends ConsumerWidget {
             fontSize: 16.0,
           ),
         ),
-        subtitle: _buildMemberAvatars(group),
+        subtitle: AvatarList(users: group.members),
         trailing: isDetailed ? _buildBalanceInfo(balance) : null,
         onTap: onTap,
       ),
@@ -66,33 +64,6 @@ Widget _buildGroupIcon() {
       Icons.home,
       color: Colors.white,
     ),
-  );
-}
-
-Widget _buildMemberAvatars(Group group) {
-  return LayoutBuilder(
-    builder: (context, constraints) {
-      double singleChildWidth = Sizes.p24;
-      int maxVisibleAvatars = (constraints.maxWidth / singleChildWidth).floor();
-
-      return Row(
-        children: [
-          for (var i = 0; i < min(maxVisibleAvatars, group.members.length); i++)
-            if (group.members.length - (maxVisibleAvatars - 1) > 1 &&
-                i == min(maxVisibleAvatars, group.members.length) - 1) ...[
-              const SizedBox(width: Sizes.p4),
-              Text("+${group.members.length - (maxVisibleAvatars - 1)}"),
-            ] else
-              Padding(
-                padding: const EdgeInsets.only(right: Sizes.p4),
-                child: ProfileImage(
-                  user: group.members[i],
-                  size: Sizes.p12,
-                ),
-              ),
-        ],
-      );
-    },
   );
 }
 
