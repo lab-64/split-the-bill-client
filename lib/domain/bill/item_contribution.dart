@@ -21,10 +21,7 @@ class ItemContribution {
 
   @override
   String toString() {
-    return 'ItemContribution{' +
-        ' contributed: $contributed,' +
-        ' itemID: $itemID,' +
-        '}';
+    return 'ItemContribution{ contributed: $contributed, itemID: $itemID,}';
   }
 
   ItemContribution copyWith({
