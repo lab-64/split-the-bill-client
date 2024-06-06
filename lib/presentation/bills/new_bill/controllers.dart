@@ -15,7 +15,7 @@ import 'package:split_the_bill/domain/bill/states/bills_state.dart';
 
 part 'controllers.g.dart';
 
-@Riverpod(keepAlive: true)
+@riverpod
 class EditBillController extends _$EditBillController {
   late String _name;
   late DateTime _date;
