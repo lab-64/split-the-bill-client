@@ -40,11 +40,11 @@ class UnseenBillScreen extends ConsumerWidget {
   }
 
   Future<void> _saveBill(Bill bill, WidgetRef ref, BuildContext context) async {
-    final contributionsMap = ref.watch(itemsContributionsProvider(bill));
+    final contributions = ref.watch(itemsContributionsProvider(bill));
 
-    await ref.read(billsStateProvider().notifier).updateContributions(
-        billId,
-        contributionsMap);
+    await ref
+        .read(billsStateProvider().notifier)
+        .updateContributions(billId, contributions);
     ref.invalidate(billsStateProvider(isUnseen: true));
   }
 }

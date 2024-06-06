@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/domain/bill/bill.dart';
 import 'package:split_the_bill/domain/bill/data/bill_api.dart';
 import 'package:split_the_bill/domain/bill/data/remote_bill_repository.dart';
+import 'package:split_the_bill/domain/bill/item_contribution.dart';
 import 'package:split_the_bill/infrastructure/http_client.dart';
 
 part 'bill_repository.g.dart';
@@ -18,7 +19,10 @@ abstract class BillRepository {
 
   Future<void> delete(String billId);
 
-  Future<void> updateContributions(String billId, List<Map<String, Object>> contributions);
+  Future<void> updateContributions(
+    String billId,
+    List<ItemContribution> contributions,
+  );
 }
 
 @Riverpod(keepAlive: true)

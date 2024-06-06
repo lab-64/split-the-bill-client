@@ -1,6 +1,7 @@
 import 'package:split_the_bill/domain/bill/bill.dart';
 import 'package:split_the_bill/domain/bill/data/bill_api.dart';
 import 'package:split_the_bill/domain/bill/data/bill_repository.dart';
+import 'package:split_the_bill/domain/bill/item_contribution.dart';
 import 'package:split_the_bill/infrastructure/http_client.dart';
 
 class RemoteBillRepository extends BillRepository {
@@ -50,9 +51,13 @@ class RemoteBillRepository extends BillRepository {
 
   @override
   Future<void> updateContributions(
-          String billId, List<Map<String, Object>> contributions) =>
+    String billId,
+    List<ItemContribution> contributions,
+  ) =>
       client.put(
           uri: api.updateContributions(billId),
-          body: {"contribution": contributions},
+          body: {
+            "contribution": contributions.map((c) => c.toMap()).toList(),
+          },
           builder: (data) => []);
 }

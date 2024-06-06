@@ -36,16 +36,15 @@ class EditBillController extends _$EditBillController {
     final items = ref.read(itemsProvider('0'));
 
     final bill = Bill(
-      id: '',
-      name: _name == '' ? items.first.name : _name,
-      groupId: groupId,
-      owner: user,
-      date: _date,
-      items: items,
-      balance: {},
-      isViewed: true,
-      updatedAt: DateTime.now()
-    );
+        id: '',
+        name: _name == '' ? items.first.name : _name,
+        groupId: groupId,
+        owner: user,
+        date: _date,
+        items: items,
+        balance: {},
+        isViewed: true,
+        updatedAt: DateTime.now());
 
     for (var item in bill.items) {
       if (item.name == "" || item.price == 0.0) {
@@ -70,7 +69,7 @@ class EditBillController extends _$EditBillController {
       name: _name,
       date: _date,
       items: items,
-      updatedAt: DateTime.now()
+      updatedAt: bill.requireValue.updatedAt,
     );
 
     final billsState = ref.read(billsStateProvider().notifier);

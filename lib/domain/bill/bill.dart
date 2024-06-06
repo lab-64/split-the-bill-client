@@ -14,30 +14,32 @@ class Bill {
   final DateTime updatedAt;
 
 //<editor-fold desc="Data Methods">
-  const Bill(
-      {required this.id,
-      required this.name,
-      required this.groupId,
-      required this.owner,
-      required this.date,
-      required this.items,
-      required this.balance,
-      required this.isViewed,
-      required this.updatedAt});
+  const Bill({
+    required this.id,
+    required this.name,
+    required this.groupId,
+    required this.owner,
+    required this.date,
+    required this.items,
+    required this.balance,
+    required this.isViewed,
+    required this.updatedAt,
+  });
 
   factory Bill.getDefault() {
     return Bill(
-        id: '0',
-        name: '',
-        groupId: '',
-        owner: User.getDefault(),
-        date: DateTime.now(),
-        items: [
-          Item.getDefault(),
-        ],
-        balance: {},
-        isViewed: true,
-        updatedAt: DateTime.now());
+      id: '0',
+      name: '',
+      groupId: '',
+      owner: User.getDefault(),
+      date: DateTime.now(),
+      items: [
+        Item.getDefault(),
+      ],
+      balance: {},
+      isViewed: true,
+      updatedAt: DateTime.now(),
+    );
   }
 
   @override
@@ -72,29 +74,27 @@ class Bill {
     return 'Bill{id: $id, name: $name, groupId: $groupId, owner: $owner, date: $date, items: $items, balance: $balance, isViewed: $isViewed, updatedAt: $updatedAt}';
   }
 
-  Bill copyWith({
-    String? id,
-    String? name,
-    String? groupId,
-    User? owner,
-    DateTime? date,
-    double? price,
-    List<Item>? items,
-    Map<String, double>? balance,
-    bool? isViewed,
-    DateTime? updatedAt
-  }) {
+  Bill copyWith(
+      {String? id,
+      String? name,
+      String? groupId,
+      User? owner,
+      DateTime? date,
+      double? price,
+      List<Item>? items,
+      Map<String, double>? balance,
+      bool? isViewed,
+      DateTime? updatedAt}) {
     return Bill(
-      id: id ?? this.id,
-      name: name ?? this.name,
-      groupId: groupId ?? this.groupId,
-      owner: owner ?? this.owner,
-      date: date ?? this.date,
-      items: items ?? this.items,
-      balance: balance ?? this.balance,
-      isViewed: isViewed ?? this.isViewed,
-      updatedAt: updatedAt ?? this.updatedAt
-    );
+        id: id ?? this.id,
+        name: name ?? this.name,
+        groupId: groupId ?? this.groupId,
+        owner: owner ?? this.owner,
+        date: date ?? this.date,
+        items: items ?? this.items,
+        balance: balance ?? this.balance,
+        isViewed: isViewed ?? this.isViewed,
+        updatedAt: updatedAt ?? this.updatedAt);
   }
 
   Map<String, dynamic> toMap() {
@@ -112,19 +112,18 @@ class Bill {
 
   factory Bill.fromMap(Map<String, dynamic> map) {
     return Bill(
-      id: map['id'] as String,
-      name: map['name'] as String,
-      groupId: map['groupID'] as String,
-      owner: User.fromMap(map['owner'] as Map<String, dynamic>),
-      date: DateTime.parse(map['date']),
-      items: (map['items'] as List<dynamic>)
-          .map((item) => Item.fromMap(item))
-          .toList(),
-      balance: (map['balance'] as Map<String, dynamic>? ?? {})
-          .map((key, value) => MapEntry(key, value.toDouble())),
-      isViewed: map['isViewed'] as bool? ?? true,
-      updatedAt: DateTime.parse(map['updatedAt'])
-    );
+        id: map['id'] as String,
+        name: map['name'] as String,
+        groupId: map['groupID'] as String,
+        owner: User.fromMap(map['owner'] as Map<String, dynamic>),
+        date: DateTime.parse(map['date']),
+        items: (map['items'] as List<dynamic>)
+            .map((item) => Item.fromMap(item))
+            .toList(),
+        balance: (map['balance'] as Map<String, dynamic>? ?? {})
+            .map((key, value) => MapEntry(key, value.toDouble())),
+        isViewed: map['isViewed'] as bool? ?? true,
+        updatedAt: DateTime.parse(map['updatedAt']));
   }
 //</editor-fold>
 }

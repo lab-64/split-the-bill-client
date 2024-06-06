@@ -32,7 +32,8 @@ class _BillContributionState extends ConsumerState<BillContribution> {
 
   @override
   Widget build(BuildContext context) {
-    final itemContributions = ref.watch(itemsContributionsProvider(widget.bill));
+    final itemContributions =
+        ref.watch(itemsContributionsProvider(widget.bill));
     final items = widget.bill.items;
 
     return Padding(
@@ -66,7 +67,7 @@ class _BillContributionState extends ConsumerState<BillContribution> {
                               fontSize: 18.0,
                             ),
                           ),
-                          trailing: itemContributions[items[index].id]!
+                          trailing: itemContributions[index].contributed
                               ? const Icon(
                                   Icons.check,
                                   color: Colors.green,
