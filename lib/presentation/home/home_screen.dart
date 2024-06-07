@@ -17,6 +17,7 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ScrollController scrollController = ScrollController();
     final newBills = ref.watch(billsStateProvider(isUnseen: true));
+    final groups = ref.watch(groupsStateProvider);
 
     return Scaffold(
       body: SafeArea(
@@ -35,8 +36,12 @@ class HomeScreen extends ConsumerWidget {
                   value: newBills,
                   data: (newBills) {
                     if (newBills.isNotEmpty) {
-                      return SliverToBoxAdapter(
-                          child: HomeBillCarousel(bills: newBills));
+                      return AsyncValueSliverWidget(
+                        value: groups,
+                        data: (groups) => SliverToBoxAdapter(
+                            child: HomeBillCarousel(
+                                bills: newBills, groups: groups)),
+                      );
                     }
                     return const SliverToBoxAdapter(child: SizedBox());
                   },

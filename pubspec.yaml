@@ -45,6 +45,7 @@ dependencies:
   share_plus: ^9.0.0
   loading_icon_button: ^0.0.6
   card_swiper: ^3.0.1
+  carousel_slider: ^4.0.0
 
 dev_dependencies:
   flutter_test:
