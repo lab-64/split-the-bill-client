@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
@@ -68,17 +70,29 @@ Widget _buildGroupIcon() {
 }
 
 Widget _buildMemberAvatars(Group group) {
-  return Row(
-    children: [
-      for (var member in group.members)
-        Padding(
-          padding: const EdgeInsets.only(right: Sizes.p4),
-          child: ProfileImage(
-            user: member,
-            size: Sizes.p12,
-          ),
-        ),
-    ],
+  return LayoutBuilder(
+    builder: (context, constraints) {
+      double singleChildWidth = Sizes.p32;
+      int maxVisibleAvatars = (constraints.maxWidth / singleChildWidth).floor();
+
+      return Row(
+        children: [
+          for (var i = 0; i < min(maxVisibleAvatars, group.members.length); i++)
+            if (group.members.length - (maxVisibleAvatars - 1) > 1 &&
+                i == min(maxVisibleAvatars, group.members.length) - 1) ...[
+              const SizedBox(width: Sizes.p4),
+              Text("+${group.members.length - (maxVisibleAvatars - 1)}"),
+            ] else
+              Padding(
+                padding: const EdgeInsets.only(right: Sizes.p4),
+                child: ProfileImage(
+                  user: group.members[i],
+                  size: Sizes.p12,
+                ),
+              ),
+        ],
+      );
+    },
   );
 }
 
