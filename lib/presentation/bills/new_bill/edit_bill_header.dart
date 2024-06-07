@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 import '../../shared/components/input_text_field.dart';
 import 'controllers.dart';
@@ -7,12 +8,13 @@ import 'controllers.dart';
 class EditBillHeader extends ConsumerWidget {
   final TextEditingController dateController;
   final TextEditingController nameController;
+  final Function parseDateToString;
 
-  const EditBillHeader({
-    super.key,
-    required this.dateController,
-    required this.nameController,
-  });
+  const EditBillHeader(
+      {super.key,
+      required this.dateController,
+      required this.nameController,
+      required this.parseDateToString});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -38,8 +40,7 @@ class EditBillHeader extends ConsumerWidget {
               controller: dateController,
               labelText: 'Date',
               prefixIcon: const Icon(Icons.date_range),
-              onTap: () => _selectDate(
-                  context, ref, DateTime.parse(dateController.text)),
+              onTap: () => _selectDate(context, ref, dateController.text),
               readOnly: true,
             ),
           ),
@@ -49,7 +50,10 @@ class EditBillHeader extends ConsumerWidget {
   }
 
   Future<void> _selectDate(
-      BuildContext context, WidgetRef ref, DateTime date) async {
+      BuildContext context, WidgetRef ref, String dateString) async {
+    final dateFormat = DateFormat("dd.MM.yyyy");
+    final date = dateFormat.parse(dateString);
+
     showDatePicker(
         context: context,
         initialDate: date,
@@ -70,7 +74,7 @@ class EditBillHeader extends ConsumerWidget {
           );
         }).then((selectedDate) {
       if (selectedDate != null) {
-        dateController.text = selectedDate.toString();
+        dateController.text = parseDateToString(selectedDate);
         ref.read(editBillControllerProvider.notifier).setDate(selectedDate);
       }
     });

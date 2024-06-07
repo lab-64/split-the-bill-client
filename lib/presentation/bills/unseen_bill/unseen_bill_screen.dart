@@ -11,6 +11,7 @@ import 'package:split_the_bill/presentation/shared/components/action_button.dart
 
 class UnseenBillScreen extends ConsumerWidget {
   const UnseenBillScreen({super.key, required this.billId});
+
   final String billId;
 
   @override
@@ -39,10 +40,11 @@ class UnseenBillScreen extends ConsumerWidget {
   }
 
   Future<void> _saveBill(Bill bill, WidgetRef ref, BuildContext context) async {
-    final items = ref.watch(itemsContributionsProvider(bill));
-    bill = bill.copyWith(isViewed: true, items: items);
+    final contributions = ref.watch(itemsContributionsProvider(bill));
 
-    await ref.read(billsStateProvider().notifier).edit(bill);
+    await ref
+        .read(billsStateProvider().notifier)
+        .updateContributions(billId, contributions);
     ref.invalidate(billsStateProvider(isUnseen: true));
   }
 }
