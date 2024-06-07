@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/bill/bill.dart';
@@ -8,7 +9,7 @@ import 'package:split_the_bill/domain/group/group.dart';
 import 'package:split_the_bill/infrastructure/async_value_ui.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/controllers.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/edit_item.dart';
-import 'package:split_the_bill/presentation/shared/components/ellipse_headline.dart';
+import 'package:split_the_bill/presentation/shared/components/fade_text.dart';
 import 'package:split_the_bill/presentation/shared/components/headline.dart';
 import 'package:split_the_bill/presentation/shared/components/primary_button.dart';
 
@@ -37,7 +38,15 @@ class _EditBillState extends ConsumerState<EditBill> {
     itemExpanded = List.generate(items.length, (index) => true);
 
     _nameController = TextEditingController(text: widget.bill.name);
-    _dateController = TextEditingController(text: widget.bill.date.toString());
+    _dateController =
+        TextEditingController(text: parseDateToString(widget.bill.date));
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _dateController.dispose();
+    super.dispose();
   }
 
   @override
@@ -60,6 +69,7 @@ class _EditBillState extends ConsumerState<EditBill> {
           EditBillHeader(
             dateController: _dateController,
             nameController: _nameController,
+            parseDateToString: parseDateToString,
           ),
           gapH16,
           Expanded(
@@ -88,11 +98,23 @@ class _EditBillState extends ConsumerState<EditBill> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              EllipseHeadline(
-                                  size: Sizes.p64 * 2.5,
-                                  title: items[index].name.isNotEmpty
-                                      ? items[index].name
-                                      : 'Item ${index + 1}'),
+                              Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                    bottom: Sizes.p8,
+                                    right: Sizes.p16,
+                                  ),
+                                  child: FadeText(
+                                    text: items[index].name.isNotEmpty
+                                        ? items[index].name
+                                        : 'Item ${index + 1}',
+                                    style: const TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
                               IntrinsicHeight(
                                 child: Row(
                                   children: [
@@ -137,7 +159,9 @@ class _EditBillState extends ConsumerState<EditBill> {
                                 width: double.infinity,
                                 child: PrimaryButton(
                                   onPressed: _addItem,
-                                  text: "+1 Item",
+                                  icon: Icons.add,
+                                  text: "Item",
+                                  backgroundColor: Colors.green.shade400,
                                 ),
                               ),
                             ],
@@ -152,6 +176,11 @@ class _EditBillState extends ConsumerState<EditBill> {
         ],
       ),
     );
+  }
+
+  String parseDateToString(DateTime date) {
+    final dateFormat = DateFormat("dd.MM.yyyy");
+    return dateFormat.format(date);
   }
 
   void _addItem() {

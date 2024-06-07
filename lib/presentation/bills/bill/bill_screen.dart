@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
+import 'package:split_the_bill/domain/bill/bill.dart';
 import 'package:split_the_bill/domain/bill/states/bill_state.dart';
 import 'package:split_the_bill/domain/bill/states/bills_state.dart';
 import 'package:split_the_bill/infrastructure/async_value_ui.dart';
 import 'package:split_the_bill/presentation/bills/bill/items_list.dart';
+import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/components/show_confirmation_dialog.dart';
 import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
 import 'package:split_the_bill/router/routes.dart';
@@ -19,8 +21,8 @@ class BillScreen extends ConsumerWidget {
 
   final String billId;
 
-  Future<void> _deleteBill(WidgetRef ref) async {
-    await ref.read(billsStateProvider().notifier).delete(billId);
+  Future<void> _deleteBill(WidgetRef ref, Bill bill) async {
+    await ref.read(billsStateProvider().notifier).delete(bill);
   }
 
   void _onSuccess(BuildContext context, WidgetRef ref, bool isEdit) {
@@ -47,67 +49,51 @@ class BillScreen extends ConsumerWidget {
       (_, next) => next.showSnackBarOnError(context),
     );
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(bill.value?.name ?? ""),
-        actions: [
-          PopupMenuButton(
-            itemBuilder: (context) => [
-              PopupMenuItem(
-                onTap: () => EditBillRoute(
-                  groupId: bill.requireValue.groupId,
-                  billId: billId,
-                ).push(context),
-                child: const Row(
-                  children: [
-                    Icon(
-                      Icons.edit,
-                      color: Colors.blueAccent,
-                    ),
-                    gapW16,
-                    Text("Edit")
-                  ],
-                ),
-              ),
-              if (_isBillOwner(ref))
-                PopupMenuItem(
-                  child: const Row(
-                    children: [
-                      Icon(
-                        Icons.delete,
-                        color: Colors.red,
-                      ),
-                      gapW16,
-                      Text("Delete"),
-                    ],
-                  ),
-                  onTap: () => showConfirmationDialog(
-                    context: context,
-                    title: "Are you sure, you want to delete this bill?",
-                    content:
-                        "This will delete the bill for you and all group members!",
-                    onConfirm: () => _deleteBill(ref).then(
-                      (_) => _onSuccess(context, ref, false),
-                    ),
+    return AsyncValueWidget(
+      value: bill,
+      data: (bill) => Scaffold(
+        appBar: AppBar(
+          title: Text(bill.name),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.manage_accounts),
+              onPressed: () => UnseenBillRoute(billId: billId).push(context),
+            ),
+            IconButton(
+              icon: const Icon(Icons.edit),
+              onPressed: () => EditBillRoute(
+                groupId: bill.groupId,
+                billId: billId,
+              ).push(context),
+            ),
+            if (_isBillOwner(ref))
+              IconButton(
+                icon: const Icon(Icons.delete),
+                onPressed: () => showConfirmationDialog(
+                  context: context,
+                  title: "Are you sure, you want to delete this bill?",
+                  content:
+                      "This will delete the bill for you and all group members!",
+                  onConfirm: () => _deleteBill(ref, bill).then(
+                    (_) => _onSuccess(context, ref, false),
                   ),
                 ),
-            ],
-            position: PopupMenuPosition.under,
-          )
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: Sizes.p24),
-        child: RefreshIndicator(
-          onRefresh: () => ref.refresh(billStateProvider(billId).future),
-          child: CustomScrollView(
-            slivers: [
-              ItemsList(
-                userId: user.id,
-                scrollController: scrollController,
-                bill: bill,
               ),
-            ],
+          ],
+        ),
+        body: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: Sizes.p24),
+          child: RefreshIndicator(
+            onRefresh: () => ref.refresh(billStateProvider(billId).future),
+            child: CustomScrollView(
+              slivers: [
+                ItemsList(
+                  userId: user.id,
+                  scrollController: scrollController,
+                  bill: bill,
+                ),
+              ],
+            ),
           ),
         ),
       ),

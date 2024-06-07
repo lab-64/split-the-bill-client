@@ -6,7 +6,7 @@ import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/bill/states/bills_state.dart';
 import 'package:split_the_bill/presentation/home/notifications_dialog.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
-import 'package:split_the_bill/presentation/shared/components/ellipse_text.dart';
+import 'package:split_the_bill/presentation/shared/components/fade_text.dart';
 import 'package:split_the_bill/presentation/shared/components/show_custom_dialog.dart';
 import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 import 'package:split_the_bill/router/routes.dart';
@@ -28,28 +28,31 @@ class HomeAppBar extends ConsumerWidget {
   }
 
   Widget _buildUserInfo(BuildContext context, WidgetRef ref, User user) {
-    return Row(
-      children: [
-        ProfileImage(
-          user: user,
-          onPressed: () => const ProfileRoute().go(context),
-        ),
-        gapW16,
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('Welcome back!'),
-            EllipseText(
-              text: user.getDisplayName(),
-              size: Sizes.p64 * 3,
-              style: const TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.bold,
-              ),
+    return Expanded(
+      child: Row(
+        children: [
+          ProfileImage(
+            user: user,
+            onPressed: () => const ProfileRoute().go(context),
+          ),
+          gapW16,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Welcome back!'),
+                FadeText(
+                  text: user.getDisplayName(),
+                  style: const TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -59,43 +62,50 @@ class HomeAppBar extends ConsumerWidget {
     return Stack(
       children: [
         IconButton(
-          icon: const Icon(Icons.notifications_outlined),
+          icon: bills.hasError
+              ? const Icon(
+                  Icons.error,
+                  color: Colors.red,
+                )
+              : const Icon(Icons.notifications_outlined),
           onPressed: () => showCustomDialog(
             context: context,
             title: 'Notifications',
             content: const NotificationsDialog(),
           ),
         ),
-        AsyncValueWidget(
-          value: bills,
-          data: (bills) {
-            if (bills.isEmpty) {
-              return const SizedBox();
-            }
-            return Positioned(
-              right: 0,
-              top: 0,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(Sizes.p8),
-                ),
-                constraints: const BoxConstraints(
-                  minWidth: Sizes.p16,
-                  minHeight: Sizes.p16,
-                ),
-                child: Text(
-                  '${bills.length}',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
+        if (!bills.hasError) ...[
+          AsyncValueWidget(
+            value: bills,
+            data: (bills) {
+              if (bills.isEmpty) {
+                return const SizedBox();
+              }
+              return Positioned(
+                right: 0,
+                top: 0,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(Sizes.p8),
                   ),
-                  textAlign: TextAlign.center,
+                  constraints: const BoxConstraints(
+                    minWidth: Sizes.p16,
+                    minHeight: Sizes.p16,
+                  ),
+                  child: Text(
+                    '${bills.length}',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-              ),
-            );
-          },
-        )
+              );
+            },
+          )
+        ]
       ],
     );
   }

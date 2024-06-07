@@ -10,6 +10,14 @@ class User {
     return username.isNotEmpty ? username : email;
   }
 
+  String getImagePath() {
+    if (profileImgPath.isNotEmpty) {
+      return '${Constants.baseScheme}://${Constants.baseApiUrl}:${Constants.basePort}$profileImgPath';
+    } else {
+      return '';
+    }
+  }
+
 //<editor-fold desc="Data Methods">
   const User({
     required this.id,
