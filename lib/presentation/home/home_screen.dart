@@ -31,12 +31,16 @@ class HomeScreen extends ConsumerWidget {
                 const SliverToBoxAdapter(child: gapH24),
                 const SliverToBoxAdapter(child: HomeBalanceCard()),
                 const SliverToBoxAdapter(child: gapH24),
-                const SliverToBoxAdapter(
-                    child: Headline(title: "Recent Bills")),
                 AsyncValueSliverWidget(
-                    value: newBills,
-                    data: (newBills) => SliverToBoxAdapter(
-                        child: HomeBillCarousel(bills: newBills))),
+                  value: newBills,
+                  data: (newBills) {
+                    if (newBills.isNotEmpty) {
+                      return SliverToBoxAdapter(
+                          child: HomeBillCarousel(bills: newBills));
+                    }
+                    return const SliverToBoxAdapter(child: SizedBox());
+                  },
+                ),
                 const SliverToBoxAdapter(child: gapH24),
                 const SliverToBoxAdapter(child: Headline(title: "My Groups")),
                 GroupsList(scrollController: scrollController),
