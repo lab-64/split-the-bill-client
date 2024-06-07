@@ -22,7 +22,6 @@ class HomeAppBar extends ConsumerWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _buildUserInfo(context, ref, user),
-        _buildActionIcons(context, ref),
       ],
     );
   }

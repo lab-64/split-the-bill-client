@@ -5,6 +5,8 @@ import 'package:split_the_bill/domain/bill/states/bills_state.dart';
 import 'package:split_the_bill/domain/group/states/groups_state.dart';
 import 'package:split_the_bill/presentation/home/home_app_bar.dart';
 import 'package:split_the_bill/presentation/home/home_balance_card.dart';
+import 'package:split_the_bill/presentation/home/home_bill_carousel.dart';
+import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/components/headline.dart';
 import 'package:split_the_bill/presentation/shared/groups/groups_list.dart';
 
@@ -14,6 +16,7 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ScrollController scrollController = ScrollController();
+    final newBills = ref.watch(billsStateProvider(isUnseen: true));
 
     return Scaffold(
       body: SafeArea(
@@ -27,6 +30,13 @@ class HomeScreen extends ConsumerWidget {
                 const SliverToBoxAdapter(child: HomeAppBar()),
                 const SliverToBoxAdapter(child: gapH24),
                 const SliverToBoxAdapter(child: HomeBalanceCard()),
+                const SliverToBoxAdapter(child: gapH24),
+                const SliverToBoxAdapter(
+                    child: Headline(title: "Recent Bills")),
+                AsyncValueSliverWidget(
+                    value: newBills,
+                    data: (newBills) => SliverToBoxAdapter(
+                        child: HomeBillCarousel(bills: newBills))),
                 const SliverToBoxAdapter(child: gapH24),
                 const SliverToBoxAdapter(child: Headline(title: "My Groups")),
                 GroupsList(scrollController: scrollController),
