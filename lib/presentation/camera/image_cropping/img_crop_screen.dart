@@ -2,12 +2,10 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:ui' as ui;
 
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:split_the_bill/domain/camera/crop_state.dart';
 import 'package:split_the_bill/infrastructure/edge_detection/edge_detection_result.dart';
 import 'package:split_the_bill/infrastructure/image_processing/image_cropping.dart';
 import 'package:split_the_bill/infrastructure/image_processing/image_utils.dart';
@@ -37,30 +35,26 @@ class _ImageCropScreenState extends ConsumerState<ImageCropScreen> {
     super.initState();
   }
 
-
   DetectedRectangle cropPath = DetectedRectangle(
       topLeft: const Offset(0.2, 0.2),
       topRight: const Offset(0.8, 0.2),
       bottomLeft: const Offset(0.2, 0.8),
-      bottomRight: const Offset(0.8, 0.8)
-  );
+      bottomRight: const Offset(0.8, 0.8));
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: Stack(
-          fit: StackFit.expand,
-          children: <Widget>[
-            const Center(child: Text("Loading image...")),
-            Image.file(
-              File(currentImageFile.path),
-              fit: BoxFit.contain,
-              key: imageKey
-            ),
-            FutureBuilder(
+          child: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          const Center(child: Text("Loading image...")),
+          Image.file(File(currentImageFile.path),
+              fit: BoxFit.contain, key: imageKey),
+          FutureBuilder(
               future: ImageUtils.createImageFromFile(widget.imgFile),
-              builder: (BuildContext context, AsyncSnapshot<ui.Image> snapshot) {
+              builder:
+                  (BuildContext context, AsyncSnapshot<ui.Image> snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   final keyContext = imageKey.currentContext;
 
@@ -72,36 +66,30 @@ class _ImageCropScreenState extends ConsumerState<ImageCropScreen> {
                   ui.Image img = snapshot.data!;
                   return CroppingRectangle(
                     imgRenderSize: Size(box.size.width, box.size.height),
-                    imgTrueSize: Size(img.width.toDouble(), img.height.toDouble()),
+                    imgTrueSize:
+                        Size(img.width.toDouble(), img.height.toDouble()),
                     detectedEdges: cropPath,
                     updateSelectionCallback: _updateCropSelection,
                   );
                 }
 
                 return const CircularProgressIndicator();
-              }
-            ),
-          ],
-        )),
+              }),
+        ],
+      )),
       floatingActionButton: ActionButton(
         icon: Icons.crop,
         onPressed: () async {
-          Uint8List croppedBytes = await ImageCropping.perspectiveImageCropping(widget.imgFile, cropPath);
-          // Navigator.push(context, MaterialPageRoute(builder: (_) => ImageScreen(image: Image.memory(croppedBytes))));
-          // ui.Image uiImg = await ImageUtils.createImageFromBytes(croppedBytes);
-          //img = Image.memory(croppedBytes);
-          //@TODO
-          ref.read(croppingStateProvider.notifier).setCroppedImage(croppedBytes);
+          Uint8List croppedBytes = await ImageCropping.perspectiveImageCropping(
+              widget.imgFile, cropPath);
           await ref
               .read(billRecognitionProvider.notifier)
               .runBillRecognition(croppedBytes);
-          // Do sth. with the cropped image data
-          // Navigator.push(context, MaterialPageRoute(builder: (_) => ImageScreen(image: img)));
         },
       ),
     );
   }
-  
+
   @override
   void dispose() {
     // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
@@ -111,5 +99,4 @@ class _ImageCropScreenState extends ConsumerState<ImageCropScreen> {
   void _updateCropSelection(DetectedRectangle currentSelection) {
     cropPath = currentSelection;
   }
-
 }

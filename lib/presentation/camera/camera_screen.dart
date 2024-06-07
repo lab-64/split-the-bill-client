@@ -1,11 +1,9 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
 import 'package:split_the_bill/router/routes.dart';
 
 class CameraScreen extends StatefulWidget {
-
   const CameraScreen({
     super.key,
   });
@@ -14,7 +12,6 @@ class CameraScreen extends StatefulWidget {
   State<StatefulWidget> createState() {
     return _CameraScreenState();
   }
-
 }
 
 class _CameraScreenState extends State<CameraScreen> {
@@ -43,12 +40,10 @@ class _CameraScreenState extends State<CameraScreen> {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               return CameraPreview(_controller);
-            }
-            else {
+            } else {
               return const Center(child: CircularProgressIndicator());
             }
-          }
-      ),
+          }),
       floatingActionButton: ActionButton(
         icon: Icons.photo_camera,
         onPressed: () async {
@@ -72,5 +67,4 @@ class _CameraScreenState extends State<CameraScreen> {
       _initializeControllerFuture = _controller.initialize();
     });
   }
-
 }

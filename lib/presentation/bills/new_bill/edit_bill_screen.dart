@@ -4,7 +4,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:loading_icon_button/loading_icon_button.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/bill/states/bill_state.dart';
-import 'package:split_the_bill/domain/camera/crop_state.dart';
 import 'package:split_the_bill/domain/group/states/group_state.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/controllers.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/edit_bill.dart';
@@ -38,7 +37,6 @@ class _NewBillScreenState extends ConsumerState<EditBillScreen> {
   Widget build(BuildContext context) {
     final bill = ref.watch(billStateProvider(widget.billId));
     final group = ref.watch(groupStateProvider(widget.groupId));
-    final croppedImage = ref.watch(croppingStateProvider).isNotEmpty;
 
     /// Show the items check dialog when the bill recognition starts
     ref.listen(

@@ -64,10 +64,6 @@ RouteBase get $navbarShellRoute => ShellRouteData.$route(
           ],
         ),
         GoRouteData.$route(
-          path: '/camera',
-          factory: $CameraRouteExtension._fromState,
-        ),
-        GoRouteData.$route(
           path: '/crop',
           factory: $ImageCropRouteExtension._fromState,
         ),
@@ -259,23 +255,6 @@ extension $EditProfileRouteExtension on EditProfileRoute {
 
   String get location => GoRouteData.$location(
         '/profile/edit',
-      );
-
-  void go(BuildContext context) => context.go(location);
-
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  void replace(BuildContext context) => context.replace(location);
-}
-
-extension $CameraRouteExtension on CameraRoute {
-  static CameraRoute _fromState(GoRouterState state) => const CameraRoute();
-
-  String get location => GoRouteData.$location(
-        '/camera',
       );
 
   void go(BuildContext context) => context.go(location);

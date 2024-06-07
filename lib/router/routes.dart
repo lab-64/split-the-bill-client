@@ -49,9 +49,6 @@ part 'routes.g.dart';
         TypedGoRoute<EditProfileRoute>(path: 'edit'),
       ],
     ),
-    TypedGoRoute<CameraRoute>(
-      path: '/camera',
-    ),
     TypedGoRoute<ImageCropRoute>(
       path: '/crop',
     ),
@@ -114,16 +111,6 @@ class HomeRoute extends GoRouteData {
   @override
   Widget build(BuildContext context, GoRouterState state) {
     return const HomeScreen();
-  }
-}
-
-// CAMERA
-class CameraRoute extends GoRouteData {
-  const CameraRoute();
-
-  @override
-  Widget build(BuildContext context, GoRouterState state) {
-    return const CameraScreen();
   }
 }
 
