@@ -72,7 +72,7 @@ Widget _buildGroupIcon() {
 Widget _buildMemberAvatars(Group group) {
   return LayoutBuilder(
     builder: (context, constraints) {
-      double singleChildWidth = Sizes.p24;
+      double singleChildWidth = Sizes.p32;
       int maxVisibleAvatars = (constraints.maxWidth / singleChildWidth).floor();
 
       return Row(
