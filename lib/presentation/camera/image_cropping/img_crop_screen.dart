@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'dart:ui' as ui;
 
@@ -9,15 +8,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/infrastructure/edge_detection/edge_detection_result.dart';
 import 'package:split_the_bill/infrastructure/image_processing/image_cropping.dart';
 import 'package:split_the_bill/infrastructure/image_processing/image_utils.dart';
+import 'package:split_the_bill/presentation/bills/new_bill/items_check_dialog.dart';
 import 'package:split_the_bill/presentation/camera/image_cropping/crop_rectangle.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
 
 import '../../bills/new_bill/controllers.dart';
 
 class ImageCropScreen extends ConsumerStatefulWidget {
-  const ImageCropScreen({super.key, required this.imgFile});
+  const ImageCropScreen({
+    super.key,
+    required this.imgFile,
+    required this.billId,
+  });
 
   final String imgFile;
+  final String billId;
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() {
@@ -43,7 +48,17 @@ class _ImageCropScreenState extends ConsumerState<ImageCropScreen> {
 
   @override
   Widget build(BuildContext context) {
+    /// Show the items check dialog when the bill recognition starts
+    ref.listen(billRecognitionProvider, (prev, next) {
+      if (!prev!.isLoading) {
+        showItemsCheckDialog(context, widget.billId);
+      }
+    });
+
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Crop Image"),
+      ),
       body: Center(
           child: Stack(
         fit: StackFit.expand,
@@ -78,10 +93,12 @@ class _ImageCropScreenState extends ConsumerState<ImageCropScreen> {
         ],
       )),
       floatingActionButton: ActionButton(
-        icon: Icons.crop,
+        icon: Icons.check,
         onPressed: () async {
           Uint8List croppedBytes = await ImageCropping.perspectiveImageCropping(
-              widget.imgFile, cropPath);
+            widget.imgFile,
+            cropPath,
+          );
           await ref
               .read(billRecognitionProvider.notifier)
               .runBillRecognition(croppedBytes);
@@ -92,7 +109,6 @@ class _ImageCropScreenState extends ConsumerState<ImageCropScreen> {
 
   @override
   void dispose() {
-    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
     super.dispose();
   }
 

@@ -7,7 +7,6 @@ import 'package:split_the_bill/domain/bill/states/bill_state.dart';
 import 'package:split_the_bill/domain/group/states/group_state.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/controllers.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/edit_bill.dart';
-import 'package:split_the_bill/presentation/bills/new_bill/items_check_dialog.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/scan_bill_modal.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/components/bottom_modal.dart';
@@ -31,20 +30,16 @@ class _NewBillScreenState extends ConsumerState<EditBillScreen> {
 
   Future _getImage(ImageSource source) async {
     image = await _picker.pickImage(source: source);
+    if (mounted) {
+      Navigator.pop(context);
+      ImageCropRoute(image!.path, widget.billId).push(context);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final bill = ref.watch(billStateProvider(widget.billId));
     final group = ref.watch(groupStateProvider(widget.groupId));
-
-    /// Show the items check dialog when the bill recognition starts
-    ref.listen(
-      billRecognitionProvider,
-      (prev, next) => !prev!.isLoading
-          ? showItemsCheckDialog(context, widget.billId)
-          : null,
-    );
 
     return Scaffold(
       appBar: AppBar(
@@ -60,7 +55,7 @@ class _NewBillScreenState extends ConsumerState<EditBillScreen> {
                 ScanBillModal(
                   getImage: _getImage,
                 ),
-              ).whenComplete(() => ImageCropRoute(image!.path).push(context)),
+              ),
             ),
           ),
           Padding(

@@ -270,12 +270,14 @@ extension $EditProfileRouteExtension on EditProfileRoute {
 extension $ImageCropRouteExtension on ImageCropRoute {
   static ImageCropRoute _fromState(GoRouterState state) => ImageCropRoute(
         state.uri.queryParameters['img-file']!,
+        state.uri.queryParameters['bill-id']!,
       );
 
   String get location => GoRouteData.$location(
         '/crop',
         queryParams: {
           'img-file': imgFile,
+          'bill-id': billId,
         },
       );
 

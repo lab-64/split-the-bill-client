@@ -3,7 +3,6 @@ import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/presentation/bills/bill/bill_screen.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/group_selection_screen.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/edit_bill_screen.dart';
-import 'package:split_the_bill/presentation/camera/camera_screen.dart';
 import 'package:split_the_bill/presentation/camera/image_cropping/img_crop_screen.dart';
 import 'package:split_the_bill/presentation/bills/unseen_bill/unseen_bill_screen.dart';
 import 'package:split_the_bill/presentation/groups/edit_group/edit_group_screen.dart';
@@ -116,12 +115,13 @@ class HomeRoute extends GoRouteData {
 
 class ImageCropRoute extends GoRouteData {
   final String imgFile;
+  final String billId;
 
-  const ImageCropRoute(this.imgFile);
+  const ImageCropRoute(this.imgFile, this.billId);
 
   @override
   Widget build(BuildContext context, GoRouterState state) {
-    return ImageCropScreen(imgFile: imgFile);
+    return ImageCropScreen(imgFile: imgFile, billId: billId);
   }
 }
 
