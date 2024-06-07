@@ -88,7 +88,7 @@ class _ImageCropScreenState extends ConsumerState<ImageCropScreen> {
                   );
                 }
 
-                return const CircularProgressIndicator();
+                return const SizedBox();
               }),
         ],
       )),

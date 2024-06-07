@@ -6,7 +6,6 @@ import 'package:split_the_bill/presentation/bills/new_bill/controllers.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
 import 'package:split_the_bill/presentation/shared/components/headline.dart';
-import 'package:split_the_bill/router/routes.dart';
 
 class ItemsCheckDialog extends ConsumerStatefulWidget {
   const ItemsCheckDialog({super.key, required this.billId});
