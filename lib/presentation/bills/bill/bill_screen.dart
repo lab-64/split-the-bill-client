@@ -56,6 +56,10 @@ class BillScreen extends ConsumerWidget {
           title: Text(bill.name),
           actions: [
             IconButton(
+              icon: const Icon(Icons.manage_accounts),
+              onPressed: () => UnseenBillRoute(billId: billId).push(context),
+            ),
+            IconButton(
               icon: const Icon(Icons.edit),
               onPressed: () => EditBillRoute(
                 groupId: bill.groupId,

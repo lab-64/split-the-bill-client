@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/bill/bill.dart';
-import 'package:split_the_bill/domain/bill/item.dart';
 import 'package:split_the_bill/presentation/bills/unseen_bill/controllers.dart';
 import 'package:split_the_bill/presentation/bills/unseen_bill/item_contribution.dart';
 import 'package:split_the_bill/presentation/shared/components/fade_text.dart';
@@ -33,7 +32,9 @@ class _BillContributionState extends ConsumerState<BillContribution> {
 
   @override
   Widget build(BuildContext context) {
-    final items = ref.watch(itemsContributionsProvider(widget.bill));
+    final itemContributions =
+        ref.watch(itemsContributionsProvider(widget.bill));
+    final items = widget.bill.items;
 
     return Padding(
       padding: const EdgeInsets.all(Sizes.p24),
@@ -66,7 +67,7 @@ class _BillContributionState extends ConsumerState<BillContribution> {
                               fontSize: 18.0,
                             ),
                           ),
-                          trailing: _isUserContributingToItem(items[index])
+                          trailing: itemContributions[index].contributed
                               ? const Icon(
                                   Icons.check,
                                   color: Colors.green,
@@ -97,13 +98,6 @@ class _BillContributionState extends ConsumerState<BillContribution> {
     );
   }
 
-  // Check if the current user is contributing to the given item
-  bool _isUserContributingToItem(Item item) {
-    return ref
-        .read(itemsContributionsProvider(widget.bill).notifier)
-        .isUserContributingToItem(item);
-  }
-
   // Update contribution status for the current user on the specified item
   void _updateContributionStatus(bool isContributing, int index) async {
     setState(() {
@@ -114,7 +108,7 @@ class _BillContributionState extends ConsumerState<BillContribution> {
     // Notify the provider about the updated item contribution
     ref
         .read(itemsContributionsProvider(widget.bill).notifier)
-        .setItemContribution(index, isContributing);
+        .setItemContribution(widget.bill.items[index].id, isContributing);
   }
 }
 

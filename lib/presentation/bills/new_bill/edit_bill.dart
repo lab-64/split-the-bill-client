@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/bill/bill.dart';
@@ -37,7 +38,15 @@ class _EditBillState extends ConsumerState<EditBill> {
     itemExpanded = List.generate(items.length, (index) => true);
 
     _nameController = TextEditingController(text: widget.bill.name);
-    _dateController = TextEditingController(text: widget.bill.date.toString());
+    _dateController =
+        TextEditingController(text: parseDateToString(widget.bill.date));
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _dateController.dispose();
+    super.dispose();
   }
 
   @override
@@ -60,6 +69,7 @@ class _EditBillState extends ConsumerState<EditBill> {
           EditBillHeader(
             dateController: _dateController,
             nameController: _nameController,
+            parseDateToString: parseDateToString,
           ),
           gapH16,
           Expanded(
@@ -166,6 +176,11 @@ class _EditBillState extends ConsumerState<EditBill> {
         ],
       ),
     );
+  }
+
+  String parseDateToString(DateTime date) {
+    final dateFormat = DateFormat("dd.MM.yyyy");
+    return dateFormat.format(date);
   }
 
   void _addItem() {
