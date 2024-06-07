@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:loading_icon_button/loading_icon_button.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
@@ -31,10 +32,33 @@ class _NewBillScreenState extends ConsumerState<EditBillScreen> {
   Future _getImage(ImageSource source) async {
     final XFile? image = await _picker.pickImage(source: source);
 
-    if (image != null) {
+    CroppedFile? croppedFile = await ImageCropper().cropImage(
+      sourcePath: image!.path,
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarTitle: 'Cropper',
+          toolbarColor: Colors.blue.shade400,
+          toolbarWidgetColor: Colors.white,
+          lockAspectRatio: false,
+        ),
+        IOSUiSettings(
+          title: 'Cropper',
+          aspectRatioPresets: [
+            CropAspectRatioPreset.original,
+            CropAspectRatioPreset.square,
+          ],
+        ),
+      ],
+    );
+
+    // convert croppeffile to xfile
+    final XFile? croppedImage =
+        croppedFile != null ? XFile(croppedFile.path) : null;
+
+    if (croppedImage != null) {
       await ref
           .read(billRecognitionProvider.notifier)
-          .runBillRecognition(image);
+          .runBillRecognition(croppedImage);
     }
   }
 
