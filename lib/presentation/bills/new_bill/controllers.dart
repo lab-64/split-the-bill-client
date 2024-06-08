@@ -5,7 +5,6 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/cupertino.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
@@ -205,7 +204,6 @@ class BillRecognition extends _$BillRecognition {
       }
     }
     log("Detected Text: ${recognizedText.text}");
-
 
     // fill the shorter list with empty strings or zeros
     _fillLists(nameList, priceList);

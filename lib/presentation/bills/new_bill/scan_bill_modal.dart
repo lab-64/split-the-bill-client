@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ScanBillModal extends StatelessWidget {
@@ -12,24 +11,21 @@ class ScanBillModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ListTile(
-          leading: const Icon(Icons.camera_alt),
-          title: const Text('Take a photo'),
-          onTap: () {
-            getImage(ImageSource.camera);
-           },
-        ),
-        ListTile(
-          leading: const Icon(Icons.image),
-          title: const Text('Select image'),
-          onTap: () {
-            getImage(ImageSource.gallery);
-          },
-    ),
-    ]
-    );
-    }
+    return Column(children: [
+      ListTile(
+        leading: const Icon(Icons.camera_alt),
+        title: const Text('Take a photo'),
+        onTap: () {
+          getImage(ImageSource.camera);
+        },
+      ),
+      ListTile(
+        leading: const Icon(Icons.image),
+        title: const Text('Select image'),
+        onTap: () {
+          getImage(ImageSource.gallery);
+        },
+      ),
+    ]);
   }
-
+}

@@ -3,7 +3,6 @@ import 'dart:ui' as ui;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/infrastructure/edge_detection/edge_detection_result.dart';
 import 'package:split_the_bill/infrastructure/image_processing/image_cropping.dart';
