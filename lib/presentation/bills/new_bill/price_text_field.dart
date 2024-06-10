@@ -33,19 +33,36 @@ class PriceTextField extends StatelessWidget {
       ),
       keyboardType: TextInputType.number,
       inputFormatters: [
-        FilteringTextInputFormatter.allow(RegExp(r'[0-9.]')),
+        FilteringTextInputFormatter.allow(RegExp(r'^-?[0-9.]*-?$')),
       ],
       controller: controller,
       onChanged: (value) {
-        //replace ','
-        var index = value.indexOf('.');
+        if (value.isEmpty) {
+          onChanged(value);
+          return;
+        }
+
+        //push '-' to the front
+        if (value.endsWith('-')) {
+          controller.text = "-${value.substring(0, value.length - 1)}";
+          return;
+        }
+
         if (value.endsWith('.')) {
           controller.text = value.substring(0, value.length - 1);
           return;
         }
+
+        //cut out negative sign for processing
+        final isNegative = value.startsWith('-');
+        if (isNegative) {
+          value = value.substring(1);
+        }
+
+        var index = value.indexOf('.');
+        //replace ','
         value = value.substring(0, index) +
             value.substring(index + 1, value.length);
-
         //push numbers to the right if a number is deleted
         if (value.length < 3) {
           var first = value.substring(0, 1);
@@ -61,11 +78,19 @@ class PriceTextField extends StatelessWidget {
 
         if (value.length < 3) {
           //less than 1
-          controller.text = value.length == 2 ? '0.$value' : '0.0$value';
+          String text = value.length == 2 ? '0.$value' : '0.0$value';
+          if (isNegative) {
+            text = "-$text";
+          }
+          controller.text = text;
         } else if (value.length >= 3) {
           //at least 1
-          controller.text =
+          String text =
               '${value.substring(0, value.length - 2)}.${value.substring(value.length - 2)}';
+          if (isNegative) {
+            text = "-$text";
+          }
+          controller.text = text;
         }
 
         onChanged(controller.text);
