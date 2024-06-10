@@ -70,43 +70,50 @@ class HomeAppBar extends ConsumerWidget {
     return Stack(
       children: [
         IconButton(
-          icon: const Icon(Icons.notifications_outlined),
+          icon: bills.hasError
+              ? const Icon(
+                  Icons.error,
+                  color: Colors.red,
+                )
+              : const Icon(Icons.notifications_outlined),
           onPressed: () => showCustomDialog(
             context: context,
             title: 'Notifications',
             content: const NotificationsDialog(),
           ),
         ),
-        AsyncValueWidget(
-          value: bills,
-          data: (bills) {
-            if (bills.isEmpty) {
-              return const SizedBox();
-            }
-            return Positioned(
-              right: 0,
-              top: 0,
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(Sizes.p8),
-                ),
-                constraints: const BoxConstraints(
-                  minWidth: Sizes.p16,
-                  minHeight: Sizes.p16,
-                ),
-                child: Text(
-                  '${bills.length}',
-                  style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 12,
+        if (!bills.hasError) ...[
+          AsyncValueWidget(
+            value: bills,
+            data: (bills) {
+              if (bills.isEmpty) {
+                return const SizedBox();
+              }
+              return Positioned(
+                right: 0,
+                top: 0,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(Sizes.p8),
                   ),
-                  textAlign: TextAlign.center,
+                  constraints: const BoxConstraints(
+                    minWidth: Sizes.p16,
+                    minHeight: Sizes.p16,
+                  ),
+                  child: Text(
+                    '${bills.length}',
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 12,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-              ),
-            );
-          },
-        )
+              );
+            },
+          )
+        ]
       ],
     );
   }
