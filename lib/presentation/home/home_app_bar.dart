@@ -19,8 +19,8 @@ class HomeAppBar extends ConsumerWidget {
     final user = ref.watch(authStateProvider).requireValue;
 
     return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        gapH48,
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -30,6 +30,7 @@ class HomeAppBar extends ConsumerWidget {
             gapW8
           ],
         ),
+        gapH8
       ],
     );
   }
