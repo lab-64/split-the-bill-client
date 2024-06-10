@@ -29,6 +29,8 @@ class CarouselCard extends StatelessWidget {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
               children: [
                 FadeText(
                   text: bill.name,
@@ -57,7 +59,7 @@ class CarouselCard extends StatelessWidget {
                 Text(DateFormat('dd.MM.yyyy').format(bill.date)),
               ],
             ),
-            gapH16,
+            gapH8,
             Expanded(
               child: Center(
                 child: PrimaryButton(
