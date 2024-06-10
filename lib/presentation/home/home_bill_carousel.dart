@@ -40,6 +40,7 @@ class _HomeBillCarouselState extends State<HomeBillCarousel> {
             return billCards[index];
           },
           options: CarouselOptions(
+            autoPlay: true,
             enableInfiniteScroll: false,
             height: 230,
             enlargeCenterPage: true,
