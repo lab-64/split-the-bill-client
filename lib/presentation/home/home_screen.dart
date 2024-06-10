@@ -21,6 +21,8 @@ class HomeScreen extends ConsumerWidget {
     final groups = ref.watch(groupsStateProvider);
 
     return Scaffold(
+      appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(kToolbarHeight), child: HomeAppBar()),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: Sizes.p24),
@@ -29,7 +31,6 @@ class HomeScreen extends ConsumerWidget {
                 (_) => ref.refresh(billsStateProvider(isUnseen: true).future)),
             child: CustomScrollView(
               slivers: [
-                const SliverToBoxAdapter(child: HomeAppBar()),
                 const SliverToBoxAdapter(child: gapH24),
                 const SliverToBoxAdapter(child: HomeBalanceCard()),
                 const SliverToBoxAdapter(child: gapH24),
