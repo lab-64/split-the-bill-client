@@ -5,7 +5,10 @@ import 'package:split_the_bill/domain/bill/states/bills_state.dart';
 import 'package:split_the_bill/domain/group/states/groups_state.dart';
 import 'package:split_the_bill/presentation/home/home_app_bar.dart';
 import 'package:split_the_bill/presentation/home/home_balance_card.dart';
+import 'package:split_the_bill/presentation/home/home_bill_carousel.dart';
+import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/components/headline.dart';
+import 'package:split_the_bill/presentation/shared/components/placeholder_display.dart';
 import 'package:split_the_bill/presentation/shared/groups/groups_list.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -14,6 +17,8 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final ScrollController scrollController = ScrollController();
+    final newBills = ref.watch(billsStateProvider(isUnseen: true));
+    final groups = ref.watch(groupsStateProvider);
 
     return Scaffold(
       appBar: const PreferredSize(
@@ -29,6 +34,31 @@ class HomeScreen extends ConsumerWidget {
                 const SliverToBoxAdapter(child: gapH24),
                 const SliverToBoxAdapter(child: HomeBalanceCard()),
                 const SliverToBoxAdapter(child: gapH24),
+                const SliverToBoxAdapter(
+                    child: Headline(title: "Recent Bills")),
+                AsyncValueSliverWidget(
+                  value: newBills,
+                  data: (newBills) {
+                    if (newBills.isNotEmpty) {
+                      return AsyncValueSliverWidget(
+                        value: groups,
+                        data: (groups) => SliverToBoxAdapter(
+                          child: HomeBillCarousel(
+                            bills: newBills,
+                            groups: groups,
+                          ),
+                        ),
+                      );
+                    }
+                    return const SliverToBoxAdapter(
+                      child: PlaceholderDisplay(
+                        icon: Icons.receipt_long,
+                        message: "No recent bills",
+                      ),
+                    );
+                  },
+                ),
+                const SliverToBoxAdapter(child: gapH8),
                 const SliverToBoxAdapter(child: Headline(title: "My Groups")),
                 GroupsList(scrollController: scrollController),
                 const SliverToBoxAdapter(child: gapH8),
