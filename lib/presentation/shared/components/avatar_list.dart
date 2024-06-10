@@ -15,7 +15,7 @@ class AvatarList extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        double singleChildWidth = Sizes.p24;
+        double singleChildWidth = Sizes.p32;
         int maxVisibleAvatars =
             (constraints.maxWidth / singleChildWidth).floor();
 
