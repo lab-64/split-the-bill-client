@@ -2,6 +2,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/domain/bill/bill.dart';
 import 'package:split_the_bill/domain/bill/data/bill_repository.dart';
+import 'package:split_the_bill/domain/bill/item_contribution.dart';
 import 'package:split_the_bill/domain/bill/states/bill_state.dart';
 import 'package:split_the_bill/domain/group/states/group_state.dart';
 import 'package:split_the_bill/domain/group/states/groups_state.dart';
@@ -39,6 +40,13 @@ class BillsState extends _$BillsState {
     ref.invalidate(groupStateProvider(updatedBill.groupId));
     ref.invalidate(groupsStateProvider);
     ref.invalidate(billStateProvider(updatedBill.id));
+  }
+
+  Future<void> updateContributions(
+    String billId,
+    List<ItemContribution> contributions,
+  ) async {
+    await _billRepository.updateContributions(billId, contributions);
   }
 
   Future<void> delete(Bill bill) async {

@@ -32,6 +32,10 @@ class BillAPI {
         endpoint: "/item/$itemId",
       );
 
+  Uri updateContributions(String billId) => _buildUri(
+        endpoint: "/$billId/contribution",
+      );
+
   Uri _buildUri({
     required String endpoint,
     Map<String, dynamic> Function()? parametersBuilder,

@@ -4,6 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:split_the_bill/domain/bill/bill.dart';
 import 'package:split_the_bill/domain/bill/states/bill_state.dart';
 import 'package:split_the_bill/domain/bill/states/bills_state.dart';
+import 'package:split_the_bill/domain/group/states/group_state.dart';
+import 'package:split_the_bill/domain/group/states/groups_state.dart';
 import 'package:split_the_bill/presentation/bills/unseen_bill/bill_contribution.dart';
 import 'package:split_the_bill/presentation/bills/unseen_bill/controllers.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
@@ -11,6 +13,7 @@ import 'package:split_the_bill/presentation/shared/components/action_button.dart
 
 class UnseenBillScreen extends ConsumerWidget {
   const UnseenBillScreen({super.key, required this.billId});
+
   final String billId;
 
   @override
@@ -39,10 +42,14 @@ class UnseenBillScreen extends ConsumerWidget {
   }
 
   Future<void> _saveBill(Bill bill, WidgetRef ref, BuildContext context) async {
-    final items = ref.watch(itemsContributionsProvider(bill));
-    bill = bill.copyWith(isViewed: true, items: items);
+    final contributions = ref.watch(itemsContributionsProvider(bill));
 
-    await ref.read(billsStateProvider().notifier).edit(bill);
+    await ref
+        .read(billsStateProvider().notifier)
+        .updateContributions(billId, contributions);
     ref.invalidate(billsStateProvider(isUnseen: true));
+    ref.invalidate(billStateProvider(billId));
+    ref.invalidate(groupsStateProvider);
+    ref.invalidate(groupStateProvider);
   }
 }

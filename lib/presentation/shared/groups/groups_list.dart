@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/domain/group/group.dart';
 import 'package:split_the_bill/domain/group/states/groups_state.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
+import 'package:split_the_bill/presentation/shared/components/placeholder_display.dart';
 import 'package:split_the_bill/router/routes.dart';
 
 import 'group_tile.dart';
@@ -24,6 +25,13 @@ class GroupsList extends ConsumerWidget {
   }
 
   Widget _buildGroupsListView(BuildContext context, List<Group> groups) {
+    if (groups.isEmpty) {
+      return const PlaceholderDisplay(
+        icon: Icons.groups,
+        message: "No groups",
+      );
+    }
+
     return ListView.builder(
       controller: scrollController,
       shrinkWrap: true,
