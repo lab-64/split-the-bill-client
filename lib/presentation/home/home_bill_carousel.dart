@@ -4,7 +4,6 @@ import 'package:split_the_bill/presentation/home/carousel_card.dart';
 
 import '../../domain/bill/bill.dart';
 import '../../domain/group/group.dart';
-import '../shared/components/headline.dart';
 
 class HomeBillCarousel extends StatefulWidget {
   const HomeBillCarousel(
@@ -35,21 +34,15 @@ class _HomeBillCarouselState extends State<HomeBillCarousel> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Headline(title: "Recent Bills"),
         CarouselSlider.builder(
           itemCount: billCards.length,
           itemBuilder: (BuildContext context, int index, int realIdx) {
-            return SizedBox(
-              width: MediaQuery.of(context).size.width * 0.8,
-              child: billCards[index],
-            );
+            return billCards[index];
           },
           options: CarouselOptions(
-            autoPlay: true,
+            enableInfiniteScroll: false,
             height: MediaQuery.of(context).size.height * 0.25,
             enlargeCenterPage: true,
-            aspectRatio: 16 / 9,
-            viewportFraction: 0.8,
             onPageChanged: (index, reason) {
               setState(() {
                 _currentIndex = index;
