@@ -115,7 +115,7 @@ class Items extends _$Items {
     for (var i = 0; i < listLength; i++) {
       items.add(Item.getDefault().copyWith(
         name: names.length <= i || names[i] == '' ? "Item $i" : names[i],
-        price: prices[i],
+        price: prices.length <= i ? 0 : prices[i],
       ));
     }
 
