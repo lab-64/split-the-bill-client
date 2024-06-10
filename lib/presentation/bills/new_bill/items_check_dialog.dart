@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -42,7 +43,6 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
     _controllers = LinkedScrollControllerGroup();
     _scrollControllerName = _controllers.addAndGet();
     _scrollControllerPrice = _controllers.addAndGet();
-
   }
 
   void _confirm(BuildContext context, WidgetRef ref) {
@@ -98,6 +98,7 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
     });
   }
 
+  /// Adds an empty name to the start of the list
   void _addEmptyName() {
     _currentNameList.insert(0, '');
 
@@ -107,6 +108,7 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
     _currentHistoryIndex++;
   }
 
+  /// Adds an price of 0 at the start of the list
   void _addEmptyPrice() {
     _currentPriceList.insert(0, 0);
 
@@ -114,6 +116,31 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
       priceList: List.from(_currentPriceList),
     ));
     _currentHistoryIndex++;
+  }
+
+  /// reorders the list, after an item is moved
+  void _reorderList(int oldIndex, int newIndex, bool isName) {
+    setState(() {
+      if (oldIndex < newIndex) {
+        newIndex -= 1;
+      }
+      if (isName) {
+        final item = _currentNameList.removeAt(oldIndex);
+        _currentNameList.insert(newIndex, item);
+
+        _history.add(_history.last.copyWith(
+          nameList: List.from(_currentNameList),
+        ));
+      } else {
+        final item = _currentPriceList.removeAt(oldIndex);
+        _currentPriceList.insert(newIndex, item);
+
+        _history.add(_history.last.copyWith(
+          priceList: List.from(_currentPriceList),
+        ));
+      }
+      _currentHistoryIndex++;
+    });
   }
 
   @override
@@ -151,82 +178,93 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
                 height: 0,
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  IconButton(
-                      onPressed: () => setState(() {
-                            _addEmptyName();
-                          }),
-                      icon: const Icon(Icons.add_box_outlined)),
-                  IconButton(
-                      onPressed: () => setState(() {
-                            _addEmptyPrice();
-                          }),
-                      icon: const Icon(Icons.add_box_outlined))
+                  Expanded(
+                    flex: 2,
+                    child: IconButton(
+                        onPressed: () => setState(() {
+                              _addEmptyName();
+                              _controllers.jumpTo(0);
+                            }),
+                        icon: const Icon(Icons.add_box_outlined)),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: IconButton(
+                        onPressed: () => setState(() {
+                              _addEmptyPrice();
+                              _controllers.jumpTo(0);
+                            }),
+                        icon: const Icon(Icons.add_box_outlined)),
+                  )
                 ],
               ),
+              const Divider(
+                height: 0,
+              ),
+              gapH4,
               Expanded(
                 child: Row(
                   children: [
                     Expanded(
-                      child: ListView.builder(
-                        controller: _scrollControllerName,
+                      flex: 2,
+                      child: ReorderableListView.builder(
+                        scrollController: _scrollControllerName,
                         itemCount: _currentNameList.length,
                         itemBuilder: (context, index) {
-                          if (_currentNameList[index].isNotEmpty) {
-                            return Padding(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: Sizes.p24, vertical: Sizes.p8),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: Row(
-                                        children: [
-                                          if (_currentNameList[index]
-                                              .isNotEmpty)
-                                            IconButton(
-                                              icon: const Icon(Icons.close),
-                                              onPressed: () {
-                                                setState(() =>
-                                                    _onNameDeletePressed(
-                                                        index));
-                                              },
-                                            ),
-                                          Expanded(
-                                            child: Text(
-                                              _currentNameList[index],
-                                            ),
+                          return Card(
+                            key: Key('$index'),
+                            color: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  top: Sizes.p4 / 2, bottom: Sizes.p4 / 2),
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(Icons.close),
+                                          onPressed: () {
+                                            setState(() =>
+                                                _onNameDeletePressed(index));
+                                          },
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            _currentNameList[index],
+                                            maxLines: 2,
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                        Expanded(
+                                            child: ReorderableDragStartListener(
+                                          index: index,
+                                          child: const Icon(Icons.drag_handle),
+                                        ))
+                                      ],
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                            );
-                          }
-                          return null;
+                            ),
+                          );
                         },
+                        onReorder: (int oldIndex, int newIndex) =>
+                            _reorderList(oldIndex, newIndex, true),
                       ),
                     ),
                     Expanded(
-                      child: ListView.builder(
-                        controller: _scrollControllerPrice,
+                      flex: 1,
+                      child: ReorderableListView.builder(
+                        scrollController: _scrollControllerPrice,
                         itemCount: _currentPriceList.length,
                         itemBuilder: (context, index) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: Sizes.p24, vertical: Sizes.p8),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(8),
-                              ),
+                          return Card(
+                            key: Key('$index'),
+                            color: Colors.white,
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  top: Sizes.p4 / 2, bottom: Sizes.p4 / 2),
                               child: Row(
                                 children: [
                                   Expanded(
@@ -242,8 +280,14 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
                                         Expanded(
                                           child: Text(
                                             _currentPriceList[index].toString(),
+                                            maxLines: 1,
                                           ),
                                         ),
+                                        Expanded(
+                                            child: ReorderableDragStartListener(
+                                          index: index,
+                                          child: const Icon(Icons.drag_handle),
+                                        ))
                                       ],
                                     ),
                                   ),
@@ -252,6 +296,8 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
                             ),
                           );
                         },
+                        onReorder: (int oldIndex, int newIndex) =>
+                            _reorderList(oldIndex, newIndex, false),
                       ),
                     )
                   ],
@@ -274,13 +320,22 @@ class ItemsCheckDialogHeader extends StatelessWidget {
       padding:
           EdgeInsets.only(left: Sizes.p24, right: Sizes.p24, top: Sizes.p16),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Headline(
-            title: 'Name',
+          Expanded(
+            flex: 2,
+            child: Center(
+              child: Headline(
+                title: 'Name',
+              ),
+            ),
           ),
-          Headline(
-            title: 'Price',
+          Expanded(
+            flex: 1,
+            child: Center(
+              child: Headline(
+                title: 'Price',
+              ),
+            ),
           ),
         ],
       ),
