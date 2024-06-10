@@ -41,7 +41,7 @@ class _HomeBillCarouselState extends State<HomeBillCarousel> {
           },
           options: CarouselOptions(
             enableInfiniteScroll: false,
-            height: MediaQuery.of(context).size.height * 0.25,
+            height: 230,
             enlargeCenterPage: true,
             onPageChanged: (index, reason) {
               setState(() {
