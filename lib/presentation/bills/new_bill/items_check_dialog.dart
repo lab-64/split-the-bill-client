@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:linked_scroll_controller/linked_scroll_controller.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/bill/bill_suggestion.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/controllers.dart';
@@ -9,6 +11,7 @@ import 'package:split_the_bill/presentation/shared/components/headline.dart';
 
 class ItemsCheckDialog extends ConsumerStatefulWidget {
   const ItemsCheckDialog({super.key, required this.billId});
+
   final String billId;
 
   @override
@@ -17,9 +20,12 @@ class ItemsCheckDialog extends ConsumerStatefulWidget {
 
 class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
   final List<BillSuggestion> _history = [];
-  int _currentIndex = 0;
+  int _currentHistoryIndex = 0;
   List<String> _currentNameList = [];
   List<double> _currentPriceList = [];
+  late LinkedScrollControllerGroup _controllers;
+  late ScrollController _scrollControllerName;
+  late ScrollController _scrollControllerPrice;
 
   @override
   void initState() {
@@ -32,10 +38,15 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
     _history.add(billRecognition);
     _currentNameList = List.from(billRecognition.nameList);
     _currentPriceList = List.from(billRecognition.priceList);
+
+    _controllers = LinkedScrollControllerGroup();
+    _scrollControllerName = _controllers.addAndGet();
+    _scrollControllerPrice = _controllers.addAndGet();
+
   }
 
   void _confirm(BuildContext context, WidgetRef ref) {
-    final billSuggestion = _history[_currentIndex];
+    final billSuggestion = _history[_currentHistoryIndex];
 
     // TODO: show a snackbar or dont allow to remove all elements
     if (billSuggestion.nameList.every((element) => element.isEmpty) &&
@@ -45,7 +56,7 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
 
     ref
         .read(itemsProvider(widget.billId).notifier)
-        .setItemsFromSuggestion(_history[_currentIndex]);
+        .setItemsFromSuggestion(_history[_currentHistoryIndex]);
     Navigator.pop(context);
   }
 
@@ -53,40 +64,56 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
   /// adds an empty string in its place, and updates the history accordingly.
   void _onNameDeletePressed(int index) {
     _currentNameList.removeAt(index);
-    _currentNameList.add('');
 
     _history.add(_history.last.copyWith(
       nameList: List.from(_currentNameList),
     ));
-    _currentIndex++;
+    _currentHistoryIndex++;
   }
 
   /// Removes the price at the specified [index] from the current price list,
   /// adds 0 in its place, and updates the history accordingly.
   void _onPriceDeletePressed(int index) {
     _currentPriceList.removeAt(index);
-    _currentPriceList.add(0);
 
     _history.add(_history.last.copyWith(
       priceList: List.from(_currentPriceList),
     ));
-    _currentIndex++;
+    _currentHistoryIndex++;
   }
 
   /// Reverts the state of the both lists to the previous state and updates the history accordingly.
   void _onUndoPressed() {
     setState(() {
-      _currentIndex--;
-      final billSuggestion = _history[_currentIndex];
+      _currentHistoryIndex--;
+      final billSuggestion = _history[_currentHistoryIndex];
       _history.removeLast();
       _currentNameList = List.from(billSuggestion.nameList);
       _currentPriceList = List.from(billSuggestion.priceList);
 
-      if (_currentIndex == 0) {
+      if (_currentHistoryIndex == 0) {
         _history.clear();
         _history.add(billSuggestion);
       }
     });
+  }
+
+  void _addEmptyName() {
+    _currentNameList.insert(0, '');
+
+    _history.add(_history.last.copyWith(
+      nameList: List.from(_currentNameList),
+    ));
+    _currentHistoryIndex++;
+  }
+
+  void _addEmptyPrice() {
+    _currentPriceList.insert(0, 0);
+
+    _history.add(_history.last.copyWith(
+      priceList: List.from(_currentPriceList),
+    ));
+    _currentHistoryIndex++;
   }
 
   @override
@@ -101,7 +128,7 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         actions: [
-          if (_currentIndex > 0)
+          if (_currentHistoryIndex > 0)
             IconButton(
               icon: const Icon(Icons.undo),
               onPressed: () {
@@ -123,68 +150,111 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
               const Divider(
                 height: 0,
               ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  IconButton(
+                      onPressed: () => setState(() {
+                            _addEmptyName();
+                          }),
+                      icon: const Icon(Icons.add_box_outlined)),
+                  IconButton(
+                      onPressed: () => setState(() {
+                            _addEmptyPrice();
+                          }),
+                      icon: const Icon(Icons.add_box_outlined))
+                ],
+              ),
               Expanded(
-                child: ListView.builder(
-                  itemCount: billSuggestion.nameList.length,
-                  itemBuilder: (context, index) {
-                    if (_currentNameList[index].isNotEmpty ||
-                        _currentPriceList[index] != 0) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: Sizes.p24, vertical: Sizes.p8),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: ListView.builder(
+                        controller: _scrollControllerName,
+                        itemCount: _currentNameList.length,
+                        itemBuilder: (context, index) {
+                          if (_currentNameList[index].isNotEmpty) {
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: Sizes.p24, vertical: Sizes.p8),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
                                 child: Row(
                                   children: [
-                                    if (_currentNameList[index].isNotEmpty)
-                                      IconButton(
-                                        icon: const Icon(Icons.close),
-                                        onPressed: () {
-                                          setState(() =>
-                                              _onNameDeletePressed(index));
-                                        },
-                                      ),
                                     Expanded(
-                                      child: Text(
-                                        _currentNameList[index],
+                                      child: Row(
+                                        children: [
+                                          if (_currentNameList[index]
+                                              .isNotEmpty)
+                                            IconButton(
+                                              icon: const Icon(Icons.close),
+                                              onPressed: () {
+                                                setState(() =>
+                                                    _onNameDeletePressed(
+                                                        index));
+                                              },
+                                            ),
+                                          Expanded(
+                                            child: Text(
+                                              _currentNameList[index],
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-                              Expanded(
-                                child: Row(
-                                  children: [
-                                    if (_currentPriceList[index] != 0)
-                                      IconButton(
-                                        icon: const Icon(Icons.close),
-                                        onPressed: () {
-                                          setState(() =>
-                                              _onPriceDeletePressed(index));
-                                        },
-                                      ),
-                                    if (_currentPriceList[index] != 0)
-                                      Expanded(
-                                        child: Text(
-                                          _currentPriceList[index].toString(),
-                                        ),
-                                      ),
-                                  ],
-                                ),
+                            );
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        controller: _scrollControllerPrice,
+                        itemCount: _currentPriceList.length,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: Sizes.p24, vertical: Sizes.p8),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(8),
                               ),
-                            ],
-                          ),
-                        ),
-                      );
-                    }
-                    return null;
-                  },
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                    child: Row(
+                                      children: [
+                                        IconButton(
+                                          icon: const Icon(Icons.close),
+                                          onPressed: () {
+                                            setState(() =>
+                                                _onPriceDeletePressed(index));
+                                          },
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            _currentPriceList[index].toString(),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                  ],
                 ),
               ),
             ],
@@ -204,17 +274,13 @@ class ItemsCheckDialogHeader extends StatelessWidget {
       padding:
           EdgeInsets.only(left: Sizes.p24, right: Sizes.p24, top: Sizes.p16),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          Expanded(
-            child: Headline(
-              title: 'Name',
-            ),
+          Headline(
+            title: 'Name',
           ),
-          SizedBox(height: Sizes.p8),
-          Expanded(
-            child: Headline(
-              title: 'Price',
-            ),
+          Headline(
+            title: 'Price',
           ),
         ],
       ),
