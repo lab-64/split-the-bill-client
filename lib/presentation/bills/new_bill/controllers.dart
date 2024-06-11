@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'dart:ui' as ui;
 
 import 'package:flutter/cupertino.dart';
@@ -108,13 +109,15 @@ class Items extends _$Items {
     final names = billSuggestion.nameList;
     final prices = billSuggestion.priceList;
 
-    List<Item> items = List.generate(
-      names.length,
-      (index) => Item.getDefault().copyWith(
-        name: names[index],
-        price: prices[index],
-      ),
-    ).where((item) => item.name.isNotEmpty || item.price != 0).toList();
+    final listLength = max(names.length, prices.length);
+    List<Item> items = [];
+
+    for (var i = 0; i < listLength; i++) {
+      items.add(Item.getDefault().copyWith(
+        name: names.length <= i || names[i] == '' ? "Item $i" : names[i],
+        price: prices.length <= i ? 0 : prices[i],
+      ));
+    }
 
     state = items;
   }

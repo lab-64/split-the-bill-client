@@ -44,6 +44,7 @@ dependencies:
   google_mlkit_text_recognition: ^0.11.0
   share_plus: ^9.0.0
   loading_icon_button: ^0.0.6
+  linked_scroll_controller: ^0.2.0
   carousel_slider: ^4.0.0
 
 dev_dependencies:
