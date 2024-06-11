@@ -182,6 +182,7 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
                         elevation: 0,
                         color: Colors.white,
                         child: IconButton(
+                          visualDensity: VisualDensity.compact,
                           icon: const Icon(Icons.add),
                           onPressed: () => setState(() {
                             _addEmptyName();
@@ -190,13 +191,14 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
                         ),
                       ),
                     ),
-                    gapW16,
+                    gapW8,
                     Expanded(
                       flex: 1,
                       child: Card(
                         elevation: 0,
                         color: Colors.white,
                         child: IconButton(
+                          visualDensity: VisualDensity.compact,
                           icon: const Icon(Icons.add),
                           onPressed: () => setState(() {
                             _addEmptyPrice();
@@ -207,6 +209,10 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
                     ),
                   ],
                 ),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: Sizes.p24),
+                child: Divider(),
               ),
               gapH8,
               Expanded(
@@ -265,7 +271,7 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
                               _reorderList(oldIndex, newIndex, true),
                         ),
                       ),
-                      gapW16,
+                      gapW8,
                       Expanded(
                         flex: 1,
                         child: ReorderableListView.builder(
