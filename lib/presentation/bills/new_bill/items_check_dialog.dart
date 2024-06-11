@@ -6,7 +6,7 @@ import 'package:split_the_bill/domain/bill/bill_suggestion.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/controllers.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
-import 'package:split_the_bill/presentation/shared/components/headline.dart';
+import 'package:split_the_bill/presentation/shared/extensions/currency_formatter.dart';
 
 class ItemsCheckDialog extends ConsumerStatefulWidget {
   const ItemsCheckDialog({super.key, required this.billId});
@@ -172,133 +172,155 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
           return Column(
             children: [
               const ItemsCheckDialogHeader(),
-              const Divider(
-                height: 0,
-              ),
-              Row(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: IconButton(
-                        onPressed: () => setState(() {
-                              _addEmptyName();
-                              _controllers.jumpTo(0);
-                            }),
-                        icon: const Icon(Icons.add_box_outlined)),
-                  ),
-                  Expanded(
-                    flex: 1,
-                    child: IconButton(
-                        onPressed: () => setState(() {
-                              _addEmptyPrice();
-                              _controllers.jumpTo(0);
-                            }),
-                        icon: const Icon(Icons.add_box_outlined)),
-                  )
-                ],
-              ),
-              const Divider(
-                height: 0,
-              ),
-              gapH4,
-              Expanded(
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: Sizes.p24),
                 child: Row(
                   children: [
                     Expanded(
                       flex: 2,
-                      child: ReorderableListView.builder(
-                        scrollController: _scrollControllerName,
-                        itemCount: _currentNameList.length,
-                        itemBuilder: (context, index) {
-                          return Card(
-                            key: Key('$index'),
-                            color: Colors.white,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: Sizes.p4 / 2, bottom: Sizes.p4 / 2),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Row(
-                                      children: [
-                                        IconButton(
-                                          icon: const Icon(Icons.close),
-                                          onPressed: () {
-                                            setState(() =>
-                                                _onNameDeletePressed(index));
-                                          },
-                                        ),
-                                        Expanded(
-                                          child: Text(
-                                            _currentNameList[index],
-                                            maxLines: 2,
-                                          ),
-                                        ),
-                                        Expanded(
-                                            child: ReorderableDragStartListener(
-                                          index: index,
-                                          child: const Icon(Icons.drag_handle),
-                                        ))
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                        onReorder: (int oldIndex, int newIndex) =>
-                            _reorderList(oldIndex, newIndex, true),
+                      child: Card(
+                        elevation: 0,
+                        color: Colors.white,
+                        child: IconButton(
+                          icon: const Icon(Icons.add),
+                          onPressed: () => setState(() {
+                            _addEmptyName();
+                            _controllers.jumpTo(0);
+                          }),
+                        ),
                       ),
                     ),
+                    gapW16,
                     Expanded(
                       flex: 1,
-                      child: ReorderableListView.builder(
-                        scrollController: _scrollControllerPrice,
-                        itemCount: _currentPriceList.length,
-                        itemBuilder: (context, index) {
-                          return Card(
-                            key: Key('$index'),
-                            color: Colors.white,
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: Sizes.p4 / 2, bottom: Sizes.p4 / 2),
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Row(
-                                      children: [
-                                        IconButton(
-                                          icon: const Icon(Icons.close),
-                                          onPressed: () {
-                                            setState(() =>
-                                                _onPriceDeletePressed(index));
-                                          },
-                                        ),
-                                        Expanded(
-                                          child: Text(
-                                            _currentPriceList[index].toString(),
-                                            maxLines: 1,
-                                          ),
-                                        ),
-                                        Expanded(
-                                            child: ReorderableDragStartListener(
-                                          index: index,
-                                          child: const Icon(Icons.drag_handle),
-                                        ))
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                        onReorder: (int oldIndex, int newIndex) =>
-                            _reorderList(oldIndex, newIndex, false),
+                      child: Card(
+                        elevation: 0,
+                        color: Colors.white,
+                        child: IconButton(
+                          icon: const Icon(Icons.add),
+                          onPressed: () => setState(() {
+                            _addEmptyPrice();
+                            _controllers.jumpTo(0);
+                          }),
+                        ),
                       ),
-                    )
+                    ),
                   ],
+                ),
+              ),
+              gapH8,
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: Sizes.p24),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: ReorderableListView.builder(
+                          scrollController: _scrollControllerName,
+                          itemCount: _currentNameList.length,
+                          itemBuilder: (context, index) {
+                            return Dismissible(
+                              onDismissed: (_) => setState(
+                                () => _onNameDeletePressed(index),
+                              ),
+                              background: const Card(
+                                color: Colors.red,
+                                elevation: 0,
+                                child: Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              key: Key(
+                                '${_currentNameList[index]}$index${_currentNameList.length}',
+                              ),
+                              child: Card(
+                                color: Colors.white,
+                                elevation: 0,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: Sizes.p8,
+                                    horizontal: Sizes.p16,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          _currentNameList[index],
+                                          maxLines: 1,
+                                        ),
+                                      ),
+                                      ReorderableDragStartListener(
+                                        index: index,
+                                        child: const Icon(Icons.drag_handle),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          onReorder: (int oldIndex, int newIndex) =>
+                              _reorderList(oldIndex, newIndex, true),
+                        ),
+                      ),
+                      gapW16,
+                      Expanded(
+                        flex: 1,
+                        child: ReorderableListView.builder(
+                          scrollController: _scrollControllerPrice,
+                          itemCount: _currentPriceList.length,
+                          itemBuilder: (context, index) {
+                            return Dismissible(
+                              onDismissed: (_) => setState(
+                                () => _onPriceDeletePressed(index),
+                              ),
+                              background: const Card(
+                                color: Colors.red,
+                                elevation: 0,
+                                child: Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              key: Key(
+                                '${_currentPriceList[index]}$index${_currentPriceList.length}',
+                              ),
+                              child: Card(
+                                elevation: 0,
+                                color: Colors.white,
+                                key: Key('$index'),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: Sizes.p8,
+                                    horizontal: Sizes.p16,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          _currentPriceList[index]
+                                              .toCurrencyString(),
+                                          maxLines: 1,
+                                        ),
+                                      ),
+                                      ReorderableDragStartListener(
+                                        index: index,
+                                        child: const Icon(Icons.drag_handle),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                          onReorder: (int oldIndex, int newIndex) =>
+                              _reorderList(oldIndex, newIndex, false),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -315,24 +337,41 @@ class ItemsCheckDialogHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Padding(
-      padding:
-          EdgeInsets.only(left: Sizes.p24, right: Sizes.p24, top: Sizes.p16),
+      padding: EdgeInsets.only(
+        left: Sizes.p24,
+        right: Sizes.p24,
+        top: Sizes.p16,
+      ),
       child: Row(
         children: [
           Expanded(
             flex: 2,
-            child: Center(
-              child: Headline(
-                title: 'Name',
-              ),
+            child: Row(
+              children: [
+                Icon(Icons.edit),
+                gapW8,
+                Text(
+                  'Name',
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+              ],
             ),
           ),
           Expanded(
             flex: 1,
-            child: Center(
-              child: Headline(
-                title: 'Price',
-              ),
+            child: Row(
+              children: [
+                Icon(Icons.price_check),
+                gapW8,
+                Text(
+                  'Price',
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
