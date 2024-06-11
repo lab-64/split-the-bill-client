@@ -15,7 +15,8 @@ class InputTextField extends StatelessWidget {
     this.isDisabled = false,
     this.obscureText = false,
     this.readOnly = false,
-    this.fillColor = Colors.white
+    this.fillColor = Colors.white,
+    this.autofocus = false,
   });
 
   final String labelText;
@@ -30,12 +31,14 @@ class InputTextField extends StatelessWidget {
   final bool obscureText;
   final bool readOnly;
   final Color fillColor;
+  final bool autofocus;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       onTap: onTap,
       readOnly: readOnly,
+      autofocus: autofocus,
       controller: controller,
       onChanged: onChanged,
       keyboardType: keyboardType,

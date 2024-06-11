@@ -5,7 +5,7 @@ import 'package:split_the_bill/domain/bill/bill.dart';
 import 'package:split_the_bill/domain/bill/states/bill_state.dart';
 import 'package:split_the_bill/domain/bill/states/bills_state.dart';
 import 'package:split_the_bill/infrastructure/async_value_ui.dart';
-import 'package:split_the_bill/presentation/bills/bill/items_list.dart';
+import 'package:split_the_bill/presentation/bills/bill/bill_widget.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/components/show_confirmation_dialog.dart';
 import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
@@ -40,7 +40,6 @@ class BillScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final ScrollController scrollController = ScrollController();
     final bill = ref.watch(billStateProvider(billId));
     final user = ref.read(authStateProvider).requireValue;
 
@@ -53,7 +52,7 @@ class BillScreen extends ConsumerWidget {
       value: bill,
       data: (bill) => Scaffold(
         appBar: AppBar(
-          title: Text(bill.name),
+          title: const Text("Bill"),
           actions: [
             IconButton(
               icon: const Icon(Icons.manage_accounts),
@@ -87,10 +86,11 @@ class BillScreen extends ConsumerWidget {
             onRefresh: () => ref.refresh(billStateProvider(billId).future),
             child: CustomScrollView(
               slivers: [
-                ItemsList(
-                  userId: user.id,
-                  scrollController: scrollController,
-                  bill: bill,
+                SliverToBoxAdapter(
+                  child: BillWidget(
+                    bill: bill,
+                    userId: user.id,
+                  ),
                 ),
               ],
             ),
