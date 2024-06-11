@@ -37,7 +37,7 @@ class _GroupMemberListState extends State<GroupMemberList> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 150,
+      height: widget.members.length > 2 ? 160 : 120,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(Sizes.p8),

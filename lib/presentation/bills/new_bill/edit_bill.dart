@@ -63,7 +63,7 @@ class _EditBillState extends ConsumerState<EditBill> {
     items = ref.watch(itemsProvider(widget.bill.id));
 
     return Padding(
-      padding: const EdgeInsets.all(Sizes.p24),
+      padding: const EdgeInsets.only(left: 24, right: 24, top: 8, bottom: 24),
       child: Column(
         children: [
           EditBillHeader(
@@ -71,7 +71,7 @@ class _EditBillState extends ConsumerState<EditBill> {
             nameController: _nameController,
             parseDateToString: parseDateToString,
           ),
-          gapH16,
+          gapH4,
           Expanded(
             child: Container(
               decoration: const BoxDecoration(
@@ -81,75 +81,85 @@ class _EditBillState extends ConsumerState<EditBill> {
                 ),
               ),
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.all(8),
                 child: ListView.builder(
                   itemCount: items.length,
                   itemBuilder: (context, index) {
                     return Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              itemExpanded[index] = !itemExpanded[index];
-                            });
-                          },
-                          behavior: HitTestBehavior.translucent,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    bottom: Sizes.p8,
-                                    right: Sizes.p16,
-                                  ),
-                                  child: FadeText(
-                                    text: items[index].name.isNotEmpty
-                                        ? items[index].name
-                                        : 'Item ${index + 1}',
-                                    style: const TextStyle(
-                                      fontSize: 18.0,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              IntrinsicHeight(
-                                child: Row(
-                                  children: [
-                                    Headline(title: '€ ${items[index].price}'),
-                                    gapW8,
-                                    const VerticalDivider(),
-                                    if (items.length > 1)
-                                      IconButton(
-                                        icon: const Icon(Icons.delete),
-                                        onPressed: () => _removeItem(index),
+                        if (index == 0) ...[gapH8],
+                        if (!itemExpanded[index]) ...[
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                itemExpanded[index] = !itemExpanded[index];
+                              });
+                            },
+                            behavior: HitTestBehavior.translucent,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                        bottom: Sizes.p8,
+                                        right: Sizes.p16,
                                       ),
-                                    Icon(
-                                      itemExpanded[index]
-                                          ? Icons.arrow_drop_up
-                                          : Icons.arrow_drop_down,
+                                      child: FadeText(
+                                        text: items[index].name.isNotEmpty
+                                            ? items[index].name
+                                            : 'Item ${index + 1}',
+                                        style: const TextStyle(
+                                          fontSize: 18.0,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  IntrinsicHeight(
+                                    child: Row(
+                                      children: [
+                                        Headline(
+                                            title: '€ ${items[index].price}'),
+                                        gapW8,
+                                        const VerticalDivider(),
+                                        if (items.length > 1)
+                                          IconButton(
+                                            icon: const Icon(Icons.delete),
+                                            onPressed: () => _removeItem(index),
+                                          ),
+                                        const Icon(
+                                          Icons.arrow_drop_down,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
-                        ),
-                        const Padding(
-                          padding: EdgeInsets.only(left: 8.0, right: 8.0),
-                          child: Divider(),
-                        ),
-                        gapH8,
+                          const Padding(
+                            padding: EdgeInsets.only(left: 8.0, right: 8.0),
+                            child: Divider(),
+                          ),
+                        ],
                         if (itemExpanded[index]) ...[
                           EditItem(
                             item: items[index],
                             group: widget.group,
                             onChanged: (name, price, contributors) =>
                                 _updateItem(index, name, price, contributors),
+                            onClose: () => {
+                              setState(() {
+                                itemExpanded[index] = !itemExpanded[index];
+                              })
+                            },
                           ),
-                          gapH12,
+                          const Divider(),
                         ],
                         if (index == items.length - 1)
                           Column(

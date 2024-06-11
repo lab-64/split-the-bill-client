@@ -13,11 +13,13 @@ class EditItem extends StatefulWidget {
     required this.item,
     required this.group,
     required this.onChanged,
+    required this.onClose,
   });
 
   final Item item;
   final Group group;
   final Function(String, String, List<User>) onChanged;
+  final Function onClose;
 
   @override
   State<EditItem> createState() => _EditItemState();
@@ -58,56 +60,62 @@ class _EditItemState extends State<EditItem> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        gapH8,
-        Row(
-          children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(right: Sizes.p8),
-                child: InputTextField(
-                  controller: nameController,
-                  onChanged: (name) => widget.onChanged(
-                      name, priceController.text, contributors),
-                  labelText: 'Item*',
-                  prefixIcon: const Icon(Icons.description),
-                  fillColor: backgroundGrey,
+    return Padding(
+      padding: const EdgeInsets.only(left: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          gapH8,
+          Row(
+            children: [
+              Expanded(
+                flex: 4,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: Sizes.p8),
+                  child: InputTextField(
+                    controller: nameController,
+                    onChanged: (name) => widget.onChanged(
+                        name, priceController.text, contributors),
+                    labelText: 'Item*',
+                    prefixIcon: const Icon(Icons.description),
+                    fillColor: backgroundGrey,
+                  ),
                 ),
               ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(left: Sizes.p8),
+              Expanded(
+                flex: 3,
                 child: PriceTextField(
                   controller: priceController,
-                  onChanged: (price) => widget.onChanged(
-                      nameController.text, price, contributors),
+                  onChanged: (price) =>
+                      widget.onChanged(nameController.text, price, contributors),
                   labelText: "Price*",
                   prefixIcon: const Icon(Icons.attach_money),
                   fillColor: backgroundGrey,
                 ),
               ),
-            ),
-          ],
-        ),
-        gapH16,
-        const Text("Contributors"),
-        gapH8,
-        GroupMemberList(
-          members: widget.group.members,
-          contributors: contributors,
-          onChanged: (newContributors) {
-            contributors = newContributors;
-            widget.onChanged(
-              nameController.text,
-              priceController.text,
-              contributors,
-            );
-          },
-        ),
-      ],
+              IconButton(
+                onPressed: () => widget.onClose(),
+                icon: const Icon(Icons.arrow_drop_up),
+              )
+            ],
+          ),
+          gapH16,
+          const Text("Contributors"),
+          gapH8,
+          GroupMemberList(
+            members: widget.group.members,
+            contributors: contributors,
+            onChanged: (newContributors) {
+              contributors = newContributors;
+              widget.onChanged(
+                nameController.text,
+                priceController.text,
+                contributors,
+              );
+            },
+          ),
+        ],
+      ),
     );
   }
 }
