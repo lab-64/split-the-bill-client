@@ -32,34 +32,28 @@ class BillWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.grey.shade200,
-              borderRadius: BorderRadius.circular(Sizes.p16),
-            ),
-            child: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    const Icon(Icons.receipt_long, size: 32),
-                    Text(
-                      textAlign: TextAlign.center,
-                      bill.name,
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(Sizes.p8),
+              child: Column(
+                children: [
+                  const Icon(Icons.receipt_long, size: 32),
+                  Text(
+                    textAlign: TextAlign.center,
+                    bill.name,
+                    style: const TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
                     ),
-                    Text(
-                      parseDateToString(bill.date),
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey,
-                      ),
+                  ),
+                  Text(
+                    parseDateToString(bill.date),
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.grey,
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
