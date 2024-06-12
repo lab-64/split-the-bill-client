@@ -32,13 +32,15 @@ class CarouselCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.baseline,
               textBaseline: TextBaseline.alphabetic,
               children: [
-                FadeText(
-                  text: bill.name,
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                Expanded(
+                  child: FadeText(
+                    text: bill.name,
+                    style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                ),
+                ),gapW8,
                 Text(price.toCurrencyString()),
               ],
             ),
@@ -66,7 +68,7 @@ class CarouselCard extends StatelessWidget {
                   onPressed: () =>
                       UnseenBillRoute(billId: bill.id).push(context),
                   icon: Icons.receipt_long_rounded,
-                  text: "Split!",
+                  text: "Split It!",
                   backgroundColor: Colors.green.shade400,
                 ),
               ),
