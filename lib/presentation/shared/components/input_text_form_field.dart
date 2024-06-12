@@ -14,6 +14,7 @@ class InputTextFormField extends StatelessWidget {
     this.isLoading = false,
     this.isDisabled = false,
     this.obscureText = false,
+    this.autofocus = false,
   });
 
   final String labelText;
@@ -26,11 +27,13 @@ class InputTextFormField extends StatelessWidget {
   final bool isDisabled;
   final bool obscureText;
   final String? Function(String?)? validator;
+  final bool autofocus;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      autofocus: autofocus,
       validator: validator,
       onChanged: onChanged,
       keyboardType: keyboardType,

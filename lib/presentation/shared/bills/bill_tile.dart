@@ -22,17 +22,16 @@ class BillTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authStateProvider).requireValue;
     double balance = bill.balance[user.id] ?? 0;
-    double total = bill.items.fold(0, (prev, item) => prev + item.price);
 
     return Card(
       margin: const EdgeInsets.only(bottom: Sizes.p16),
       color: Colors.white,
       elevation: 0,
-      child: _buildListTile(total, balance, bill.owner),
+      child: _buildListTile(balance, bill.owner),
     );
   }
 
-  Widget _buildListTile(double total, double balance, User owner) {
+  Widget _buildListTile(double balance, User owner) {
     return ListTile(
       onTap: onTap,
       contentPadding: const EdgeInsets.symmetric(
@@ -42,20 +41,27 @@ class BillTile extends ConsumerWidget {
       leading: _buildLeadingIcon(balance),
       title: _buildBillName(),
       subtitle: _buildSubtitle(owner),
-      trailing: _buildTrailingAmount(total, balance),
+      trailing: _buildTrailingAmount(balance),
     );
   }
 
   Widget _buildLeadingIcon(double balance) {
+    List<Color> colors;
+    if (balance > 0) {
+      colors = [Colors.green.shade300, Colors.green.shade700];
+    } else if (balance < 0) {
+      colors = [Colors.red.shade300, Colors.red.shade700];
+    } else {
+      colors = [Colors.grey.shade400, Colors.grey.shade700];
+    }
+
     return Container(
       width: 40.0,
       height: 40.0,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: LinearGradient(
-          colors: balance >= 0
-              ? [Colors.green.shade300, Colors.green.shade700]
-              : [Colors.red.shade300, Colors.red.shade700],
+          colors: colors,
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -103,7 +109,7 @@ class BillTile extends ConsumerWidget {
     );
   }
 
-  Widget _buildTrailingAmount(double total, double balance) {
+  Widget _buildTrailingAmount(double balance) {
     Color color;
     if (balance > 0) {
       color = Colors.green;
@@ -118,13 +124,7 @@ class BillTile extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.end,
       children: [
         Text(
-          total.toCurrencyString(),
-          style: const TextStyle(
-            fontSize: 18.0,
-          ),
-        ),
-        Text(
-          balance.toCurrencyString(),
+          balance == 0 ? 'Not involved' : balance.toCurrencyString(),
           style: TextStyle(
             fontSize: 14.0,
             color: color,
