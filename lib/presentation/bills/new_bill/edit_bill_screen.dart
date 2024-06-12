@@ -6,7 +6,6 @@ import 'package:split_the_bill/domain/group/states/group_state.dart';
 import 'package:split_the_bill/infrastructure/async_value_ui.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/controllers.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/general_tab.dart';
-import 'package:split_the_bill/presentation/bills/new_bill/items_check_dialog.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/items_tab.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
@@ -64,14 +63,6 @@ class _NewBillScreenState extends ConsumerState<EditBillScreen> {
     final bill = AsyncData(ref.watch(editBillControllerProvider));
     final group = ref.watch(groupStateProvider(widget.groupId));
     final user = ref.watch(authStateProvider);
-
-    /// Show the items check dialog when the bill recognition starts
-    ref.listen(
-      billRecognitionProvider,
-      (prev, next) => !prev!.isLoading
-          ? showItemsCheckDialog(context, widget.billId)
-          : null,
-    );
 
     ref.listen(
       upsertBillControllerProvider,
