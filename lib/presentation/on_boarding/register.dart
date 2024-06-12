@@ -71,7 +71,18 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/logo.png'),
+              Image.asset('assets/STB_logo_transparent.png',
+                  width: (MediaQuery.of(context).size.width) * 0.5),
+              gapH12,
+              const Text(
+                "Register",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: Sizes.p32,
+                  color: Colors.white,
+                ),
+              ),
               gapH64,
               Form(
                   key: _registerFormKey,
@@ -95,9 +106,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         validator: (value) => validatePassword(value),
                       ),
                       gapH16,
-                      _buildSignInRoute(),
-                      gapH16,
                       _buildRegisterButton(state),
+                      gapH16,
+                      _buildSignInRoute(),
                     ],
                   )),
             ],
@@ -120,6 +131,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             ),
           ],
         ),
+        textScaler: const TextScaler.linear(1.3),
       ),
     );
   }
