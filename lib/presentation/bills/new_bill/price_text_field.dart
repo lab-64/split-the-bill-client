@@ -7,14 +7,12 @@ class PriceTextField extends StatelessWidget {
     required this.controller,
     required this.labelText,
     required this.prefixIcon,
-    required this.onChanged,
     this.fillColor = Colors.white,
   });
 
   final TextEditingController controller;
   final String labelText;
   final Icon prefixIcon;
-  final Function(String) onChanged;
   final Color fillColor;
 
   @override
@@ -37,7 +35,6 @@ class PriceTextField extends StatelessWidget {
       controller: controller,
       onChanged: (value) {
         if (value.isEmpty) {
-          onChanged(value);
           return;
         }
 
@@ -113,8 +110,6 @@ class PriceTextField extends StatelessWidget {
         controller.selection = TextSelection.fromPosition(
           TextPosition(offset: controller.text.length),
         );
-
-        onChanged(controller.text);
       },
     );
   }

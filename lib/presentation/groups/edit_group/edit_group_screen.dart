@@ -98,6 +98,7 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
             Form(
                 key: _editGroupFormKey,
                 child: InputTextFormField(
+                  autofocus: true,
                   labelText: 'Name*',
                   prefixIcon: const Icon(Icons.description),
                   controller: nameController,

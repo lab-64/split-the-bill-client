@@ -11,19 +11,21 @@ class ScanBillModal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        ListTile(
-          leading: const Icon(Icons.camera_alt),
-          title: const Text('Take a photo'),
-          onTap: () => getImage(ImageSource.camera),
-        ),
-        ListTile(
-          leading: const Icon(Icons.image),
-          title: const Text('Select image'),
-          onTap: () => getImage(ImageSource.gallery),
-        ),
-      ],
-    );
+    return Column(children: [
+      ListTile(
+        leading: const Icon(Icons.camera_alt),
+        title: const Text('Take a photo'),
+        onTap: () {
+          getImage(ImageSource.camera);
+        },
+      ),
+      ListTile(
+        leading: const Icon(Icons.image),
+        title: const Text('Select image'),
+        onTap: () {
+          getImage(ImageSource.gallery);
+        },
+      ),
+    ]);
   }
 }

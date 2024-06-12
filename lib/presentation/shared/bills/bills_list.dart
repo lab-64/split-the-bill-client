@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:split_the_bill/domain/bill/bill.dart';
 import 'package:split_the_bill/presentation/shared/bills/bill_tile.dart';
 import 'package:split_the_bill/presentation/shared/components/date_label.dart';
+import 'package:split_the_bill/presentation/shared/components/placeholder_display.dart';
 import 'package:split_the_bill/router/routes.dart';
 
 class BillsList extends StatelessWidget {
@@ -21,6 +22,13 @@ class BillsList extends StatelessWidget {
           controller: scrollController,
           shrinkWrap: true,
           children: [
+            if (bills.isEmpty)
+              const Center(
+                child: PlaceholderDisplay(
+                  icon: Icons.receipt_long,
+                  message: "No recent bills",
+                ),
+              ),
             for (int i = 0; i < bills.length; i++) ...[
               if (i == 0 || bills[i].date.day != bills[i - 1].date.day)
                 DateLabel(date: bills[i].date),
