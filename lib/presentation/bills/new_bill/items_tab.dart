@@ -70,6 +70,28 @@ class _ItemsTabState extends ConsumerState<ItemsTab> {
                     icon: Icons.list,
                     message: "No items added yet",
                   ),
+                if (widget.bill.items.isNotEmpty) ...[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16, bottom: 8),
+                        child: Text(
+                          "Items: ${widget.bill.items.length}",
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 16, bottom: 8),
+                        child: Text(
+                            "Total Price: ${widget.bill.items.fold(0.0, (prev, item) => prev + item.price).toCurrencyString()}",
+                            style:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+                      )
+                    ],
+                  ),
+                  const Divider()
+                ],
                 ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
@@ -206,29 +228,31 @@ class _ItemsTabState extends ConsumerState<ItemsTab> {
                   ],
                 ),
                 gapH8,
-                const Text(
-                  "Or",
-                  style: TextStyle(fontSize: 18),
-                ),
-                gapH8,
-                Row(
-                  children: [
-                    Expanded(
-                      child: PrimaryButton(
-                        onPressed: () => showBottomModal(
-                          context,
-                          "Scan Bill",
-                          ScanBillModal(
-                            getImage: widget.getImage,
+                if (widget.bill.items.isEmpty) ...[
+                  const Text(
+                    "Or",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                  gapH8,
+                  Row(
+                    children: [
+                      Expanded(
+                        child: PrimaryButton(
+                          onPressed: () => showBottomModal(
+                            context,
+                            "Scan Bill",
+                            ScanBillModal(
+                              getImage: widget.getImage,
+                            ),
                           ),
+                          icon: Icons.camera_alt,
+                          text: "Scan Items",
+                          backgroundColor: Colors.purple,
                         ),
-                        icon: Icons.camera_alt,
-                        text: "Scan Items",
-                        backgroundColor: Colors.purple,
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                ],
               ],
             ),
           ),

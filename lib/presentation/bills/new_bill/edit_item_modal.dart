@@ -9,6 +9,9 @@ import 'package:split_the_bill/presentation/bills/new_bill/group_member_list.dar
 import 'package:split_the_bill/presentation/bills/new_bill/price_text_field.dart';
 import 'package:split_the_bill/presentation/shared/components/input_text_field.dart';
 import 'package:split_the_bill/presentation/shared/components/primary_button.dart';
+import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
+
+import '../../shared/components/bottom_modal.dart';
 
 class EditItemModal extends ConsumerStatefulWidget {
   const EditItemModal({
@@ -82,7 +85,7 @@ class _EditItemModalState extends ConsumerState<EditItemModal> {
               Expanded(
                 child: PriceTextField(
                   controller: priceController,
-                  labelText: "Price*",
+                  labelText: "Price",
                   prefixIcon: const Icon(Icons.attach_money),
                 ),
               ),
@@ -112,36 +115,84 @@ class _EditItemModalState extends ConsumerState<EditItemModal> {
               children: [
                 Expanded(
                   child: PrimaryButton(
-                    onPressed: () {
-                      final updatedItem = widget.item.copyWith(
-                        name: nameController.text,
-                        price: double.parse(priceController.text),
-                        contributors: contributors,
-                      );
-
-                      // If the index is -1, it means that the item is new
-                      if (widget.index == -1) {
-                        ref
-                            .read(editBillControllerProvider.notifier)
-                            .addItem(updatedItem);
-                      } else {
-                        ref
-                            .read(editBillControllerProvider.notifier)
-                            .updateItem(widget.index, updatedItem);
-                      }
-
-                      Navigator.of(context).pop();
-                    },
-                    text: "Save",
-                    icon: Icons.save,
+                    onPressed: () => _saveItem(false),
+                    text: "Ok",
+                    icon: Icons.check,
                     backgroundColor: Colors.green,
                   ),
                 ),
+                gapW8,
+                Expanded(
+                    child: PrimaryButton(
+                  onPressed: () {
+                    _saveItem(true);
+                  },
+                  text: "Next Item",
+                  icon: Icons.arrow_forward,
+                  backgroundColor: Colors.purple,
+                ))
               ],
             ),
           ),
         ),
       ],
     );
+  }
+
+  int _getNewIndex() {
+    final length = ref.read(editBillControllerProvider).items.length;
+    if (widget.index == -1) {
+      return -1;
+    }
+    if (widget.index >= (length - 1)) {
+      return -1;
+    }
+    return widget.index + 1;
+  }
+
+  Item _getNewItem() {
+    final items = ref.read(editBillControllerProvider).items;
+    if (widget.index == -1) {
+      return Item.getDefault();
+    }
+    if (widget.index >= (items.length - 1)) {
+      return Item.getDefault();
+    }
+    return items[widget.index + 1];
+  }
+
+  void _saveItem(bool isNext) {
+    if (nameController.text.isEmpty) {
+      showErrorSnackBar(context, 'Please give the Item a name!');
+      return;
+    }
+    final updatedItem = widget.item.copyWith(
+      name: nameController.text,
+      price: double.parse(priceController.text),
+      contributors: contributors,
+    );
+
+    // If the index is -1, it means that the item is new
+    if (widget.index == -1) {
+      ref.read(editBillControllerProvider.notifier).addItem(updatedItem);
+    } else {
+      ref
+          .read(editBillControllerProvider.notifier)
+          .updateItem(widget.index, updatedItem);
+    }
+
+    Navigator.of(context).pop();
+
+    if (isNext) {
+      showBottomModal(
+        context,
+        "Add Item",
+        EditItemModal(
+          index: _getNewIndex(),
+          item: _getNewItem(),
+          group: widget.group,
+        ),
+      );
+    }
   }
 }

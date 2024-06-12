@@ -104,7 +104,7 @@ class _NewBillScreenState extends ConsumerState<EditBillScreen> {
               bottom: const TabBar(
                 tabs: [
                   Tab(icon: Icon(Icons.list)),
-                  Tab(icon: Icon(Icons.settings)),
+                  Tab(icon: Icon(Icons.description_outlined)),
                 ],
               ),
             ),
