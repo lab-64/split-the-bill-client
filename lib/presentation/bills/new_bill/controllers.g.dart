@@ -7,7 +7,7 @@ part of 'controllers.dart';
 // **************************************************************************
 
 String _$upsertBillControllerHash() =>
-    r'036c0de8df747d42b0fe697a0cd0407ce7a25428';
+    r'beb42b7d61764b776e6c3ca92554f7a93f763e5a';
 
 /// See also [UpsertBillController].
 @ProviderFor(UpsertBillController)
@@ -24,7 +24,7 @@ final upsertBillControllerProvider =
 
 typedef _$UpsertBillController = AutoDisposeAsyncNotifier<void>;
 String _$editBillControllerHash() =>
-    r'7f822f5a8004de9118bccbb060f9587625c31704';
+    r'3ebb9ca9b8b38cdd7709a6467a871cd66b4fb555';
 
 /// See also [EditBillController].
 @ProviderFor(EditBillController)
@@ -40,7 +40,7 @@ final editBillControllerProvider =
 );
 
 typedef _$EditBillController = AutoDisposeNotifier<Bill>;
-String _$billRecognitionHash() => r'691abd520ab310e35f38668c3fd91c570500fe34';
+String _$billRecognitionHash() => r'18c16d58fe5467ab0ed0ae01b1d53679102fcb68';
 
 /// See also [BillRecognition].
 @ProviderFor(BillRecognition)

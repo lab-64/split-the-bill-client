@@ -1,10 +1,11 @@
 import 'dart:io';
 import 'dart:math';
+import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 import 'package:flutter/cupertino.dart';
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/domain/bill/bill.dart';
@@ -112,24 +113,28 @@ class BillRecognition extends _$BillRecognition {
     return Future.value(const BillSuggestion(nameList: [], priceList: []));
   }
 
-  Future<void> runBillRecognition(XFile? image) async {
+  Future<void> runBillRecognition(Uint8List image) async {
     state = const AsyncLoading();
 
-    if (image == null) {
-      state = AsyncError("No image selected", StackTrace.current);
+    if (image.isEmpty) {
+      state = AsyncError("Could not process image", StackTrace.current);
       return;
     }
 
-    File imageFile = File(image.path);
+    ui.Image img = await decodeImageFromList(image);
 
     final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
-    final InputImage inputImage = InputImage.fromFile(imageFile);
+
+    final dir = await getTemporaryDirectory();
+    File imgFile = File("${dir.path}/cropped.jpeg");
+    imgFile.writeAsBytesSync(image, flush: true, mode: FileMode.writeOnly);
+    final InputImage inputImage = InputImage.fromFile(imgFile);
+    // log("Success");
     final RecognizedText recognizedText =
         await textRecognizer.processImage(inputImage);
     textRecognizer.close();
 
     // get image properties
-    ui.Image img = await decodeImageFromList(imageFile.readAsBytesSync());
     int imageWidth = img.width;
 
     // block lists

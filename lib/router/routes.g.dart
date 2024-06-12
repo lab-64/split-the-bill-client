@@ -64,6 +64,10 @@ RouteBase get $navbarShellRoute => ShellRouteData.$route(
           ],
         ),
         GoRouteData.$route(
+          path: '/crop',
+          factory: $ImageCropRouteExtension._fromState,
+        ),
+        GoRouteData.$route(
           path: '/unseenBills:billId',
           factory: $UnseenBillRouteExtension._fromState,
         ),
@@ -251,6 +255,30 @@ extension $EditProfileRouteExtension on EditProfileRoute {
 
   String get location => GoRouteData.$location(
         '/profile/edit',
+      );
+
+  void go(BuildContext context) => context.go(location);
+
+  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
+
+  void pushReplacement(BuildContext context) =>
+      context.pushReplacement(location);
+
+  void replace(BuildContext context) => context.replace(location);
+}
+
+extension $ImageCropRouteExtension on ImageCropRoute {
+  static ImageCropRoute _fromState(GoRouterState state) => ImageCropRoute(
+        state.uri.queryParameters['img-file']!,
+        state.uri.queryParameters['bill-id']!,
+      );
+
+  String get location => GoRouteData.$location(
+        '/crop',
+        queryParams: {
+          'img-file': imgFile,
+          'bill-id': billId,
+        },
       );
 
   void go(BuildContext context) => context.go(location);

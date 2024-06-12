@@ -56,6 +56,7 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
         .read(editBillControllerProvider.notifier)
         .setItemsFromSuggestion(_history[_currentHistoryIndex]);
     Navigator.pop(context);
+    Navigator.pop(context);
   }
 
   /// Removes the name at the specified [index] from the current name list,
@@ -387,7 +388,6 @@ class ItemsCheckDialogHeader extends StatelessWidget {
 }
 
 void showItemsCheckDialog(BuildContext context, String billId) {
-  Navigator.pop(context);
   Navigator.of(context).push(
     MaterialPageRoute<void>(
       fullscreenDialog: true,

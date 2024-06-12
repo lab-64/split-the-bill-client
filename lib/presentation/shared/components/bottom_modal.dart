@@ -6,7 +6,7 @@ Future<void> showBottomModal(
   String title,
   Widget body,
 ) async {
-  return showModalBottomSheet<void>(
+  return showModalBottomSheet(
     context: context,
     isScrollControlled: true,
     builder: (BuildContext context) {
