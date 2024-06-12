@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
@@ -194,7 +193,6 @@ class BillRecognition extends _$BillRecognition {
         }
       }
     }
-    log("Detected Text: ${recognizedText.text}");
 
     // fill the shorter list with empty strings or zeros
     _fillLists(nameList, priceList);
