@@ -115,3 +115,4 @@ flutter_icons:
   android: "launcher_icon"
   ios: true
   image_path: "assets/STB_logo.png"
+  remove_alpha_ios: true
