@@ -57,7 +57,7 @@ set_target_properties(lib_opencv PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SO
 #
 #add_library(monte_carlo_pi SHARED ${LIB_PATH})
 
-add_library(opencv_cropping SHARED ${CMAKE_CURRENT_SOURCE_DIR}/../../lib/infrastructure/image_processing/image_cropping.cpp)
+add_library(opencv_cropping SHARED ../../ios/Classes/image_cropping.cpp)
 
 target_include_directories(opencv_cropping PRIVATE ${OPENCV_DESTINATION_DIR})
 
