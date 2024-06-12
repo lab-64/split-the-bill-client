@@ -77,9 +77,6 @@ class _GeneralTabState extends ConsumerState<GeneralTab> {
 
   @override
   Widget build(BuildContext context) {
-    print(ref.read(editBillControllerProvider));
-    print("+++++++");
-    print(widget.bill);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p24),
       child: Column(
