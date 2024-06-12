@@ -44,7 +44,6 @@ class _GeneralTabState extends ConsumerState<GeneralTab> {
   }
 
   Future<void> _selectDate(BuildContext context, String dateString) async {
-    print(dateString);
     final dateFormat = DateFormat("dd.MM.yyyy");
 
     final date = dateFormat.parse(dateString);
