@@ -50,7 +50,7 @@ class _CroppingPivotState extends State<CroppingPivot> {
   void _dragStart(DragStartDetails details) {
     setState(() {
       activeDrag = true;
-      currentSize = 2 * widget.size;
+      currentSize = 1.5 * widget.size;
     });
     widget.onDragCallback(details.localPosition - Offset(currentSize / 2, currentSize / 2));
   }

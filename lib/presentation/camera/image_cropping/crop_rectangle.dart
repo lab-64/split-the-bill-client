@@ -30,7 +30,7 @@ class CroppingRectangle extends StatefulWidget {
 
 class _CroppingRectangleState extends State<CroppingRectangle> {
   late List<Offset> pivotPositions;
-  double pivotSize = 15;
+  double pivotSize = 30;
 
   late double imgRenderWidth;
   late double imgRenderHeight;
