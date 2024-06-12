@@ -20,7 +20,6 @@ class PriceTextField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextField(
-      enableInteractiveSelection: false,
       decoration: InputDecoration(
         labelText: labelText,
         prefixIcon: prefixIcon,
@@ -33,7 +32,7 @@ class PriceTextField extends StatelessWidget {
       ),
       keyboardType: TextInputType.number,
       inputFormatters: [
-        FilteringTextInputFormatter.allow(RegExp(r'^-?[0-9.]*-?$')),
+        FilteringTextInputFormatter.allow(RegExp(r'^-?[0-9 .,]*-?$')),
       ],
       controller: controller,
       onChanged: (value) {
@@ -42,10 +41,21 @@ class PriceTextField extends StatelessWidget {
           return;
         }
 
-        //push '-' to the front
-        if (value.endsWith('-')) {
-          controller.text = "-${value.substring(0, value.length - 1)}";
+        // Remove unwanted characters
+        if (value.contains(",") || value.contains(" ")) {
+          controller.text = value.replaceAll(',', '').replaceAll(' ', '');
           return;
+        }
+
+        // Push '-' to the front
+        if (value.endsWith('-')) {
+          if (value.startsWith('-')) {
+            controller.text = value.substring(1, value.length - 1);
+            return;
+          } else {
+            controller.text = "-${value.substring(0, value.length - 1)}";
+            return;
+          }
         }
 
         if (value.endsWith('.')) {
@@ -53,38 +63,44 @@ class PriceTextField extends StatelessWidget {
           return;
         }
 
-        //cut out negative sign for processing
+        // Cut out negative sign for processing
         final isNegative = value.startsWith('-');
         if (isNegative) {
           value = value.substring(1);
         }
 
         var index = value.indexOf('.');
-        //replace ','
-        value = value.substring(0, index) +
-            value.substring(index + 1, value.length);
-        //push numbers to the right if a number is deleted
+        if (index != -1) {
+          // Ensure decimal point processing does not leave unwanted characters
+          value = value.substring(0, index) +
+              value.substring(index + 1, value.length);
+        }
+
+        // Push numbers to the right if a number is deleted
         if (value.length < 3) {
           var first = value.substring(0, 1);
-          var second = value.substring(1, 2);
+          var second = value.length > 1 ? value.substring(1, 2) : '0';
           controller.text = '0.$first$second';
+          if (isNegative) {
+            controller.text = '-${controller.text}';
+          }
           return;
         }
 
-        //remove leading zeros
-        while (value[0] == '0') {
+        // Remove leading zeros
+        while (value.isNotEmpty && value[0] == '0') {
           value = value.substring(1);
         }
 
         if (value.length < 3) {
-          //less than 1
+          // Less than 1
           String text = value.length == 2 ? '0.$value' : '0.0$value';
           if (isNegative) {
             text = "-$text";
           }
           controller.text = text;
         } else if (value.length >= 3) {
-          //at least 1
+          // At least 1
           String text =
               '${value.substring(0, value.length - 2)}.${value.substring(value.length - 2)}';
           if (isNegative) {
@@ -92,6 +108,11 @@ class PriceTextField extends StatelessWidget {
           }
           controller.text = text;
         }
+
+        // Move the cursor to the end of the text
+        controller.selection = TextSelection.fromPosition(
+          TextPosition(offset: controller.text.length),
+        );
 
         onChanged(controller.text);
       },
