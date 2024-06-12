@@ -1,7 +1,7 @@
 String? validateEmail(String? value) {
   if (value!.isEmpty) {
     return "Email is required";
-  } else if (!RegExp(r'^[\w-\.]+@[a-zA-Z]+\.[a-zA-Z]{2,}$').hasMatch(value)) {
+  } else if (!RegExp(r'^[\w-\.]+@[a-zA-Z-]+\.[a-zA-Z]{2,}$').hasMatch(value)) {
     return "Enter a valid Email";
   }
   return null;

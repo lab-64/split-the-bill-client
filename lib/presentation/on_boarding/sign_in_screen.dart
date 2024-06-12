@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
@@ -22,13 +23,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   TextEditingController password = TextEditingController();
   final _signInFormKey = GlobalKey<FormState>();
 
-  // TODO: Used for testing, set only on debug mode
-  @override
-  void initState() {
-    super.initState();
-    email.text = "felix@gmail.com";
-    password.text = "test";
-  }
 
   @override
   void dispose() {
@@ -71,7 +65,18 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Image.asset('assets/logo.png'),
+              Image.asset('assets/STB_logo_transparent.png',
+                  width: (MediaQuery.of(context).size.width) * 0.5),
+              gapH12,
+              const Text(
+                "Login",
+                textAlign: TextAlign.left,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: Sizes.p32,
+                  color: Colors.white,
+                ),
+              ),
               gapH64,
               Form(
                   key: _signInFormKey,
@@ -95,9 +100,9 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                         validator: (value) => validatePassword(value),
                       ),
                       gapH16,
-                      _buildRegisterRoute(),
-                      gapH16,
                       _buildSignInButton(state),
+                      gapH16,
+                      _buildRegisterRoute(),
                     ],
                   )),
             ],
@@ -119,6 +124,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 style: TextStyle(fontWeight: FontWeight.bold)),
           ],
         ),
+        textScaler: const TextScaler.linear(1.3),
       ),
     );
   }

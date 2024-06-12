@@ -17,7 +17,6 @@ class GroupMembers extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: Sizes.p24,
-        vertical: Sizes.p16,
       ),
       child: _buildMemberItems(),
     );
@@ -26,10 +25,11 @@ class GroupMembers extends StatelessWidget {
   Widget _buildMemberItems() {
     return CustomScrollView(
       slivers: members.map((user) {
-        return SliverToBoxAdapter(child: Column(
+        return SliverToBoxAdapter(
+            child: Column(
           children: [
+            gapH8,
             MemberItemWidget(user: user),
-            gapH8
           ],
         ));
       }).toList(),

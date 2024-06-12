@@ -36,19 +36,22 @@ class _GroupMemberListState extends State<GroupMemberList> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 150,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(Sizes.p8),
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: Sizes.p8),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: Sizes.p16),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(Sizes.p16),
+        ),
+        height: 100,
         child: ListView.builder(
           scrollDirection: Axis.vertical,
           itemCount: widget.members.length,
           itemBuilder: (BuildContext context, int index) {
             return CheckboxListTile(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(Sizes.p16),
+              ),
               secondary: ProfileImage(
                 user: widget.members[index],
                 size: Sizes.p20,
@@ -56,7 +59,7 @@ class _GroupMemberListState extends State<GroupMemberList> {
               dense: true,
               title: FadeText(
                 text: widget.members[index].getDisplayName(),
-                style: const TextStyle(color: Colors.grey),
+                style: const TextStyle(),
               ),
               value: _isSelectedList[index],
               onChanged: (bool? value) {

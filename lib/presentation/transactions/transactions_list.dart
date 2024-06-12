@@ -3,8 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/group/group_transaction.dart';
 import 'package:split_the_bill/domain/group/states/groups_transaction_state.dart';
+import 'package:split_the_bill/presentation/shared/components/placeholder_display.dart';
 import 'package:split_the_bill/presentation/transactions/transaction_item.dart';
 
+import '../shared/components/rounded_box.dart';
 import 'transaction_date_tab.dart';
 import 'transaction_group_header.dart';
 
@@ -54,6 +56,16 @@ class _TransactionListState extends ConsumerState<TransactionsList> {
       controller: widget.scrollController,
       shrinkWrap: true,
       children: [
+        if (transactions.isEmpty)
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.all(Sizes.p16),
+              child: PlaceholderDisplay(
+                icon: Icons.currency_exchange,
+                message: "No recent transactions",
+              ),
+            ),
+          ),
         for (int i = 0; i < transactions.length; i++) ...[
           //first in group
           if (i == 0 ||
@@ -79,6 +91,16 @@ class _TransactionListState extends ConsumerState<TransactionsList> {
                   return TransactionItem(transaction: transaction);
                 })
           ],
+          if (transactionsExpanded[i] && transactions[i].transactions.isEmpty)
+            const RoundedBox(
+                firstPadding: EdgeInsets.only(
+                    left: Sizes.p24,
+                    right: Sizes.p24,
+                    top: Sizes.p4,
+                    bottom: Sizes.p4),
+                secondPadding: EdgeInsets.all(Sizes.p16),
+                backgroundColor: Colors.white,
+                child: Center(child: Text("No money transactions necessary"))),
           if (i == transactions.length - 1) ...[gapH24]
         ]
       ],

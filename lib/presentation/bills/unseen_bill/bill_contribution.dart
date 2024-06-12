@@ -6,6 +6,8 @@ import 'package:split_the_bill/presentation/bills/unseen_bill/controllers.dart';
 import 'package:split_the_bill/presentation/bills/unseen_bill/item_contribution.dart';
 import 'package:split_the_bill/presentation/shared/components/fade_text.dart';
 
+import '../../shared/components/primary_button.dart';
+
 class BillContribution extends ConsumerStatefulWidget {
   const BillContribution({
     super.key,
@@ -40,6 +42,29 @@ class _BillContributionState extends ConsumerState<BillContribution> {
       padding: const EdgeInsets.all(Sizes.p24),
       child: Column(
         children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: PrimaryButton(
+                  onPressed: () => _updateAll(true, items.length),
+                  icon: Icons.check,
+                  backgroundColor: Colors.green.shade300,
+                  text: "Set All",
+                ),
+              ),
+              gapW8,
+              Expanded(
+                child: PrimaryButton(
+                  onPressed: () => _updateAll(false, items.length),
+                  icon: Icons.close,
+                  backgroundColor: Colors.red.shade300,
+                  text: "Clear All",
+                ),
+              ),
+            ],
+          ),
+          gapH8,
           Expanded(
             child: ListView.builder(
               controller: _controller,
@@ -109,6 +134,12 @@ class _BillContributionState extends ConsumerState<BillContribution> {
     ref
         .read(itemsContributionsProvider(widget.bill).notifier)
         .setItemContribution(widget.bill.items[index].id, isContributing);
+  }
+
+  void _updateAll(bool isContributing, int itemLength) {
+    for (var i = 0; i < itemLength; i++) {
+      _updateContributionStatus(isContributing, i);
+    }
   }
 }
 
