@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
@@ -110,13 +111,15 @@ class Items extends _$Items {
     final names = billSuggestion.nameList;
     final prices = billSuggestion.priceList;
 
-    List<Item> items = List.generate(
-      names.length,
-      (index) => Item.getDefault().copyWith(
-        name: names[index],
-        price: prices[index],
-      ),
-    ).where((item) => item.name.isNotEmpty || item.price != 0).toList();
+    final listLength = max(names.length, prices.length);
+    List<Item> items = [];
+
+    for (var i = 0; i < listLength; i++) {
+      items.add(Item.getDefault().copyWith(
+        name: names.length <= i || names[i] == '' ? "Item $i" : names[i],
+        price: prices.length <= i ? 0 : prices[i],
+      ));
+    }
 
     state = items;
   }
@@ -144,18 +147,7 @@ class BillRecognition extends _$BillRecognition {
     ui.Image img = await decodeImageFromList(image);
 
     final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
-    //final exif = await readExifFromBytes(image);
 
-    //log("Image metadata: ${exif.keys.toList()}");
-    // final imageMetadata = InputImageMetadata(
-    //     size: Size(img.width.toDouble(), img.height.toDouble()),
-    //     rotation: InputImageRotation.rotation0deg,
-    //     format: InputImageFormat.bgra8888,
-    //     bytesPerRow: 4,
-    // );
-    //
-    // log("Image size ${imageMetadata.size}");
-    // log("Image byte size ${image.length}");
     final dir = await getTemporaryDirectory();
     File imgFile = File("${dir.path}/cropped.jpeg");
     imgFile.writeAsBytesSync(image, flush: true, mode: FileMode.writeOnly);
@@ -166,7 +158,6 @@ class BillRecognition extends _$BillRecognition {
     textRecognizer.close();
 
     // get image properties
-
     int imageWidth = img.width;
 
     // block lists
