@@ -8,29 +8,34 @@ Future<void> showBottomModal(
 ) async {
   return showModalBottomSheet(
     context: context,
+    isScrollControlled: true,
     builder: (BuildContext context) {
-      return SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: Sizes.p12),
-                  child: Text(
-                    title,
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
+      return Padding(
+        padding:
+            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: Sizes.p12),
+                    child: Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                ),
-                const Divider(
-                  height: 0,
-                ),
-              ],
-            ),
-            body,
-          ],
+                  const Divider(
+                    height: 0,
+                  ),
+                ],
+              ),
+              body,
+            ],
+          ),
         ),
       );
     },

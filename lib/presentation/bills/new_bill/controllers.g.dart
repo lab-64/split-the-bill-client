@@ -6,13 +6,30 @@ part of 'controllers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
+String _$upsertBillControllerHash() =>
+    r'036c0de8df747d42b0fe697a0cd0407ce7a25428';
+
+/// See also [UpsertBillController].
+@ProviderFor(UpsertBillController)
+final upsertBillControllerProvider =
+    AutoDisposeAsyncNotifierProvider<UpsertBillController, void>.internal(
+  UpsertBillController.new,
+  name: r'upsertBillControllerProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$upsertBillControllerHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$UpsertBillController = AutoDisposeAsyncNotifier<void>;
 String _$editBillControllerHash() =>
-    r'53aed557fb8577eba9eca473a4c459194e1fd7af';
+    r'7f822f5a8004de9118bccbb060f9587625c31704';
 
 /// See also [EditBillController].
 @ProviderFor(EditBillController)
 final editBillControllerProvider =
-    AutoDisposeAsyncNotifierProvider<EditBillController, void>.internal(
+    AutoDisposeNotifierProvider<EditBillController, Bill>.internal(
   EditBillController.new,
   name: r'editBillControllerProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -22,6 +39,8 @@ final editBillControllerProvider =
   allTransitiveDependencies: null,
 );
 
+typedef _$EditBillController = AutoDisposeNotifier<Bill>;
+String _$billRecognitionHash() => r'691abd520ab310e35f38668c3fd91c570500fe34';
 typedef _$EditBillController = AutoDisposeAsyncNotifier<void>;
 String _$itemsHash() => r'c76b73c8f869e11eca9305614a0e90c517e16a05';
 

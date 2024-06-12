@@ -8,7 +8,6 @@ import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart
 import 'package:path_provider/path_provider.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
-import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/domain/bill/bill.dart';
 import 'package:split_the_bill/domain/bill/bill_suggestion.dart';
 import 'package:split_the_bill/domain/bill/item.dart';
@@ -18,44 +17,23 @@ import 'package:split_the_bill/domain/bill/states/bills_state.dart';
 part 'controllers.g.dart';
 
 @riverpod
-class EditBillController extends _$EditBillController {
-  late String _name;
-  late DateTime _date;
-
+class UpsertBillController extends _$UpsertBillController {
   @override
-  FutureOr<void> build() async {
-    _name = '';
-    _date = DateTime.now();
-  }
-
-  void setName(String name) => _name = name;
-
-  void setDate(DateTime date) => _date = date;
+  FutureOr<void> build() async {}
 
   Future<void> addBill(String groupId) async {
     state = const AsyncLoading();
     final user = ref.watch(authStateProvider).requireValue;
-    final items = ref.read(itemsProvider('0'));
+    var bill = ref.read(editBillControllerProvider);
 
-    final bill = Bill(
-        id: '',
-        name: _name == '' ? items.first.name : _name,
-        groupId: groupId,
-        owner: user,
-        date: _date,
-        items: items,
-        balance: {},
-        isViewed: true,
-        updatedAt: DateTime.now());
-
-    for (var item in bill.items) {
-      if (item.name == "" || item.price == 0.0) {
-        state = AsyncError(
-            "Please give all items a name and a price other than 0.0€!",
-            StackTrace.current);
-        return;
-      }
-    }
+    bill = bill.copyWith(
+      id: '',
+      owner: user,
+      groupId: groupId,
+      balance: {},
+      isViewed: true,
+      updatedAt: DateTime.now(),
+    );
 
     final billsState = ref.read(billsStateProvider().notifier);
     state = await AsyncValue.guard(() => billsState.create(bill));
@@ -63,47 +41,51 @@ class EditBillController extends _$EditBillController {
 
   Future<void> editBill(String billId) async {
     state = const AsyncLoading();
-
-    final bill = ref.read(billStateProvider(billId));
-    final items = ref.read(itemsProvider(billId));
-
-    Bill updatedBill = bill.requireValue.copyWith(
-      name: _name,
-      date: _date,
-      items: items,
-      updatedAt: bill.requireValue.updatedAt,
-    );
-
+    var bill = ref.read(editBillControllerProvider);
     final billsState = ref.read(billsStateProvider().notifier);
-    state = await AsyncValue.guard(() => billsState.edit(updatedBill));
+    state = await AsyncValue.guard(() => billsState.edit(bill));
   }
 }
 
 @riverpod
-class Items extends _$Items {
+class EditBillController extends _$EditBillController {
   @override
-  List<Item> build(String billId) {
-    return ref.read(billStateProvider(billId)).requireValue.items;
+  Bill build() {
+    Bill bill = Bill.getDefault();
+    bill = bill.copyWith(owner: ref.read(authStateProvider).requireValue);
+    return bill;
   }
 
-  void addItem(Item item, String billId) {
-    if (billId != '0') {
-      item = item.copyWith(billId: billId);
-    }
-    state = [...state, item];
+  void setBill(String billId) {
+    final bill = ref.watch(billStateProvider(billId));
+    state = bill.requireValue;
   }
 
-  void updateItem(
-    int index,
-    String name,
-    String price,
-    List<User> contributors,
-  ) {
-    state[index] = state[index].copyWith(
-      name: name,
-      price: price.isEmpty ? 0 : double.parse(price),
-      contributors: contributors,
-    );
+  void setName(String name) {
+    state = state.copyWith(name: name);
+  }
+
+  void setDate(DateTime date) {
+    state = state.copyWith(date: date);
+  }
+
+  void addItem(Item item) {
+    state = state.copyWith(items: [...state.items, item]);
+  }
+
+  void updateItem(int index, Item item) {
+    state = state.copyWith(items: [
+      ...state.items.sublist(0, index),
+      item,
+      ...state.items.sublist(index + 1),
+    ]);
+  }
+
+  void removeItem(int index) {
+    state = state.copyWith(items: [
+      ...state.items.sublist(0, index),
+      ...state.items.sublist(index + 1),
+    ]);
   }
 
   void setItemsFromSuggestion(BillSuggestion billSuggestion) {
@@ -120,11 +102,7 @@ class Items extends _$Items {
       ));
     }
 
-    state = items;
-  }
-
-  void removeItem(int index) {
-    state.removeAt(index);
+    state = state.copyWith(items: items);
   }
 }
 

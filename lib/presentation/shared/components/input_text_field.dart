@@ -15,7 +15,10 @@ class InputTextField extends StatelessWidget {
     this.isDisabled = false,
     this.obscureText = false,
     this.readOnly = false,
-    this.fillColor = Colors.white
+    this.fillColor = Colors.white,
+    this.autofocus = false,
+    this.textInputAction,
+    this.hintText,
   });
 
   final String labelText;
@@ -23,6 +26,7 @@ class InputTextField extends StatelessWidget {
   final TextEditingController controller;
   final Function(String)? onChanged;
   final Function()? onTap;
+  final String? hintText;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final bool isLoading;
@@ -30,18 +34,23 @@ class InputTextField extends StatelessWidget {
   final bool obscureText;
   final bool readOnly;
   final Color fillColor;
+  final bool autofocus;
+  final TextInputAction? textInputAction;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
       onTap: onTap,
       readOnly: readOnly,
+      autofocus: autofocus,
       controller: controller,
       onChanged: onChanged,
+      textInputAction: textInputAction,
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
       obscureText: obscureText,
       decoration: InputDecoration(
+        hintText: hintText,
         labelText: labelText,
         prefixIcon: prefixIcon,
         enabled: !isLoading && !isDisabled,

@@ -53,7 +53,7 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
     }
 
     ref
-        .read(itemsProvider(widget.billId).notifier)
+        .read(editBillControllerProvider.notifier)
         .setItemsFromSuggestion(_history[_currentHistoryIndex]);
     Navigator.pop(context);
     Navigator.pop(context);
