@@ -77,6 +77,9 @@ class _GeneralTabState extends ConsumerState<GeneralTab> {
 
   @override
   Widget build(BuildContext context) {
+    print(ref.read(editBillControllerProvider));
+    print("+++++++");
+    print(widget.bill);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: Sizes.p24),
       child: Column(
@@ -84,8 +87,11 @@ class _GeneralTabState extends ConsumerState<GeneralTab> {
           gapH16,
           InputTextField(
             autofocus: true,
+            hintText: widget.bill.name == '' && widget.bill.items.isNotEmpty
+                ? widget.bill.items[0].name
+                : null,
             controller: nameController,
-            labelText: 'Bill Name',
+            labelText: 'Bill Name*',
             prefixIcon: const Icon(Icons.description),
             onChanged: (name) => {
               ref.read(editBillControllerProvider.notifier).setName(name),
