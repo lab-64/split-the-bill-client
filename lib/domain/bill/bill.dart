@@ -33,9 +33,7 @@ class Bill {
       groupId: '',
       owner: User.getDefault(),
       date: DateTime.now(),
-      items: [
-        Item.getDefault(),
-      ],
+      items: [],
       balance: {},
       isViewed: true,
       updatedAt: DateTime.now(),

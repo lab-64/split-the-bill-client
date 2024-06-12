@@ -17,6 +17,7 @@ class InputTextField extends StatelessWidget {
     this.readOnly = false,
     this.fillColor = Colors.white,
     this.autofocus = false,
+    this.textInputAction,
   });
 
   final String labelText;
@@ -32,6 +33,7 @@ class InputTextField extends StatelessWidget {
   final bool readOnly;
   final Color fillColor;
   final bool autofocus;
+  final TextInputAction? textInputAction;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +43,7 @@ class InputTextField extends StatelessWidget {
       autofocus: autofocus,
       controller: controller,
       onChanged: onChanged,
+      textInputAction: textInputAction,
       keyboardType: keyboardType,
       inputFormatters: inputFormatters,
       obscureText: obscureText,
