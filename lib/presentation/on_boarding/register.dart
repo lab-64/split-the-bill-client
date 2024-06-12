@@ -22,14 +22,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   TextEditingController password = TextEditingController();
   final _registerFormKey = GlobalKey<FormState>();
 
-  // TODO: Used for testing, set only on debug mode
-  @override
-  void initState() {
-    super.initState();
-    email.text = "test@gmail.com";
-    password.text = "test123...";
-  }
-
   @override
   void dispose() {
     email.dispose();

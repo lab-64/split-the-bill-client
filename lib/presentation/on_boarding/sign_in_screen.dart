@@ -24,13 +24,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   TextEditingController password = TextEditingController();
   final _signInFormKey = GlobalKey<FormState>();
 
-  // TODO: Used for testing, set only on debug mode
-  @override
-  void initState() {
-    super.initState();
-    email.text = "felix@gmail.com";
-    password.text = "test";
-  }
 
   @override
   void dispose() {
