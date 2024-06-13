@@ -57,12 +57,8 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
         .read(editBillControllerProvider.notifier)
         .setItemsFromSuggestion(_history[_currentHistoryIndex]);
 
-    if (defaultTargetPlatform == TargetPlatform.iOS) {
-      Navigator.pop(context);
-    } else {
-      Navigator.pop(context);
-      Navigator.pop(context);
-    }
+    Navigator.pop(context);
+    Navigator.pop(context);
   }
 
   /// Removes the name at the specified [index] from the current name list,
