@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:linked_scroll_controller/linked_scroll_controller.dart';
@@ -55,6 +56,7 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
     ref
         .read(editBillControllerProvider.notifier)
         .setItemsFromSuggestion(_history[_currentHistoryIndex]);
+
     Navigator.pop(context);
     Navigator.pop(context);
   }
