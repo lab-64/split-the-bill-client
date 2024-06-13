@@ -67,6 +67,8 @@ class AuthState extends _$AuthState {
     _authRepository.update(user, image).then((user) {
       /// Set session cookie because it is not returned from the server when updating user
       user = user.copyWith(sessionCookie: state.requireValue.sessionCookie);
+      final String userString = json.encode(user.toMap());
+      ref.read(sharedUtilityProvider).setUser(userString);
 
       state = AsyncData(user);
     }).catchError((error) {

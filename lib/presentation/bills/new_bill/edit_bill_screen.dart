@@ -30,7 +30,6 @@ class _NewBillScreenState extends ConsumerState<EditBillScreen> {
   Future _getImage(ImageSource source) async {
     image = await _picker.pickImage(source: source);
     if (mounted) {
-      Navigator.pop(context);
       ImageCropRoute(image!.path, widget.billId).push(context);
     }
   }
