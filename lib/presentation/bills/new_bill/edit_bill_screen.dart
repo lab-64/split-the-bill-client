@@ -76,6 +76,7 @@ class _NewBillScreenState extends ConsumerState<EditBillScreen> {
 
           return Scaffold(
             floatingActionButton: ActionButton(
+              isLoading: ref.watch(upsertBillControllerProvider).isLoading,
               icon: _currentIndex == 1 ? Icons.save : Icons.arrow_forward,
               onPressed: () {
                 if (_currentIndex == 1) {
