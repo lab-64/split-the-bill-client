@@ -20,6 +20,7 @@ class RegisterScreen extends ConsumerStatefulWidget {
 class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
+  TextEditingController passwordRepeat = TextEditingController();
   final _registerFormKey = GlobalKey<FormState>();
 
   @override
@@ -44,7 +45,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   Widget build(BuildContext context) {
     ref.listen(
       authStateProvider,
-      (_, next) => next.showSnackBarOnError(context),
+          (_, next) => next.showSnackBarOnError(context),
     );
 
     final state = ref.watch(authStateProvider);
@@ -61,10 +62,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: Sizes.p24),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              gapH16,
               Image.asset('assets/STB_logo_transparent.png',
-                  width: (MediaQuery.of(context).size.width) * 0.5),
+                  width: (MediaQuery.of(context).size.width) * 0.2),
               gapH12,
               const Text(
                 "Register",
@@ -75,7 +77,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   color: Colors.white,
                 ),
               ),
-              gapH64,
+              gapH32,
               Form(
                   key: _registerFormKey,
                   child: Column(
@@ -97,6 +99,19 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         obscureText: true,
                         validator: (value) => validatePassword(value),
                       ),
+                      gapH16,
+                      InputTextFormField(
+                          labelText: 'Repeat Password*',
+                          prefixIcon: const Icon(Icons.lock),
+                          controller: passwordRepeat,
+                          isLoading: state.isLoading,
+                          obscureText: true,
+                          validator: (value) {
+                            if (password.text != passwordRepeat.text) {
+                              return 'Not the same Password';
+                            }
+                            return null;
+                          }),
                       gapH16,
                       _buildRegisterButton(state),
                       gapH16,

@@ -84,6 +84,7 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
       ),
       floatingActionButton: ActionButton(
         icon: Icons.save,
+        isLoading: ref.watch(editGroupControllerProvider).isLoading,
         onPressed: () {
           if (_editGroupFormKey.currentState!.validate()) {
             (_isNew ? _add() : _edit()).then((_) => _onSuccess());
