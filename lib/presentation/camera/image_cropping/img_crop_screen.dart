@@ -10,6 +10,7 @@ import 'package:split_the_bill/infrastructure/image_processing/image_utils.dart'
 import 'package:split_the_bill/presentation/bills/new_bill/items_check_dialog.dart';
 import 'package:split_the_bill/presentation/camera/image_cropping/crop_rectangle.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
+import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
 
 import '../../bills/new_bill/controllers.dart';
 
@@ -94,13 +95,21 @@ class _ImageCropScreenState extends ConsumerState<ImageCropScreen> {
       floatingActionButton: ActionButton(
         icon: Icons.check,
         onPressed: () async {
-          Uint8List croppedBytes = await ImageCropping.perspectiveImageCropping(
-            widget.imgFile,
-            cropPath,
-          );
-          await ref
-              .read(billRecognitionProvider.notifier)
-              .runBillRecognition(croppedBytes);
+          try {
+            Uint8List croppedBytes =
+                await ImageCropping.perspectiveImageCropping(
+              widget.imgFile,
+              cropPath,
+            );
+
+            await ref
+                .read(billRecognitionProvider.notifier)
+                .runBillRecognition(croppedBytes);
+          } catch (e) {
+            if (context.mounted) {
+              showErrorSnackBar(context, e.toString());
+            }
+          }
         },
       ),
     );
