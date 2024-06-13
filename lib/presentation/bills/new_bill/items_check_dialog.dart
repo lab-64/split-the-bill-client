@@ -64,6 +64,13 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
   void _onNameDeletePressed(int index) {
     _currentNameList.removeAt(index);
 
+    // remove the price of the last row if the price is 0 and the price list is longer
+    // this makes deleting empty prices obsolete
+    if (_currentPriceList.length > _currentNameList.length &&
+        _currentPriceList.last == 0) {
+      _currentPriceList.removeLast();
+    }
+
     _history.add(_history.last.copyWith(
       nameList: List.from(_currentNameList),
     ));
