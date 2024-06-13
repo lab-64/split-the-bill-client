@@ -31,6 +31,13 @@ class _GeneralTabState extends ConsumerState<GeneralTab> {
       nameController.text = widget.bill.items[0].name;
     }
 
+    Future.delayed(
+      Duration.zero,
+      () => ref
+          .read(editBillControllerProvider.notifier)
+          .setName(nameController.text),
+    );
+
     dateController = TextEditingController(
       text: parseDateToString(
         widget.bill.date,
