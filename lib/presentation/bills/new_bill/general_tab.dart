@@ -23,7 +23,21 @@ class _GeneralTabState extends ConsumerState<GeneralTab> {
   void initState() {
     super.initState();
 
-    nameController = TextEditingController(text: widget.bill.name);
+    nameController = TextEditingController();
+
+    if (widget.bill.name.isNotEmpty) {
+      nameController.text = widget.bill.name;
+    } else if (widget.bill.items.isNotEmpty) {
+      nameController.text = widget.bill.items[0].name;
+    }
+
+    Future.delayed(
+      Duration.zero,
+      () => ref
+          .read(editBillControllerProvider.notifier)
+          .setName(nameController.text),
+    );
+
     dateController = TextEditingController(
       text: parseDateToString(
         widget.bill.date,
@@ -83,9 +97,6 @@ class _GeneralTabState extends ConsumerState<GeneralTab> {
           gapH16,
           InputTextField(
             autofocus: true,
-            hintText: widget.bill.name == '' && widget.bill.items.isNotEmpty
-                ? widget.bill.items[0].name
-                : null,
             controller: nameController,
             labelText: 'Bill Name*',
             prefixIcon: const Icon(Icons.description),
