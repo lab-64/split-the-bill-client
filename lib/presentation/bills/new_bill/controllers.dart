@@ -121,60 +121,66 @@ class BillRecognition extends _$BillRecognition {
       return;
     }
 
-    ui.Image img = await decodeImageFromList(image);
+    try {
+      ui.Image img = await decodeImageFromList(image);
 
-    final textRecognizer = TextRecognizer(script: TextRecognitionScript.latin);
+      final textRecognizer =
+          TextRecognizer(script: TextRecognitionScript.latin);
 
-    final dir = await getTemporaryDirectory();
-    File imgFile = File("${dir.path}/cropped.jpeg");
-    imgFile.writeAsBytesSync(image, flush: true, mode: FileMode.writeOnly);
-    final InputImage inputImage = InputImage.fromFile(imgFile);
-    // log("Success");
-    final RecognizedText recognizedText =
-        await textRecognizer.processImage(inputImage);
-    textRecognizer.close();
+      final dir = await getTemporaryDirectory();
+      File imgFile = File("${dir.path}/cropped.jpeg");
+      imgFile.writeAsBytesSync(image, flush: true, mode: FileMode.writeOnly);
+      final InputImage inputImage = InputImage.fromFile(imgFile);
+      // log("Success");
+      final RecognizedText recognizedText =
+          await textRecognizer.processImage(inputImage);
+      textRecognizer.close();
 
-    // get image properties
-    int imageWidth = img.width;
+      // get image properties
+      int imageWidth = img.width;
 
-    // block lists
-    List<String> nameList = [];
-    List<double> priceList = [];
+      // block lists
+      List<String> nameList = [];
+      List<double> priceList = [];
 
-    RegExp priceExp = RegExp(r"\b\d+(?:,\s?\d+)?(?:\.\d+)?\b");
-    // add all lines from the blocks to the related list
-    for (int i = 0; i < recognizedText.blocks.length; i++) {
-      int blockX = recognizedText.blocks[i].cornerPoints[0].x;
-      if (blockX < imageWidth / 2) {
-        for (TextLine line in recognizedText.blocks[i].lines) {
-          nameList.add(line.text);
-        }
-      } else {
-        // price case
-        for (TextLine line in recognizedText.blocks[i].lines) {
-          // check if line contains a number
-          if (priceExp.hasMatch(line.text)) {
-            // Remove letters from the string
-            String cleanedString =
-                line.text.replaceAll(RegExp(r'[^0-9,.-]'), '');
-            // Replacing the comma with a dot and removing spaces
-            String numberString =
-                cleanedString.replaceAll(',', '.').replaceAll(' ', '');
-            // Convert to a double
-            try {
-              double result = double.parse(numberString);
-              priceList.add(result);
-            } catch (e) {
-              debugPrint("Error: $e, ${line.text}");
+      RegExp priceExp = RegExp(r"\b\d+(?:,\s?\d+)?(?:\.\d+)?\b");
+      // add all lines from the blocks to the related list
+      for (int i = 0; i < recognizedText.blocks.length; i++) {
+        int blockX = recognizedText.blocks[i].cornerPoints[0].x;
+        if (blockX < imageWidth / 2) {
+          for (TextLine line in recognizedText.blocks[i].lines) {
+            nameList.add(line.text);
+          }
+        } else {
+          // price case
+          for (TextLine line in recognizedText.blocks[i].lines) {
+            // check if line contains a number
+            if (priceExp.hasMatch(line.text)) {
+              // Remove letters from the string
+              String cleanedString =
+                  line.text.replaceAll(RegExp(r'[^0-9,.-]'), '');
+              // Replacing the comma with a dot and removing spaces
+              String numberString =
+                  cleanedString.replaceAll(',', '.').replaceAll(' ', '');
+              // Convert to a double
+              try {
+                double result = double.parse(numberString);
+                priceList.add(result);
+              } catch (e) {
+                debugPrint("Error: $e, ${line.text}");
+              }
             }
           }
         }
       }
-    }
 
-    // fill the shorter list with empty strings or zeros
-    _fillLists(nameList, priceList);
-    state = AsyncData(BillSuggestion(nameList: nameList, priceList: priceList));
+      // fill the shorter list with empty strings or zeros
+      _fillLists(nameList, priceList);
+      state =
+          AsyncData(BillSuggestion(nameList: nameList, priceList: priceList));
+    } catch (e, stackTrace) {
+      state = AsyncError(e.toString(), stackTrace);
+    }
   }
 
   void _fillLists(List<String> itemList, List<double> priceList) {
