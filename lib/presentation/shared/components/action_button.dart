@@ -5,16 +5,25 @@ class ActionButton extends StatelessWidget {
     super.key,
     required this.icon,
     required this.onPressed,
+    this.isLoading = false,
   });
 
   final IconData icon;
   final VoidCallback onPressed;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
+    VoidCallback? onPressedAction;
+    if (isLoading) {
+      onPressedAction = null;
+    } else {
+      onPressedAction = onPressed;
+    }
+
     return FloatingActionButton(
-      onPressed: () => onPressed(),
-      backgroundColor: Colors.blue.shade400,
+      onPressed: onPressedAction,
+      backgroundColor: isLoading ? Colors.grey : Colors.blue[400],
       shape: const CircleBorder(),
       child: Icon(
         icon,

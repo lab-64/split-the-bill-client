@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
@@ -22,7 +21,6 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
   final _signInFormKey = GlobalKey<FormState>();
-
 
   @override
   void dispose() {
@@ -63,10 +61,11 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
         child: Container(
           margin: const EdgeInsets.symmetric(horizontal: Sizes.p24),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              gapH16,
               Image.asset('assets/STB_logo_transparent.png',
-                  width: (MediaQuery.of(context).size.width) * 0.5),
+                  width: (MediaQuery.of(context).size.width) * 0.2),
               gapH12,
               const Text(
                 "Login",
