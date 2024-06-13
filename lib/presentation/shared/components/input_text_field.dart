@@ -18,7 +18,6 @@ class InputTextField extends StatelessWidget {
     this.fillColor = Colors.white,
     this.autofocus = false,
     this.textInputAction,
-    this.hintText,
   });
 
   final String labelText;
@@ -26,7 +25,6 @@ class InputTextField extends StatelessWidget {
   final TextEditingController controller;
   final Function(String)? onChanged;
   final Function()? onTap;
-  final String? hintText;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final bool isLoading;
@@ -50,7 +48,6 @@ class InputTextField extends StatelessWidget {
       inputFormatters: inputFormatters,
       obscureText: obscureText,
       decoration: InputDecoration(
-        hintText: hintText,
         labelText: labelText,
         prefixIcon: prefixIcon,
         enabled: !isLoading && !isDisabled,
