@@ -1,11 +1,14 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/domain/group/states/group_state.dart';
 import 'package:split_the_bill/infrastructure/async_value_ui.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/controllers.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/general_tab.dart';
+import 'package:split_the_bill/presentation/bills/new_bill/items_check_dialog.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/items_tab.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
@@ -29,8 +32,36 @@ class _NewBillScreenState extends ConsumerState<EditBillScreen> {
 
   Future _getImage(ImageSource source) async {
     image = await _picker.pickImage(source: source);
-    if (mounted) {
-      ImageCropRoute(image!.path, widget.billId).push(context);
+
+    // check if platform is iOS
+    if (image != null && defaultTargetPlatform == TargetPlatform.iOS) {
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: image!.path,
+        uiSettings: [
+          IOSUiSettings(
+            title: 'Cropper',
+            aspectRatioLockEnabled: false,
+            aspectRatioPresets: [
+              CropAspectRatioPreset.original,
+              CropAspectRatioPreset.square,
+            ],
+          ),
+        ],
+      );
+
+      Uint8List croppedFileBytes = Uint8List(0);
+      // convert from cropped file to Uint8List
+      if (croppedFile != null) {
+        croppedFileBytes = await croppedFile.readAsBytes();
+      }
+
+      await ref
+          .read(billRecognitionProvider.notifier)
+          .runBillRecognition(croppedFileBytes);
+    } else {
+      if (mounted) {
+        ImageCropRoute(image!.path, widget.billId).push(context);
+      }
     }
   }
 
@@ -67,6 +98,13 @@ class _NewBillScreenState extends ConsumerState<EditBillScreen> {
       upsertBillControllerProvider,
       (_, next) => next.showSnackBarOnError(context),
     );
+
+    /// Show the items check dialog when the bill recognition starts
+    ref.listen(billRecognitionProvider, (prev, next) {
+      if (!prev!.isLoading) {
+        showItemsCheckDialog(context, widget.billId);
+      }
+    });
 
     return DefaultTabController(
       length: 2,
