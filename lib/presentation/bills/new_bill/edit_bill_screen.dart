@@ -26,7 +26,7 @@ class _NewBillScreenState extends ConsumerState<EditBillScreen> {
   final ImagePicker _picker = ImagePicker();
   late XFile? image;
   int _currentIndex = 0;
-  bool allSet = false;
+  bool allSet = true;
 
   Future _getImage(ImageSource source) async {
     image = await _picker.pickImage(source: source);
@@ -63,6 +63,16 @@ class _NewBillScreenState extends ConsumerState<EditBillScreen> {
     final bill = AsyncData(ref.watch(editBillControllerProvider));
     final group = ref.watch(groupStateProvider(widget.groupId));
     final user = ref.watch(authStateProvider);
+
+    //check if all users are set
+    for (var item in bill.requireValue.items) {
+      for (var user in group.requireValue.members) {
+        if (!item.contributors.map((item) => item.id).contains(user.id)) {
+          allSet = false;
+          break;
+        }
+      }
+    }
 
     ref.listen(
       upsertBillControllerProvider,
@@ -110,11 +120,11 @@ class _NewBillScreenState extends ConsumerState<EditBillScreen> {
                       group: group,
                       bill: bill,
                       userId: user.requireValue.id,
+                      setAll: setAll,
+                      allSet: allSet,
                     ),
                     GeneralTab(
                       bill: bill,
-                      setAll: setAll,
-                      allSet: allSet,
                     ),
                   ],
                 ),
@@ -134,7 +144,9 @@ class _NewBillScreenState extends ConsumerState<EditBillScreen> {
       for (var item in bill.items) {
         if (isSet) {
           for (var user in group.requireValue.members) {
-            item.contributors.add(user);
+            if (!item.contributors.map((ele) => ele.id).contains(user.id)) {
+              item.contributors.add(user);
+            }
           }
         } else {
           item.contributors.removeRange(0, item.contributors.length);
