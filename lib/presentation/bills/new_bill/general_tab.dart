@@ -7,9 +7,15 @@ import 'package:split_the_bill/presentation/bills/new_bill/controllers.dart';
 import 'package:split_the_bill/presentation/shared/components/input_text_field.dart';
 
 class GeneralTab extends ConsumerStatefulWidget {
-  const GeneralTab({super.key, required this.bill});
+  const GeneralTab(
+      {super.key,
+      required this.bill,
+      required this.setAll,
+      required this.allSet});
 
   final Bill bill;
+  final bool allSet;
+  final Function setAll;
 
   @override
   ConsumerState<GeneralTab> createState() => _GeneralTabState();
@@ -112,6 +118,20 @@ class _GeneralTabState extends ConsumerState<GeneralTab> {
             prefixIcon: const Icon(Icons.date_range),
             onTap: () => {_selectDate(context, dateController.text)},
             readOnly: true,
+          ),
+          gapH16,
+          Row(
+            children: [
+              IconButton(
+                onPressed: () => widget.setAll(!widget.allSet),
+                icon: Icon(widget.allSet
+                    ? Icons.check_box
+                    : Icons.check_box_outline_blank),
+              ),
+              Text(widget.allSet
+                  ? 'Click to set no Contributor'
+                  : 'Click to set all Contributors')
+            ],
           )
         ],
       ),

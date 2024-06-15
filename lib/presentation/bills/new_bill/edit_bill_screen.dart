@@ -26,6 +26,7 @@ class _NewBillScreenState extends ConsumerState<EditBillScreen> {
   final ImagePicker _picker = ImagePicker();
   late XFile? image;
   int _currentIndex = 0;
+  bool allSet = false;
 
   Future _getImage(ImageSource source) async {
     image = await _picker.pickImage(source: source);
@@ -110,7 +111,11 @@ class _NewBillScreenState extends ConsumerState<EditBillScreen> {
                       bill: bill,
                       userId: user.requireValue.id,
                     ),
-                    GeneralTab(bill: bill),
+                    GeneralTab(
+                      bill: bill,
+                      setAll: setAll,
+                      allSet: allSet,
+                    ),
                   ],
                 ),
               ),
@@ -119,6 +124,23 @@ class _NewBillScreenState extends ConsumerState<EditBillScreen> {
         },
       ),
     );
+  }
+
+  void setAll(bool isSet) {
+    final bill = ref.watch(editBillControllerProvider);
+    final group = ref.watch(groupStateProvider(widget.groupId));
+    setState(() {
+      allSet = isSet;
+      for (var item in bill.items) {
+        if (isSet) {
+          for (var user in group.requireValue.members) {
+            item.contributors.add(user);
+          }
+        } else {
+          item.contributors.removeRange(0, item.contributors.length);
+        }
+      }
+    });
   }
 
   Future<void> _upsertBill(WidgetRef ref) async {
