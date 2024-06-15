@@ -20,12 +20,16 @@ class ItemsTab extends ConsumerStatefulWidget {
     required this.group,
     required this.bill,
     required this.userId,
+    required this.allSet,
+    required this.setAll,
   });
 
   final Function(ImageSource) getImage;
   final Group group;
   final Bill bill;
   final String userId;
+  final bool allSet;
+  final Function setAll;
 
   @override
   ConsumerState<ItemsTab> createState() => _ItemsTabState();
@@ -90,7 +94,20 @@ class _ItemsTabState extends ConsumerState<ItemsTab> {
                       )
                     ],
                   ),
-                  const Divider()
+                  const Divider(),
+                  Row(
+                    children: [
+                      IconButton(
+                        onPressed: () => widget.setAll(!widget.allSet),
+                        icon: Icon(widget.allSet
+                            ? Icons.check_box
+                            : Icons.check_box_outline_blank),
+                      ),
+                      Text(widget.allSet
+                          ? 'Set no Contributors'
+                          : 'Set all Contributors')
+                    ],
+                  )
                 ],
                 ListView.builder(
                   physics: const NeverScrollableScrollPhysics(),

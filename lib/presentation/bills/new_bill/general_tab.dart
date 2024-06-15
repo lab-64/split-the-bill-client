@@ -7,7 +7,10 @@ import 'package:split_the_bill/presentation/bills/new_bill/controllers.dart';
 import 'package:split_the_bill/presentation/shared/components/input_text_field.dart';
 
 class GeneralTab extends ConsumerStatefulWidget {
-  const GeneralTab({super.key, required this.bill});
+  const GeneralTab({
+    super.key,
+    required this.bill,
+  });
 
   final Bill bill;
 
@@ -112,7 +115,7 @@ class _GeneralTabState extends ConsumerState<GeneralTab> {
             prefixIcon: const Icon(Icons.date_range),
             onTap: () => {_selectDate(context, dateController.text)},
             readOnly: true,
-          )
+          ),
         ],
       ),
     );
