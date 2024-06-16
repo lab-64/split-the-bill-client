@@ -55,17 +55,15 @@ class ItemContribution extends StatelessWidget {
                       const Text("Contributors:"),
                       gapW8,
                       Row(
-                        children: item.contributors.map(
-                          (user) {
-                            return Row(
-                              children: [
-                                ProfileImage(user: user, size: Sizes.p12),
-                                gapW4,
-                              ],
-                            );
-                          },
-                        ).toList(),
-                      ),
+                        children: [
+                          const Icon(
+                            Icons.person,
+                            size: 16,
+                          ),
+                          gapW4,
+                          Text(item.contributors.length.toString()),
+                        ],
+                      )
                     ],
                   )
                 ],
