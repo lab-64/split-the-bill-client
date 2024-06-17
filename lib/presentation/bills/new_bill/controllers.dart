@@ -14,6 +14,8 @@ import 'package:split_the_bill/domain/bill/item.dart';
 import 'package:split_the_bill/domain/bill/states/bill_state.dart';
 import 'package:split_the_bill/domain/bill/states/bills_state.dart';
 
+import '../../../auth/user.dart';
+
 part 'controllers.g.dart';
 
 @riverpod
@@ -71,6 +73,15 @@ class EditBillController extends _$EditBillController {
 
   void addItem(Item item) {
     state = state.copyWith(items: [...state.items, item]);
+  }
+
+  void setContributors(List<User> contributors) {
+    List<Item> updatedItems = [];
+    for (var item in state.items) {
+      updatedItems.add(item.copyWith(contributors: contributors));
+    }
+
+    state = state.copyWith(items: updatedItems);
   }
 
   void updateItem(int index, Item item) {
