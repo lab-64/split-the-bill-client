@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../constants/ui_constants.dart';
 import '../../../domain/bill/item.dart';
-import '../../shared/profile/profile_image.dart';
 
 class ItemContribution extends StatelessWidget {
   const ItemContribution({
