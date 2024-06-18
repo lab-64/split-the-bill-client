@@ -44,38 +44,41 @@ class _GroupMemberListState extends State<GroupMemberList> {
           borderRadius: BorderRadius.circular(Sizes.p16),
         ),
         height: 100,
-        child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          itemCount: widget.members.length,
-          itemBuilder: (BuildContext context, int index) {
-            return CheckboxListTile(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(Sizes.p16),
-              ),
-              secondary: ProfileImage(
-                user: widget.members[index],
-                size: Sizes.p20,
-              ),
-              dense: true,
-              title: FadeText(
-                text: widget.members[index].getDisplayName(),
-                style: const TextStyle(),
-              ),
-              value: _isSelectedList[index],
-              onChanged: (bool? value) {
-                setState(() {
-                  _isSelectedList[index] = value!;
-                  if (value) {
-                    contributors.add(widget.members[index]);
-                  } else {
-                    contributors.removeWhere((contributor) =>
-                        contributor.id == widget.members[index].id);
-                  }
-                });
-                widget.onChanged(contributors);
-              },
-            );
-          },
+        child: Scrollbar(
+          thumbVisibility: true,
+          child: ListView.builder(
+            scrollDirection: Axis.vertical,
+            itemCount: widget.members.length,
+            itemBuilder: (BuildContext context, int index) {
+              return CheckboxListTile(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(Sizes.p16),
+                ),
+                secondary: ProfileImage(
+                  user: widget.members[index],
+                  size: Sizes.p20,
+                ),
+                dense: true,
+                title: FadeText(
+                  text: widget.members[index].getDisplayName(),
+                  style: const TextStyle(),
+                ),
+                value: _isSelectedList[index],
+                onChanged: (bool? value) {
+                  setState(() {
+                    _isSelectedList[index] = value!;
+                    if (value) {
+                      contributors.add(widget.members[index]);
+                    } else {
+                      contributors.removeWhere((contributor) =>
+                          contributor.id == widget.members[index].id);
+                    }
+                  });
+                  widget.onChanged(contributors);
+                },
+              );
+            },
+          ),
         ),
       ),
     );

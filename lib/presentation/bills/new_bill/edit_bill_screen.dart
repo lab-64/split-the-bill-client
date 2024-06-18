@@ -96,6 +96,7 @@ class _NewBillScreenState extends ConsumerState<EditBillScreen> {
     final user = ref.watch(authStateProvider);
 
     //check if all users are set
+    allSet = true;
     for (var item in bill.requireValue.items) {
       for (var user in group.requireValue.members) {
         if (!item.contributors.map((item) => item.id).contains(user.id)) {
@@ -175,21 +176,12 @@ class _NewBillScreenState extends ConsumerState<EditBillScreen> {
   }
 
   void setAll(bool isSet) {
-    final bill = ref.watch(editBillControllerProvider);
     final group = ref.watch(groupStateProvider(widget.groupId));
     setState(() {
       allSet = isSet;
-      for (var item in bill.items) {
-        if (isSet) {
-          for (var user in group.requireValue.members) {
-            if (!item.contributors.map((ele) => ele.id).contains(user.id)) {
-              item.contributors.add(user);
-            }
-          }
-        } else {
-          item.contributors.removeRange(0, item.contributors.length);
-        }
-      }
+      ref.read(editBillControllerProvider.notifier).setContributors(
+            isSet ? group.requireValue.members : [],
+          );
     });
   }
 
