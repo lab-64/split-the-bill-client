@@ -28,7 +28,8 @@ class PriceTextField extends StatelessWidget {
         fillColor: fillColor,
         filled: true,
       ),
-      keyboardType: TextInputType.number,
+      keyboardType:
+          const TextInputType.numberWithOptions(signed: true, decimal: true),
       inputFormatters: [
         FilteringTextInputFormatter.allow(RegExp(r'^-?[0-9 .,]*-?$')),
       ],
