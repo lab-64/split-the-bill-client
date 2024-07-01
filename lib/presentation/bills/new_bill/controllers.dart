@@ -191,7 +191,7 @@ class BillRecognition extends _$BillRecognition {
                 if (index == allItemList.length - 1) {
                   List<dynamic> newRowLst = [];
                   allItemList.add(newRowLst);
-                  // here we could override the position of the row, but with this the position could move to the right and could connect with another row
+                  positionLst.add(blockX);
                 }
               }
             }
