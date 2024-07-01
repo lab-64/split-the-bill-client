@@ -27,6 +27,19 @@ class PriceTextField extends StatelessWidget {
         ),
         fillColor: fillColor,
         filled: true,
+        suffixIcon: IconButton(
+          iconSize: 20,
+          onPressed: () {
+            if (controller.text.isNotEmpty) {
+              if (controller.text.startsWith('-')) {
+                controller.text = controller.text.substring(1);
+              } else {
+                controller.text = '-${controller.text}';
+              }
+            }
+          },
+          icon: const Icon(Icons.exposure),
+        ),
       ),
       keyboardType:
           const TextInputType.numberWithOptions(signed: true, decimal: true),
