@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:split_the_bill/auth/data/auth_repository.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/group/group_transaction.dart';
@@ -8,7 +7,6 @@ import 'package:split_the_bill/domain/group/states/groups_transaction_state.dart
 import 'package:split_the_bill/presentation/shared/components/placeholder_display.dart';
 import 'package:split_the_bill/presentation/transactions/transaction_item.dart';
 
-import '../../domain/group/transaction.dart';
 import '../shared/components/primary_button.dart';
 import '../shared/components/rounded_box.dart';
 import 'transaction_date_tab.dart';
