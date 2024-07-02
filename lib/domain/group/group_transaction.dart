@@ -43,7 +43,12 @@ class GroupTransaction {
       id: id ?? this.id,
       groupName: groupName ?? this.groupName,
       date: date ?? this.date,
-      transactions: transactions ?? this.transactions,
+      transactions: transactions != null
+          ? transactions.map((transaction) => transaction.copyWith()).toList()
+          : this
+              .transactions
+              .map((transaction) => transaction.copyWith())
+              .toList(),
     );
   }
 
