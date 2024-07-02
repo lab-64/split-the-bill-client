@@ -11,6 +11,7 @@ import 'package:split_the_bill/domain/bill/bill_suggestion.dart';
 import 'package:split_the_bill/domain/bill/item.dart';
 import 'package:split_the_bill/domain/bill/states/bill_state.dart';
 import 'package:split_the_bill/domain/bill/states/bills_state.dart';
+import 'dart:ui' as ui;
 
 import '../../../auth/user.dart';
 
@@ -131,6 +132,7 @@ class BillRecognition extends _$BillRecognition {
     }
 
     try {
+      ui.Image img = await decodeImageFromList(image);
       final textRecognizer =
           TextRecognizer(script: TextRecognitionScript.latin);
 
@@ -147,58 +149,65 @@ class BillRecognition extends _$BillRecognition {
       List<String> nameList = [];
       List<double> priceList = [];
 
+      // get image properties
+      int imageWidth = img.width;
+
       // lists to store all information about the bill items and their location
       List<List<dynamic>> allItemList =
           []; // store all the different rows and their content
       List<int> positionLst =
           []; // store the x value of a text block from a row
-      int distance = 100; // separator between different rows
+      int distance = 150; // separator between different rows
 
       // add all lines from the blocks to the related list
       for (int i = 0; i < recognizedText.blocks.length; i++) {
         int blockX = recognizedText.blocks[i].cornerPoints[0].x;
 
-        // divide all recognized bill fields into rows
-        // in the first iteration we create the first row with the first element which then will be used as the comparator
-        if (allItemList.isEmpty) {
-          // store all the text lines from the first block and the x value of the block
-          List<dynamic> firstRowLst = [];
+        // store all bill items from the left side of the image in the name list
+        if (blockX < imageWidth / 2) {
           for (TextLine line in recognizedText.blocks[i].lines) {
-            firstRowLst.add(line.text);
+            nameList.add(line.text);
           }
-          allItemList.add(firstRowLst);
-          positionLst.add(blockX);
         } else {
-          // normal case: initial row already exist
-          // check to which row the new entry belongs, go through all existing item rows
-          int index = 0;
-          for (index = 0; index < allItemList.length; index++) {
-            // if the position of the current entry is greater then the the position of the row + the separator distance, then it belongs to the next row
-            if (blockX > positionLst[index] + distance) {
-              // if the last row is reached, we have to create a new row
-              if (index == allItemList.length - 1) {
-                List<dynamic> newRowLst = [];
-                allItemList.add(newRowLst);
-                positionLst.add(blockX);
+          // divide all recognized price fields into rows
+          // in the first iteration we create the first row with the first element which then will be used as the comparator
+          if (allItemList.isEmpty) {
+            // store all the lines from the first block and the x value of the block
+            List<dynamic> firstRowLst = [];
+            for (TextLine line in recognizedText.blocks[i].lines) {
+              firstRowLst.add(line.text);
+            }
+            allItemList.add(firstRowLst);
+            positionLst.add(
+                blockX); // the first position defines the position of the whole row
+          } else {
+            // normal case: initial row already exist
+            // check to which row the new entry belongs, go through all existing item rows
+            int index = 0;
+            for (index = 0; index < allItemList.length; index++) {
+              // if the position of the current entry is greater then the the position of the row + the separator distance, then it belongs to the next row
+              if (blockX > positionLst[index] + distance) {
+                // if the last row is reached, we have to create a new row
+                if (index == allItemList.length - 1) {
+                  List<dynamic> newRowLst = [];
+                  allItemList.add(newRowLst);
+                  positionLst.add(blockX);
+                }
               }
             }
-          }
-          // decrease index
-          index -= 1;
-          // store all text lines to the found row
-          for (TextLine line in recognizedText.blocks[i].lines) {
-            allItemList[index].add(line.text);
-            positionLst[index] = blockX;
+            // decrease index
+            index -= 1;
+            // store all text lines to the found row
+            for (TextLine line in recognizedText.blocks[i].lines) {
+              allItemList[index].add(line.text);
+              positionLst[index] = blockX;
+            }
           }
         }
       }
 
-      // convert first row to name list
       if (allItemList.isNotEmpty) {
-        for (String line in allItemList[0]) {
-          nameList.add(line);
-        }
-        // convert last row to price list
+        // convert last row of allItemList to price list
         for (String line in allItemList[allItemList.length - 1]) {
           // Remove letters from the string
           String cleanedString = line.replaceAll(RegExp(r'[^0-9,.-]'), '');
