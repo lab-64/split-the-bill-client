@@ -44,7 +44,7 @@ class ProfileImage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final authUser = ref.watch(authStateProvider);
 
-    final String imagePath = user.profileImgPath;
+    final String imagePath = user.getImagePath();
     final ImageProvider<Object> image = getProfileImage(
       previewImage,
       imagePath,
