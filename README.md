@@ -1,4 +1,4 @@
-# Split The Bill
+![](assets/SplitIt_Preview.jpg)
 
 # Developer Get Started
 **1. Install Flutter**
@@ -46,7 +46,7 @@
 # Architecture
 The architecture leverages Riverpod for a modular approach.
 
-![](architecture.png)
+![](assets/architecture.png)
 
 ### Screens & Widgets:
 - Each viewable page has its own folder structured according to app navigation (i. e. `presentation/groups/group_item`)
