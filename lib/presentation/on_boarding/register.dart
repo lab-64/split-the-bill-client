@@ -45,7 +45,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   Widget build(BuildContext context) {
     ref.listen(
       authStateProvider,
-          (_, next) => next.showSnackBarOnError(context),
+      (_, next) => next.showSnackBarOnError(context),
     );
 
     final state = ref.watch(authStateProvider);
@@ -64,10 +64,10 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              gapH16,
-              Image.asset('assets/STB_logo_transparent.png',
-                  width: (MediaQuery.of(context).size.width) * 0.2),
-              gapH12,
+              gapH32,
+              Image.asset('assets/SplitIt-Name-Transparent.png',
+                  width: (MediaQuery.of(context).size.width) * .7),
+              gapH32,
               const Text(
                 "Register",
                 textAlign: TextAlign.left,
@@ -77,7 +77,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   color: Colors.white,
                 ),
               ),
-              gapH32,
+              gapH16,
               Form(
                   key: _registerFormKey,
                   child: Column(
@@ -99,7 +99,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         obscureText: true,
                         validator: (value) => validatePassword(value),
                       ),
-                      gapH16,
+                      gapH8,
                       InputTextFormField(
                           labelText: 'Repeat Password*',
                           prefixIcon: const Icon(Icons.lock),

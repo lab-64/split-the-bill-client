@@ -115,5 +115,7 @@ flutter:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/STB_logo.png"
+  image_path: "assets/SplitIt-Icon-Big.jpg"
   remove_alpha_ios: true
+  adaptive_icon_background: "#000000"
+  adaptive_icon_foreground: "assets/SplitIt-Icon-Big.jpg"

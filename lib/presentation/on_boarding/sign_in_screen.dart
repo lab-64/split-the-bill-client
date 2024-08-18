@@ -63,10 +63,10 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              gapH16,
-              Image.asset('assets/STB_logo_transparent.png',
-                  width: (MediaQuery.of(context).size.width) * 0.2),
-              gapH12,
+              gapH32,
+              Image.asset('assets/SplitIt-Name-Transparent.png',
+                  width: (MediaQuery.of(context).size.width) * .7),
+              gapH32,
               const Text(
                 "Login",
                 textAlign: TextAlign.left,
@@ -76,7 +76,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                   color: Colors.white,
                 ),
               ),
-              gapH64,
+              gapH16,
               Form(
                   key: _signInFormKey,
                   child: Column(
