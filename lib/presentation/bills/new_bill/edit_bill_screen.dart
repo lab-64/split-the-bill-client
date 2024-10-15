@@ -91,9 +91,10 @@ class _NewBillScreenState extends ConsumerState<EditBillScreen> {
               isLoading: ref.watch(upsertBillControllerProvider).isLoading,
               icon: _currentIndex == 1 ? Icons.save : Icons.arrow_forward,
               onPressed: () {
+                final navigator = Navigator.of(context);
                 if (_currentIndex == 1) {
                   _upsertBill(ref)
-                      .then((_) => _onUpsertBillSuccess(ref, context));
+                      .then((_) => _onUpsertBillSuccess(ref, navigator));
                 } else {
                   DefaultTabController.of(context).animateTo(
                     DefaultTabController.of(context).index + 1,
@@ -159,13 +160,13 @@ class _NewBillScreenState extends ConsumerState<EditBillScreen> {
     }
   }
 
-  void _onUpsertBillSuccess(WidgetRef ref, BuildContext context) {
+  void _onUpsertBillSuccess(WidgetRef ref, NavigatorState navigator) {
     final state = ref.watch(upsertBillControllerProvider);
     showSuccessSnackBar(
-      context,
+      navigator.context,
       state,
       widget.billId == '0' ? 'Bill created' : 'Bill updated',
-      goTo: () => const HomeRoute().go(context),
+      goTo: () => const HomeRoute().go(navigator.context),
     );
   }
 }

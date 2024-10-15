@@ -51,10 +51,10 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
     return ref.read(groupStateProvider(widget.groupId).notifier).isGroupOwner();
   }
 
-  void _onSuccess(BuildContext context, WidgetRef ref, String message) {
+  void _onSuccess(NavigatorState navigator, WidgetRef ref, String message) {
     final state = ref.watch(groupsStateProvider);
     showSuccessSnackBar(
-      context,
+      navigator.context,
       state,
       message,
     );
@@ -76,6 +76,7 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
         value: group,
         data: (group) => Builder(builder: (context) {
           _updateCurrentIndex(context);
+          final navigator = Navigator.of(context);
 
           return Scaffold(
             floatingActionButton: ActionButton(
@@ -126,7 +127,7 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
                             content:
                                 "This will delete all bills for you and all group members!",
                             onConfirm: () => _resetGroup(ref).then(
-                              (_) => _onSuccess(context, ref, 'Group reset'),
+                              (_) => _onSuccess(navigator, ref, 'Group reset'),
                             ),
                           ),
                         )
@@ -148,7 +149,7 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
                           content:
                               "This will delete the group for you and all group members!",
                           onConfirm: () => _deleteGroup(ref).then(
-                            (_) => _onSuccess(context, ref, "Group deleted"),
+                            (_) => _onSuccess(navigator, ref, "Group deleted"),
                           ),
                         ),
                       ),
