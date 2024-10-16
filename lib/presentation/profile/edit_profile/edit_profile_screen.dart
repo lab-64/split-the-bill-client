@@ -44,9 +44,10 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     super.dispose();
   }
 
-  Future<void> _update() async {
+  Future<void> _update(GoRouter goRouter) async {
     final controller = ref.read(editProfileControllerProvider.notifier);
     await controller.updateUser(_username.text, _image);
+    goRouter.pop();
   }
 
   Future _getImage(ImageSource source) async {
@@ -73,11 +74,12 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final goRouter = GoRouter.of(context);
     return Scaffold(
       appBar: AppBar(title: const Text("Edit Profile")),
       floatingActionButton: ActionButton(
         icon: Icons.save,
-        onPressed: () => _update().then((value) => context.pop()),
+        onPressed: () => _update(goRouter),
       ),
       body: Padding(
         padding: const EdgeInsets.all(Sizes.p24),
