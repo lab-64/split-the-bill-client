@@ -152,6 +152,41 @@ class BillRecognition extends _$BillRecognition {
       // get image properties
       int imageWidth = img.width;
 
+      // --- Single Row Recognition ---
+      RegExp priceExp = RegExp(r"\b\d+(?:,\s?\d+)?(?:\.\d+)?\b");
+
+      // add all lines from the blocks to the related list
+      for (int i = 0; i < recognizedText.blocks.length; i++) {
+        int blockX = recognizedText.blocks[i].cornerPoints[0].x;
+        if (blockX < imageWidth / 2) {
+          for (TextLine line in recognizedText.blocks[i].lines) {
+            nameList.add(line.text);
+          }
+        } else {
+          // price case
+          for (TextLine line in recognizedText.blocks[i].lines) {
+            // check if line contains a number
+            if (priceExp.hasMatch(line.text)) {
+              // Remove letters from the string
+              String cleanedString =
+              line.text.replaceAll(RegExp(r'[^0-9,.-]'), '');
+              // Replacing the comma with a dot and removing spaces
+              String numberString =
+              cleanedString.replaceAll(',', '.').replaceAll(' ', '');
+              // Convert to a double
+              try {
+                double result = double.parse(numberString);
+                priceList.add(result);
+              } catch (e) {
+                debugPrint("Error: $e, ${line.text}");
+              }
+            }
+          }
+        }
+      }
+
+      // --- Multi Row Recognition ---
+/*
       // lists to store all information about the bill items and their location
       List<List<dynamic>> allItemList =
           []; // store all the different rows and their content
@@ -222,7 +257,7 @@ class BillRecognition extends _$BillRecognition {
             debugPrint("Error: $e, $line");
           }
         }
-      }
+      }*/
 
       // fill the shorter list with empty strings or zeros
       _fillLists(nameList, priceList);

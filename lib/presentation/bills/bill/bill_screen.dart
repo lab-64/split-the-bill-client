@@ -25,10 +25,10 @@ class BillScreen extends ConsumerWidget {
     await ref.read(billsStateProvider().notifier).delete(bill);
   }
 
-  void _onSuccess(BuildContext context, WidgetRef ref, bool isEdit) {
+  void _onSuccess(NavigatorState navigator, WidgetRef ref, bool isEdit) {
     final state = ref.watch(billsStateProvider());
     showSuccessSnackBar(
-      context,
+      navigator.context,
       state,
       isEdit ? 'Bill updated' : 'Bill deleted',
     );
@@ -50,53 +50,56 @@ class BillScreen extends ConsumerWidget {
 
     return AsyncValueWidget(
       value: bill,
-      data: (bill) => Scaffold(
-        appBar: AppBar(
-          title: const Text("Bill"),
-          actions: [
-            IconButton(
-              icon: const Icon(Icons.manage_accounts),
-              onPressed: () => UnseenBillRoute(billId: billId).push(context),
-            ),
-            IconButton(
-              icon: const Icon(Icons.edit),
-              onPressed: () => EditBillRoute(
-                groupId: bill.groupId,
-                billId: billId,
-              ).push(context),
-            ),
-            if (_isBillOwner(ref))
+      data: (bill) {
+        final navigator = Navigator.of(context);
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text("Bill"),
+            actions: [
               IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: () => showConfirmationDialog(
-                  context: context,
-                  title: "Are you sure, you want to delete this bill?",
-                  content:
-                      "This will delete the bill for you and all group members!",
-                  onConfirm: () => _deleteBill(ref, bill).then(
-                    (_) => _onSuccess(context, ref, false),
-                  ),
-                ),
+                icon: const Icon(Icons.manage_accounts),
+                onPressed: () => UnseenBillRoute(billId: billId).push(context),
               ),
-          ],
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: Sizes.p24),
-          child: RefreshIndicator(
-            onRefresh: () => ref.refresh(billStateProvider(billId).future),
-            child: CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: BillWidget(
-                    bill: bill,
-                    userId: user.id,
+              IconButton(
+                icon: const Icon(Icons.edit),
+                onPressed: () => EditBillRoute(
+                  groupId: bill.groupId,
+                  billId: billId,
+                ).push(context),
+              ),
+              if (_isBillOwner(ref))
+                IconButton(
+                  icon: const Icon(Icons.delete),
+                  onPressed: () => showConfirmationDialog(
+                    context: context,
+                    title: "Are you sure, you want to delete this bill?",
+                    content:
+                    "This will delete the bill for you and all group members!",
+                    onConfirm: () => _deleteBill(ref, bill).then(
+                          (_) => _onSuccess(navigator, ref, false),
+                    ),
                   ),
                 ),
-              ],
+            ],
+          ),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: Sizes.p24),
+            child: RefreshIndicator(
+              onRefresh: () => ref.refresh(billStateProvider(billId).future),
+              child: CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: BillWidget(
+                      bill: bill,
+                      userId: user.id,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

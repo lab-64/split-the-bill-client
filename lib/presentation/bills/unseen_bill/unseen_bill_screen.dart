@@ -23,6 +23,7 @@ class UnseenBillScreen extends ConsumerWidget {
     return AsyncValueWidget(
       value: bill,
       data: (bill) {
+        final goRouter = GoRouter.of(context);
         return Scaffold(
           appBar: AppBar(
             title: const Text("Please confirm contribution"),
@@ -31,7 +32,7 @@ class UnseenBillScreen extends ConsumerWidget {
             icon: Icons.save,
             onPressed: () {
               _saveBill(bill, ref, context).then(
-                (_) => GoRouter.of(context).pop(),
+                (_) => goRouter.pop(),
               );
             },
           ),
