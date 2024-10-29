@@ -6,7 +6,7 @@ part of 'bill_repository.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$billRepositoryHash() => r'3c173c1a6eaf1f442fea63e7cc53569c5c8fce82';
+String _$billRepositoryHash() => r'0e80246c4e39656dbd87e10fef597761dba8d1d8';
 
 /// See also [billRepository].
 @ProviderFor(billRepository)
@@ -20,6 +20,8 @@ final billRepositoryProvider = Provider<BillRepository>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef BillRepositoryRef = ProviderRef<BillRepository>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

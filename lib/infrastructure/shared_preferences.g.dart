@@ -6,7 +6,7 @@ part of 'shared_preferences.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$sharedPreferencesHash() => r'3a9f8412df34c1653d08100c9826aa2125b80f7f';
+String _$sharedPreferencesHash() => r'1a6250efdc19e86c923ceb598a77ff74d64378e6';
 
 /// A Riverpod provider for SharedPreferences.
 /// It throws an [UnimplementedError] to indicate that it should be overridden in the main function
@@ -25,8 +25,10 @@ final sharedPreferencesProvider = Provider<SharedPreferences>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef SharedPreferencesRef = ProviderRef<SharedPreferences>;
-String _$sharedUtilityHash() => r'453626ef9b12d3b2633384a784097f87ceb60484';
+String _$sharedUtilityHash() => r'601ad799a3a2e4ee14d2e5155f7aaa02d9ed045e';
 
 /// A Riverpod provider for SharedUtility.
 /// This provider depends on the [sharedPreferencesProvider] to get an instance of SharedPreferences.
@@ -44,6 +46,8 @@ final sharedUtilityProvider = Provider<SharedUtility>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef SharedUtilityRef = ProviderRef<SharedUtility>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -6,7 +6,7 @@ part of 'controllers.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$userTotalBalanceHash() => r'0eb282ecfc650ca7d8a62005958f1222ce4f02e2';
+String _$userTotalBalanceHash() => r'8d2f4b275d24ddaec134187b44544abab141dca1';
 
 /// See also [userTotalBalance].
 @ProviderFor(userTotalBalance)
@@ -20,6 +20,8 @@ final userTotalBalanceProvider = AutoDisposeProvider<double>.internal(
   allTransitiveDependencies: null,
 );
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 typedef UserTotalBalanceRef = AutoDisposeProviderRef<double>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -215,7 +215,7 @@ class HttpClient {
 }
 
 @Riverpod(keepAlive: true)
-HttpClient httpClient(HttpClientRef ref) {
+HttpClient httpClient(Ref ref) {
   return HttpClient(
     ref: ref,
     client: http.Client(),

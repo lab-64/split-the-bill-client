@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/domain/bill/bill.dart';
 import 'package:split_the_bill/domain/bill/data/bill_api.dart';
@@ -8,8 +9,7 @@ import 'package:split_the_bill/infrastructure/http_client.dart';
 part 'bill_repository.g.dart';
 
 abstract class BillRepository {
-  Future<List<Bill>> getBillsByUser(String userId,
-      {bool isUnseen = false, bool isOwner = false});
+  Future<List<Bill>> getBillsByUser(String userId, {bool isUnseen = false, bool isOwner = false});
 
   Future<Bill> getBill(String billId);
 
@@ -26,7 +26,7 @@ abstract class BillRepository {
 }
 
 @Riverpod(keepAlive: true)
-BillRepository billRepository(BillRepositoryRef ref) {
+BillRepository billRepository(Ref ref) {
   return RemoteBillRepository(
     api: BillAPI(),
     client: ref.read(httpClientProvider),
