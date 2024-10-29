@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -10,7 +11,7 @@ const String _userKey = 'USER';
 /// with the actual instance of SharedPreferences. This is done to ensure that SharedPreferences
 /// is properly initialized before being used.
 @Riverpod(keepAlive: true)
-SharedPreferences sharedPreferences(SharedPreferencesRef ref) {
+SharedPreferences sharedPreferences(Ref ref) {
   throw UnimplementedError();
 }
 
@@ -18,7 +19,7 @@ SharedPreferences sharedPreferences(SharedPreferencesRef ref) {
 /// This provider depends on the [sharedPreferencesProvider] to get an instance of SharedPreferences.
 /// The [SharedUtility] class provides convenient methods to interact with SharedPreferences.
 @Riverpod(keepAlive: true)
-SharedUtility sharedUtility(SharedUtilityRef ref) {
+SharedUtility sharedUtility(Ref ref) {
   // Watch the sharedPreferencesProvider to get the SharedPreferences instance
   final sharedPrefs = ref.watch(sharedPreferencesProvider);
   return SharedUtility(sharedPreferences: sharedPrefs);
