@@ -157,6 +157,8 @@ class BillsStateProvider
   }
 }
 
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
 mixin BillsStateRef on AutoDisposeAsyncNotifierProviderRef<List<Bill>> {
   /// The parameter `isUnseen` of this provider.
   bool get isUnseen;
@@ -171,4 +173,4 @@ class _BillsStateProviderElement
   bool get isUnseen => (origin as BillsStateProvider).isUnseen;
 }
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

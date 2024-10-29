@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/domain/group/data/group_api.dart';
 import 'package:split_the_bill/domain/group/data/remote_group_repository.dart';
@@ -26,7 +27,7 @@ abstract class GroupRepository {
 }
 
 @Riverpod(keepAlive: true)
-GroupRepository groupRepository(GroupRepositoryRef ref) {
+GroupRepository groupRepository(Ref ref) {
   return RemoteGroupRepository(
     api: GroupAPI(),
     client: ref.read(httpClientProvider),

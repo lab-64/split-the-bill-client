@@ -24,7 +24,7 @@ final upsertBillControllerProvider =
 
 typedef _$UpsertBillController = AutoDisposeAsyncNotifier<void>;
 String _$editBillControllerHash() =>
-    r'3ebb9ca9b8b38cdd7709a6467a871cd66b4fb555';
+    r'eccaf813982be7884e54b3e9646fb3b077786f09';
 
 /// See also [EditBillController].
 @ProviderFor(EditBillController)
@@ -40,7 +40,7 @@ final editBillControllerProvider =
 );
 
 typedef _$EditBillController = AutoDisposeNotifier<Bill>;
-String _$billRecognitionHash() => r'18c16d58fe5467ab0ed0ae01b1d53679102fcb68';
+String _$billRecognitionHash() => r'd28fb04e723d327d6403e98c54a50a346e3c9287';
 
 /// See also [BillRecognition].
 @ProviderFor(BillRecognition)
@@ -57,4 +57,4 @@ final billRecognitionProvider =
 
 typedef _$BillRecognition = AutoDisposeAsyncNotifier<BillSuggestion>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package
