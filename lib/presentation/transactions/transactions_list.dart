@@ -6,7 +6,6 @@ import 'package:split_the_bill/domain/group/group_transaction.dart';
 import 'package:split_the_bill/domain/group/states/groups_transaction_state.dart';
 import 'package:split_the_bill/presentation/shared/components/placeholder_display.dart';
 import 'package:split_the_bill/presentation/transactions/transaction_item.dart';
-
 import '../shared/components/primary_button.dart';
 import '../shared/components/rounded_box.dart';
 import 'transaction_date_tab.dart';
@@ -43,9 +42,9 @@ class _TransactionListState extends ConsumerState<TransactionsList> {
         widget.transactions.length, (index) => transactions[index].copyWith());
     transactionsExpanded = List.generate(
         transactions.length,
-        (index) => transactions[index] == transactions.last ||
+        (index) => transactions[index] == transactions.first ||
                 transactions[index].groupName !=
-                    transactions[index + 1].groupName
+                    transactions[index - 1].groupName
             ? true
             : false);
   }
@@ -75,7 +74,6 @@ class _TransactionListState extends ConsumerState<TransactionsList> {
         _init(next.requireValue);
       },
     );
-
     return Column(
       children: [
         Padding(
@@ -106,9 +104,6 @@ class _TransactionListState extends ConsumerState<TransactionsList> {
               if (i == 0 ||
                   transactions[i].groupName != transactions[i - 1].groupName)
                 TransactionGroupHeader(transaction: transactions[i]),
-              //first for that date
-              if (i == 0 ||
-                  transactions[i].date.isAfter(transactions[i - 1].date))
                 TransactionDateTab(
                   index: i,
                   onTap: invertTransactionExpanded,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
@@ -7,7 +8,7 @@ import 'package:split_the_bill/router/routes.dart';
 part 'router.g.dart';
 
 @Riverpod(keepAlive: true)
-GoRouter goRouter(GoRouterRef ref) {
+GoRouter goRouter(Ref ref) {
   final routerKey = GlobalKey<NavigatorState>(debugLabel: 'routerKey');
 
   // Listen to the auth state
@@ -15,8 +16,7 @@ GoRouter goRouter(GoRouterRef ref) {
   ref
     ..onDispose(isAuth.dispose)
     ..listen(
-      authStateProvider
-          .select((value) => value.whenData((value) => value.id.isNotEmpty)),
+      authStateProvider.select((value) => value.whenData((value) => value.id.isNotEmpty)),
       (_, next) {
         isAuth.value = next;
       },
@@ -38,9 +38,7 @@ GoRouter goRouter(GoRouterRef ref) {
         return const LoginRoute().location;
       }
 
-      if (isLoggedIn &&
-          (path == const LoginRoute().location ||
-              path == const RegisterRoute().location)) {
+      if (isLoggedIn && (path == const LoginRoute().location || path == const RegisterRoute().location)) {
         return const HomeRoute().location;
       }
 
