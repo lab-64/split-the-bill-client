@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/auth/data/auth_api.dart';
@@ -18,7 +19,7 @@ abstract class AuthRepository {
 }
 
 @Riverpod(keepAlive: true)
-AuthRepository authRepository(AuthRepositoryRef ref) {
+AuthRepository authRepository(Ref ref) {
   return RemoteAuthRepository(
     api: AuthAPI(),
     client: ref.read(httpClientProvider),

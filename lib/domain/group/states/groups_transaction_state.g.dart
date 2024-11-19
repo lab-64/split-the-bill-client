@@ -7,7 +7,7 @@ part of 'groups_transaction_state.dart';
 // **************************************************************************
 
 String _$groupsTransactionStateHash() =>
-    r'540f176866040de1e396bd29f57709e34fb76e05';
+    r'1a8ce08a4a58cf1401cbda7b7c007e5edfeb8d9c';
 
 /// See also [GroupsTransactionState].
 @ProviderFor(GroupsTransactionState)
@@ -25,4 +25,4 @@ final groupsTransactionStateProvider = AutoDisposeAsyncNotifierProvider<
 typedef _$GroupsTransactionState
     = AutoDisposeAsyncNotifier<List<GroupTransaction>>;
 // ignore_for_file: type=lint
-// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

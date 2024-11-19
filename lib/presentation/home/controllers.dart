@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/domain/group/states/groups_state.dart';
@@ -5,7 +6,7 @@ import 'package:split_the_bill/domain/group/states/groups_state.dart';
 part 'controllers.g.dart';
 
 @riverpod
-double userTotalBalance(UserTotalBalanceRef ref) {
+double userTotalBalance(Ref ref) {
   final user = ref.watch(authStateProvider).requireValue;
   final groups = ref.watch(groupsStateProvider);
 

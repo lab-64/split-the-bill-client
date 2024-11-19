@@ -32,10 +32,6 @@ class GroupsTransactionState extends _$GroupsTransactionState {
           transactions.where((element) => element.groupName == group).toList());
     }
 
-    sortedByGroup
-        .map((list) => list.sort((a, b) => a.date.compareTo(b.date)))
-        .toList();
-
     List<GroupTransaction> sortedGroupTransactions = [];
     for (var element in sortedByGroup) {
       sortedGroupTransactions.addAll(element);

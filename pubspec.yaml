@@ -35,7 +35,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   http: ^1.1.0
-  flutter_riverpod: ^2.4.5
+  flutter_riverpod: ^2.6.1
   go_router: ^14.1.3
   riverpod_annotation: ^2.3.0
   intl: ^0.19.0
@@ -115,7 +115,7 @@ flutter:
 flutter_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/SplitIt-Icon-Big.jpg"
+  image_path: "assets/SplitIt-Icon-Big2.jpg"
   remove_alpha_ios: true
   adaptive_icon_background: "#000000"
-  adaptive_icon_foreground: "assets/SplitIt-Icon-Big.jpg"
+  adaptive_icon_foreground: "assets/SplitIt-Icon-Big2.jpg"
