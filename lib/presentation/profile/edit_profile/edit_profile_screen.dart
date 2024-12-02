@@ -52,7 +52,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
 
   Future _getImage(ImageSource source) async {
     final XFile? image =
-        await _picker.pickImage(source: source, imageQuality: 25);
+        await _picker.pickImage(source: source, imageQuality: 10);
 
     var imagePath = await image!.readAsBytes();
 
