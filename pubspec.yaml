@@ -49,6 +49,7 @@ dependencies:
   path_provider: ^2.1.3
   linked_scroll_controller: ^0.2.0
   carousel_slider: ^5.0.0
+  flutter_native_splash: ^2.4.4
 
 dev_dependencies:
   flutter_test:
@@ -118,3 +119,8 @@ flutter_icons:
   remove_alpha_ios: true
   adaptive_icon_background: "#000000"
   adaptive_icon_foreground: "assets/SplitIt-Icon-Big2.jpg"
+
+flutter_native_splash:
+  color: "#0008bf"
+  android_12:
+    color: "#0008bf"
