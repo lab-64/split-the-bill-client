@@ -18,7 +18,7 @@ class MyApp extends ConsumerWidget {
       theme: ThemeData(
         primaryColor: Colors.blue.shade400,
         scaffoldBackgroundColor: const Color(0xFFEFEFEF),
-        tabBarTheme: const TabBarTheme(
+        tabBarTheme: const TabBarThemeData(
           labelColor: Colors.white,
           unselectedLabelColor: Colors.white,
           indicator: UnderlineTabIndicator(
