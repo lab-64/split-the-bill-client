@@ -228,6 +228,7 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
                         child: ReorderableListView.builder(
                           scrollController: _scrollControllerName,
                           itemCount: _currentNameList.length,
+                          padding: const EdgeInsets.only(bottom: Sizes.p80),
                           itemBuilder: (context, index) {
                             return Dismissible(
                               onDismissed: (_) => setState(
@@ -280,6 +281,7 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
                         child: ReorderableListView.builder(
                           scrollController: _scrollControllerPrice,
                           itemCount: _currentPriceList.length,
+                          padding: const EdgeInsets.only(bottom: Sizes.p80),
                           itemBuilder: (context, index) {
                             return Dismissible(
                               onDismissed: (_) => setState(

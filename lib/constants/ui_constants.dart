@@ -13,6 +13,7 @@ class Sizes {
   static const p40 = 40.0;
   static const p48 = 48.0;
   static const p64 = 64.0;
+  static const p80 = 80.0;
 }
 
 /// Constant gap widths
