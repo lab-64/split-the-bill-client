@@ -42,6 +42,7 @@
 - **riverpod_generator**: code generation package for Riverpod
 - **riverpod_lint**: linting package providing additional lint rules for Riverpod
 - **build_runner**: build system that automates the code generation
+- **flutter_native_splash**: for splash screen configuration
 
 # Architecture
 The architecture leverages Riverpod for a modular approach.
