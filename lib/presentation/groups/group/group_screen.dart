@@ -188,7 +188,7 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
                     ),
                   ),
                 ),
-                GroupMembers(members: group.members),
+                GroupMembers(members: group.members, balance: group.balance,),
                 // const GroupHistory(),
               ],
             ),
