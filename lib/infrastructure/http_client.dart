@@ -29,6 +29,10 @@ class HttpClient {
         headers: _getHeaders(),
       );
 
+      // If server unreachable (502) json decode will throw an error -> unexpected character
+      if (response.statusCode == 502) {
+        throw NoInternetConnectionException();
+      }
       final data = json.decode(utf8.decode(response.bodyBytes));
 
       switch (response.statusCode) {
