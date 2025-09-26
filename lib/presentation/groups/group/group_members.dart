@@ -8,9 +8,11 @@ class GroupMembers extends StatelessWidget {
   const GroupMembers({
     super.key,
     required this.members,
+    required this.balance,
   });
 
   final List<User> members;
+  final Map<String, double> balance;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +31,10 @@ class GroupMembers extends StatelessWidget {
             child: Column(
           children: [
             gapH8,
-            MemberItemWidget(user: user),
+            MemberItemWidget(
+              user: user,
+              // balance: balance[user.id]
+            ),
           ],
         ));
       }).toList(),
@@ -41,9 +46,12 @@ class MemberItemWidget extends StatelessWidget {
   const MemberItemWidget({
     super.key,
     required this.user,
+    // required this.balance
   });
 
   final User user;
+
+  // final double? balance;
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +68,12 @@ class MemberItemWidget extends StatelessWidget {
           text: user.getDisplayName(),
           style: const TextStyle(color: Colors.black, fontSize: 16),
         ),
+        // trailing: balance != null
+        //     ? FadeText(
+        //         text: balance!.toCurrencyString(),
+        //         style: TextStyle(color: balance! >= 0 ? Colors.green: Colors.red, fontSize: 16),
+        //       )
+        //     : null,
       ),
     );
   }

@@ -66,7 +66,7 @@ class _HomeBillCarouselState extends State<HomeBillCarousel> {
                   color: (Theme.of(context).brightness == Brightness.dark
                           ? Colors.white
                           : Colors.black)
-                      .withOpacity(_currentIndex == entry.key ? 0.9 : 0.4),
+                      .withValues(alpha: _currentIndex == entry.key ? 0.9 : 0.4)
                 ),
               ),
             );

@@ -17,7 +17,7 @@ class CroppingPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final Paint paint = Paint()
-        ..color = color.withOpacity(0.7)
+        ..color = color.withValues(alpha: 0.7)
         ..strokeWidth = 3
         ..strokeCap = StrokeCap.round;
     
