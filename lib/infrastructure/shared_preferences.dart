@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:split_the_bill/domain/group/group.dart';
 
 part 'shared_preferences.g.dart';
 
@@ -42,5 +45,17 @@ class SharedUtility {
 
   void removeUser() {
     sharedPreferences.remove(_userKey);
+  }
+
+  List<Group> getGroups() {
+    final jsonString = sharedPreferences.getString('GROUPS');
+    if (jsonString == null || jsonString.isEmpty) return [];
+    final List<dynamic> list = jsonDecode(jsonString);
+    return list.map((e) => Group.fromMap(e)).toList().cast<Group>();
+  }
+
+  void setGroups(List<Group> groups) {
+    final jsonString = jsonEncode(groups.map((g) => g.toMapOffline()).toList());
+    sharedPreferences.setString('GROUPS', jsonString);
   }
 }

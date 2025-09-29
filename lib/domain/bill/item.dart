@@ -78,6 +78,22 @@ class Item {
     return map;
   }
 
+  /// Convert items to map for offline storage in shared preferences, including all fields
+  Map<String, dynamic> toMapOffline() {
+    Map<String, dynamic> map = {
+      'id': id,
+      'name': name,
+      'price': price,
+      'contributorIDs': contributors.map((user) => user.id).toList(),
+    };
+
+    if (billId.isNotEmpty) {
+      map['billId'] = billId;
+    }
+
+    return map;
+  }
+
   factory Item.fromMap(Map<String, dynamic> map) {
     return Item(
       id: map['id'] as String,
