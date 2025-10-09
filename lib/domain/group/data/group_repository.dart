@@ -6,6 +6,8 @@ import 'package:split_the_bill/domain/group/group.dart';
 import 'package:split_the_bill/domain/group/group_transaction.dart';
 import 'package:split_the_bill/infrastructure/http_client.dart';
 
+import '../../../infrastructure/shared_preferences.dart';
+
 part 'group_repository.g.dart';
 
 abstract class GroupRepository {
@@ -31,5 +33,6 @@ GroupRepository groupRepository(Ref ref) {
   return RemoteGroupRepository(
     api: GroupAPI(),
     client: ref.read(httpClientProvider),
+    sharedUtility: ref.read(sharedUtilityProvider),
   );
 }

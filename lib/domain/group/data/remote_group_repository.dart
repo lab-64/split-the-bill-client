@@ -3,13 +3,16 @@ import 'package:split_the_bill/domain/group/data/group_repository.dart';
 import 'package:split_the_bill/domain/group/group_transaction.dart';
 import 'package:split_the_bill/infrastructure/http_client.dart';
 
+import '../../../infrastructure/shared_preferences.dart';
 import '../group.dart';
 
 class RemoteGroupRepository extends GroupRepository {
-  RemoteGroupRepository({required this.api, required this.client});
+  RemoteGroupRepository(
+      {required this.api, required this.client, required this.sharedUtility});
 
   final GroupAPI api;
   final HttpClient client;
+  final SharedUtility sharedUtility;
 
   @override
   Future<Group> getGroup(String groupId) => client.get(
@@ -18,15 +21,23 @@ class RemoteGroupRepository extends GroupRepository {
       );
 
   @override
-  Future<List<Group>> getGroupsByUser(String userId) => client.get(
+  Future<List<Group>> getGroupsByUser(String userId) async {
+    try {
+      // get groups from server
+      final groups = await client.get(
         uri: api.getGroupsByUser(userId),
-        builder: (data) => data?.isNotEmpty == true
-            ? data
-                .map((groupData) => Group.fromMap(groupData))
-                .toList()
-                .cast<Group>()
-            : [],
+        builder: (data) {
+          if (data == null || data.isEmpty) return [];
+          return data.map((g) => Group.fromMap(g)).toList();
+        },
       );
+      sharedUtility.setGroups(groups);
+      return groups;
+    } catch (e) {
+      // load groups from shared preferences if server is down
+      return sharedUtility.getGroups();
+    }
+  }
 
   @override
   Future<Group> create(Group group) => client.post(
