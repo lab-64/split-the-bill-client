@@ -17,9 +17,7 @@ void main() async {
       overrides: [
         sharedPreferencesProvider.overrideWithValue(sharedPreferences),
       ],
-      observers: [
-        AsyncErrorLogger(),
-      ],
+      observers: [AsyncErrorLogger()],
       child: const MyApp(),
     ),
   );
