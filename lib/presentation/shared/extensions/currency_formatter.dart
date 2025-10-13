@@ -5,10 +5,8 @@ import 'package:intl/intl.dart';
 extension CurrencyFormatter on double {
   String toCurrencyString() {
     final locale = ui.PlatformDispatcher.instance.locale.toString();
-    print('Locale: $locale');
     try {
       final formatCurrency = NumberFormat.simpleCurrency(locale: locale);
-      print(formatCurrency);
       return formatCurrency.format(this);
     } catch (e) {
       final formatCurrency =
