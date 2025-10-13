@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
@@ -29,6 +30,7 @@ class MyApp extends ConsumerWidget {
       title: 'Split the Bill',
       debugShowCheckedModeBanner: false,
       routerConfig: goRouter,
+      localizationsDelegates: GlobalMaterialLocalizations.delegates,
       builder: (context, child) {
         // Add banner above all pages.
         return Scaffold(
