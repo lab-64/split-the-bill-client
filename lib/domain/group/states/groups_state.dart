@@ -5,6 +5,7 @@ import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/domain/group/data/group_repository.dart';
 import 'package:split_the_bill/domain/group/group.dart';
 import 'package:split_the_bill/domain/group/states/group_state.dart';
+import 'package:split_the_bill/infrastructure/shared_preferences.dart';
 
 import 'groups_transaction_state.dart';
 
@@ -21,7 +22,17 @@ class GroupsState extends _$GroupsState {
   }
 
   Future<List<Group>> _getGroupsByUser(String userId) async {
-    return await _groupRepository.getGroupsByUser(userId);
+    try {
+      // try to get groups from server
+      List<Group> groups = await _groupRepository.getGroupsByUser(userId);
+      // store groups in shared preferences
+      ref.read(sharedUtilityProvider).setGroups(groups);
+      return groups;
+    } catch (e) {
+      // load groups from shared preferences if server is down
+      final List<Group> groups = ref.read(sharedUtilityProvider).getGroups();
+      return groups;
+    }
   }
 
   Future<void> create(Group group) async {

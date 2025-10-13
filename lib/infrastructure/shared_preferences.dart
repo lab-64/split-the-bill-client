@@ -1,10 +1,14 @@
+import 'dart:convert';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:split_the_bill/domain/group/group.dart';
 
 part 'shared_preferences.g.dart';
 
 const String _userKey = 'USER';
+const String _groupsKey = 'GROUPS';
 
 /// A Riverpod provider for SharedPreferences.
 /// It throws an [UnimplementedError] to indicate that it should be overridden in the main function
@@ -42,5 +46,17 @@ class SharedUtility {
 
   void removeUser() {
     sharedPreferences.remove(_userKey);
+  }
+
+  List<Group> getGroups() {
+    final jsonString = sharedPreferences.getString(_groupsKey);
+    if (jsonString == null || jsonString.isEmpty) return [];
+    final List<dynamic> list = jsonDecode(jsonString);
+    return list.map((e) => Group.fromMap(e)).toList();
+  }
+
+  void setGroups(List<Group> groups) {
+    final jsonString = jsonEncode(groups.map((g) => g.toMapOffline()).toList());
+    sharedPreferences.setString(_groupsKey, jsonString);
   }
 }

@@ -108,6 +108,20 @@ class Bill {
     };
   }
 
+  /// Convert bills to map for offline storage in shared preferences, including all fields
+  Map<String, dynamic> toMapOffline() {
+    return {
+      'id': id,
+      'name': name,
+      'groupID': groupId,
+      'owner': owner.toMap(),
+      'date': '${date.toIso8601String().split('.')[0]}Z',
+      'items': items.map((item) => item.toMapOffline()).toList(),
+      'isViewed': isViewed,
+      'updatedAt': '${updatedAt.toIso8601String().split('.')[0]}Z'
+    };
+  }
+
   factory Bill.fromMap(Map<String, dynamic> map) {
     return Bill(
         id: map['id'] as String,

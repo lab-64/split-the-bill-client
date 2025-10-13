@@ -76,6 +76,19 @@ class Group {
     };
   }
 
+  /// Convert group to map for offline storage in shared preferences, including all fields
+  Map<String, dynamic> toMapOffline() {
+    return {
+      'id': id,
+      'name': name,
+      'owner': owner.toMap(),
+      'members': members.map((m) => m.toMap()).toList(),
+      'bills': bills.map((b) => b.toMapOffline()).toList(),
+      'balance': balance,
+      'invitationID': invitationID,
+    };
+  }
+
   factory Group.fromMap(Map<String, dynamic> map) {
     return Group(
       id: map['id'] as String,
