@@ -5,12 +5,15 @@ import 'package:image_picker/image_picker.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
+import 'package:split_the_bill/domain/tutorial/tutorial_state.dart';
 import 'package:split_the_bill/presentation/profile/edit_profile/controllers.dart';
 import 'package:split_the_bill/presentation/profile/edit_profile/edit_image_modal.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
 import 'package:split_the_bill/presentation/shared/components/bottom_modal.dart';
 import 'package:split_the_bill/presentation/shared/components/input_text_field.dart';
 import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
+import 'package:split_the_bill/presentation/shared/components/tutorial_help_button.dart';
+import 'package:split_the_bill/presentation/shared/components/tutorial_popup.dart';
 import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 
 const maxFileSizeInBytes = 5 * 1048576; // 5MB
@@ -75,8 +78,35 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final goRouter = GoRouter.of(context);
+
+    final isTutorialSeen =
+        ref.watch(tutorialControllerProvider(TutorialScreen.editProfile));
+
+    if (!isTutorialSeen) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showTutorialDialog(
+          context: context,
+          screen: TutorialScreen.editProfile,
+          onDismiss: () => ref
+              .read(tutorialControllerProvider(TutorialScreen.editProfile).notifier)
+              .markAsSeen(),
+        );
+      });
+    }
+
     return Scaffold(
-      appBar: AppBar(title: const Text("Edit Profile")),
+      appBar: AppBar(
+        title: const Text("Edit Profile"),
+        actions: [
+          if (isTutorialSeen)
+            TutorialHelpButton(
+              onPressed: () => showTutorialDialog(
+                context: context,
+                screen: TutorialScreen.editProfile,
+              ),
+            ),
+        ],
+      ),
       floatingActionButton: ActionButton(
         icon: Icons.save,
         onPressed: () => _update(goRouter),

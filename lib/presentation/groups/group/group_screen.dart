@@ -4,6 +4,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/group/states/group_state.dart';
 import 'package:split_the_bill/domain/group/states/groups_state.dart';
+import 'package:split_the_bill/domain/tutorial/tutorial_state.dart';
 import 'package:split_the_bill/infrastructure/async_value_ui.dart';
 import 'package:split_the_bill/presentation/groups/group/group_members.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
@@ -11,6 +12,8 @@ import 'package:split_the_bill/presentation/shared/bills/bills_list.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
 import 'package:split_the_bill/presentation/shared/components/show_confirmation_dialog.dart';
 import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
+import 'package:split_the_bill/presentation/shared/components/tutorial_help_button.dart';
+import 'package:split_the_bill/presentation/shared/components/tutorial_popup.dart';
 import 'package:split_the_bill/router/routes.dart';
 
 class GroupScreen extends ConsumerStatefulWidget {
@@ -70,6 +73,21 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
       (_, next) => next.showSnackBarOnError(context),
     );
 
+    final isTutorialSeen =
+        ref.watch(tutorialControllerProvider(TutorialScreen.group));
+
+    if (!isTutorialSeen) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showTutorialDialog(
+          context: context,
+          screen: TutorialScreen.group,
+          onDismiss: () => ref
+              .read(tutorialControllerProvider(TutorialScreen.group).notifier)
+              .markAsSeen(),
+        );
+      });
+    }
+
     return DefaultTabController(
       length: 2,
       child: AsyncValueWidget(
@@ -91,6 +109,13 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
             appBar: AppBar(
               title: Text(group.name),
               actions: [
+                if (isTutorialSeen)
+                  TutorialHelpButton(
+                    onPressed: () => showTutorialDialog(
+                      context: context,
+                      screen: TutorialScreen.group,
+                    ),
+                  ),
                 if (_isGroupOwner(ref))
                   PopupMenuButton(
                     itemBuilder: (context) => [

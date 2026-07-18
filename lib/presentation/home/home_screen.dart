@@ -3,12 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/bill/states/bills_state.dart';
 import 'package:split_the_bill/domain/group/states/groups_state.dart';
+import 'package:split_the_bill/domain/tutorial/tutorial_state.dart';
 import 'package:split_the_bill/presentation/home/home_app_bar.dart';
 import 'package:split_the_bill/presentation/home/home_balance_card.dart';
 import 'package:split_the_bill/presentation/home/home_bill_carousel.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/components/headline.dart';
 import 'package:split_the_bill/presentation/shared/components/placeholder_display.dart';
+import 'package:split_the_bill/presentation/shared/components/tutorial_popup.dart';
 import 'package:split_the_bill/presentation/shared/groups/groups_list.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -19,6 +21,20 @@ class HomeScreen extends ConsumerWidget {
     final ScrollController scrollController = ScrollController();
     final newBills = ref.watch(billsStateProvider(isUnseen: true));
     final groups = ref.watch(groupsStateProvider);
+
+    final isTutorialSeen =
+        ref.watch(tutorialControllerProvider(TutorialScreen.home));
+
+    if (!isTutorialSeen) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showTutorialDialog(
+          context: context,
+          screen: TutorialScreen.home,
+          onDismiss: () =>
+              ref.read(tutorialControllerProvider(TutorialScreen.home).notifier).markAsSeen(),
+        );
+      });
+    }
 
     return Scaffold(
       appBar: const PreferredSize(

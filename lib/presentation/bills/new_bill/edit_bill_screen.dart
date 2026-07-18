@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/domain/group/states/group_state.dart';
+import 'package:split_the_bill/domain/tutorial/tutorial_state.dart';
 import 'package:split_the_bill/infrastructure/async_value_ui.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/controllers.dart';
 import 'package:split_the_bill/presentation/bills/new_bill/general_tab.dart';
@@ -10,6 +11,8 @@ import 'package:split_the_bill/presentation/bills/new_bill/items_tab.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
 import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
+import 'package:split_the_bill/presentation/shared/components/tutorial_help_button.dart';
+import 'package:split_the_bill/presentation/shared/components/tutorial_popup.dart';
 import 'package:split_the_bill/router/routes.dart';
 
 class EditBillScreen extends ConsumerStatefulWidget {
@@ -80,6 +83,21 @@ class _NewBillScreenState extends ConsumerState<EditBillScreen> {
       (_, next) => next.showSnackBarOnError(context),
     );
 
+    final isTutorialSeen =
+        ref.watch(tutorialControllerProvider(TutorialScreen.editBill));
+
+    if (!isTutorialSeen) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showTutorialDialog(
+          context: context,
+          screen: TutorialScreen.editBill,
+          onDismiss: () => ref
+              .read(tutorialControllerProvider(TutorialScreen.editBill).notifier)
+              .markAsSeen(),
+        );
+      });
+    }
+
     return DefaultTabController(
       length: 2,
       child: Builder(
@@ -104,6 +122,15 @@ class _NewBillScreenState extends ConsumerState<EditBillScreen> {
             ),
             appBar: AppBar(
               title: Text(widget.billId == '0' ? "New Bill" : "Edit Bill"),
+              actions: [
+                if (isTutorialSeen)
+                  TutorialHelpButton(
+                    onPressed: () => showTutorialDialog(
+                      context: context,
+                      screen: TutorialScreen.editBill,
+                    ),
+                  ),
+              ],
               bottom: const TabBar(
                 tabs: [
                   Tab(icon: Icon(Icons.list)),
