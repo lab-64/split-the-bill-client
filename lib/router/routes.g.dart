@@ -42,7 +42,7 @@ RouteBase get $navbarShellRoute => ShellRouteData.$route(
               factory: $NewBillGroupSelectionRouteExtension._fromState,
               routes: [
                 GoRouteData.$route(
-                  path: ':groupId',
+                  path: ':groupId/:billId',
                   factory: $EditBillRouteExtension._fromState,
                 ),
               ],
@@ -68,7 +68,7 @@ RouteBase get $navbarShellRoute => ShellRouteData.$route(
           factory: $ImageCropRouteExtension._fromState,
         ),
         GoRouteData.$route(
-          path: '/unseenBills:billId',
+          path: '/unseenBills/:billId',
           factory: $UnseenBillRouteExtension._fromState,
         ),
         GoRouteData.$route(
@@ -193,14 +193,11 @@ extension $NewBillGroupSelectionRouteExtension on NewBillGroupSelectionRoute {
 extension $EditBillRouteExtension on EditBillRoute {
   static EditBillRoute _fromState(GoRouterState state) => EditBillRoute(
         groupId: state.pathParameters['groupId']!,
-        billId: state.uri.queryParameters['bill-id']!,
+        billId: state.pathParameters['billId']!,
       );
 
   String get location => GoRouteData.$location(
-        '/bills/new/${Uri.encodeComponent(groupId)}',
-        queryParams: {
-          'bill-id': billId,
-        },
+        '/bills/new/${Uri.encodeComponent(groupId)}/${Uri.encodeComponent(billId)}',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -297,7 +294,7 @@ extension $UnseenBillRouteExtension on UnseenBillRoute {
       );
 
   String get location => GoRouteData.$location(
-        '/unseenBills${Uri.encodeComponent(billId)}',
+        '/unseenBills/${Uri.encodeComponent(billId)}',
       );
 
   void go(BuildContext context) => context.go(location);

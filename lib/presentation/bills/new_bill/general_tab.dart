@@ -78,7 +78,10 @@ class _GeneralTabState extends ConsumerState<GeneralTab> {
                 onPrimary: Colors.blue,
                 surface: Colors.blue,
                 onSurface: Colors.white,
-              ), dialogTheme: DialogThemeData(backgroundColor: Colors.green[900]),
+              ),
+              dialogTheme: DialogThemeData(
+                backgroundColor: Colors.green[900],
+              ),
             ),
             child: picker!,
           );

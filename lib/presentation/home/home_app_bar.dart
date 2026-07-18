@@ -3,7 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/auth/states/auth_state.dart';
 import 'package:split_the_bill/auth/user.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
+import 'package:split_the_bill/domain/tutorial/tutorial_state.dart';
 import 'package:split_the_bill/presentation/shared/components/fade_text.dart';
+import 'package:split_the_bill/presentation/shared/components/tutorial_help_button.dart';
+import 'package:split_the_bill/presentation/shared/components/tutorial_popup.dart';
 import 'package:split_the_bill/presentation/shared/profile/profile_image.dart';
 import 'package:split_the_bill/router/routes.dart';
 
@@ -13,6 +16,8 @@ class HomeAppBar extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(authStateProvider).requireValue;
+    final isTutorialSeen =
+        ref.watch(tutorialControllerProvider(TutorialScreen.home));
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
@@ -22,6 +27,13 @@ class HomeAppBar extends ConsumerWidget {
           children: [
             gapW8,
             _buildUserInfo(context, ref, user),
+            if (isTutorialSeen)
+              TutorialHelpButton(
+                onPressed: () => showTutorialDialog(
+                  context: context,
+                  screen: TutorialScreen.home,
+                ),
+              ),
             gapW8
           ],
         ),

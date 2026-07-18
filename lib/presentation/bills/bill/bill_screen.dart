@@ -4,11 +4,14 @@ import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/bill/bill.dart';
 import 'package:split_the_bill/domain/bill/states/bill_state.dart';
 import 'package:split_the_bill/domain/bill/states/bills_state.dart';
+import 'package:split_the_bill/domain/tutorial/tutorial_state.dart';
 import 'package:split_the_bill/infrastructure/async_value_ui.dart';
 import 'package:split_the_bill/presentation/bills/bill/bill_widget.dart';
 import 'package:split_the_bill/presentation/shared/async_value_widget.dart';
 import 'package:split_the_bill/presentation/shared/components/show_confirmation_dialog.dart';
 import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
+import 'package:split_the_bill/presentation/shared/components/tutorial_help_button.dart';
+import 'package:split_the_bill/presentation/shared/components/tutorial_popup.dart';
 import 'package:split_the_bill/router/routes.dart';
 
 import '../../../auth/states/auth_state.dart';
@@ -48,6 +51,21 @@ class BillScreen extends ConsumerWidget {
       (_, next) => next.showSnackBarOnError(context),
     );
 
+    final isTutorialSeen =
+        ref.watch(tutorialControllerProvider(TutorialScreen.bill));
+
+    if (!isTutorialSeen) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showTutorialDialog(
+          context: context,
+          screen: TutorialScreen.bill,
+          onDismiss: () => ref
+              .read(tutorialControllerProvider(TutorialScreen.bill).notifier)
+              .markAsSeen(),
+        );
+      });
+    }
+
     return AsyncValueWidget(
       value: bill,
       data: (bill) {
@@ -56,6 +74,13 @@ class BillScreen extends ConsumerWidget {
           appBar: AppBar(
             title: const Text("Bill"),
             actions: [
+              if (isTutorialSeen)
+                TutorialHelpButton(
+                  onPressed: () => showTutorialDialog(
+                    context: context,
+                    screen: TutorialScreen.bill,
+                  ),
+                ),
               IconButton(
                 icon: const Icon(Icons.manage_accounts),
                 onPressed: () => UnseenBillRoute(billId: billId).push(context),

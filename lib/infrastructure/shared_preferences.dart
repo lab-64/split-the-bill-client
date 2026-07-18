@@ -59,4 +59,12 @@ class SharedUtility {
     final jsonString = jsonEncode(groups.map((g) => g.toMapOffline()).toList());
     sharedPreferences.setString(_groupsKey, jsonString);
   }
+
+  bool isTutorialSeen(String tutorialId) {
+    return sharedPreferences.getBool('TUTORIAL_$tutorialId') ?? false;
+  }
+
+  void setTutorialSeen(String tutorialId) {
+    sharedPreferences.setBool('TUTORIAL_$tutorialId', true);
+  }
 }

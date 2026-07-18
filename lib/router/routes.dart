@@ -36,7 +36,7 @@ part 'routes.g.dart';
         TypedGoRoute<NewBillGroupSelectionRoute>(
           path: 'new',
           routes: [
-            TypedGoRoute<EditBillRoute>(path: ':groupId'),
+            TypedGoRoute<EditBillRoute>(path: ':groupId/:billId'),
           ],
         ),
         TypedGoRoute<BillRoute>(path: ':billId'),
@@ -52,7 +52,7 @@ part 'routes.g.dart';
       path: '/crop',
     ),
     TypedGoRoute<UnseenBillRoute>(
-      path: '/unseenBills:billId',
+      path: '/unseenBills/:billId',
     ),
     TypedGoRoute<TransactionRoute>(
       path: '/transactions',

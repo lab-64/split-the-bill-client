@@ -54,3 +54,6 @@ cmake_install.cmake
 /include/
 compile_commands.json
 Makefile
+/.artifacts/b328a647-b764-4a0c-8f06-1edc02f72174/implementation_plan.artifact.md
+/.artifacts/b328a647-b764-4a0c-8f06-1edc02f72174/task.artifact.md
+/.artifacts/b328a647-b764-4a0c-8f06-1edc02f72174/walkthrough.artifact.md

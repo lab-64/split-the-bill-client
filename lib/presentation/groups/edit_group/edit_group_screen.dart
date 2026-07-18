@@ -3,11 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:split_the_bill/constants/ui_constants.dart';
 import 'package:split_the_bill/domain/group/group.dart';
 import 'package:split_the_bill/domain/group/states/group_state.dart';
+import 'package:split_the_bill/domain/tutorial/tutorial_state.dart';
 import 'package:split_the_bill/infrastructure/async_value_ui.dart';
 import 'package:split_the_bill/presentation/groups/edit_group/controllers.dart';
 import 'package:split_the_bill/presentation/shared/components/action_button.dart';
 import 'package:split_the_bill/presentation/shared/components/input_text_form_field.dart';
 import 'package:split_the_bill/presentation/shared/components/snackbar.dart';
+import 'package:split_the_bill/presentation/shared/components/tutorial_help_button.dart';
+import 'package:split_the_bill/presentation/shared/components/tutorial_popup.dart';
 
 class EditGroupScreen extends ConsumerStatefulWidget {
   const EditGroupScreen({
@@ -78,9 +81,33 @@ class _EditGroupScreenState extends ConsumerState<EditGroupScreen> {
       (_, next) => next.showSnackBarOnError(context),
     );
 
+    final isTutorialSeen =
+        ref.watch(tutorialControllerProvider(TutorialScreen.editGroup));
+
+    if (!isTutorialSeen) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        showTutorialDialog(
+          context: context,
+          screen: TutorialScreen.editGroup,
+          onDismiss: () => ref
+              .read(tutorialControllerProvider(TutorialScreen.editGroup).notifier)
+              .markAsSeen(),
+        );
+      });
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: Text(_isNew ? "New Group" : "Edit Group"),
+        actions: [
+          if (isTutorialSeen)
+            TutorialHelpButton(
+              onPressed: () => showTutorialDialog(
+                context: context,
+                screen: TutorialScreen.editGroup,
+              ),
+            ),
+        ],
       ),
       floatingActionButton: ActionButton(
         icon: Icons.save,

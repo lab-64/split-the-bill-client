@@ -120,9 +120,6 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
   /// reorders the list, after an item is moved
   void _reorderList(int oldIndex, int newIndex, bool isName) {
     setState(() {
-      if (oldIndex < newIndex) {
-        newIndex -= 1;
-      }
       if (isName) {
         final item = _currentNameList.removeAt(oldIndex);
         _currentNameList.insert(newIndex, item);
@@ -268,8 +265,9 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
                               ),
                             );
                           },
-                          onReorder: (int oldIndex, int newIndex) =>
-                              _reorderList(oldIndex, newIndex, true),
+                          onReorderItem: (int oldIndex, int newIndex) {
+                            _reorderList(oldIndex, newIndex, true);
+                          },
                         ),
                       ),
                       gapW8,
@@ -322,7 +320,7 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
                               ),
                             );
                           },
-                          onReorder: (int oldIndex, int newIndex) =>
+                          onReorderItem: (int oldIndex, int newIndex) =>
                               _reorderList(oldIndex, newIndex, false),
                         ),
                       )
