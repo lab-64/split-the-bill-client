@@ -265,7 +265,7 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
                               ),
                             );
                           },
-                          onReorder: (int oldIndex, int newIndex) {
+                          onReorderItem: (int oldIndex, int newIndex) {
                             _reorderList(oldIndex, newIndex, true);
                           },
                         ),
@@ -320,7 +320,7 @@ class _ItemsCheckDialogState extends ConsumerState<ItemsCheckDialog> {
                               ),
                             );
                           },
-                          onReorder: (int oldIndex, int newIndex) =>
+                          onReorderItem: (int oldIndex, int newIndex) =>
                               _reorderList(oldIndex, newIndex, false),
                         ),
                       )
